@@ -6,8 +6,8 @@
 ## Where the code is
 
 - Repository: `https://github.com/Justin83/biology-at-scc` (local checkout `C:\Projects\biology-at-scc`)
-- Branch: `feature/bio151-live-lab` (branched from `main` at `8ce077e`)
-- Latest commit: see `git log -1` on the branch; the hash is recorded at the bottom of this file after each commit.
+- Branch: the work is on `main` (PR #8 squash-merged as `88cf255`, 2026-10-27 02:40 ET). The feature branch `feature/bio151-live-lab` remains on origin for history.
+- Latest commit: run `git log -1` on `main`; the merge record is at the bottom of this file.
 - Pull request: https://github.com/Justin83/biology-at-scc/pull/8
 
 ## Status by component
@@ -29,10 +29,10 @@
 
 ## Blockers
 
-1. **Deploy to GitHub Pages needs a human action.** Merging the PR (or any push
-   to `main`, or `gh workflow run pages.yml --ref main`) was classified as a
-   production deploy and denied for the autonomous session. Until then the QR
-   code points at a 404.
+1. ~~Deploy to GitHub Pages~~ — **done.** PR #8 merged on the instructor's
+   request; the Pages run succeeded and all live URLs return 200. Note for
+   future sessions: pushes to `main` and `gh workflow run` are treated as
+   production deploys and need the instructor's explicit go-ahead.
 2. The **instructor key** is not in the repo (by design). It was generated on
    the build machine and left in the session scratchpad:
    `C:\Users\justi\AppData\Local\Temp\claude\C--Projects-biology-at-scc\af31c699-eea4-48b8-94a2-1af45f4575d3\scratchpad\instructor_key.txt`.
@@ -41,8 +41,7 @@
 
 ## Exact next actions (in order)
 
-1. `gh pr merge <PR#> --squash` (or merge in the GitHub UI). Wait for the
-   *Deploy GitHub Pages* run to finish.
+1. ~~Merge PR #8 and wait for the Pages run~~ — done (`main@88cf255`).
 2. Open `https://justin83.github.io/biology-at-scc/labs/bio151-spectro/dashboard/`
    on the classroom computer. Confirm the chart loads with four empty groups.
 3. Scan `docs/bio151-live-lab/qr-student-form.png` (or the dashboard's *Show QR
