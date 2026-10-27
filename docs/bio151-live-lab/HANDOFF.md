@@ -1,7 +1,7 @@
 # HANDOFF — BIO 151 Live Lab
 
 **Deadline:** Tuesday, October 27, 2026, 11:00 AM ET lab.
-**Last updated:** 2026-10-27 ~02:45 ET by the Claude Code build session.
+**Last updated:** 2026-10-27 ~02:45 ET (deploy verified) by the Claude Code build session.
 
 ## Where the code is
 
@@ -20,8 +20,8 @@
 | Student form `labs/bio151-spectro/index.html` | **Implemented and tested** in headless Chrome (phone viewport) against the live backend, served from a local static server | 17/17 e2e checks pass |
 | Dashboard `labs/bio151-spectro/dashboard/index.html` | **Implemented and tested** the same way (1920×1080) | chart shows 4 series, gaps not interpolated, names hidden until unlock |
 | Instructor tools (names, CSV, wavelengths, close/open, reset PIN, clear group) | Names/unlock/wavelength editor **tested in browser**; CSV download, close/open and reset/clear **tested at the API level only** (buttons exercised by code review, not clicked) | api-test.mjs |
-| GitHub Pages deployment of the new pages | **Not deployed.** The entire Pages site currently returns 404 (no deploy since Aug 30). Branch not yet merged. | `curl https://justin83.github.io/biology-at-scc/` → 404 on 10/26 |
-| Access from a real phone over the internet | **Not verified** (blocked on the deploy above). Backend reachability from outside is verified. | — |
+| GitHub Pages deployment of the new pages | **Deployed and verified** — PR #8 squash-merged to main as 88cf255 at 02:40 ET; Pages run succeeded; all six live URLs return 200 | curl checks 02:41 ET |
+| Access from the public URL | **Verified** by headless Chrome (phone viewport) against the live GitHub Pages URL + live backend: 17/17 e2e checks. Not yet scanned with a physical phone. | e2e run 02:41 ET |
 | QR code (`qr-student-form.svg/.png`) + LaTeX snippet | **Generated** for the final URL; not yet scanned with a phone | `docs/bio151-live-lab/qr-latex-snippet.tex` |
 | Printed packet update in Overleaf | **Awaiting instructor** (paste the snippet) | — |
 | Wavelength list / decimal precision | **Awaiting instructor confirmation** in the lab; editable from the dashboard | EXPERIMENT.md |
@@ -82,6 +82,7 @@ Resume prompt for a fresh session:
 - `node --test labs/bio151-spectro/tests/api-test.mjs` against local PGlite harness: **6 pass / 0 fail** (2026-10-27 02:30 ET)
 - Same suite against live Supabase (`LAB_API_URL=https://efxymeviokaocosmpqwf.supabase.co`): **6 pass / 0 fail** (02:33 ET)
 - Headless-Chrome e2e (phone form → save → reload → dashboard → instructor unlock), local harness: 16/17 then **17/17** after fixing a favicon 404; live backend: **17/17** (02:34 ET)
+- Headless-Chrome e2e against the PUBLIC GitHub Pages URL + live backend: **17/17** (02:41 ET); Group 4 synthetic data cleared afterwards
 - Synthetic data used by the live e2e run (Group 4) was cleared afterwards; live experiment is empty.
 
 ## Files added/modified on this branch
@@ -104,4 +105,4 @@ README.md (site structure section)
 ## Commit / PR record
 
 - Commits on branch: 7ae1a1b (feature), f215a5f (README fix); this file updated in the following commit — run git log -1 for the current hash
-- PR: https://github.com/Justin83/biology-at-scc/pull/8 (open, not merged — merging = deploy)
+- PR: https://github.com/Justin83/biology-at-scc/pull/8 — MERGED (squash) into main as 88cf255, 2026-10-27 02:40 ET; Pages deploy succeeded
