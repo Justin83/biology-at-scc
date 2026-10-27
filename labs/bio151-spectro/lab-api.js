@@ -82,7 +82,7 @@
     slug: slugFromPage(),
     getExperiment: (slug) => rpc("lab_get_experiment", { p_slug: slug }),
     joinGroup: (slug, groupNumber, pin, members) => rpc("lab_join_group", { p_slug: slug, p_group_number: groupNumber, p_pin: pin, p_members: members || [] }),
-    saveReadings: (slug, groupNumber, pin, readings, dilution, notes) => rpc("lab_save_readings", { p_slug: slug, p_group_number: groupNumber, p_pin: pin, p_readings: readings, p_dilution: dilution, p_notes: notes }),
+    saveReadings: (slug, groupNumber, pin, readings, dilution, notes, leafType) => rpc("lab_save_readings", { p_slug: slug, p_group_number: groupNumber, p_pin: pin, p_readings: readings, p_dilution: dilution, p_notes: notes, p_leaf_type: leafType === undefined ? null : leafType }),
     dashboard: (slug) => rpc("lab_dashboard", { p_slug: slug }),
     instructor: (key, action, slug, payload) => rpc("lab_instructor", { p_key: key, p_action: action, p_slug: slug || null, p_payload: payload || {} }),
     errorText, parseAbsorbance, fmtTime, esc
