@@ -17,10 +17,11 @@ Shipped during the lab as `main@2952178` (PR #9); Pages run `completed success`.
 - **Group 1 was blocked.** It still carried the 02:44 ET build-test PIN, so real
   students could not join it. The PIN is cleared (the next student sets their
   own). No readings or names were deleted.
-- **Still present:** Group 1's two build-test readings (A=0.5 at 420 nm,
-  A=0.25 at 680 nm, saved 02:44 ET). They were left in place deliberately, since
-  they are overwritten as soon as Group 1 measures those two wavelengths. To
-  remove them outright, use *Instructor tools -> Clear group data* for Group 1.
+- **Group 1 test readings cleared** at the instructor’s request, 11:24 ET. The two
+  build-test rows (A=0.5 at 420 nm, A=0.25 at 680 nm) were deleted with an
+  `updated_at < 07:00 UTC` guard so no reading saved during the lab could be
+  caught. The experiment now holds 0 readings across all four groups and every
+  group is joinable — a clean start for the class.
 - **`lab_instructor` "clear group data" does not null `leaf_type`** — that
   function was left untouched to keep the mid-lab change small. Worth tidying
   later.
