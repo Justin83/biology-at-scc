@@ -156,7 +156,7 @@
         <div class="name">${A.esc(g.label)} <span class="muted small">${A.esc(state)}</span></div>
         <div class="count">${done}<span class="muted" style="font-size:1rem">/${total}</span></div>
         <div class="bar"><i style="width:${pct}%;background:${color(g.group_number)}"></i></div>
-        <div class="when">${last ? "last saved " + A.fmtTime(last) : "—"}${g.dilution ? " · dilution " + A.esc(g.dilution) : ""}</div>${who}</div>`;
+        <div class="when">${last ? "last saved " + A.fmtTime(last) : "—"}${g.leaf_type ? " · " + A.esc(g.leaf_type) : ""}${g.dilution ? " · dilution " + A.esc(g.dilution) : ""}</div>${who}</div>`;
     }).join("");
 
     // table
@@ -210,11 +210,11 @@
     const r = await A.instructor(key(), "export", slug);
     if (!r.ok) { toolMsg(A.errorText(r), "err"); return; }
     const e = r.experiment;
-    const cols = ["experiment", "x_kind", "group_number", "group_label", "members", "x_value", "x_unit", "absorbance", "reading_notes", "dilution", "group_notes", "reading_updated_at"];
+    const cols = ["experiment", "x_kind", "group_number", "group_label", "members", "x_value", "x_unit", "absorbance", "reading_notes", "leaf_type", "dilution", "group_notes", "reading_updated_at"];
     const lines = [cols.join(",")];
     r.groups.forEach(g => {
       const rows = g.readings.length ? g.readings : [{ x: "", a: "", notes: "", updated_at: "" }];
-      rows.forEach(rd => lines.push([e.slug, e.x_kind, g.group_number, g.label, (g.members || []).join("; "), rd.x, e.x_unit, rd.a, rd.notes, g.dilution, g.notes, rd.updated_at].map(csvEscape).join(",")));
+      rows.forEach(rd => lines.push([e.slug, e.x_kind, g.group_number, g.label, (g.members || []).join("; "), rd.x, e.x_unit, rd.a, rd.notes, g.leaf_type, g.dilution, g.notes, rd.updated_at].map(csvEscape).join(",")));
     });
     const blob = new Blob([lines.join("\r\n")], { type: "text/csv" });
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);

@@ -38,6 +38,7 @@ create table if not exists livelab.groups (
   members       text[] not null default '{}',
   pin_hash      text,
   dilution      text,
+  leaf_type     text,
   notes         text,
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now(),
@@ -94,7 +95,8 @@ returns jsonb language sql stable set search_path = '' as $$
     'group_number', g.group_number, 'label', g.label,
     'has_pin', g.pin_hash is not null,
     'member_count', coalesce(array_length(g.members, 1), 0),
-    'dilution', g.dilution, 'notes', g.notes, 'updated_at', g.updated_at,
+    'dilution', g.dilution, 'leaf_type', g.leaf_type,
+    'notes', g.notes, 'updated_at', g.updated_at,
     'readings', livelab.readings_json(g.id))
   || case when p_with_members then jsonb_build_object('members', to_jsonb(g.members)) else '{}'::jsonb end
 $$;
@@ -175,7 +177,8 @@ begin
 end $$;
 
 create or replace function public.lab_save_readings(p_slug text, p_group_number int, p_pin text,
-                                                    p_readings jsonb, p_dilution text default null, p_notes text default null)
+                                                    p_readings jsonb, p_dilution text default null,
+                                                    p_notes text default null, p_leaf_type text default null)
 returns jsonb language plpgsql security definer set search_path = '' as $$
 declare e livelab.experiments%rowtype; gr livelab.groups%rowtype; el jsonb; vx numeric; va numeric; n int := 0;
 begin
@@ -211,6 +214,7 @@ begin
   update livelab.groups
      set dilution = coalesce(nullif(left(p_dilution, 120), ''), case when p_dilution is null then dilution else null end),
          notes    = coalesce(nullif(left(p_notes, 1000), ''),   case when p_notes    is null then notes    else null end),
+         leaf_type = coalesce(nullif(left(p_leaf_type, 120), ''), case when p_leaf_type is null then leaf_type else null end),
          updated_at = now()
    where id = gr.id returning * into gr;
 

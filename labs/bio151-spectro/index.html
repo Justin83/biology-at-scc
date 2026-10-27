@@ -63,8 +63,10 @@
       <tbody id="rows"></tbody>
     </table>
 
-    <h2>Optional</h2>
-    <label for="dilution">Sample dilution</label>
+    <h2>Your sample</h2>
+    <label for="leaf-type">Leaf type</label>
+    <input id="leaf-type" type="text" autocomplete="off" autocapitalize="words" placeholder="e.g. spinach, ivy, red maple">
+    <label for="dilution">Sample dilution <span class="muted">(if applicable)</span></label>
     <input id="dilution" type="text" autocomplete="off" placeholder="e.g. 1:10 in acetone, or none">
     <label for="notes">Group notes</label>
     <textarea id="notes" placeholder="Anything unusual about your sample or readings"></textarea>
@@ -189,6 +191,7 @@
     $("y-head").textContent = exp.y_label || "Absorbance";
     $("readings-heading").textContent = `${exp.y_label || "Absorbance"} readings`;
     renderRows();
+    $("leaf-type").value = groupData.leaf_type || "";
     $("dilution").value = groupData.dilution || "";
     $("notes").value = groupData.notes || "";
     dirty = {}; metaDirty = false;
@@ -273,7 +276,8 @@
 
     saving = true; setState();
     const r = await A.saveReadings(slug, session.group_number, session.pin,
-      payload, metaDirty ? $("dilution").value : null, metaDirty ? $("notes").value : null);
+      payload, metaDirty ? $("dilution").value : null, metaDirty ? $("notes").value : null,
+      metaDirty ? $("leaf-type").value : null);
     saving = false;
     if (!r.ok) {
       setState("Not saved: " + A.errorText(r), "err");
@@ -297,7 +301,7 @@
     if (!r.ok) { if (manual) msg("entry-msg", A.errorText(r), "err"); return; }
     const before = JSON.stringify(groupData.readings) + JSON.stringify(exp.x_values);
     exp = r.experiment; groupData = r.group;
-    if (!metaDirty) { $("dilution").value = groupData.dilution || ""; $("notes").value = groupData.notes || ""; }
+    if (!metaDirty) { $("leaf-type").value = groupData.leaf_type || ""; $("dilution").value = groupData.dilution || ""; $("notes").value = groupData.notes || ""; }
     $("who-names").textContent = (groupData.members && groupData.members.length) ? "· " + groupData.members.join(", ") : "";
     if (before !== JSON.stringify(groupData.readings) + JSON.stringify(exp.x_values) || manual) renderRows();
     setState();
@@ -319,7 +323,7 @@
     show("entry", false); show("savebar", false);
     A.getExperiment(slug).then(r => { if (r.ok) { exp = r.experiment; groups = r.groups; } selectedGroup = null; renderGroups(); updatePinHelp(); show("join", true); });
   });
-  ["dilution", "notes"].forEach(id => $(id).addEventListener("input", () => { metaDirty = true; setState(); }));
+  ["leaf-type", "dilution", "notes"].forEach(id => $(id).addEventListener("input", () => { metaDirty = true; setState(); }));
   window.addEventListener("beforeunload", (e) => { if (isDirty()) { e.preventDefault(); e.returnValue = ""; } });
   document.addEventListener("visibilitychange", () => { if (!document.hidden) sync(false); });
 
