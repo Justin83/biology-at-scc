@@ -35,8 +35,6 @@ The site is organized along two axes:
 ├── archive/                            # Archive of past work
 ├── labs/                               # Live classroom data-collection tools (BIO 151 spectrophotometry)
 └── docs/                               # Project documentation (docs/bio151-live-lab/)
-├── labs/                               # Live classroom data-collection tools (e.g. BIO 151 spectrophotometry)
-└── docs/                               # Project documentation (docs/bio151-live-lab/)
 ```
 
 Each top-level folder is its own page (or will grow into a small section of
