@@ -8,7 +8,7 @@
 - Repository: `https://github.com/Justin83/biology-at-scc` (local checkout `C:\Projects\biology-at-scc`)
 - Branch: `feature/bio151-live-lab` (branched from `main` at `8ce077e`)
 - Latest commit: see `git log -1` on the branch; the hash is recorded at the bottom of this file after each commit.
-- Pull request: see bottom of this file.
+- Pull request: https://github.com/Justin83/biology-at-scc/pull/8
 
 ## Status by component
 
@@ -103,5 +103,5 @@ README.md (site structure section)
 
 ## Commit / PR record
 
-- Latest commit: _(filled in below after commit)_
-- PR: _(filled in below)_
+- Commits on branch: 7ae1a1b (feature), f215a5f (README fix); this file updated in the following commit — run git log -1 for the current hash
+- PR: https://github.com/Justin83/biology-at-scc/pull/8 (open, not merged — merging = deploy)
