@@ -3,6 +3,36 @@
 **Deadline:** Tuesday, October 27, 2026, 11:00 AM ET lab.
 **Last updated:** 2026-10-27 ~02:45 ET (deploy verified) by the Claude Code build session.
 
+## Update 2026-10-27 11:20 ET (leaf type + Group 1 unblock)
+
+Shipped during the lab as `main@2952178` (PR #9); Pages run `completed success`.
+
+- **Leaf type** is now recorded per group. `livelab.groups.leaf_type` (nullable)
+  via migration `livelab_bio151_add_leaf_type`; `group_json` returns it;
+  `lab_save_readings` gained `p_leaf_type`. The 6-arg function was dropped and
+  the 7-arg one created **in the same transaction** with `p_leaf_type` defaulting
+  to null, so no ambiguous overload ever existed and forms already open on
+  phones kept saving across the deploy. Leaf type shows on each dashboard group
+  card and as a `leaf_type` CSV column.
+- **Group 1 was blocked.** It still carried the 02:44 ET build-test PIN, so real
+  students could not join it. The PIN is cleared (the next student sets their
+  own). No readings or names were deleted.
+- **Still present:** Group 1's two build-test readings (A=0.5 at 420 nm,
+  A=0.25 at 680 nm, saved 02:44 ET). They were left in place deliberately, since
+  they are overwritten as soon as Group 1 measures those two wavelengths. To
+  remove them outright, use *Instructor tools -> Clear group data* for Group 1.
+- **`lab_instructor` "clear group data" does not null `leaf_type`** — that
+  function was left untouched to keep the mid-lab change small. Worth tidying
+  later.
+- Verified against live Supabase: direct absorbance entry, blank cells, decimals,
+  editing a saved reading and confirming it survives a reload (420 nm 0.842 ->
+  0.655), old-client compatibility, and the chart plotting absorbance against
+  wavelength for four groups. No console errors at a 390x844 phone viewport.
+- The instructor key is still **not** on this workstation; the scratchpad path
+  recorded in this file points at a different machine (`C:\Users\justi\...`).
+  Group 1 was therefore unblocked with direct database access. Set a fresh key
+  with the SQL in DEPLOYMENT.md when convenient.
+
 ## Where the code is
 
 - Repository: `https://github.com/Justin83/biology-at-scc` (local checkout `C:\Projects\biology-at-scc`)
