@@ -23,3 +23,6 @@ _site/
 
 # Node (in case tooling is added later)
 node_modules/
+
+# Student data exports — keep out of this PUBLIC repo
+exports/
