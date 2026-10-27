@@ -1,0 +1,41 @@
+% ------------------------------------------------------------------
+% BIO 151 Live Lab — QR code for the student data-entry form.
+% Paste the PREAMBLE block into the packet's preamble (Overleaf, pdfLaTeX
+% or XeLaTeX both work) and the BODY block where the QR should appear.
+% Change ONLY \LabFormURL if the deployment URL ever changes; the QR code,
+% the printed link and the hyperlink all follow it automatically.
+% ------------------------------------------------------------------
+
+% ---------- PREAMBLE ----------
+\usepackage{qrcode}
+\usepackage{hyperref}
+\usepackage{url}
+
+% Verified student-form URL (GitHub Pages, HTTPS). No trailing text after the slash.
+\newcommand{\LabFormURL}{https://justin83.github.io/biology-at-scc/labs/bio151-spectro/}
+
+% Reusable box: QR on the left, instructions on the right.
+\newcommand{\LabFormQR}{%
+  \begin{center}
+  \fbox{\begin{minipage}{0.92\linewidth}\vspace{4pt}
+    \begin{minipage}[c]{1.25in}\centering
+      \qrcode[height=1.1in,level=M]{\LabFormURL}
+    \end{minipage}\hfill
+    \begin{minipage}[c]{\dimexpr\linewidth-1.4in\relax}
+      \textbf{Enter your readings on your phone.}\\
+      Scan the code or go to \url{\LabFormURL}\\[3pt]
+      \small 1.\ Pick your group number.\quad
+      2.\ Type both partners' names once.\quad
+      3.\ The first partner makes up a group PIN (4+ characters) and shares it; the other partner joins with the same PIN.\quad
+      4.\ Type each absorbance as the display shows it and tap \textbf{Save}. You can come back and change any value.
+    \end{minipage}\vspace{4pt}
+  \end{minipage}}
+  \end{center}}
+
+% ---------- BODY ----------
+% Recommended placement: at the top of the "Data Collection" / "Procedure Part B"
+% page, immediately before the absorbance data table students would otherwise
+% fill in by hand, so the phone form and the paper table sit side by side.
+% A second, smaller copy near the title page is optional:
+%   \qrcode[height=0.8in]{\LabFormURL}
+\LabFormQR

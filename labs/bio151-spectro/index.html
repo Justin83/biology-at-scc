@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BIO 151 Live Lab · Enter Readings</title>
+<meta name="description" content="Student data-entry form for the BIO 151 live spectrophotometry lab at Somerset Community College.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="lab.css">
+<link rel="icon" href="data:,">
+</head>
+<body>
+<header class="lab">
+  <div class="wrap">
+    <a class="brand" href="../../index.html">Biology <span>at SCC</span></a>
+    <span class="sub">Live Lab · student data entry</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1 id="title">Loading experiment…</h1>
+  <p class="lede" id="course"></p>
+  <div id="boot-msg" class="msg warn hidden"></div>
+
+  <!-- ============ STEP 1: join a group ============ -->
+  <section id="join" class="hidden">
+    <h2>1. Pick your group</h2>
+    <div id="group-grid" class="group-grid"></div>
+
+    <h2>2. Your names</h2>
+    <p class="muted small" style="margin-top:0">Enter each lab partner's name once. Names are visible only to your instructor, never on the classroom screen.</p>
+    <label for="name1">Student 1</label>
+    <input id="name1" type="text" autocomplete="off" autocapitalize="words" placeholder="First and last name">
+    <label for="name2">Student 2</label>
+    <input id="name2" type="text" autocomplete="off" autocapitalize="words" placeholder="First and last name">
+    <label for="name3" class="muted">Student 3 (if any)</label>
+    <input id="name3" type="text" autocomplete="off" autocapitalize="words" placeholder="optional">
+
+    <h2>3. Group PIN</h2>
+    <p id="pin-help" class="muted small" style="margin-top:0">Pick a group first.</p>
+    <input id="pin" type="text" inputmode="numeric" autocomplete="off" autocapitalize="off" placeholder="at least 4 characters" maxlength="32">
+
+    <div id="join-msg" class="msg err hidden"></div>
+    <p style="margin-top:1.2rem"><button id="join-btn" class="primary" style="width:100%">Join group</button></p>
+  </section>
+
+  <!-- ============ STEP 2: enter readings ============ -->
+  <section id="entry" class="hidden">
+    <div class="card">
+      <div><strong id="who-group"></strong> <span class="muted" id="who-names"></span></div>
+      <div class="small" style="margin-top:.3rem">
+        <button id="switch-btn" class="link">Switch group / sign out</button>
+        <button id="reload-btn" class="link">Reload saved data</button>
+      </div>
+    </div>
+    <div id="entry-msg" class="msg ok hidden"></div>
+    <p id="instructions" class="muted small"></p>
+
+    <h2 id="readings-heading">Readings</h2>
+    <p class="muted small" style="margin-top:0">Type the absorbance exactly as the instrument shows it (for example <code>0.52</code>). Leave a box empty if you have not measured it yet. Save as often as you like; you can come back and change any value.</p>
+    <table class="readings">
+      <thead><tr><th id="x-head">Wavelength</th><th id="y-head">Absorbance</th><th>Saved</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+
+    <h2>Optional</h2>
+    <label for="dilution">Sample dilution</label>
+    <input id="dilution" type="text" autocomplete="off" placeholder="e.g. 1:10 in acetone, or none">
+    <label for="notes">Group notes</label>
+    <textarea id="notes" placeholder="Anything unusual about your sample or readings"></textarea>
+  </section>
+</main>
+
+<div id="savebar" class="savebar hidden">
+  <div class="inner">
+    <div id="save-state" class="state muted">No unsaved changes</div>
+    <button id="save-btn" class="primary">Save</button>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="lab-api.js"></script>
+<script>
+(function () {
+  const A = window.LabAPI, CFG = window.LAB_CONFIG;
+  const slug = A.slug;
+  const LS_KEY = "livelab:" + slug;
+  const $ = (id) => document.getElementById(id);
+
+  let exp = null;            // experiment config
+  let groups = [];           // public group summaries
+  let session = null;        // { group_number, pin, members }
+  let groupData = null;      // { readings: [...], dilution, notes, members, ... }
+  let dirty = {};            // x -> raw text typed but not saved
+  let metaDirty = false;     // dilution/notes changed
+  let saving = false;
+  let selectedGroup = null;
+  let syncTimer = null;
+
+  // ------------------------------------------------------------ helpers
+  function show(id, on) { $(id).classList.toggle("hidden", !on); }
+  function msg(id, text, kind) {
+    const el = $(id);
+    if (!text) { el.classList.add("hidden"); return; }
+    el.className = "msg " + (kind || "ok");
+    el.textContent = text;
+  }
+  function loadSession() {
+    try { const s = JSON.parse(localStorage.getItem(LS_KEY)); return (s && s.group_number && s.pin) ? s : null; } catch (_) { return null; }
+  }
+  function saveSession(s) { try { s ? localStorage.setItem(LS_KEY, JSON.stringify(s)) : localStorage.removeItem(LS_KEY); } catch (_) {} }
+  function xLabel(x) { return `${x} ${exp.x_unit || ""}`.trim(); }
+  function swatchColor(n) { return `var(--s${((n - 1) % 8) + 1})`; }
+  function isDirty() { return Object.keys(dirty).length > 0 || metaDirty; }
+
+  // ------------------------------------------------------------ boot
+  async function boot() {
+    const r = await A.getExperiment(slug);
+    if (!r.ok) {
+      $("title").textContent = "Experiment unavailable";
+      msg("boot-msg", A.errorText(r), "err");
+      return;
+    }
+    exp = r.experiment; groups = r.groups;
+    document.title = `${exp.title} · Enter Readings`;
+    $("title").textContent = exp.title;
+    $("course").textContent = (exp.course ? exp.course + " · " : "") + "Live lab data entry";
+    if (!exp.is_open) msg("boot-msg", "Data entry for this experiment is currently closed by the instructor. You can still view saved data.", "warn");
+
+    session = loadSession();
+    if (session) {
+      const j = await A.joinGroup(slug, session.group_number, session.pin, []);
+      if (j.ok) { enterMode(j); return; }
+      saveSession(null); session = null;
+      msg("join-msg", "Your saved group sign-in no longer works (" + A.errorText(j) + "). Please join again.", "warn");
+    }
+    renderGroups();
+    show("join", true);
+  }
+
+  // ------------------------------------------------------------ join
+  function renderGroups() {
+    const grid = $("group-grid"); grid.innerHTML = "";
+    groups.forEach(g => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "group-btn" + (selectedGroup === g.group_number ? " selected" : "");
+      const status = g.has_pin
+        ? `joined · ${g.member_count} name${g.member_count === 1 ? "" : "s"} · ${g.readings_count} saved`
+        : "open — be the first to join";
+      b.innerHTML = `<span><i class="swatch" style="background:${swatchColor(g.group_number)}"></i>${A.esc(g.label)}</span><span class="status">${A.esc(status)}</span>`;
+      b.addEventListener("click", () => { selectedGroup = g.group_number; renderGroups(); updatePinHelp(); });
+      grid.appendChild(b);
+    });
+  }
+  function updatePinHelp() {
+    const g = groups.find(x => x.group_number === selectedGroup);
+    if (!g) { $("pin-help").textContent = "Pick a group first."; return; }
+    $("pin-help").textContent = g.has_pin
+      ? `${g.label} already has a PIN. Enter the PIN your group chose.`
+      : `${g.label} has no PIN yet. Make one up (4+ characters) and share it with your lab partner — you will both need it to edit this group's data.`;
+  }
+  async function join() {
+    msg("join-msg", "");
+    if (!selectedGroup) { msg("join-msg", "Pick your group first.", "err"); return; }
+    const names = ["name1", "name2", "name3"].map(id => $(id).value.trim()).filter(Boolean);
+    const g = groups.find(x => x.group_number === selectedGroup);
+    if (names.length === 0 && !(g && g.has_pin)) { msg("join-msg", "Enter at least one name.", "err"); return; }
+    const pin = $("pin").value.trim();
+    if (pin.length < 4) { msg("join-msg", "Enter a PIN of at least 4 characters.", "err"); return; }
+    $("join-btn").disabled = true; $("join-btn").textContent = "Joining…";
+    const r = await A.joinGroup(slug, selectedGroup, pin, names);
+    $("join-btn").disabled = false; $("join-btn").textContent = "Join group";
+    if (!r.ok) { msg("join-msg", A.errorText(r), "err"); return; }
+    session = { group_number: selectedGroup, pin, members: r.group.members };
+    saveSession(session);
+    enterMode(r, r.created_pin ? `You created the PIN for ${r.group.label}. Your partner can join on their own phone with that PIN.` : `Welcome back to ${r.group.label}.`);
+  }
+
+  // ------------------------------------------------------------ entry
+  function enterMode(r, welcome) {
+    exp = r.experiment; groupData = r.group;
+    session = session || loadSession();
+    if (session) { session.members = groupData.members || session.members; saveSession(session); }
+    show("join", false); show("entry", true); show("savebar", true);
+    $("who-group").textContent = groupData.label;
+    $("who-names").textContent = (groupData.members && groupData.members.length) ? "· " + groupData.members.join(", ") : "";
+    $("instructions").textContent = exp.instructions || "";
+    $("x-head").textContent = exp.x_label || "Wavelength";
+    $("y-head").textContent = exp.y_label || "Absorbance";
+    $("readings-heading").textContent = `${exp.y_label || "Absorbance"} readings`;
+    renderRows();
+    $("dilution").value = groupData.dilution || "";
+    $("notes").value = groupData.notes || "";
+    dirty = {}; metaDirty = false;
+    setState();
+    msg("entry-msg", welcome || "", "ok");
+    startSync();
+  }
+
+  function readingsMap() {
+    const m = {};
+    (groupData.readings || []).forEach(r => { m[String(Number(r.x))] = r; });
+    return m;
+  }
+
+  function renderRows() {
+    const tbody = $("rows"); tbody.innerHTML = "";
+    const m = readingsMap();
+    (exp.x_values || []).forEach((x, i) => {
+      const key = String(Number(x));
+      const r = m[key];
+      const tr = document.createElement("tr");
+      const saved = r && r.a != null ? String(Number(r.a)) : "";
+      tr.innerHTML = `<td class="x">${A.esc(xLabel(x))}</td>
+        <td><input type="text" inputmode="decimal" autocomplete="off" enterkeyhint="${i === exp.x_values.length - 1 ? "done" : "next"}" data-x="${A.esc(key)}" aria-label="${A.esc(exp.y_label)} at ${A.esc(xLabel(x))}" value="${A.esc(key in dirty ? dirty[key] : saved)}"></td>
+        <td class="when" data-when="${A.esc(key)}">${r && r.a != null ? A.fmtTime(r.updated_at) : "—"}</td>`;
+      tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll("input").forEach((inp, idx, all) => {
+      if (inp.dataset.x in dirty) inp.classList.add("dirty");
+      inp.addEventListener("input", () => {
+        const key = inp.dataset.x;
+        const savedVal = (m[key] && m[key].a != null) ? String(Number(m[key].a)) : "";
+        if (inp.value.trim() === savedVal) { delete dirty[key]; inp.classList.remove("dirty"); }
+        else { dirty[key] = inp.value; inp.classList.add("dirty"); }
+        inp.classList.remove("bad");
+        setState();
+      });
+      inp.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") { e.preventDefault(); if (all[idx + 1]) all[idx + 1].focus(); else inp.blur(); }
+      });
+    });
+  }
+
+  function setState(text, kind) {
+    const el = $("save-state");
+    if (text) { el.textContent = text; el.className = "state " + (kind || ""); return; }
+    if (saving) { el.textContent = "Saving…"; el.className = "state muted"; return; }
+    if (isDirty()) {
+      const n = Object.keys(dirty).length;
+      el.textContent = `Unsaved changes${n ? ` (${n} reading${n === 1 ? "" : "s"})` : ""} — tap Save`;
+      el.className = "state warn";
+    } else {
+      const last = latestSavedAt();
+      el.textContent = last ? `All changes saved · ${A.fmtTime(last)}` : "Nothing saved yet";
+      el.className = "state " + (last ? "ok" : "muted");
+    }
+    $("save-btn").disabled = saving;
+  }
+  function latestSavedAt() {
+    let t = null;
+    (groupData && groupData.readings || []).forEach(r => { if (r.a != null && (!t || r.updated_at > t)) t = r.updated_at; });
+    if (groupData && groupData.updated_at && (!t || groupData.updated_at > t) && (groupData.dilution || groupData.notes)) t = groupData.updated_at;
+    return t;
+  }
+
+  async function save() {
+    if (saving) return;
+    msg("entry-msg", "");
+    const payload = [];
+    let bad = false;
+    document.querySelectorAll("#rows input").forEach(inp => {
+      const key = inp.dataset.x;
+      if (!(key in dirty)) return;
+      const p = A.parseAbsorbance(inp.value);
+      if (p.error) { inp.classList.add("bad"); bad = true; return; }
+      payload.push({ x: Number(key), a: p.value });
+    });
+    if (bad) { setState("Fix the highlighted value(s) — numbers only", "err"); return; }
+    if (payload.length === 0 && !metaDirty) { setState(); return; }
+    const high = payload.filter(p => p.a != null && p.a > 3);
+    if (high.length && !confirm(`Absorbance above 3 is unusual for this instrument (${high.map(p => xLabel(p.x) + " = " + p.a).join(", ")}). Save anyway?`)) return;
+
+    saving = true; setState();
+    const r = await A.saveReadings(slug, session.group_number, session.pin,
+      payload, metaDirty ? $("dilution").value : null, metaDirty ? $("notes").value : null);
+    saving = false;
+    if (!r.ok) {
+      setState("Not saved: " + A.errorText(r), "err");
+      msg("entry-msg", "Your readings were NOT saved. " + A.errorText(r), "err");
+      if (r.error === "wrong_pin") { saveSession(null); }
+      return;
+    }
+    exp = r.experiment; groupData = r.group; dirty = {}; metaDirty = false;
+    renderRows();
+    setState();
+    const n = r.saved;
+    msg("entry-msg", `Saved ✓ ${n ? n + " reading" + (n === 1 ? "" : "s") + " " : ""}at ${A.fmtTime(r.saved_at)}. Your data is on the classroom screen after its next refresh.`, "ok");
+    if (navigator.vibrate) { try { navigator.vibrate(30); } catch (_) {} }
+  }
+
+  // Pull the latest saved values (e.g. typed by a partner on another phone) into untouched cells.
+  async function sync(manual) {
+    if (!session || saving || document.hidden) return;
+    if (isDirty() && !manual) return;
+    const r = await A.joinGroup(slug, session.group_number, session.pin, []);
+    if (!r.ok) { if (manual) msg("entry-msg", A.errorText(r), "err"); return; }
+    const before = JSON.stringify(groupData.readings) + JSON.stringify(exp.x_values);
+    exp = r.experiment; groupData = r.group;
+    if (!metaDirty) { $("dilution").value = groupData.dilution || ""; $("notes").value = groupData.notes || ""; }
+    $("who-names").textContent = (groupData.members && groupData.members.length) ? "· " + groupData.members.join(", ") : "";
+    if (before !== JSON.stringify(groupData.readings) + JSON.stringify(exp.x_values) || manual) renderRows();
+    setState();
+    if (manual) msg("entry-msg", "Reloaded saved data at " + A.fmtTime(new Date().toISOString()) + ".", "ok");
+  }
+  function startSync() {
+    if (syncTimer) clearInterval(syncTimer);
+    syncTimer = setInterval(() => sync(false), Math.max(5, CFG.REFRESH_SECONDS || 12) * 1000);
+  }
+
+  // ------------------------------------------------------------ wiring
+  $("join-btn").addEventListener("click", join);
+  $("save-btn").addEventListener("click", save);
+  $("reload-btn").addEventListener("click", () => sync(true));
+  $("switch-btn").addEventListener("click", () => {
+    if (isDirty() && !confirm("You have unsaved changes. Leave without saving?")) return;
+    saveSession(null); session = null; groupData = null; dirty = {}; metaDirty = false;
+    if (syncTimer) clearInterval(syncTimer);
+    show("entry", false); show("savebar", false);
+    A.getExperiment(slug).then(r => { if (r.ok) { exp = r.experiment; groups = r.groups; } selectedGroup = null; renderGroups(); updatePinHelp(); show("join", true); });
+  });
+  ["dilution", "notes"].forEach(id => $(id).addEventListener("input", () => { metaDirty = true; setState(); }));
+  window.addEventListener("beforeunload", (e) => { if (isDirty()) { e.preventDefault(); e.returnValue = ""; } });
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) sync(false); });
+
+  boot();
+})();
+</script>
+</body>
+</html>

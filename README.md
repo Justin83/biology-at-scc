@@ -32,7 +32,9 @@ The site is organized along two axes:
 ├── honors-symposium/                   # Honors Symposium projects
 ├── profiles/                           # Student research profiles
 ├── posters-presentations/              # Posters & presentations
-└── archive/                            # Archive of past work
+├── archive/                            # Archive of past work
+├── labs/                               # Live classroom data-collection tools (BIO 151 spectrophotometry)
+└── docs/                               # Project documentation (docs/bio151-live-lab/)
 ```
 
 Each top-level folder is its own page (or will grow into a small section of
@@ -40,6 +42,20 @@ pages) and is meant to be extended independently as new departments, students,
 and faculty work come in — no folder is scoped to a particular semester or
 course. Department-specific content and structure are still being scoped;
 the current department pages are placeholders.
+
+## Live labs
+
+ is a phone data-entry form plus a classroom dashboard
+for live spectrophotometry labs. It is static like the rest of the site but
+stores readings in a Supabase database through PIN-checked RPC functions.
+See  for architecture, URLs and operations.
+
+## Live labs
+
+`labs/bio151-spectro/` is a phone data-entry form plus a classroom dashboard
+for live spectrophotometry labs. It is static like the rest of the site but
+stores readings in a Supabase database through PIN-checked RPC functions.
+See `docs/bio151-live-lab/README.md` for architecture, URLs and operations.
 
 ## Publishing
 
