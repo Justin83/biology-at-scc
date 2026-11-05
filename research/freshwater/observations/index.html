@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Field Observations · Freshwater Research · Biology at SCC</title>
+<meta name="description" content="Faculty-reviewed field observations from Biology at SCC freshwater research sites, with the observation data dictionary, review workflow and privacy rules. No observations have been recorded yet.">
+<meta name="fw:section" content="observations">
+<meta name="fw:short" content="Observations">
+<link rel="stylesheet" href="../../../assets/style.css">
+<link rel="stylesheet" href="../assets/portal.css">
+</head>
+<body class="fw">
+<!-- fw:header -->
+<script>(function(){var d=document.documentElement;d.classList.add("js");try{var t=localStorage.getItem("fw-theme");if(t==="light"||t==="dark")d.setAttribute("data-theme",t);}catch(e){}})();</script>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="site-title" href="../../../index.html">Biology <span>at SCC</span></a>
+    <nav aria-label="Biology at SCC">
+      <ul>
+        <li><a href="../../../departments/">Departments</a></li>
+        <li><a href="../../../honors-symposium/">Honors Symposium</a></li>
+        <li><a href="../../../posters-presentations/">Posters &amp; Presentations</a></li>
+        <li><a href="../../../archive/">Archive</a></li>
+        <li><a href="../../../labs/">Lab</a></li>
+        <li><a href="../" class="is-active">Research</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="fw-bar">
+  <div class="fw-bar-inner">
+    <a class="fw-brand" href="../"><span class="fw-brand-mark" aria-hidden="true"></span><span>Freshwater Ecology <span class="fw-brand-amp">&amp; Watershed Research</span></span></a>
+    <form class="fw-search" role="search" action="../search/" method="get">
+      <label class="visually-hidden" for="fw-q">Search the research portal</label>
+      <input id="fw-q" name="q" type="search" placeholder="Search topics, organisms, resources…" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <div class="fw-bar-tools">
+      <button type="button" class="fw-theme-toggle" data-theme-toggle aria-label="Color theme: automatic">Theme: Auto</button>
+      <button type="button" class="fw-menu-toggle" aria-expanded="false" aria-controls="fw-nav">Menu</button>
+    </div>
+  </div>
+  <nav id="fw-nav" class="fw-nav" aria-label="Research portal">
+    <ul>
+        <li><a href="../">Research Home</a></li>
+        <li><a href="../learn/">Learn</a></li>
+        <li><a href="../learn/cyanobacteria/">Cyanobacteria</a></li>
+        <li><a href="../maps/">Watersheds &amp; Maps</a></li>
+        <li><a href="../sites/allen-branch/">Allen Branch</a></li>
+        <li><a href="../organisms/">Organism Atlas</a></li>
+        <li><a href="../methods/">Field Methods</a></li>
+        <li><a href="../resources/">Resource Library</a></li>
+        <li><a href="../projects/">Research Projects</a></li>
+        <li><a href="../observations/" aria-current="page">Observations</a></li>
+    </ul>
+  </nav>
+</div>
+<nav class="fw-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="../../../index.html">Biology at SCC</a></li>
+    <li><a href="../">Freshwater Research</a></li>
+    <li><a href="../observations/" aria-current="page">Observations</a></li>
+  </ol>
+</nav>
+<!-- /fw:header -->
+
+<main id="main">
+  <div class="fw-page-head">
+    <p class="fw-kicker">Field records &amp; data</p>
+    <h1>Field Observations</h1>
+    <p class="lede">Every field visit, every measurement and every photograph that SCC students record — once a faculty reviewer has checked it. This page will become the portal's data record for Allen Branch and other sites.</p>
+  </div>
+
+  <div class="fw-empty">
+    <p style="margin-top:0"><strong>No field observations have been recorded yet.</strong></p>
+    <p style="margin-bottom:0">The first records will come from faculty-led reconnaissance of Allen Branch. Until then, this page describes exactly what each record will contain, so that students can prepare. See the <a href="../methods/">methods</a> and the <a href="../sites/allen-branch/#investigation">Allen Branch checklist</a>.</p>
+  </div>
+
+  <section class="fw-section" aria-labelledby="fields">
+    <div class="fw-section-head"><h2 id="fields">Observation data dictionary</h2></div>
+    <p>Each observation record has the fields below. Measurements are stored as separate records with a unit, method and quality-control flag (see the <a href="../methods/#water-chemistry">measurement dictionary</a>).</p>
+    <div class="fw-table-scroll" role="region" aria-label="Observation fields" tabindex="0">
+    <table class="fw-dict">
+      <caption>Field observation record</caption>
+      <thead><tr><th scope="col">Field</th><th scope="col">Content</th><th scope="col">Required</th></tr></thead>
+      <tbody>
+        <tr><td>site_id, station_id</td><td>Field site and sampling station</td><td>Site required; station once established</td></tr>
+        <tr><td>observed_at</td><td>Date and time with time zone</td><td>Yes</td></tr>
+        <tr><td>observers</td><td>Student researchers and faculty present (public display honors consent)</td><td>Yes</td></tr>
+        <tr><td>latitude, longitude, gps_accuracy_m</td><td>Position and its stated accuracy</td><td>Yes</td></tr>
+        <tr><td>weather, air_temperature_c</td><td>Conditions at the time</td><td>Yes</td></tr>
+        <tr><td>rain_last_24h_mm, rain_last_72h_mm, rain_source</td><td>Recent rainfall and where it came from (e.g., Kentucky Mesonet station)</td><td>Yes</td></tr>
+        <tr><td>water_temperature, ph, specific_conductance, dissolved_oxygen, turbidity, nitrate_n, orthophosphate_p</td><td>Measurements, each with unit, method, detection limit and QC flag</td><td>As measured</td></tr>
+        <tr><td>water_depth_cm, flow_observation</td><td>Depth at a marked point; flow category</td><td>Yes</td></tr>
+        <tr><td>canopy_cover_pct, canopy_method</td><td>Canopy cover and how it was measured</td><td>Yes</td></tr>
+        <tr><td>substrate</td><td>Bedrock, boulder, cobble, gravel, sand, silt/clay, wood, leaf litter</td><td>Yes</td></tr>
+        <tr><td>visible_biofilm</td><td>None, thin, thick, mat or floating</td><td>Yes</td></tr>
+        <tr><td>photos</td><td>Upstream/downstream photos and close-ups, with credit and license</td><td>Recommended</td></tr>
+        <tr><td>suspected_organisms</td><td>Provisional morphotypes or genera with identification level</td><td>If examined</td></tr>
+        <tr><td>notes</td><td>Anything else observed</td><td>Optional</td></tr>
+        <tr><td>review_status, reviewed_by, reviewed_at</td><td>Draft → submitted → approved → published</td><td>System</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section class="fw-section" aria-labelledby="review">
+    <div class="fw-section-head"><h2 id="review">Review and publication</h2></div>
+    <ol>
+      <li><strong>Draft.</strong> Students enter their record after the visit.</li>
+      <li><strong>Submitted.</strong> The record goes to a faculty reviewer, who checks units, methods, calibration, photographs and identifications.</li>
+      <li><strong>Changes requested</strong> or <strong>approved.</strong></li>
+      <li><strong>Published.</strong> Only approved records appear here and on the map. Records are archived, never deleted, if they are later corrected.</li>
+    </ol>
+    <p>Until the authenticated research workspace is built (Phase 4 of the <a href="../standards/#roadmap">roadmap</a>), records are kept by faculty outside this public website. Unpublished records and student information are never stored in the site's public code repository.</p>
+  </section>
+</main>
+
+<!-- fw:footer -->
+<footer class="site-footer fw-footer">
+  <div class="wrap">
+    <div class="fw-footer-grid">
+      <div>
+        <p class="fw-footer-title">Freshwater Ecology &amp; Watershed Research</p>
+        <p>An undergraduate research and learning portal of Biology at SCC, focused on Allen Branch and the freshwater systems of south-central Kentucky.</p>
+      </div>
+      <div>
+        <p class="fw-footer-title">Evidence &amp; sources</p>
+        <ul>
+          <li><a href="../standards/">Evidence labels &amp; citation standards</a></li>
+          <li><a href="../resources/literature/">Research paper library</a></li>
+          <li><a href="../learn/glossary/">Glossary</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="fw-footer-title">Safety</p>
+        <p>Before visiting any lake, pond or stream, check current <a href="https://eec.ky.gov/Environmental-Protection/Water/Monitor/Pages/HABS.aspx" rel="noopener">Kentucky harmful algal bloom advisories</a>. When in doubt, stay out.</p>
+      </div>
+    </div>
+    <p>Biology at SCC &middot; Somerset Community College &middot; content licensed <a href="../../../LICENSE">CC BY 4.0</a> unless noted &middot; map data &copy; their providers as credited on each layer</p>
+    <p>Questions about this site? Contact <a href="mailto:justin.howard@kctcs.edu">justin.howard@kctcs.edu</a>.</p>
+  </div>
+</footer>
+<script src="../assets/portal.js" defer></script>
+<!-- /fw:footer -->
+</body>
+</html>

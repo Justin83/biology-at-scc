@@ -1,0 +1,167 @@
+{
+  "table": "organism_taxa",
+  "description": "Organism Identification Atlas. Phase 1 entries are text-only reference descriptions at genus level; no images are reused without a license. Toxin associations describe what has been reported for some strains in the genus — never what a particular sample contains.",
+  "categories": [
+    { "id": "cyanobacteria", "name": "Cyanobacteria", "summary": "Photosynthetic bacteria: single cells, colonies or filaments, no chloroplasts or nucleus.", "status": "Seeded with eight freshwater genera" },
+    { "id": "green_algae", "name": "Green algae", "summary": "Eukaryotic algae with grass-green chloroplasts — common look-alikes for cyanobacteria in ponds and streams.", "status": "Entries planned for Phase 2" },
+    { "id": "diatoms", "name": "Diatoms", "summary": "Eukaryotic algae with glass (silica) cell walls; dominant on many stream rocks.", "status": "Entries planned for Phase 2" },
+    { "id": "other_protists", "name": "Other freshwater protists", "summary": "Euglenoids, dinoflagellates, ciliates, amoebae and flagellates.", "status": "Entries planned for Phase 2" },
+    { "id": "zooplankton", "name": "Zooplankton", "summary": "Rotifers, copepods and cladocerans that graze phytoplankton.", "status": "One entry (Daphnia); more in Phase 2" },
+    { "id": "macroinvertebrates", "name": "Aquatic macroinvertebrates", "summary": "Insect larvae, snails, crustaceans and worms visible without a microscope; classic stream-health indicators.", "status": "Entries planned for Phase 2" }
+  ],
+  "records": [
+    {
+      "id": "microcystis", "scientific_name": "Microcystis", "authority": "Kützing ex Lemmermann", "rank": "genus", "group": "cyanobacteria",
+      "taxonomy": { "domain": "Bacteria", "phylum": "Cyanobacteriota (cyanobacteria)", "order": "Chroococcales", "family": "Microcystaceae" },
+      "common_name": null, "former_names": [], "growth_form": "colonial",
+      "diagnostic_morphology": [
+        "Small spherical cells (a few micrometers across) packed irregularly in a shared mucilage colony",
+        "Cells look dark or shimmering because they contain gas vesicles",
+        "Colonies range from small clusters to large, irregular, sometimes perforated masses visible to the eye as green 'paint flecks'"
+      ],
+      "typical_habitat": "Planktonic in warm, calm, nutrient-rich lakes, reservoirs and ponds; overwinters on sediments.",
+      "ecological_function": "Primary producer; the most widespread bloom-former in eutrophic fresh water. Large colonies resist grazing.",
+      "similar_taxa": ["Other colonial coccoid cyanobacteria (e.g., Aphanocapsa, Woronichinia, Snowella)", "Colonial green algae (have chloroplasts and lack gas vesicles)"],
+      "identification_limits": "Species have traditionally been named from colony shape and mucilage, which change with conditions and in culture; genetic studies do not support many morphospecies. Toxic and non-toxic strains look the same.",
+      "toxin_associations": [ { "toxin": "Microcystins", "note": "Many, but not all, strains carry microcystin-synthesis genes; the share of toxic genotypes in a population varies." } ],
+      "references": ["harke2016", "kurmayer2003", "davis2009", "rosen2015ofr"],
+      "status_note": "Genus-level reference description; no images yet."
+    },
+    {
+      "id": "dolichospermum", "scientific_name": "Dolichospermum", "authority": "(Ralfs ex Bornet & Flahault) P. Wacklin, L. Hoffmann & J. Komárek", "rank": "genus", "group": "cyanobacteria",
+      "taxonomy": { "domain": "Bacteria", "phylum": "Cyanobacteriota (cyanobacteria)", "order": "Nostocales", "family": "Aphanizomenonaceae" },
+      "common_name": null, "former_names": ["Anabaena (planktonic species)"], "growth_form": "filamentous",
+      "diagnostic_morphology": [
+        "Chains (trichomes) of round to barrel-shaped cells, straight or coiled",
+        "Gas vesicles in vegetative cells",
+        "Heterocytes spaced along the filament (intercalary); larger akinetes may be present"
+      ],
+      "typical_habitat": "Planktonic in lakes, reservoirs and ponds; often in summer when dissolved nitrogen is low.",
+      "ecological_function": "Primary producer and nitrogen fixer.",
+      "similar_taxa": ["Benthic Anabaena (no gas vesicles)", "Sphaerospermopsis", "Aphanizomenon", "Cuspidothrix"],
+      "identification_limits": "Species are distinguished by coiling, cell and akinete dimensions and akinete position, which overlap; molecular data are needed for confident species names.",
+      "toxin_associations": [ { "toxin": "Microcystins, anatoxins, saxitoxins", "note": "Reported from some strains; many strains also produce taste-and-odor compounds such as geosmin." } ],
+      "references": ["wacklin2009", "li2016", "rosen2015ofr"],
+      "status_note": "Genus-level reference description; no images yet."
+    },
+    {
+      "id": "aphanizomenon", "scientific_name": "Aphanizomenon", "authority": "Morren ex Bornet & Flahault", "rank": "genus", "group": "cyanobacteria",
+      "taxonomy": { "domain": "Bacteria", "phylum": "Cyanobacteriota (cyanobacteria)", "order": "Nostocales", "family": "Aphanizomenonaceae" },
+      "common_name": null, "former_names": [], "growth_form": "filamentous",
+      "diagnostic_morphology": [
+        "Straight filaments, often aggregated side by side into flakes or bundles that look like floating grass clippings",
+        "End cells elongated and pale",
+        "Intercalary heterocytes and elongated akinetes; gas vesicles present"
+      ],
+      "typical_habitat": "Planktonic in nutrient-rich lakes and reservoirs, including cooler waters.",
+      "ecological_function": "Primary producer and nitrogen fixer.",
+      "similar_taxa": ["Dolichospermum", "Cuspidothrix", "Chrysosporum", "Sphaerospermopsis"],
+      "identification_limits": "The traditional genus contains at least five phylogenetically distant groups; several former species now belong to other genera.",
+      "toxin_associations": [ { "toxin": "Saxitoxins, cylindrospermopsin, anatoxins", "note": "Reported from some members of the traditional genus and related genera; varies by strain." } ],
+      "references": ["cires_ballot2016", "graham2010"],
+      "status_note": "Genus-level reference description; no images yet."
+    },
+    {
+      "id": "planktothrix", "scientific_name": "Planktothrix", "authority": "Anagnostidis & Komárek", "rank": "genus", "group": "cyanobacteria",
+      "taxonomy": { "domain": "Bacteria", "phylum": "Cyanobacteriota (cyanobacteria)", "order": "Oscillatoriales", "family": "Microcoleaceae" },
+      "common_name": null, "former_names": ["Oscillatoria (planktonic species such as O. agardhii and O. rubescens)"], "growth_form": "filamentous",
+      "diagnostic_morphology": [
+        "Solitary, straight, unbranched filaments without heterocytes or akinetes",
+        "Cells shorter than wide, with gas vesicles",
+        "Some species are red-pigmented (phycoerythrin-rich) and live deep in stratified lakes"
+      ],
+      "typical_habitat": "Planktonic in shallow turbid lakes (P. agardhii) and deep stratified lakes (P. rubescens).",
+      "ecological_function": "Primary producer that tolerates low light.",
+      "similar_taxa": ["Oscillatoria", "Limnothrix", "Planktolyngbya", "Pseudanabaena"],
+      "identification_limits": "Separation from similar unbranched filaments needs gas-vesicle observation and cell dimensions; species identity often requires molecular data.",
+      "toxin_associations": [ { "toxin": "Microcystins", "note": "Commonly reported; toxic and non-toxic strains co-occur." } ],
+      "references": ["kurmayer2016", "matthijs2012", "graham2020rivers"],
+      "status_note": "Genus-level reference description; no images yet."
+    },
+    {
+      "id": "oscillatoria", "scientific_name": "Oscillatoria and similar filaments", "authority": "Vaucher ex Gomont (Oscillatoria)", "rank": "genus group", "group": "cyanobacteria",
+      "taxonomy": { "domain": "Bacteria", "phylum": "Cyanobacteriota (cyanobacteria)", "order": "Oscillatoriales", "family": "Oscillatoriaceae (Oscillatoria)" },
+      "common_name": null, "former_names": [], "growth_form": "filamentous",
+      "diagnostic_morphology": [
+        "Unbranched filaments of short, disc-like cells (much wider than long)",
+        "No heterocytes or akinetes",
+        "Filaments glide and slowly rotate or wave — the 'oscillating' movement behind the name"
+      ],
+      "typical_habitat": "Benthic mats on sediment, rocks and wood in streams, ponds and lake margins; some in the plankton.",
+      "ecological_function": "Primary producer; mat-former that stabilizes sediments.",
+      "similar_taxa": ["Phormidium", "Microcoleus", "Lyngbya", "Planktothrix", "Tychonema"],
+      "identification_limits": "'Oscillatoria' was historically used for almost any unbranched filament of this type. Many such organisms now belong to other genera, so older reports — including toxin reports — may refer to different taxa. Treat field identifications as a morphotype ('Oscillatoria-like').",
+      "toxin_associations": [ { "toxin": "Anatoxins, microcystins (historical reports)", "note": "Older reports under this name often concern organisms now placed in other genera; check the current name of any cited strain." } ],
+      "references": ["quiblier2013", "strunecky2023"],
+      "status_note": "Treated as a morphotype group, not a single genus."
+    },
+    {
+      "id": "raphidiopsis", "scientific_name": "Raphidiopsis", "authority": "F.E. Fritsch & F. Rich", "rank": "genus", "group": "cyanobacteria",
+      "taxonomy": { "domain": "Bacteria", "phylum": "Cyanobacteriota (cyanobacteria)", "order": "Nostocales", "family": "Aphanizomenonaceae" },
+      "common_name": null, "former_names": ["Cylindrospermopsis (e.g., C. raciborskii, now R. raciborskii)"], "growth_form": "filamentous",
+      "diagnostic_morphology": [
+        "Solitary, short to medium filaments, straight, curved or coiled, often tapering at the ends",
+        "When present, heterocytes are at the filament ends (terminal), not along the middle",
+        "Akinetes may form near the ends or along the filament"
+      ],
+      "typical_habitat": "Planktonic in warm, often turbid lakes and reservoirs; has expanded into temperate regions.",
+      "ecological_function": "Primary producer; competitive under low light and variable nutrients.",
+      "similar_taxa": ["Other Nostocales filaments without visible heterocytes", "Planktolyngbya"],
+      "identification_limits": "Raphidiopsis and Cylindrospermopsis were separated only by the presence of heterocytes, which can be absent; genetic data supported uniting them. Filaments without heterocytes are easy to misidentify.",
+      "toxin_associations": [ { "toxin": "Cylindrospermopsin, saxitoxins", "note": "Production differs among strains and regions." } ],
+      "references": ["aguilera2018", "burford2016"],
+      "status_note": "Genus-level reference description; no images yet."
+    },
+    {
+      "id": "nostoc", "scientific_name": "Nostoc", "authority": "Vaucher ex Bornet & Flahault", "rank": "genus", "group": "cyanobacteria",
+      "taxonomy": { "domain": "Bacteria", "phylum": "Cyanobacteriota (cyanobacteria)", "order": "Nostocales", "family": "Nostocaceae" },
+      "common_name": "Star jelly; witch's butter (for some terrestrial colonies)", "former_names": [], "growth_form": "filamentous (in gelatinous colonies)",
+      "diagnostic_morphology": [
+        "Bead-like chains of round cells tangled inside a firm, shared gelatinous matrix",
+        "Colonies form jelly balls, sheets or crusts visible to the naked eye",
+        "Intercalary heterocytes; akinetes in some species"
+      ],
+      "typical_habitat": "On soil, rocks and plants in damp places, attached in streams and ponds; also as symbionts of some plants and fungi (lichens).",
+      "ecological_function": "Nitrogen fixer that adds nitrogen to soils and partner organisms.",
+      "similar_taxa": ["Anabaena (no firm colonial matrix)", "Trichormus", "Desmonostoc"],
+      "identification_limits": "Colony form is helpful but several genera have been split from Nostoc on genetic grounds.",
+      "toxin_associations": [ { "toxin": "Microcystins", "note": "Reported from some strains; most Nostoc are not known bloom-formers." } ],
+      "references": ["kumar2010", "buratti2017"],
+      "status_note": "Genus-level reference description; no images yet."
+    },
+    {
+      "id": "microcoleus", "scientific_name": "Microcoleus", "authority": "Desmazières ex Gomont", "rank": "genus", "group": "cyanobacteria",
+      "taxonomy": { "domain": "Bacteria", "phylum": "Cyanobacteriota (cyanobacteria)", "order": "Oscillatoriales", "family": "Microcoleaceae" },
+      "common_name": null, "former_names": ["Phormidium autumnale group (now Microcoleus autumnalis and relatives)"], "growth_form": "filamentous",
+      "diagnostic_morphology": [
+        "Unbranched filaments without heterocytes, single or bundled within a common sheath",
+        "End cell often rounded or capped (a calyptra)",
+        "Forms dark green to brown-black leathery mats on rocks and gravel"
+      ],
+      "typical_habitat": "Benthic in streams and rivers, especially on cobbles in clear, flowing water; also soils and desert crusts.",
+      "ecological_function": "Primary producer and mat-builder; mats can detach and float downstream.",
+      "similar_taxa": ["Phormidium", "Oscillatoria", "Tychonema"],
+      "identification_limits": "Requires careful observation of sheaths, end cells and cell dimensions; reassignments from Phormidium are recent, so older literature uses other names.",
+      "toxin_associations": [ { "toxin": "Anatoxins", "note": "Benthic mats of this group have been linked to dog deaths in rivers elsewhere; toxicity varies greatly among mats." } ],
+      "references": ["strunecky2013", "wood2020", "quiblier2013"],
+      "status_note": "Highly relevant to stream sites such as Allen Branch; no local records yet."
+    },
+    {
+      "id": "daphnia", "scientific_name": "Daphnia", "authority": "O.F. Müller", "rank": "genus", "group": "zooplankton",
+      "taxonomy": { "domain": "Eukaryota", "phylum": "Arthropoda", "class": "Branchiopoda", "order": "Anomopoda (Cladocera)", "family": "Daphniidae" },
+      "common_name": "Water flea", "former_names": [], "growth_form": "animal (crustacean, about 0.5–5 mm)",
+      "diagnostic_morphology": [
+        "Body enclosed in a clear, two-sided carapace ending in a tail spine",
+        "Large compound eye; branched second antennae used for swimming in jerky hops",
+        "Filtering legs visible beating inside the carapace; eggs often visible in a dorsal brood chamber"
+      ],
+      "typical_habitat": "Ponds and lakes; rare in fast-flowing streams.",
+      "ecological_function": "Key filter-feeding grazer linking phytoplankton to fish; target of biomanipulation.",
+      "similar_taxa": ["Ceriodaphnia", "Simocephalus", "Bosmina"],
+      "identification_limits": "Species identification needs close examination of the head, spines and postabdomen; hybrids occur.",
+      "toxin_associations": [],
+      "references": ["wilson2006", "ger2016", "sarnelle_wilson2005", "macke2017"],
+      "status_note": "Included as the model grazer discussed in Chapter 6."
+    }
+  ]
+}

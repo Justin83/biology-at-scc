@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Watersheds &amp; Maps · Freshwater Research · Biology at SCC</title>
+<meta name="description" content="Interactive map of Allen Branch and its watershed near Somerset Community College, using live USGS, Kentucky Geological Survey and KyGovMaps layers for streams, watershed boundaries, terrain, imagery, land cover, karst and monitoring locations, with the provenance and limits of every layer.">
+<meta name="fw:section" content="maps">
+<meta name="fw:short" content="Watersheds &amp; Maps">
+<link rel="stylesheet" href="../../../assets/style.css">
+<link rel="stylesheet" href="../assets/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="../assets/portal.css">
+</head>
+<body class="fw">
+<!-- fw:header -->
+<script>(function(){var d=document.documentElement;d.classList.add("js");try{var t=localStorage.getItem("fw-theme");if(t==="light"||t==="dark")d.setAttribute("data-theme",t);}catch(e){}})();</script>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="site-title" href="../../../index.html">Biology <span>at SCC</span></a>
+    <nav aria-label="Biology at SCC">
+      <ul>
+        <li><a href="../../../departments/">Departments</a></li>
+        <li><a href="../../../honors-symposium/">Honors Symposium</a></li>
+        <li><a href="../../../posters-presentations/">Posters &amp; Presentations</a></li>
+        <li><a href="../../../archive/">Archive</a></li>
+        <li><a href="../../../labs/">Lab</a></li>
+        <li><a href="../" class="is-active">Research</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="fw-bar">
+  <div class="fw-bar-inner">
+    <a class="fw-brand" href="../"><span class="fw-brand-mark" aria-hidden="true"></span><span>Freshwater Ecology <span class="fw-brand-amp">&amp; Watershed Research</span></span></a>
+    <form class="fw-search" role="search" action="../search/" method="get">
+      <label class="visually-hidden" for="fw-q">Search the research portal</label>
+      <input id="fw-q" name="q" type="search" placeholder="Search topics, organisms, resources…" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <div class="fw-bar-tools">
+      <button type="button" class="fw-theme-toggle" data-theme-toggle aria-label="Color theme: automatic">Theme: Auto</button>
+      <button type="button" class="fw-menu-toggle" aria-expanded="false" aria-controls="fw-nav">Menu</button>
+    </div>
+  </div>
+  <nav id="fw-nav" class="fw-nav" aria-label="Research portal">
+    <ul>
+        <li><a href="../">Research Home</a></li>
+        <li><a href="../learn/">Learn</a></li>
+        <li><a href="../learn/cyanobacteria/">Cyanobacteria</a></li>
+        <li><a href="../maps/" aria-current="page">Watersheds &amp; Maps</a></li>
+        <li><a href="../sites/allen-branch/">Allen Branch</a></li>
+        <li><a href="../organisms/">Organism Atlas</a></li>
+        <li><a href="../methods/">Field Methods</a></li>
+        <li><a href="../resources/">Resource Library</a></li>
+        <li><a href="../projects/">Research Projects</a></li>
+        <li><a href="../observations/">Observations</a></li>
+    </ul>
+  </nav>
+</div>
+<nav class="fw-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="../../../index.html">Biology at SCC</a></li>
+    <li><a href="../">Freshwater Research</a></li>
+    <li><a href="../maps/" aria-current="page">Watersheds &amp;amp; Maps</a></li>
+  </ol>
+</nav>
+<!-- /fw:header -->
+
+<main id="main">
+  <div class="fw-page-head">
+    <p class="fw-kicker">Geography &amp; drainage</p>
+    <h1>Watersheds &amp; Maps</h1>
+    <p class="lede">Every map in this portal is centered on Somerset Community College at 808 Monticello Street, Somerset. From there, explore Allen Branch and the land around it using public map services from the U.S. Geological Survey, the Kentucky Geological Survey and the Commonwealth of Kentucky. Layers are requested live from each provider, so nothing is copied or redrawn here — and every layer states who made it, when, at what resolution, and what it cannot show.</p>
+  </div>
+
+  <div class="fw-map-shell" id="site-map">
+    <div>
+      <div class="fw-map" data-fw-map="full" data-root="../" data-panel="layer-panel" data-status="map-status" role="region" aria-label="Interactive map centered on Somerset Community College, 808 Monticello Street, showing Allen Branch and its watershed. Use the layer panel to change base maps and overlays. The same facts are listed in the tables below the map.">
+        <p class="fw-map-fallback">The interactive map needs JavaScript. All mapped facts about Allen Branch are listed in the <a href="../sites/allen-branch/#facts">site profile table</a>, and the layer sources are listed <a href="#provenance">below</a>.</p>
+      </div>
+      <p class="fw-map-status" id="map-status" role="status"></p>
+      <p class="fw-muted" style="font-size:.88rem;margin:.25rem 0 0">Keyboard: focus the map, then use arrow keys to pan and <kbd>+</kbd>/<kbd>−</kbd> to zoom. Select a stream or point for details. Dark blue line with arrows: Allen Branch as mapped by USGS, with the dataset's flow direction. Dashed blue line: the mapped path downstream. Teal circles: registered water-quality monitoring locations. Small blue dots and green lines drawn by the NHD layer: mapped springs/seeps, sinks/rises and underground (karst) conduits. Navy marker: Somerset Community College, 808 Monticello Street — the center point (Kentucky 911 address point); dashed circles mark 0.5, 1 and 2 km from it. The <strong>⌂ Campus</strong> button re-centers the map.</p>
+    </div>
+    <aside class="fw-layer-panel" id="layer-panel" aria-labelledby="layer-panel-title">
+      <h2 id="layer-panel-title">Map layers</h2>
+      <p class="fw-muted">Layer controls appear when the map loads.</p>
+    </aside>
+  </div>
+
+  <section class="fw-section" aria-labelledby="evidence-types">
+    <div class="fw-section-head"><h2 id="evidence-types">Four kinds of geographic information</h2><a href="../standards/">Evidence standards &rarr;</a></div>
+    <p>For Allen Branch, this portal keeps four kinds of information separate, and never lets one pass for another.</p>
+    <div class="fw-dash" style="margin-top:.5rem">
+      <div class="fw-card span-6">
+        <h3 style="margin-top:0"><span class="fw-badge fw-badge--mapped"><span aria-hidden="true">◆</span> Mapped</span> Verified geographic facts</h3>
+        <p>Supported by authoritative geographic data. Currently: the stream's name and NHD classification (intermittent), its mapped length (4.02 km), its mapped flow direction, the mapped path to Sinking Creek, Pitman Creek and Lake Cumberland, the hydrologic units it lies in, and the bedrock and karst classes along it.</p>
+      </div>
+      <div class="fw-card span-6">
+        <h3 style="margin-top:0"><span class="fw-badge fw-badge--unverified"><span aria-hidden="true">○</span> Unverified</span> Preliminary interpretations</h3>
+        <p>Inferred from imagery, terrain or descriptions. Currently: "shaded stream corridor." Imagery and hillshade are useful for planning, but a channel seen under canopy or a depression on a hillshade is an interpretation until visited.</p>
+      </div>
+      <div class="fw-card span-6">
+        <h3 style="margin-top:0"><span class="fw-badge fw-badge--field-confirmed"><span aria-hidden="true">✓</span> Field confirmed</span> Field observations</h3>
+        <p>Recorded directly at a known location, with GPS position and accuracy. Currently: <strong>none</strong>. The first faculty-led visit will begin this category.</p>
+      </div>
+      <div class="fw-card span-6">
+        <h3 style="margin-top:0"><span class="fw-knowledge-label fw-knowledge-label--hypothesis">Hypothesis</span> Research hypotheses</h3>
+        <p>Proposed relationships that need testing — for example, that flow in Allen Branch is seasonal, or that some of its water arrives through karst. Listed on the <a href="../projects/">Research Projects</a> page, never shown as map facts.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="fw-section" aria-labelledby="hydrologic-units">
+    <div class="fw-section-head"><h2 id="hydrologic-units">Where Allen Branch sits in the drainage network</h2></div>
+    <div class="fw-prose" style="font-size:1.02rem">
+      <p>The USGS Watershed Boundary Dataset divides the country into nested <a href="../learn/glossary/#term-huc">hydrologic units</a>, each identified by a code that gains two digits at each level. The mapped Allen Branch line lies entirely within one 12-digit subwatershed:</p>
+      <ul>
+        <li><strong>Region 05</strong> — Ohio</li>
+        <li><strong>HUC 8: 05130103</strong> — Upper Cumberland–Lake Cumberland</li>
+        <li><strong>HUC 10: 0513010302</strong> — Pitman Creek–Cumberland River</li>
+        <li><strong>HUC 12: 051301030204</strong> — Lower Pitman Creek (128.26 km² for the whole unit)</li>
+      </ul>
+      <p>In the National Hydrography Dataset, Allen Branch (GNIS 00485848) flows into Sinking Creek, which the dataset routes into Pitman Creek and then through Lake Cumberland on the Cumberland River. All of this is <strong>mapped</strong> information from USGS services checked on 2026-11-05; none of it has been verified in the field. The 128 km² area belongs to the whole Lower Pitman Creek unit — it is <em>not</em> the drainage area of Allen Branch, which has not been delineated.</p>
+    </div>
+  </section>
+
+  <section class="fw-section" aria-labelledby="karst">
+    <div class="fw-section-head"><h2 id="karst">Karst: when groundwater ignores the map</h2><a href="../learn/cyanobacteria/nutrients-and-watersheds/#fig4-1-cap">See Figure 4.1 &rarr;</a></div>
+    <div class="fw-prose" style="font-size:1.02rem">
+      <p>Much of south-central Kentucky is underlain by limestone, which slowly dissolves to form sinkholes, springs, caves and sinking streams. In such <a href="../learn/glossary/#term-karst">karst</a> terrain, water that falls in one surface watershed can travel underground through conduits and emerge in another. The Kentucky Geological Survey's statewide map rates the bedrock along the mapped Allen Branch corridor as having <em>intense</em> to <em>prone</em> karst potential, and its 1:24,000 geologic maps show Upper Mississippian limestones there.</p>
+      <p>Two consequences follow for anyone using this map. First, surface watershed boundaries and stream lines describe where water would go over the land surface, not necessarily where it does go. Second, nothing about groundwater paths at Allen Branch can be concluded from these layers; only field evidence — observing where flow is gained or lost, chemistry, and, in karst, dye tracing by qualified investigators — can establish them. Turn on <em>Karst potential</em>, <em>Mapped sinkholes</em> and <em>Springs</em> in the layer panel to see the regional context.</p>
+    </div>
+  </section>
+
+  <section class="fw-section" aria-labelledby="provenance">
+    <div class="fw-section-head"><h2 id="provenance">Layer provenance</h2></div>
+    <p>Every layer on the map, with its provider, dataset, date or version, resolution, coverage and known limitations. "Service check" records the last date a request to the provider succeeded near Allen Branch.</p>
+    <!-- fw:layers -->
+<div class="fw-table-scroll" tabindex="0" role="region" aria-label="Map layer provenance table"><table class="fw-layer-table">
+  <caption>Provenance of every map layer</caption>
+  <thead><tr><th scope="col">Layer</th><th scope="col">Provider &amp; dataset</th><th scope="col">Date / version</th><th scope="col">Resolution</th><th scope="col">Coverage</th><th scope="col">Known limitations</th><th scope="col">Service check</th></tr></thead>
+  <tbody>
+    <tr id="layer-usgs-topo">
+      <th scope="row">USGS Topo<br><span class="fw-muted">Base maps</span></th>
+      <td>U.S. Geological Survey, The National Map<br><span class="fw-muted">USGS Topo cached base map (USGSTopo MapServer)</span></td>
+      <td>Continuously updated tile cache</td>
+      <td>Multi-scale cartographic base map; detailed to about 1:9,000</td>
+      <td>United States</td>
+      <td>Cartographic generalization: lines are drawn for legibility, not survey accuracy. Roads and names come from several national datasets of different dates.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-usgs-imagery">
+      <th scope="row">USGS Imagery<br><span class="fw-muted">Base maps</span></th>
+      <td>U.S. Geological Survey, The National Map (USDA orthoimagery)<br><span class="fw-muted">USGS Imagery Only cached base map</span></td>
+      <td>Service states 'Data refreshed June, 2024'</td>
+      <td>Visible to about 1:9,000 (roughly 1 m imagery)</td>
+      <td>United States</td>
+      <td>Leaf-on summer imagery hides narrow shaded streams under canopy. Imagery date varies by tile.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-ky-naip-2022">
+      <th scope="row">Kentucky aerial imagery 2022 (2 ft)<br><span class="fw-muted">Base maps</span></th>
+      <td>Commonwealth of Kentucky, Division of Geographic Information (KyGovMaps); imagery from USDA NAIP<br><span class="fw-muted">Ky_Imagery_2022_2FT_WGS84WM (layer Ky_NAIP_2022_2FT_WM)</span></td>
+      <td>2022 acquisition</td>
+      <td>2 ft (about 0.6 m) pixels</td>
+      <td>Kentucky</td>
+      <td>Single growing-season acquisition; canopy obscures small channels; not a substitute for field confirmation of flow or channel location.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-ky-hillshade">
+      <th scope="row">Terrain — KyFromAbove hillshade (5 ft)<br><span class="fw-muted">Base maps</span></th>
+      <td>Commonwealth of Kentucky, KyFromAbove<br><span class="fw-muted">Ky_MultiDirectional_Hillshade_WGS84WM (from Ky_DEM_KYAPED_5FT)</span></td>
+      <td>KyFromAbove Phase 1 lidar-derived 5-ft DEM</td>
+      <td>5 ft (about 1.5 m) elevation grid</td>
+      <td>Kentucky</td>
+      <td>Shaded relief shows landforms (valleys, sinkholes, road fills) but no elevation values; it does not show where water flows underground.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-nhd">
+      <th scope="row">Streams &amp; waterbodies (NHD)<br><span class="fw-muted">Streams &amp; watersheds</span></th>
+      <td>U.S. Geological Survey<br><span class="fw-muted">National Hydrography Dataset, high resolution (nhd MapServer) — streams, waterbodies, and karst features: springs/seeps and sinks/rises (points) and underground conduits (lines)</span></td>
+      <td>Service states 'Data Refreshed October, 2026'</td>
+      <td>1:24,000 or better</td>
+      <td>United States</td>
+      <td>Mapped features, not field surveys. Perennial/intermittent/ephemeral classes come from map compilation and may not match current flow. Small headwater channels are often missing. Springs, sinks and underground conduits are shown only where they have been mapped; a conduit line shows a mapped connection, not its exact underground route, and unmapped karst connections are common.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-wbd">
+      <th scope="row">Watershed boundaries (HUC 8 / 10 / 12)<br><span class="fw-muted">Streams &amp; watersheds</span></th>
+      <td>U.S. Geological Survey with NRCS<br><span class="fw-muted">Watershed Boundary Dataset (wbd MapServer, layers 4–6)</span></td>
+      <td>Service states 'Data refreshed October, 2026'</td>
+      <td>1:24,000</td>
+      <td>United States</td>
+      <td>Hydrologic units are surface-topography units; a 12-digit unit is not the drainage basin of any particular small stream. In karst, groundwater can cross these boundaries.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-nlcd-2021">
+      <th scope="row">Land cover — NLCD 2021<br><span class="fw-muted">Land cover</span></th>
+      <td>U.S. Geological Survey / MRLC (Kentucky-hosted copy)<br><span class="fw-muted">Ky_Landcover_NLCD21_WGS84WM</span></td>
+      <td>NLCD 2021</td>
+      <td>30 m pixels</td>
+      <td>Kentucky</td>
+      <td>30-m pixels cannot resolve a narrow riparian corridor. 'Pasture/Hay' and 'Cultivated Crops' classes describe land cover, not management, fertilizer use or livestock density, and say nothing about whether runoff reaches a stream. No land-cover percentages are calculated on this site until a basin is properly delineated.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-karst-potential">
+      <th scope="row">Karst potential (1:500,000)<br><span class="fw-muted">Karst &amp; groundwater</span></th>
+      <td>Kentucky Geological Survey<br><span class="fw-muted">KY500KKarstPotential_WGS84 — 1988 Geologic Map of Kentucky formations styled by karst potential</span></td>
+      <td>1:500,000 compilation (1988)</td>
+      <td>1:500,000 — regional only</td>
+      <td>Kentucky</td>
+      <td>Regional generalization from a 1:500,000 map; boundaries can be off by hundreds of meters and must not be used to judge a single site.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-sinkholes">
+      <th scope="row">Mapped sinkholes<br><span class="fw-muted">Karst &amp; groundwater</span></th>
+      <td>Kentucky Geological Survey<br><span class="fw-muted">KYSinkholes — sinkhole outlines digitized from topographic contours</span></td>
+      <td>Statewide coverage (KGS)</td>
+      <td>Digitized from 1:24,000 topographic maps</td>
+      <td>Kentucky</td>
+      <td>Only depressions large enough to show on topographic contours are mapped; many small or filled sinkholes are missing.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-springs">
+      <th scope="row">Springs (Kentucky Groundwater Data Repository)<br><span class="fw-muted">Karst &amp; groundwater</span></th>
+      <td>Kentucky Geological Survey (data from the Kentucky Division of Water)<br><span class="fw-muted">KYSprings</span></td>
+      <td>Service states 'Last updated: February 05, 2026'</td>
+      <td>Point locations of varying accuracy</td>
+      <td>Kentucky</td>
+      <td>Only springs that have been reported to the repository; locations vary in accuracy.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-wastewater">
+      <th scope="row">Wastewater plants &amp; outfalls<br><span class="fw-muted">Infrastructure &amp; permitted facilities</span></th>
+      <td>Kentucky Infrastructure Authority via KyGovMaps<br><span class="fw-muted">Ky_Wastewater_WGS84WM (layers: Wastewater Treatment Plants, Package Treatment Plants, WWTP Outfalls)</span></td>
+      <td>Current service</td>
+      <td>Point locations</td>
+      <td>Kentucky</td>
+      <td>Wastewater infrastructure inventory, not the complete list of discharge permits (KPDES). Industrial, stormwater and agricultural permits are not shown. A nearby facility does not establish that it affects a given stream.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-usgs-gages">
+      <th scope="row">USGS stream gages<br><span class="fw-muted">Monitoring locations</span></th>
+      <td>U.S. Geological Survey via KyGovMaps<br><span class="fw-muted">Ky_USGS_Gages_WGS84WM</span></td>
+      <td>Current service</td>
+      <td>Point locations</td>
+      <td>Kentucky</td>
+      <td>Includes inactive as well as active gages; check USGS Water Data for current status. No gage is mapped on Allen Branch.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-wqp-stations">
+      <th scope="row">Water-quality monitoring locations (WQP)<br><span class="fw-muted">Monitoring locations</span></th>
+      <td>Water Quality Portal (USGS, EPA, NWQMC)<br><span class="fw-muted">Station search, HUC 051301030204 — saved extract data/geo/monitoring-locations.geojson</span></td>
+      <td>Retrieved 2026-11-05</td>
+      <td>Point locations as reported by each organization</td>
+      <td>Lower Pitman Creek subwatershed (HUC 051301030204)</td>
+      <td>Registered monitoring locations, not proof of current or recent sampling. Kentucky Division of Water sites appear twice (21KY and 21KY_WQX). None is on Allen Branch.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-allen-branch">
+      <th scope="row">Allen Branch — NHD centerline &amp; flow direction<br><span class="fw-muted">Portal data (Allen Branch)</span></th>
+      <td>U.S. Geological Survey NHD (extract)<br><span class="fw-muted">data/geo/allen-branch-nhd.geojson — Allen Branch (GNIS 00485848) and mapped downstream reaches</span></td>
+      <td>NHD service refreshed October 2026; extracted 2026-11-05</td>
+      <td>NHD high resolution (1:24,000 or better)</td>
+      <td>Allen Branch and Sinking Creek to the Pitman Creek artificial path</td>
+      <td>Status: Mapped — not field-verified. Arrows follow NHD's digitized flow direction. The intermittent classification and the downstream connection have not been confirmed in the field, and karst may divert flow underground.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-campus-reference">
+      <th scope="row">808 Monticello Street — campus center point<br><span class="fw-muted">Portal data (Allen Branch)</span></th>
+      <td>Kentucky 911 Services Board (record maintained by Pulaski County 911), via KyGovMaps<br><span class="fw-muted">Kentucky 911 Site Structure Address Points — saved extract data/geo/campus-reference.geojson</span></td>
+      <td>Address record updated 2022-05-03; retrieved 2026-11-05</td>
+      <td>Single address point (placement method not stated in the record)</td>
+      <td>One point</td>
+      <td>Locates the campus street address and is the center point of every map. It is not the creek access point, not a sampling station, and not field-confirmed. The U.S. Census Geocoder places the same address 268 m to the northwest; the 911 address point is used instead.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-campus-rings">
+      <th scope="row">Distance circles from campus (0.5, 1, 2 km)<br><span class="fw-muted">Portal data (Allen Branch)</span></th>
+      <td>Biology at SCC (drawn around the campus address point)<br><span class="fw-muted">Circles of fixed radius centered on 808 Monticello Street</span></td>
+      <td>Generated in the browser</td>
+      <td>Exact radii: 0.5, 1 and 2 km</td>
+      <td>2 km around campus</td>
+      <td>Straight-line distance only. The circles are an orientation aid, not a study-area boundary, a watershed, a walking distance or an access route.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-field-observations">
+      <th scope="row">Field observation points<br><span class="fw-muted">Portal data (Allen Branch)</span></th>
+      <td>Biology at SCC student researchers (faculty-reviewed)<br><span class="fw-muted">data/observations.json (published records only)</span></td>
+      <td>No observations recorded yet</td>
+      <td>GPS position recorded with each observation, with stated accuracy</td>
+      <td>Portal field sites</td>
+      <td>Empty until the first field visit is recorded and reviewed.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+  </tbody>
+</table></div>
+<h3 id="not-available">Not available yet</h3>
+<ul class="fw-not-available">
+  <li><strong>Culverts and road crossings.</strong> No public statewide culvert inventory was found. Roads appear on the USGS Topo base map; culverts on Allen Branch need a field inventory.</li>
+  <li><strong>Upstream drainage area of Allen Branch.</strong> Not yet delineated. To be produced with USGS StreamStats (or lidar-based delineation in QGIS) and stored with its method and date.</li>
+  <li><strong>Stormwater outfalls (campus and city).</strong> Not available as a public layer found so far; requires municipal records or field inventory.</li>
+  <li><strong>Complete discharge-permit (KPDES) facilities.</strong> The wastewater layer above is an infrastructure inventory, not the full permit list. EPA ECHO facility search is the next source to integrate.</li>
+  <li><strong>Allen Branch sampling stations.</strong> None established yet. Stations will be added after field reconnaissance with GPS coordinates and stated accuracy.</li>
+</ul>
+<!-- /fw:layers -->
+  </section>
+
+  <section class="fw-section" aria-labelledby="rules">
+    <div class="fw-section-head"><h2 id="rules">Rules this portal follows for maps</h2></div>
+    <ul>
+      <li>No watershed area, land-cover percentage or distance is calculated without real spatial data and a stated method.</li>
+      <li>No flow path, tributary connection or groundwater route is drawn unless an authoritative dataset shows it — and then it is labeled <em>Mapped</em>, not confirmed.</li>
+      <li>Nearby land use, facilities or farms are never treated as evidence of what reaches a stream.</li>
+      <li>Large datasets are used through their providers' live services rather than copied; the only local geometries are small, labeled extracts in <code>data/geo/</code>.</li>
+    </ul>
+    <p>To go further, use <a href="../resources/#res-streamstats">USGS StreamStats</a> for drainage delineation, the <a href="../resources/#res-ky-watershed-explorer">Kentucky Watershed Explorer</a>, the <a href="../resources/#res-national-map">National Map Viewer</a> and <a href="../resources/#res-qgis">QGIS</a>.</p>
+  </section>
+</main>
+
+<!-- fw:footer -->
+<footer class="site-footer fw-footer">
+  <div class="wrap">
+    <div class="fw-footer-grid">
+      <div>
+        <p class="fw-footer-title">Freshwater Ecology &amp; Watershed Research</p>
+        <p>An undergraduate research and learning portal of Biology at SCC, focused on Allen Branch and the freshwater systems of south-central Kentucky.</p>
+      </div>
+      <div>
+        <p class="fw-footer-title">Evidence &amp; sources</p>
+        <ul>
+          <li><a href="../standards/">Evidence labels &amp; citation standards</a></li>
+          <li><a href="../resources/literature/">Research paper library</a></li>
+          <li><a href="../learn/glossary/">Glossary</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="fw-footer-title">Safety</p>
+        <p>Before visiting any lake, pond or stream, check current <a href="https://eec.ky.gov/Environmental-Protection/Water/Monitor/Pages/HABS.aspx" rel="noopener">Kentucky harmful algal bloom advisories</a>. When in doubt, stay out.</p>
+      </div>
+    </div>
+    <p>Biology at SCC &middot; Somerset Community College &middot; content licensed <a href="../../../LICENSE">CC BY 4.0</a> unless noted &middot; map data &copy; their providers as credited on each layer</p>
+    <p>Questions about this site? Contact <a href="mailto:justin.howard@kctcs.edu">justin.howard@kctcs.edu</a>.</p>
+  </div>
+</footer>
+<script src="../assets/portal.js" defer></script>
+<!-- /fw:footer -->
+<script src="../assets/vendor/leaflet/leaflet.js" defer></script>
+<script src="../assets/map.js" defer></script>
+</body>
+</html>

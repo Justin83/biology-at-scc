@@ -34,7 +34,9 @@ The site is organized along two axes:
 ├── posters-presentations/              # Posters & presentations
 ├── archive/                            # Archive of past work
 ├── labs/                               # Live classroom data-collection tools (BIO 151 spectrophotometry)
-└── docs/                               # Project documentation (docs/bio151-live-lab/)
+├── research/freshwater/                # Freshwater Ecology & Watershed Research portal
+├── tools/freshwater-portal/            # Portal generator, link checker, DOI verifier (Node, no deps)
+└── docs/                               # Project documentation (docs/bio151-live-lab/, docs/freshwater-portal/)
 ```
 
 Each top-level folder is its own page (or will grow into a small section of
@@ -56,6 +58,16 @@ See  for architecture, URLs and operations.
 for live spectrophotometry labs. It is static like the rest of the site but
 stores readings in a Supabase database through PIN-checked RPC functions.
 See `docs/bio151-live-lab/README.md` for architecture, URLs and operations.
+
+## Freshwater research portal
+
+`research/freshwater/` is the Freshwater Ecology & Watershed Research portal: an open
+textbook unit on cyanobacteria, an interactive map of Allen Branch and its watershed built
+on live USGS and Kentucky GIS services, a resource library, a verified research-paper
+library, an organism atlas, and the structure for student field research. Pages are
+static HTML; shared navigation and data-driven lists are regenerated in place with
+`node tools/freshwater-portal/build.mjs` (check with `--check`). See
+`docs/freshwater-portal/README.md`.
 
 ## Publishing
 

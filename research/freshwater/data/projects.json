@@ -1,0 +1,5 @@
+{
+  "table": "research_projects",
+  "description": "Published research projects. Empty: no project has been started yet. Private and unpublished project records are never stored in this public repository.",
+  "records": []
+}

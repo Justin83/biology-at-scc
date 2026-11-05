@@ -1,0 +1,31 @@
+{
+ "type": "FeatureCollection",
+ "name": "campus-reference",
+ "metadata": {
+  "source": "Kentucky 911 Site Structure Address Points (Kentucky 911 Services Board; record maintained by Pulaski County 911, pulaski911.com), via KyGovMaps",
+  "source_url": "https://kygisserver.ky.gov/arcgis/rest/services/WGS84WM_Services/Ky_911_Site_Structure_Address_Points_WGS84WM/MapServer/0",
+  "record": "808 MONTICELLO ST, SOMERSET, KY 42501 (Site_NGUID urn:emergency:uid:gis:SSAP:1078:pulaski911.com; DateUpdate 2022-05-03; Placement 'Unknown')",
+  "retrieved_at": "2026-11-05",
+  "cross_check": "The U.S. Census Geocoder (benchmark Public_AR_Current) interpolates the same address 268 m to the northwest, at 37.061784, -84.618622. The 911 site-structure point is used because it is an address point rather than a street-range estimate.",
+  "limitations": "Locates the street address of Somerset Community College's main campus and is used as the center point of every portal map. It is not the campus access point to the creek, not a sampling station, and not field-confirmed; the 911 record does not state how the point was placed."
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -84.616904,
+     37.059788
+    ]
+   },
+   "properties": {
+    "name": "Somerset Community College \u2014 808 Monticello Street",
+    "matched_address": "808 MONTICELLO ST, SOMERSET, KY 42501",
+    "evidence_status": "mapped",
+    "source": "Kentucky 911 Site Structure Address Points (Pulaski County 911)",
+    "updated": "2022-05-03"
+   }
+  }
+ ]
+}
