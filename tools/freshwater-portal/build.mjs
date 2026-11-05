@@ -143,7 +143,10 @@ function pageContext(file, html) {
   const toSite = "../".repeat(depth + 2);
   const meta = (name) => (html.match(new RegExp(`<meta name="${name}" content="([^"]*)"`)) || [])[1];
   const h1 = (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1];
-  const short = meta("fw:short") || (h1 ? h1.replace(/<[^>]+>/g, "").trim() : "");
+  // Titles come from HTML (meta attributes or the h1), so decode entities here; they are
+  // escaped again when written into breadcrumbs. Without this, "&amp;" renders as "&amp;amp;".
+  const decode = (s) => s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
+  const short = decode(meta("fw:short") || (h1 ? h1.replace(/<[^>]+>/g, "").trim() : ""));
   return { file, rel, depth, toPortal, toSite, relPath: rel.length ? rel.join("/") + "/" : "", section: meta("fw:section") || "", short, html };
 }
 
@@ -561,6 +564,7 @@ function validatePage(ctx, html) {
   if (!/<title>[^<]+<\/title>/.test(html)) warn(`${r}: missing <title>`);
   if (!/<meta name="description" content="[^"]+"/.test(html)) warn(`${r}: missing meta description`);
   if (!/<main id="main"/.test(html)) warn(`${r}: missing <main id="main">`);
+  if (html.includes("&amp;amp;")) warn(`${r}: double-escaped ampersand ("&amp;amp;")`);
   for (const name of ["header", "footer"]) if (!html.includes(`<!-- fw:${name} -->`)) warn(`${r}: missing fw:${name} region`);
   const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
   const dup = ids.filter((x, i) => ids.indexOf(x) !== i);
