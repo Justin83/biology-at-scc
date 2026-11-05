@@ -1,19 +1,15 @@
 # Biology at SCC
 
 **Biology at SCC** is the public-facing home for undergraduate research and
-scholarly work across Somerset Community College (SCC)'s departments.
+scholarly work at Somerset Community College (SCC).
 
 The site is published with [GitHub Pages](https://pages.github.com/) and is
-built to grow over time — it is not tied to a single course, semester,
-department, or research project.
+built to grow over time. It is not tied to a single course, semester or
+research project.
 
 ## Structure
 
-The site is organized along two axes:
-
-- **Departments** — where the work happens (e.g. Math & Natural Sciences,
-  Nursing), with more departments to be added over time
-- **Categories** — recurring, cross-department showcases:
+The site is organized into recurring showcases:
   - **Honors Symposium** — student Honors Symposium projects
   - **Profiles** — student research profiles
   - **Posters & Presentations** — student posters and conference presentations
@@ -25,10 +21,6 @@ The site is organized along two axes:
 .
 ├── index.html                          # Homepage
 ├── assets/                             # Shared styles
-├── departments/
-│   ├── index.html                      # Departments hub
-│   ├── math-natural-sciences/          # Includes Biology
-│   └── nursing/
 ├── honors-symposium/                   # Honors Symposium projects
 ├── profiles/                           # Student research profiles
 ├── posters-presentations/              # Posters & presentations
@@ -40,10 +32,8 @@ The site is organized along two axes:
 ```
 
 Each top-level folder is its own page (or will grow into a small section of
-pages) and is meant to be extended independently as new departments, students,
-and faculty work come in — no folder is scoped to a particular semester or
-course. Department-specific content and structure are still being scoped;
-the current department pages are placeholders.
+pages) and is meant to be extended independently as new students and faculty
+work come in. No folder is scoped to a particular semester or course.
 
 ## Live labs
 

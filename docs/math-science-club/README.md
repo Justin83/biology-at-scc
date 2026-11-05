@@ -16,7 +16,7 @@ project as migration `club_v1`, with Justin's approval. `enabled` in
 | `officers/` | club officers (`noindex`) | Edit dates, times, titles and food themes in a pop-up editor (two columns on a desktop); add, cancel or delete events; set up food categories; remove sign-ups; open or close sign-up; change the officer code |
 | `qr/` | print | Poster with the sign-up QR code (large) and the club page QR code |
 
-The site home page and the Math & Natural Sciences department page link to the club.
+The site home page links to the club.
 
 ## For members
 
@@ -35,9 +35,8 @@ The site home page and the Math & Natural Sciences department page link to the c
 
 ## For officers
 
-1. Open the club page and choose **Open officer tools** in the dashed "For club officers
-   only" box, or go to `officers/` directly. It is deliberately kept out of the main
-   navigation.
+1. Choose **Officer tools** in the green club bar at the top of any club page, or go to
+   `officers/` directly.
 2. Enter the officer code. It is remembered only for that browser tab.
 3. **Events:** choose **Edit** next to an event. The editor opens in a pop-up (two
    columns on a desktop, full screen on a phone). You can change:

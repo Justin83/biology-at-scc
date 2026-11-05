@@ -177,7 +177,6 @@ function genHeader(ctx) {
     <a class="site-title" href="${ctx.toSite}index.html">Biology <span>at SCC</span></a>
     <nav aria-label="Biology at SCC">
       <ul>
-        <li><a href="${ctx.toSite}departments/">Departments</a></li>
         <li><a href="${ctx.toSite}honors-symposium/">Honors Symposium</a></li>
         <li><a href="${ctx.toSite}posters-presentations/">Posters &amp; Presentations</a></li>
         <li><a href="${ctx.toSite}archive/">Archive</a></li>
