@@ -3080,6 +3080,68 @@
    "in_library": false
   },
   {
+   "id": "gq909",
+   "reference_type": "government_report",
+   "title": "Geologic map of the Delmer quadrangle, Pulaski County, Kentucky",
+   "authors": [
+    "Lewis, Richard Quintin"
+   ],
+   "year": 1971,
+   "container": "U.S. Geological Survey Geologic Quadrangle 909",
+   "doi": "10.3133/gq909",
+   "url": "https://doi.org/10.3133/gq909",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "note": "Title, year and DOI verified with Crossref; author from the USGS Publications Warehouse record.",
+   "in_library": false
+  },
+  {
+   "id": "gq1196",
+   "reference_type": "government_report",
+   "title": "Geologic map of the Somerset quadrangle, Pulaski County, Kentucky",
+   "authors": [
+    "Lewis, Richard Quintin"
+   ],
+   "year": 1974,
+   "container": "U.S. Geological Survey Geologic Quadrangle 1196",
+   "doi": "10.3133/gq1196",
+   "url": "https://doi.org/10.3133/gq1196",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "note": "Title, year and DOI verified with Crossref; author from the USGS Publications Warehouse record.",
+   "in_library": false
+  },
+  {
+   "id": "kgs_karst_basins",
+   "reference_type": "dataset",
+   "title": "Karst groundwater basins, groundwater flow paths, and dye injection/recovery points (KYGWKarstBasins) — map service",
+   "authors": [
+    "Kentucky Geological Survey"
+   ],
+   "year": 2026,
+   "container": "Kentucky Geological Survey",
+   "url": "https://kgs.uky.edu/arcgis/rest/services/KYWater/KYGWKarstBasins/MapServer",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "note": "Queried 2026-11-05. KGS: the dataset shows general karst groundwater flow but does not guarantee the accuracy of flow paths or basin boundaries.",
+   "in_library": false
+  },
+  {
+   "id": "kgs_geology_24k",
+   "reference_type": "dataset",
+   "title": "Kentucky 1:24,000 geologic formations (KY24KGeologicFormations_WGS84) — map service",
+   "authors": [
+    "Kentucky Geological Survey"
+   ],
+   "year": 2026,
+   "container": "Kentucky Geological Survey",
+   "url": "https://kgs.uky.edu/arcgis/rest/services/GeologicMapData/KY24KGeologicFormations_WGS84/MapServer",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "note": "Digitized from 707 USGS/KGS 7.5-minute geologic quadrangle maps (1960-1980). Queried 2026-11-05.",
+   "in_library": false
+  },
+  {
    "id": "usgs_nhd",
    "reference_type": "dataset",
    "title": "National Hydrography Dataset (NHD), high resolution — map service",

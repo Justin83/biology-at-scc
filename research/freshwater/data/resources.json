@@ -116,13 +116,29 @@
       "description": "State geological survey: geologic maps, groundwater and water-well data, karst and sinkhole mapping, and springs. Essential for south-central Kentucky, where limestone karst can route water underground in ways surface maps do not show.",
       "geographic_relevance": "kentucky",
       "primary_use": "Geology, groundwater and karst context",
-      "url": "https://www.uky.edu/KGS/",
+      "url": "https://kygs.uky.edu/",
       "publication_date": null,
       "source_type": "agency_portal",
       "featured": true,
       "last_checked": "2026-11-05",
-      "check_status": "blocked_automated_check",
-      "check_detail": "The automated check could not connect (SSL certificate problem: unable to get local issuer certificate); confirm in a browser"
+      "check_status": "ok",
+      "check_detail": "HTTP 200"
+    },
+    {
+      "id": "kgs-data",
+      "title": "KGS Data & Downloads",
+      "organization": "Kentucky Geological Survey, University of Kentucky",
+      "category": "Watershed Mapping",
+      "description": "Downloadable Kentucky geology and geospatial datasets (shapefiles and data files), links to KGS map services and the KGS Geode search tools. Useful for QGIS projects such as overlaying geology and karst on a delineated drainage area.",
+      "geographic_relevance": "kentucky",
+      "primary_use": "Geology and karst GIS data for student analysis",
+      "url": "https://kygs.uky.edu/data/",
+      "publication_date": null,
+      "source_type": "dataset",
+      "featured": false,
+      "last_checked": "2026-11-05",
+      "check_status": "ok",
+      "check_detail": "HTTP 200"
     },
     {
       "id": "kygeonet",

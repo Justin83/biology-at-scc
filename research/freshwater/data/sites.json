@@ -114,7 +114,7 @@
           "label": "Bedrock geology along the mapped corridor",
           "value": "Upper Mississippian limestones: St. Louis Limestone at a point in the upper reach (Delmer Quadrangle, GQ-909); Salem and Warsaw Limestones at a point near the lower reach (Somerset Quadrangle, GQ-1196)",
           "evidence_status": "mapped",
-          "source": "Kentucky Geological Survey 1:24,000 geologic map service (two points queried, not the whole corridor)",
+          "source": "Kentucky Geological Survey 1:24,000 geologic map service (two points queried, not the whole corridor), digitized from USGS Geologic Quadrangle maps GQ-909 (Delmer, 1971) and GQ-1196 (Somerset, 1974) by R. Q. Lewis",
           "source_url": "https://kgs.uky.edu/arcgis/rest/services/GeologicMapData/KY24KGeologicFormations_WGS84/MapServer",
           "retrieved_at": "2026-11-05",
           "notes": ""
@@ -136,6 +136,15 @@
           "source_url": "https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer",
           "retrieved_at": "2026-11-05",
           "notes": "Absence of a mapped feature is not evidence that none exists; most karst connections are unmapped. Box: 84.66–84.58° W, 37.04–37.10° N."
+        },
+        {
+          "label": "Dye-traced karst connections (KGS)",
+          "value": "None mapped on Allen Branch. The nearest KGS dye-trace sites are about 1.4–1.6 km from the campus address point: Correll Swallet (a dye injection site) and Weir Spring and Railroad Mill Bottom Spring (recovery springs). The nearest traced groundwater flow path is about 1.1 km from the mapped stream, and the 'Slide' karst groundwater basin lies about 1.5 km away",
+          "evidence_status": "mapped",
+          "source": "Kentucky Geological Survey karst groundwater basins and dye-trace map service (KYGWKarstBasins); distances computed from the mapped geometry",
+          "source_url": "https://kgs.uky.edu/arcgis/rest/services/KYWater/KYGWKarstBasins/MapServer",
+          "retrieved_at": "2026-11-05",
+          "notes": "Straight-line map distances. Dye tracing is the evidence that shows where karst water actually goes, but no trace has been run from or to Allen Branch, so its groundwater connections remain unknown — not 'unconnected'. In the wider 20 × 19 km area around campus, KGS maps 61 dye-trace sites, 47 traced flow paths and 5 karst groundwater basins."
         },
         {
           "label": "Surrounding land cover",
@@ -265,11 +274,15 @@
           "task": "Examine karst connectivity",
           "status": "in_progress",
           "evidence_status": "mapped",
-          "summary": "KGS maps place the corridor on Mississippian limestones with 'intense' to 'prone' karst potential, and NHD maps springs, sinks and underground conduits nearby — though none on the Allen Branch line itself. Next: check KGS sinkhole and spring layers near the channel and look for losing or gaining reaches in the field.",
+          "summary": "KGS maps place the corridor on Mississippian limestones with 'intense' to 'prone' karst potential. KGS dye traces exist about 1–2 km away (nearest flow path about 1.1 km from the stream), but none involves Allen Branch, and NHD maps no spring, sink or conduit on it. Next: look for losing or gaining reaches in the field; any dye trace would be a project for qualified investigators.",
           "documentation": [
             {
               "label": "KGS karst potential service",
               "url": "https://kgs.uky.edu/arcgis/rest/services/GeologicMapData/KY500KKarstPotential_WGS84/MapServer"
+            },
+            {
+              "label": "KGS dye traces & karst basins",
+              "url": "https://kgs.uky.edu/arcgis/rest/services/KYWater/KYGWKarstBasins/MapServer"
             }
           ]
         },
