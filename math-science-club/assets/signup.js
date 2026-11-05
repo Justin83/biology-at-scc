@@ -1,4 +1,4 @@
-/* Food sign-up page (the QR target).
+/* Food sign-up page.
    Step 1 (required): choose the get-together. Nothing is preselected unless the link
    names one (?event=<id>, used by the buttons on the club page cards).
    Step 2: the shared form in signup-form.js, shown only after a choice. */

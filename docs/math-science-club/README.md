@@ -11,23 +11,23 @@ project as migration `club_v1`, with Justin's approval. `enabled` in
 
 | URL (under `math-science-club/`) | For | What it does |
 |---|---|---|
-| `./` | everyone | Next meeting (third-Thursday check, food theme, sign-up button), a QR code with a **Show on the big screen** button for class, and event cards by month; food events have a **Sign up to bring food** button that opens the sign-up in a pop-up |
-| `signup/` | everyone (QR target) | The same sign-up as the pop-up, as its own page for phones. **Step 1 (required):** choose the get-together from large cards; nothing is preselected unless the link names one (the card buttons do). **Step 2:** who is bringing what, by category; add, change or remove your own sign-up; no account |
+| `./` | everyone | Next meeting (food theme, sign-up button), the club's QR code with a **Show on the big screen** button for class, and event cards by month; food events have a **Sign up to bring food** button that opens the sign-up in a pop-up |
+| `signup/` | everyone | The same sign-up as the pop-up, as its own page for phones. **Step 1 (required):** choose the get-together from large cards; nothing is preselected unless the link names one (the card buttons do). **Step 2:** who is bringing what, by category; add, change or remove your own sign-up; no account |
 | `officers/` | club officers (`noindex`) | Edit dates, times, titles and food themes in a pop-up editor (two columns on a desktop); add, cancel or delete events; set up food categories; remove sign-ups; open or close sign-up; change the officer code |
-| `qr/` | print | Poster with the sign-up QR code (large) and the club page QR code |
+| `qr/` | print | Poster with the club's QR code |
 
 The site home page links to the club.
 
 ## For members
 
-- Meetings are on **the third Thursday of every month at 5:00 PM**.
 - The schedule comes from the printed *MSSE Scholars Proposed Activities — Fall 2026
   Schedule*. Its tentative items (marked ** on the flyer) carry a "Tentative" tag.
-- To sign up for food, use **Sign up to bring food** on the club page, scan the QR code,
-  or open `signup/`. Choose a category, type your name (first name and last initial is
+- There is one QR code. It opens the club website; people choose **Sign up to bring
+  food** from there (on an event card, the next-meeting card, or **Food sign-up** in the
+  club bar). Choose a category, type your name (first name and last initial is
   enough) and what you're bringing, and add an allergy note if needed.
 - In class, **Show on the big screen** (next to the QR code on the club page) fills the
-  screen with the sign-up QR code for students to scan.
+  screen with that QR code for students to scan.
   - Names and items are shown on the page so people can avoid duplicates.
   - Only the phone or computer that made a sign-up can change or remove it; it keeps a
     private token for that sign-up.
@@ -101,8 +101,8 @@ npm install --no-save @electric-sql/pglite@0.5.8      # once
 CLUB_TODAY=2026-11-05 node tools/math-science-club/local-api.mjs &
 node --test tools/math-science-club/tests/*.test.mjs   # 7 database contract tests
 NODE_PATH=$(npm root -g) node tools/math-science-club/tests/club-pages.e2e.mjs   # browser test (Playwright)
-node tools/math-science-club/check.mjs                 # page checks, schedule data, QR codes
-node tools/math-science-club/make-qr.mjs               # regenerate the QR codes
+node tools/math-science-club/check.mjs                 # page checks, schedule data, QR code
+node tools/math-science-club/make-qr.mjs               # regenerate the QR code
 ```
 
 To try the pages against the local database, open any club page with

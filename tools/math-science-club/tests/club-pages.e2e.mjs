@@ -4,9 +4,9 @@
 //   NODE_PATH=$(npm root -g) node tools/math-science-club/tests/club-pages.e2e.mjs
 // Needs Playwright with Chromium (not a site dependency). Serves the repository itself.
 // Covers:
-//   - home page: next meeting (third-Thursday check, food theme), event cards by month,
-//     the big-screen QR;
-//   - signing up in the pop-up on the home page and on the QR sign-up page, from two
+//   - home page: next meeting (food theme), event cards by month, the big-screen QR;
+//     one QR code on the whole club site, and it opens the club website;
+//   - signing up in the pop-up on the home page and on the sign-up page, from two
 //     separate phones (only the device that signed up can change or remove its entry);
 //   - officer tools in a desktop browser: wrong code refused; set a food theme and a
 //     "how many" in the editor pop-up; remove a sign-up; add, cancel and delete an event;
@@ -57,7 +57,7 @@ try {
   await a.waitForSelector(".club-card");
   const next = await text(a, "#club-next-body");
   assert.match(next, /Thursday, November 19, 2026/);
-  assert.match(next, /Third Thursday of November/);
+  assert.doesNotMatch(next, /third Thursday/i);
   assert.match(next, /Food theme: to be announced/);
   assert.deepEqual(await a.$$eval("#club-upcoming .club-month", (h) => h.map((x) => x.textContent)), ["November 2026", "December 2026"]);
   assert.equal(await a.$$eval("#club-upcoming .club-card", (c) => c.length), 4);
@@ -92,7 +92,7 @@ try {
   await a.click("#club-signup-dialog [data-close]");
   assert.match(await text(a, "#club-next-body"), /1 person has signed up/);
 
-  // student B on another phone, on the QR sign-up page. Choosing the get-together is a
+  // student B on another phone, on the sign-up page. Choosing the get-together is a
   // required first step: nothing is preselected and the form stays hidden until then.
   const novId = await a.getAttribute("#club-next-body [data-signup]", "data-signup");
   const b = await phone();
@@ -102,6 +102,14 @@ try {
   assert.equal(await b.$$eval('input[name="su-event"]:checked', (r) => r.length), 0, "nothing preselected");
   assert.equal(await b.isHidden("#su-app"), true, "form hidden until a get-together is chosen");
   assert.equal(await b.isVisible("#su-choose-first"), true);
+  // one QR code on the whole club site, and it opens the club website (people go to
+  // the food sign-up from there): none on this page, the same one on the poster
+  assert.equal(await b.$$eval('img[src*="qr"]', (x) => x.length), 0, "no QR code on the sign-up page");
+  const poster = await phone();
+  await poster.goto(SITE + "qr/");
+  assert.deepEqual(await poster.$$eval('img[src*="qr"]', (x) => x.map((i) => i.getAttribute("src"))), ["../assets/qr-club.svg"], "poster has only the club website QR");
+  assert.doesNotMatch(await poster.textContent("main"), /third Thursday/i);
+  await poster.close();
   await b.click('#su-pick-options label:has-text("November 19")');
   await b.waitForSelector("#su-app:not([hidden]) #su-list li");
   assert.ok(b.url().includes("event=" + novId), "choice kept in the address");

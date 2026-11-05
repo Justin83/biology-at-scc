@@ -54,19 +54,16 @@
   function nextCard() {
     var e = C.nextGathering(data);
     if (!e) {
-      $("club-next-body").innerHTML = '<p class="club-next-date">No meeting on the schedule yet</p><p class="club-next-meta">Meetings are usually ' + esc(C.config.meetingRule) + ". Check back soon.</p>";
+      $("club-next-body").innerHTML = '<p class="club-next-date">No meeting on the schedule yet</p><p class="club-next-meta">Check back soon.</p>';
       return null;
     }
-    var p = C.parts(e.starts_on), third = C.thirdThursday(p.y, p.m), theme = C.themeText(e);
-    var check = e.kind !== "meeting" ? ""
-      : e.starts_on === third ? '<span class="club-check"><span aria-hidden="true">✓</span> Third Thursday of ' + esc(C.MON[p.m - 1]) + "</span>"
-      : '<span class="club-check club-check--warn">Not the usual third Thursday (' + esc(C.shortDate(third)) + ")</span>";
+    var theme = C.themeText(e);
     $("next-title").textContent = e.kind === "meeting" ? "Next meeting" : "Next get-together";
     $("club-next-body").innerHTML =
       '<p class="club-next-date">' + esc(C.dateLabel(e, true)) + "</p>" +
       '<p class="club-next-meta">' + esc(C.timeLabel(e)) + " · " + esc(e.title) + (e.location ? " · " + esc(e.location) : "") +
       (C.relDays(data.today, e.starts_on) ? " · " + esc(C.relDays(data.today, e.starts_on)) : "") + "</p>" +
-      (theme ? '<p class="club-theme club-theme--big">Food theme: <strong>' + esc(theme) + "</strong></p>" : "") + check +
+      (theme ? '<p class="club-theme club-theme--big">Food theme: <strong>' + esc(theme) + "</strong></p>" : "") +
       (canSignUp(e) ? '<p class="club-actions">' + signupButton(e, true) + '<span class="club-hint" style="align-self:center">' + esc(countText(e)) + "</span></p>" : "");
     return e;
   }

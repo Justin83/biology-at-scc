@@ -54,8 +54,6 @@
 .club-next h2 { margin: 0 0 0.2rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); }
 .club-next-date { font-size: clamp(1.45rem, 1.1rem + 1.6vw, 2rem); font-weight: 800; margin: 0.1rem 0; line-height: 1.2; }
 .club-next-meta { margin: 0.2rem 0 0.8rem; color: var(--muted); }
-.club-check { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.9rem; font-weight: 600; padding: 0.15rem 0.6rem; border-radius: 999px; background: var(--club-soft); color: var(--fg); }
-.club-check--warn { background: var(--club-warn-bg); color: var(--club-warn-fg); }
 .club-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0.8rem 0 0; }
 
 /* buttons and forms */

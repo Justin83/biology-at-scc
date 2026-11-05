@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Checks the club pages (math-science-club/**/index.html): one <h1>, <title>, meta
 // description, <main id="main">, unique ids, alt text, local links and anchors that
-// resolve, external links that open in a new tab, the schedule data, and the QR codes.
+// resolve, external links that open in a new tab, the schedule data, and the QR code.
 //   node tools/math-science-club/check.mjs
 import fs from "node:fs";
 import path from "node:path";
@@ -54,9 +54,9 @@ for (const e of ev) {
   if (!e.title) warn(`events.json: ${e.id} missing title`);
 }
 
-// QR codes match the URLs in club.js
+// the QR code matches homeUrl in club.js
 try { execFileSync(process.execPath, [path.join(ROOT, "tools/math-science-club/make-qr.mjs"), "--check"], { stdio: "pipe" }); }
 catch (e) { warn(String(e.stderr || e.message).trim()); }
 
 if (problems.length) { console.error(problems.join("\n")); process.exit(1); }
-console.log(`math-science-club: ${pages.length} pages OK, ${ev.length} events, QR codes current`);
+console.log(`math-science-club: ${pages.length} pages OK, ${ev.length} events, QR code current`);
