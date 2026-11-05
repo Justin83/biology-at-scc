@@ -677,3 +677,7 @@ body.fw {
 .fw .fw-recenter:hover { background: #f4f4f4; }
 .fw-ring-label { text-align: center; }
 .fw-ring-label--w { text-align: right; }
+
+/* "Open in Google Maps" map control */
+.fw .leaflet-control.fw-google { display: inline-block; background: #fff; color: #13294b; font-size: 0.8rem; font-weight: 600; text-decoration: none; padding: 0.3rem 0.55rem; border: 2px solid rgba(0,0,0,.2); border-radius: 4px; }
+.fw .leaflet-control.fw-google:hover { background: #f4f4f4; color: #13294b; }
