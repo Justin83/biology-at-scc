@@ -135,13 +135,32 @@
     });
     return g;
   }
-  function observationLayer(data) {
+  // Approved field observations: from the observation database when it is switched on
+  // (assets/fieldobs.js), otherwise from the published records in data/observations.json.
+  function observationLayer(data, root) {
     var recs = (data && data.records) || [];
-    return L.geoJSON({ type: "FeatureCollection", features: recs.filter(function (r) { return r.latitude && r.longitude; }).map(function (r) {
-      return { type: "Feature", geometry: { type: "Point", coordinates: [r.longitude, r.latitude] }, properties: r };
+    var O = window.FWObs;
+    return L.geoJSON({ type: "FeatureCollection", features: recs.filter(function (r) { return r.latitude != null && r.longitude != null; }).map(function (r) {
+      return { type: "Feature", geometry: { type: "Point", coordinates: [Number(r.longitude), Number(r.latitude)] }, properties: r };
     }) }, {
       pointToLayer: function (f, ll) { return L.circleMarker(ll, { radius: 7, color: "#fff", weight: 2, fillColor: "#c76b1e", fillOpacity: 1 }); },
-      onEachFeature: function (f, layer) { layer.bindPopup('<div class="fw-popup"><h3>Field observation</h3><p>' + esc(f.properties.observed_at) + "</p></div>"); }
+      onEachFeature: function (f, layer) {
+        var p = f.properties, when = p.observed_at;
+        if (O && when) when = O.fmtWhen(when);
+        var photo = p.photos && p.photos[0];
+        var anchor = p.receipt ? "#obs-" + esc(p.receipt) : "";
+        var html = function (src, failed) {
+          return '<div class="fw-popup"><h3>Field observation' + (p.site_id && O ? " · " + esc(O.siteName(p.site_id, p.site_other)) : "") + "</h3><p>" + esc(when) + "</p>" +
+            (!photo ? "" : src ? '<p class="fw-popup-photo"><img src="' + src + '" alt="' + esc(photo.caption || "Field photo") + '" width="200"></p>'
+              : '<p class="fw-popup-photo">' + (failed ? "Photo unavailable." : "Loading photo…") + "</p>") +
+            '<p>Faculty-reviewed. <a href="' + root + "observations/" + anchor + '">Full record</a></p></div>';
+        };
+        layer.bindPopup(html());
+        // setContent (not DOM edits): Leaflet re-renders popups from their content.
+        if (photo && O) layer.once("popupopen", function (e) {
+          O.photoUrl(photo.id, "thumb").then(function (src) { e.popup.setContent(html(src)); }, function () { e.popup.setContent(html(null, true)); });
+        });
+      }
     });
   }
 
@@ -153,12 +172,22 @@
         return Promise.resolve(L.tileLayer(def.service_url, { maxNativeZoom: def.max_native_zoom || 18, maxZoom: 19, opacity: def.opacity == null ? 1 : def.opacity, attribution: attr, crossOrigin: false }));
       case "arcgis_export":
         return Promise.resolve(new ArcGISDynamic(def.service_url, { layersParam: def.layers_param, opacity: def.opacity == null ? 1 : def.opacity, attribution: attr }));
+      case "observations":
+        if (window.FWObs && window.FWObs.live()) {
+          return window.FWObs.publicObservations().then(function (r) {
+            var data = { records: (r.ok && r.observations) || [], live: true, failed: !r.ok };
+            cache[def.id] = data;
+            var lyr = observationLayer(data, root);
+            lyr.getAttribution = function () { return attr; };
+            return lyr;
+          });
+        }
+        /* falls through */
       case "geojson":
       case "rings":
-      case "observations":
         return fetch(root + def.service_url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (geo) {
           cache[def.id] = geo;
-          var lyr = def.service_type === "observations" ? observationLayer(geo)
+          var lyr = def.service_type === "observations" ? observationLayer(geo, root)
             : def.service_type === "rings" ? ringLayer(geo)
             : def.style === "stream" ? streamLayer(geo)
             : def.style === "stations" ? stationLayer(geo)
@@ -256,7 +285,12 @@
         map.addControl(new GoogleLink());
         if (panelEl) buildPanel(panelEl, cfg, map, layers, bases, overlays, failed, base);
         var obs = cache["field-observations"];
-        setStatus(obs && obs.records && obs.records.length === 0 ? "No field observations have been recorded yet, so the observation layer is empty." : "");
+        setStatus(obs && obs.failed ? "The observation database did not respond, so observation points are not shown. Other layers are unaffected."
+          : obs && obs.records && obs.records.length === 0 ? (obs.live ? "No field observations have been approved yet, so the observation layer is empty." : "No field observations have been recorded yet, so the observation layer is empty.") : "");
+        // Other scripts (e.g. the observation form's location picker) can use this map.
+        el.fwMap = map;
+        var ev; try { ev = new CustomEvent("fw:mapready", { detail: { map: map } }); } catch (e) { ev = document.createEvent("CustomEvent"); ev.initCustomEvent("fw:mapready", false, false, { map: map }); }
+        el.dispatchEvent(ev);
       });
     }).catch(function () {
       el.innerHTML = '<p class="fw-map-fallback">The map could not load. The same information is listed in the tables on this page.</p>';

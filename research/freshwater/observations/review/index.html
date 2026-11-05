@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Review Field Observations · Freshwater Research · Biology at SCC</title>
+<meta name="description" content="Faculty page for reviewing student field observations and photos before publication, opening or closing submissions, and printing the class QR code. Requires the instructor key.">
+<meta name="fw:section" content="observations">
+<meta name="fw:short" content="Faculty review">
+<link rel="stylesheet" href="../../../../assets/style.css">
+<link rel="stylesheet" href="../../assets/portal.css">
+</head>
+<body class="fw">
+<!-- fw:header -->
+<script>(function(){var d=document.documentElement;d.classList.add("js");try{var t=localStorage.getItem("fw-theme");if(t==="light"||t==="dark")d.setAttribute("data-theme",t);}catch(e){}})();</script>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="site-title" href="../../../../index.html">Biology <span>at SCC</span></a>
+    <nav aria-label="Biology at SCC">
+      <ul>
+        <li><a href="../../../../departments/">Departments</a></li>
+        <li><a href="../../../../honors-symposium/">Honors Symposium</a></li>
+        <li><a href="../../../../posters-presentations/">Posters &amp; Presentations</a></li>
+        <li><a href="../../../../archive/">Archive</a></li>
+        <li><a href="../../../../labs/">Lab</a></li>
+        <li><a href="../../" class="is-active">Research</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="fw-bar">
+  <div class="fw-bar-inner">
+    <a class="fw-brand" href="../../"><span class="fw-brand-mark" aria-hidden="true"></span><span>Freshwater Ecology <span class="fw-brand-amp">&amp; Watershed Research</span></span></a>
+    <form class="fw-search" role="search" action="../../search/" method="get">
+      <label class="visually-hidden" for="fw-q">Search the research portal</label>
+      <input id="fw-q" name="q" type="search" placeholder="Search topics, organisms, resources…" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <div class="fw-bar-tools">
+      <button type="button" class="fw-theme-toggle" data-theme-toggle aria-label="Color theme: automatic">Theme: Auto</button>
+      <button type="button" class="fw-menu-toggle" aria-expanded="false" aria-controls="fw-nav">Menu</button>
+    </div>
+  </div>
+  <nav id="fw-nav" class="fw-nav" aria-label="Research portal">
+    <ul>
+        <li><a href="../../">Research Home</a></li>
+        <li><a href="../../learn/">Learn</a></li>
+        <li><a href="../../learn/cyanobacteria/">Cyanobacteria</a></li>
+        <li><a href="../../maps/">Watersheds &amp; Maps</a></li>
+        <li><a href="../../sites/allen-branch/">Allen Branch</a></li>
+        <li><a href="../../organisms/">Organism Atlas</a></li>
+        <li><a href="../../methods/">Field Methods</a></li>
+        <li><a href="../../resources/">Resource Library</a></li>
+        <li><a href="../../projects/">Research Projects</a></li>
+        <li><a href="../../observations/" class="is-active">Observations</a></li>
+    </ul>
+  </nav>
+</div>
+<nav class="fw-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="../../../../index.html">Biology at SCC</a></li>
+    <li><a href="../../">Freshwater Research</a></li>
+    <li><a href="../../observations/">Observations</a></li>
+    <li><a href="../../observations/review/" aria-current="page">Faculty review</a></li>
+  </ol>
+</nav>
+<!-- /fw:header -->
+
+<main id="main" class="fw-review">
+  <div class="fw-page-head">
+    <p class="fw-kicker">Faculty</p>
+    <h1>Review Field Observations</h1>
+    <p class="lede">Check student entries and photos, approve what is ready for the public site, and manage the class code. Nothing a student sends is public until it is approved here.</p>
+  </div>
+
+  <div id="rv-status" class="fw-callout fw-callout--caution" role="status">
+    <span class="fw-callout-title">This page needs JavaScript</span>
+    <p>Turn on JavaScript to use the review tools.</p>
+  </div>
+
+  <section id="rv-signin" class="fw-card fw-form" aria-labelledby="rv-signin-title" hidden>
+    <h2 id="rv-signin-title">Sign in</h2>
+    <form id="rv-signin-form" novalidate>
+      <div class="fw-field">
+        <label for="rv-key">Instructor key</label>
+        <input id="rv-key" type="password" autocomplete="current-password" aria-describedby="rv-key-hint">
+        <p class="fw-hint" id="rv-key-hint">Kept only in this browser tab and forgotten when the tab is closed. It is never stored on the website.</p>
+      </div>
+      <button type="submit" class="fw-btn">Sign in</button>
+      <p id="rv-signin-msg" class="fw-form-msg" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <div id="rv-app" hidden>
+    <div class="fw-review-grid">
+      <section class="fw-card" aria-labelledby="rv-overview-title">
+        <div class="fw-card-head"><h2 id="rv-overview-title">Overview</h2><button type="button" class="fw-btn fw-btn--ghost fw-btn--small" id="rv-signout">Sign out</button></div>
+        <p id="rv-open-text"></p>
+        <div class="fw-form-actions"><button type="button" class="fw-btn" id="rv-toggle-open">Open submissions</button></div>
+        <dl class="fw-kv" id="rv-counts"></dl>
+        <p><label for="rv-storage">Photo storage used</label> <span id="rv-storage-text" class="fw-muted"></span></p>
+        <meter id="rv-storage" class="fw-meter" min="0" max="1" low="0.7" high="0.9" optimum="0" value="0"></meter>
+        <div class="fw-form-actions">
+          <button type="button" class="fw-btn fw-btn--ghost" id="rv-export">Download all entries (JSON)</button>
+        </div>
+        <p class="fw-hint">The download includes student names. Keep it in faculty storage — never add it to the website's code repository.</p>
+      </section>
+
+      <section class="fw-card fw-form" aria-labelledby="rv-code-title">
+        <h2 id="rv-code-title">Class code and QR</h2>
+        <p>Students need the class code to send an entry. The class QR code opens the form with the code already filled in.</p>
+        <div class="fw-field">
+          <label for="rv-code">Class code</label>
+          <input id="rv-code" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="rv-code-hint">
+          <p class="fw-hint" id="rv-code-hint">At least 6 characters. Only a scrambled (hashed) copy is stored, so the current code cannot be shown here — type it to remake its QR.</p>
+        </div>
+        <div class="fw-form-actions">
+          <button type="button" class="fw-btn" id="rv-code-save">Save as the class code</button>
+          <button type="button" class="fw-btn fw-btn--ghost" id="rv-code-qr">Make QR only</button>
+        </div>
+        <p id="rv-code-msg" class="fw-form-msg" role="status" aria-live="polite"></p>
+      </section>
+    </div>
+
+    <section class="fw-section" aria-labelledby="rv-queue-title">
+      <div class="fw-section-head"><h2 id="rv-queue-title">Entries</h2></div>
+      <div class="fw-form fw-form-actions">
+        <div class="fw-field" style="margin:0">
+          <label for="rv-filter">Show</label>
+          <select id="rv-filter">
+            <option value="submitted">Waiting for review</option>
+            <option value="changes_requested">Changes requested</option>
+            <option value="approved">Approved (public)</option>
+            <option value="rejected">Rejected</option>
+            <option value="archived">Archived</option>
+            <option value="uploading">Uploading (not finished)</option>
+            <option value="">All entries</option>
+          </select>
+        </div>
+        <button type="button" class="fw-btn fw-btn--ghost" id="rv-refresh" style="align-self:flex-end">Refresh</button>
+      </div>
+      <p id="rv-list-msg" class="fw-form-msg" role="status" aria-live="polite"></p>
+      <ul id="rv-list" class="fw-review-list" aria-label="Entries"></ul>
+    </section>
+
+    <section id="rv-detail" class="fw-card fw-section" aria-labelledby="rv-detail-title" tabindex="-1" hidden>
+      <div class="fw-card-head"><h2 id="rv-detail-title">Entry</h2><button type="button" class="fw-btn fw-btn--ghost fw-btn--small" id="rv-detail-close">Close</button></div>
+      <div id="rv-detail-body"></div>
+      <h3>Photos</h3>
+      <p class="fw-hint">Remove any photo that shows a recognizable face, license plate or home, or that is not from this visit. Removal deletes the image for good; the record of it stays.</p>
+      <ul id="rv-photos" class="fw-review-photos" aria-label="Photos in this entry"></ul>
+      <h3>Decision</h3>
+      <div class="fw-form">
+        <div class="fw-field">
+          <label for="rv-note">Note to the student (optional; never public)</label>
+          <textarea id="rv-note" rows="3" maxlength="1000"></textarea>
+        </div>
+        <div class="fw-form-actions">
+          <button type="button" class="fw-btn" data-review="approved">Approve and publish</button>
+          <button type="button" class="fw-btn fw-btn--ghost" data-review="changes_requested">Request changes</button>
+          <button type="button" class="fw-btn fw-btn--ghost" data-review="submitted">Return to waiting</button>
+          <button type="button" class="fw-btn fw-btn--ghost" data-review="archived">Archive</button>
+          <button type="button" class="fw-btn fw-btn--danger" data-review="rejected">Reject</button>
+        </div>
+        <p id="rv-review-msg" class="fw-form-msg" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <details class="fw-help fw-section">
+      <summary>Change the instructor key</summary>
+      <form id="rv-newkey-form" class="fw-form" novalidate>
+        <div class="fw-field">
+          <label for="rv-newkey">New instructor key (at least 12 characters)</label>
+          <input id="rv-newkey" type="password" autocomplete="new-password">
+        </div>
+        <button type="submit" class="fw-btn fw-btn--ghost">Change key</button>
+        <p id="rv-newkey-msg" class="fw-form-msg" role="status" aria-live="polite"></p>
+      </form>
+    </details>
+  </div>
+
+  <section id="rv-qr-print" class="fw-card fw-class-qr fw-section" aria-labelledby="rv-qr-title" hidden>
+    <h2 id="rv-qr-title">Class QR code</h2>
+    <div id="rv-qr"></div>
+    <p>Scan to submit a field observation</p>
+    <p class="fw-receipt" id="rv-qr-code"></p>
+    <p class="fw-hint" id="rv-qr-url"></p>
+    <div class="fw-form-actions" style="justify-content:center">
+      <button type="button" class="fw-btn" id="rv-qr-printbtn">Print</button>
+      <button type="button" class="fw-btn fw-btn--ghost" id="rv-qr-hide">Hide</button>
+    </div>
+  </section>
+</main>
+
+<!-- fw:footer -->
+<footer class="site-footer fw-footer">
+  <div class="wrap">
+    <div class="fw-footer-grid">
+      <div>
+        <p class="fw-footer-title">Freshwater Ecology &amp; Watershed Research</p>
+        <p>An undergraduate research and learning portal of Biology at SCC, focused on Allen Branch and the freshwater systems of south-central Kentucky.</p>
+      </div>
+      <div>
+        <p class="fw-footer-title">Evidence &amp; sources</p>
+        <ul>
+          <li><a href="../../standards/">Evidence labels &amp; citation standards</a></li>
+          <li><a href="../../resources/literature/">Research paper library</a></li>
+          <li><a href="../../learn/glossary/">Glossary</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="fw-footer-title">Safety</p>
+        <p>Before visiting any lake, pond or stream, check current <a href="https://eec.ky.gov/Environmental-Protection/Water/Monitor/Pages/HABS.aspx" target="_blank" rel="noopener">Kentucky harmful algal bloom advisories<span class="visually-hidden"> (opens in a new tab)</span></a>. When in doubt, stay out.</p>
+      </div>
+    </div>
+    <p>Biology at SCC &middot; Somerset Community College &middot; content licensed <a href="../../../../LICENSE">CC BY 4.0</a> unless noted &middot; map data &copy; their providers as credited on each layer</p>
+    <p>Questions about this site? Contact <a href="mailto:justin.howard@kctcs.edu">justin.howard@kctcs.edu</a>.</p>
+  </div>
+</footer>
+<script src="../../assets/portal.js" defer></script>
+<!-- /fw:footer -->
+<script src="../../assets/fieldobs.js" defer></script>
+<script src="../../assets/vendor/qrcode-generator/qrcode.js" defer></script>
+<script src="../../assets/review.js" defer></script>
+</body>
+</html>

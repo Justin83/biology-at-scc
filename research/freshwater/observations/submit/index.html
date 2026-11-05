@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Submit a Field Observation · Freshwater Research · Biology at SCC</title>
+<meta name="description" content="Mobile form for SCC students to submit a freshwater field observation with photos. The form reads the time and GPS location stored in each photo, compresses the photos on the phone, and sends the entry for faculty review before anything is published.">
+<meta name="fw:section" content="observations">
+<meta name="fw:short" content="Submit an observation">
+<link rel="stylesheet" href="../../../../assets/style.css">
+<link rel="stylesheet" href="../../assets/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="../../assets/portal.css">
+</head>
+<body class="fw">
+<!-- fw:header -->
+<script>(function(){var d=document.documentElement;d.classList.add("js");try{var t=localStorage.getItem("fw-theme");if(t==="light"||t==="dark")d.setAttribute("data-theme",t);}catch(e){}})();</script>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="site-title" href="../../../../index.html">Biology <span>at SCC</span></a>
+    <nav aria-label="Biology at SCC">
+      <ul>
+        <li><a href="../../../../departments/">Departments</a></li>
+        <li><a href="../../../../honors-symposium/">Honors Symposium</a></li>
+        <li><a href="../../../../posters-presentations/">Posters &amp; Presentations</a></li>
+        <li><a href="../../../../archive/">Archive</a></li>
+        <li><a href="../../../../labs/">Lab</a></li>
+        <li><a href="../../" class="is-active">Research</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="fw-bar">
+  <div class="fw-bar-inner">
+    <a class="fw-brand" href="../../"><span class="fw-brand-mark" aria-hidden="true"></span><span>Freshwater Ecology <span class="fw-brand-amp">&amp; Watershed Research</span></span></a>
+    <form class="fw-search" role="search" action="../../search/" method="get">
+      <label class="visually-hidden" for="fw-q">Search the research portal</label>
+      <input id="fw-q" name="q" type="search" placeholder="Search topics, organisms, resources…" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <div class="fw-bar-tools">
+      <button type="button" class="fw-theme-toggle" data-theme-toggle aria-label="Color theme: automatic">Theme: Auto</button>
+      <button type="button" class="fw-menu-toggle" aria-expanded="false" aria-controls="fw-nav">Menu</button>
+    </div>
+  </div>
+  <nav id="fw-nav" class="fw-nav" aria-label="Research portal">
+    <ul>
+        <li><a href="../../">Research Home</a></li>
+        <li><a href="../../learn/">Learn</a></li>
+        <li><a href="../../learn/cyanobacteria/">Cyanobacteria</a></li>
+        <li><a href="../../maps/">Watersheds &amp; Maps</a></li>
+        <li><a href="../../sites/allen-branch/">Allen Branch</a></li>
+        <li><a href="../../organisms/">Organism Atlas</a></li>
+        <li><a href="../../methods/">Field Methods</a></li>
+        <li><a href="../../resources/">Resource Library</a></li>
+        <li><a href="../../projects/">Research Projects</a></li>
+        <li><a href="../../observations/" class="is-active">Observations</a></li>
+    </ul>
+  </nav>
+</div>
+<nav class="fw-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="../../../../index.html">Biology at SCC</a></li>
+    <li><a href="../../">Freshwater Research</a></li>
+    <li><a href="../../observations/">Observations</a></li>
+    <li><a href="../../observations/submit/" aria-current="page">Submit an observation</a></li>
+  </ol>
+</nav>
+<!-- /fw:header -->
+
+<main id="main" class="fw-submit">
+  <div class="fw-page-head">
+    <p class="fw-kicker">Students · field records</p>
+    <h1>Submit a Field Observation</h1>
+    <p class="lede">Record a site visit from your phone. Attach your photos and the form reads the time and location saved in them. A faculty reviewer checks every entry before anything appears on this website.</p>
+  </div>
+
+  <div id="fo-status" class="fw-callout fw-callout--caution" role="status">
+    <span class="fw-callout-title">This form needs JavaScript</span>
+    <p>Turn on JavaScript in your browser to use the form. Nothing is sent without it.</p>
+  </div>
+
+  <aside class="fw-callout fw-callout--safety" aria-labelledby="fo-safety-title">
+    <span class="fw-callout-title" id="fo-safety-title">Safety first</span>
+    <p>Check current <a href="https://eec.ky.gov/Environmental-Protection/Water/Monitor/Pages/HABS.aspx" target="_blank" rel="noopener">Kentucky harmful algal bloom advisories<span class="visually-hidden"> (opens in a new tab)</span></a> before you go. Do not touch scums or mats with bare hands, and never enter water alone. Photograph from the bank.</p>
+  </aside>
+
+  <form id="fo-form" class="fw-form" novalidate>
+
+    <section class="fw-form-step" aria-labelledby="fo-step-photos">
+      <h2 id="fo-step-photos"><span class="fw-step-n" aria-hidden="true">1</span> Photos</h2>
+      <p>Up to <span data-fo-max-photos>6</span> photos: looking upstream, looking downstream, the stream bed, and close-ups of anything green, blue-green or slimy. <strong>No people's faces.</strong></p>
+      <div class="fw-form-actions">
+        <input id="fo-camera" class="fw-file-input" type="file" accept="image/*" capture="environment">
+        <label for="fo-camera" class="fw-btn">Take a photo</label>
+        <input id="fo-library" class="fw-file-input" type="file" accept="image/*" multiple>
+        <label for="fo-library" class="fw-btn fw-btn--ghost">Choose from photos</label>
+      </div>
+      <p id="fo-photo-msg" class="fw-form-msg" role="status" aria-live="polite"></p>
+      <ul id="fo-photos" class="fw-photo-list" aria-label="Attached photos"></ul>
+      <details class="fw-help">
+        <summary>How the form reads your photos</summary>
+        <p>Phone cameras save the date, time and often the GPS position inside each photo. The form reads those on your phone and fills in the time and location below — you can change them. It then shrinks each photo (to at most 1600 pixels) and makes a fresh copy <strong>without</strong> the hidden data, so your phone model and exact position are never published inside the image. The time, position and camera model are kept as separate fields that only the reviewer sees until the entry is approved.</p>
+        <p>Many phones remove the location when a photo is shared with a website. If no location is found, use your current location (if you are at the site) or tap the map.</p>
+      </details>
+    </section>
+
+    <section class="fw-form-step" aria-labelledby="fo-step-where">
+      <h2 id="fo-step-where"><span class="fw-step-n" aria-hidden="true">2</span> When and where</h2>
+      <div class="fw-field">
+        <label for="fo-site">Site <span class="fw-req">(required)</span></label>
+        <select id="fo-site" name="site_id" required>
+          <option value="">Choose a site…</option>
+        </select>
+      </div>
+      <div class="fw-field" id="fo-site-other-wrap" hidden>
+        <label for="fo-site-other">Name of the other site <span class="fw-req">(required)</span></label>
+        <input id="fo-site-other" name="site_other" type="text" maxlength="120" autocomplete="off">
+      </div>
+      <div class="fw-field">
+        <label for="fo-station">Station or spot <span class="fw-opt">(optional)</span></label>
+        <input id="fo-station" name="station" type="text" maxlength="60" autocomplete="off" aria-describedby="fo-station-hint">
+        <p class="fw-hint" id="fo-station-hint">e.g., "culvert", "riffle below footbridge", "AB-1" once stations are marked.</p>
+      </div>
+      <div class="fw-field">
+        <label for="fo-when">Date and time observed <span class="fw-req">(required)</span></label>
+        <input id="fo-when" name="observed_at" type="datetime-local" required aria-describedby="fo-when-src">
+        <p class="fw-hint" id="fo-when-src"></p>
+      </div>
+
+      <fieldset class="fw-field fw-location">
+        <legend>Location</legend>
+        <p class="fw-loc-readout"><span id="fo-loc-text">No location yet.</span> <span id="fo-loc-src" class="fw-muted"></span></p>
+        <div class="fw-form-actions">
+          <button type="button" class="fw-btn fw-btn--ghost" id="fo-loc-photo" disabled>Use photo location</button>
+          <button type="button" class="fw-btn fw-btn--ghost" id="fo-loc-device">Use my current location</button>
+          <button type="button" class="fw-btn fw-btn--ghost" id="fo-loc-clear">Clear</button>
+        </div>
+        <p id="fo-loc-msg" class="fw-form-msg" role="status" aria-live="polite"></p>
+        <p class="fw-hint">Or tap the map to place the point (drag it to adjust).</p>
+        <div class="fw-map fw-map--picker" id="fo-map" data-fw-map="mini" data-root="../../" data-layers="usgs-imagery-topo,allen-branch,campus-reference" data-status="fo-map-status" role="region" aria-label="Map for choosing the observation location, centered on Somerset Community College. Tap to place the point, or type coordinates below."></div>
+        <p class="fw-map-status" id="fo-map-status" role="status"></p>
+        <details class="fw-help">
+          <summary>Type coordinates instead</summary>
+          <div class="fw-field-row">
+            <div class="fw-field">
+              <label for="fo-lat">Latitude (°N)</label>
+              <input id="fo-lat" type="text" inputmode="decimal" autocomplete="off" placeholder="37.06">
+            </div>
+            <div class="fw-field">
+              <label for="fo-lon">Longitude (°, west is negative)</label>
+              <input id="fo-lon" type="text" inputmode="decimal" autocomplete="off" placeholder="-84.62">
+            </div>
+          </div>
+          <button type="button" class="fw-btn fw-btn--ghost" id="fo-loc-typed">Use these coordinates</button>
+        </details>
+      </fieldset>
+    </section>
+
+    <section class="fw-form-step" aria-labelledby="fo-step-conditions">
+      <h2 id="fo-step-conditions"><span class="fw-step-n" aria-hidden="true">3</span> Conditions</h2>
+      <div class="fw-field">
+        <label for="fo-weather">Weather</label>
+        <input id="fo-weather" name="weather" type="text" maxlength="200" placeholder="e.g., sunny, light breeze">
+      </div>
+      <div class="fw-field-row">
+        <div class="fw-field">
+          <label for="fo-air">Air temperature (°C)</label>
+          <input id="fo-air" name="air_temperature_c" type="text" inputmode="decimal" autocomplete="off">
+        </div>
+        <div class="fw-field">
+          <label for="fo-flow">Flow</label>
+          <select id="fo-flow" name="flow_observation"><option value="">—</option></select>
+        </div>
+      </div>
+      <div class="fw-field">
+        <label for="fo-rain">Recent rain</label>
+        <input id="fo-rain" name="rain_note" type="text" maxlength="200" aria-describedby="fo-rain-hint">
+        <p class="fw-hint" id="fo-rain-hint">Rain in the last 24–72 hours and where you got it, e.g., "about 1 in. on Monday (Kentucky Mesonet, Somerset)".</p>
+      </div>
+      <div class="fw-field-row">
+        <div class="fw-field">
+          <label for="fo-depth">Water depth (cm)</label>
+          <input id="fo-depth" name="water_depth_cm" type="text" inputmode="decimal" autocomplete="off">
+        </div>
+        <div class="fw-field">
+          <label for="fo-canopy">Canopy cover (%)</label>
+          <input id="fo-canopy" name="canopy_cover_pct" type="text" inputmode="decimal" autocomplete="off">
+        </div>
+      </div>
+      <div class="fw-field">
+        <label for="fo-canopy-method">How canopy was measured</label>
+        <input id="fo-canopy-method" name="canopy_method" type="text" maxlength="80" placeholder="e.g., densiometer, visual estimate">
+      </div>
+      <fieldset class="fw-field">
+        <legend>Stream bed (check all you see)</legend>
+        <div class="fw-check-grid" id="fo-substrate"></div>
+      </fieldset>
+      <fieldset class="fw-field">
+        <legend>Visible biofilm or algae</legend>
+        <div class="fw-check-grid" id="fo-biofilm"></div>
+      </fieldset>
+    </section>
+
+    <section class="fw-form-step" aria-labelledby="fo-step-measure">
+      <h2 id="fo-step-measure"><span class="fw-step-n" aria-hidden="true">4</span> Measurements <span class="fw-opt">(if you took any)</span></h2>
+      <p class="fw-hint">Units are fixed. Leave a row blank if you did not measure it. See the <a href="../../methods/#water-chemistry">measurement methods</a>.</p>
+      <details class="fw-help fw-measure-details" id="fo-measure-details">
+        <summary>Enter measurements</summary>
+        <div id="fo-measurements" class="fw-measure-list"></div>
+      </details>
+    </section>
+
+    <section class="fw-form-step" aria-labelledby="fo-step-notes">
+      <h2 id="fo-step-notes"><span class="fw-step-n" aria-hidden="true">5</span> Organisms and notes</h2>
+      <div class="fw-field">
+        <label for="fo-organisms">Suspected organisms</label>
+        <textarea id="fo-organisms" name="suspected_organisms" rows="3" maxlength="1000" aria-describedby="fo-organisms-hint"></textarea>
+        <p class="fw-hint" id="fo-organisms-hint">Provisional only — say how far you got, e.g., "filamentous green alga, possibly <i>Cladophora</i> (field ID, not microscope)". See the <a href="../../organisms/">organism atlas</a>.</p>
+      </div>
+      <div class="fw-field">
+        <label for="fo-notes">Notes</label>
+        <textarea id="fo-notes" name="notes" rows="4" maxlength="2000"></textarea>
+      </div>
+    </section>
+
+    <section class="fw-form-step" aria-labelledby="fo-step-who">
+      <h2 id="fo-step-who"><span class="fw-step-n" aria-hidden="true">6</span> Who was there</h2>
+      <p class="fw-hint">At least one name is required so faculty know whose entry it is. A name appears on the website only if its box is checked, and only after approval.</p>
+      <div id="fo-observers"></div>
+      <button type="button" class="fw-btn fw-btn--ghost" id="fo-add-observer">Add another person</button>
+    </section>
+
+    <section class="fw-form-step" aria-labelledby="fo-step-send">
+      <h2 id="fo-step-send"><span class="fw-step-n" aria-hidden="true">7</span> Check and send</h2>
+      <div class="fw-field">
+        <label for="fo-code">Class code <span class="fw-req">(required)</span></label>
+        <input id="fo-code" name="code" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="fo-code-hint">
+        <p class="fw-hint" id="fo-code-hint">From your instructor. Scanning the class QR code fills it in.</p>
+      </div>
+      <fieldset class="fw-field fw-consent">
+        <legend>Before you send</legend>
+        <div class="fw-checkbox"><input type="checkbox" id="fo-ok-own"><label for="fo-ok-own">This entry and its photos are my (or my group's) own, from this visit.</label></div>
+        <div class="fw-checkbox"><input type="checkbox" id="fo-ok-faces"><label for="fo-ok-faces">No one's face, license plate or private home can be recognized in the photos.</label></div>
+        <div class="fw-checkbox"><input type="checkbox" id="fo-ok-publish"><label for="fo-ok-publish">I understand a faculty member reviews the entry first, and that approved photos and data may be shown on this public website and used in SCC Biology teaching and research.</label></div>
+      </fieldset>
+      <div id="fo-errors" class="fw-form-errors" role="alert" tabindex="-1" hidden></div>
+      <div class="fw-form-actions fw-form-actions--send">
+        <button type="submit" class="fw-btn fw-btn--big" id="fo-send">Send for review</button>
+        <button type="button" class="fw-btn fw-btn--ghost" id="fo-reset">Clear the form</button>
+      </div>
+      <div id="fo-progress-wrap" hidden>
+        <label for="fo-progress" id="fo-progress-label">Sending…</label>
+        <progress id="fo-progress" max="100" value="0"></progress>
+      </div>
+      <p id="fo-draft-msg" class="fw-hint" role="status" aria-live="polite"></p>
+    </section>
+  </form>
+
+  <section id="fo-done" class="fw-form-done" hidden tabindex="-1" aria-label="Sent for review">
+    <h2>Sent for review</h2>
+    <p>Your receipt number is <strong class="fw-receipt" id="fo-receipt"></strong>. Take a screenshot or write it in your field notebook — faculty use it to find your entry.</p>
+    <p id="fo-done-detail"></p>
+    <p>A faculty reviewer will check the entry. Approved observations appear on the <a href="../">Observations page</a> and the <a href="../../maps/">map</a>.</p>
+    <button type="button" class="fw-btn" id="fo-another">Submit another observation</button>
+  </section>
+
+  <section class="fw-section" aria-labelledby="fo-share">
+    <div class="fw-section-head"><h2 id="fo-share">Open this form on another phone</h2></div>
+    <figure class="fw-qr">
+      <img src="../../assets/qr-submit.svg" width="220" height="220" alt="QR code linking to this observation form">
+      <figcaption>Scan with a phone camera to open this form. The class code is not in this code — your instructor's class QR includes it.</figcaption>
+    </figure>
+  </section>
+</main>
+
+<!-- fw:footer -->
+<footer class="site-footer fw-footer">
+  <div class="wrap">
+    <div class="fw-footer-grid">
+      <div>
+        <p class="fw-footer-title">Freshwater Ecology &amp; Watershed Research</p>
+        <p>An undergraduate research and learning portal of Biology at SCC, focused on Allen Branch and the freshwater systems of south-central Kentucky.</p>
+      </div>
+      <div>
+        <p class="fw-footer-title">Evidence &amp; sources</p>
+        <ul>
+          <li><a href="../../standards/">Evidence labels &amp; citation standards</a></li>
+          <li><a href="../../resources/literature/">Research paper library</a></li>
+          <li><a href="../../learn/glossary/">Glossary</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="fw-footer-title">Safety</p>
+        <p>Before visiting any lake, pond or stream, check current <a href="https://eec.ky.gov/Environmental-Protection/Water/Monitor/Pages/HABS.aspx" target="_blank" rel="noopener">Kentucky harmful algal bloom advisories<span class="visually-hidden"> (opens in a new tab)</span></a>. When in doubt, stay out.</p>
+      </div>
+    </div>
+    <p>Biology at SCC &middot; Somerset Community College &middot; content licensed <a href="../../../../LICENSE">CC BY 4.0</a> unless noted &middot; map data &copy; their providers as credited on each layer</p>
+    <p>Questions about this site? Contact <a href="mailto:justin.howard@kctcs.edu">justin.howard@kctcs.edu</a>.</p>
+  </div>
+</footer>
+<script src="../../assets/portal.js" defer></script>
+<!-- /fw:footer -->
+<script src="../../assets/fieldobs.js" defer></script>
+<script src="../../assets/vendor/exifr/lite.umd.js" defer></script>
+<script src="../../assets/vendor/leaflet/leaflet.js" defer></script>
+<script src="../../assets/map.js" defer></script>
+<script src="../../assets/submit.js" defer></script>
+</body>
+</html>

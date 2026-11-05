@@ -26,3 +26,6 @@ node_modules/
 
 # Student data exports — keep out of this PUBLIC repo
 exports/
+
+# Local test dependencies (symlinked or installed with --no-save)
+node_modules

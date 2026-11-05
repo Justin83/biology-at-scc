@@ -133,6 +133,58 @@ Every layer in `data/map-layers.json` returned an image or tile near Allen Branc
 - Map interaction exercised in the browser: layers load, karst/sinkhole overlays toggle,
   provenance panels open, flow arrows render, observation layer reports empty.
 
+## Student observation form with photos (added 2026-11-05)
+
+Everything below ran against the local stand-in database (`tools/freshwater-portal/local-api.mjs`:
+in-memory PostgreSQL 18 via PGlite 0.5.8 with pgcrypto, applying
+`research/freshwater/sql/001_field_submissions.sql` unchanged). **The production Supabase
+project was not touched**, and `enabled` in `assets/fieldobs.js` is `false`.
+
+- Database contract tests (`tests/fieldobs-api.test.mjs`): 6 of 6 pass. They cover the
+  open/closed state, rejection of a wrong class code and instructor key, input validation,
+  and the token-checked photo upload with its size, count and quota limits. They also
+  check that entries stay private until approved, that only consented names become
+  public, photo removal, un-approval, and class-code changes.
+- Browser end-to-end test (`tests/observation-form.e2e.mjs`), Chromium emulating a Pixel 7
+  in America/New_York: **pass**.
+  - With a synthetic photo carrying EXIF orientation 6, `DateTimeOriginal` with offset
+    −05:00, GPS (the campus address point, ± 8 m) and a camera model, the form showed
+    the photo upright and the GPS and camera correctly, and filled in the time
+    (14:21 local).
+  - The stored JPEG had no EXIF block and no camera name. The time, GPS and camera were
+    stored as separate fields.
+  - The entry was not public until a faculty user approved it on the review page.
+  - The Observations page then showed the student who chose to be named, and not the
+    student who did not.
+- Additional browser checks:
+  - A 4032×3024 photo was stored as 1200×1600 at 171 KB, with a 20 KB thumbnail.
+  - "Use my current location" used the emulated geolocation.
+  - Validation messages link to their fields, including inside the collapsed
+    measurements section.
+  - A draft survives a reload; photos are not kept in drafts, as stated.
+  - A non-image file and a 7th photo are refused with messages.
+  - Out-of-bounds coordinates are refused; a typed positive longitude is read as west.
+  - In practice mode no request leaves the page.
+  - `?api=` with a non-loopback host is ignored.
+  - An unreachable database is reported.
+  - "Remove photo" deletes the image; the map popup shows the approved photo.
+  - The class code is taken out of the address bar after a QR scan.
+- QR codes, decoded with jsQR 1.4.0 from screenshots:
+  - `assets/qr-submit.svg` at full size, and at the 132 px size used on the Allen Branch
+    page, both decode to `https://justin83.github.io/biology-at-scc/research/freshwater/observations/submit/`.
+  - A class QR made on the review page decodes to the same URL with `?code=` and the code.
+  - The print view shows only the QR, the code and the URL.
+- `build.mjs --check`: 27 pages, 0 problems. axe-core 4.10.2 (WCAG 2.0/2.1 A and AA) on
+  all 27 pages, light and dark, desktop and phone width: 0 violations, no horizontal
+  overflow. The same audit ran on these interactive states:
+  - the form with photos attached and its error list showing;
+  - practice mode;
+  - the review page signed in, with an entry and a QR open;
+  - the public pages showing an approved entry.
+
+  After one fix (dark-mode contrast of the red "Remove" and "Reject" buttons), all
+  states showed 0 violations.
+
 ## Not verified — needs a person
 
 1. The four "Needs review" links, in a normal browser.
@@ -140,3 +192,7 @@ Every layer in `data/map-layers.json` returned an image or tile near Allen Branc
 3. Faculty review of the cyanobacteria chapters and every Research Paper Library summary.
 4. Allen Branch campus access point, access route and permissions (on site).
 5. Whether the channel reached from campus is the NHD-mapped Allen Branch (on site).
+6. The observation form on real phones (iPhone Safari, Android Chrome): camera capture,
+   whether GPS survives each phone's photo picker, location permission, and uploading on
+   a weak signal at the creek. Then, with approval, applying the database migration and
+   switching the form on (steps in FIELD_SUBMISSIONS.md).
