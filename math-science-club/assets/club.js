@@ -1,4 +1,4 @@
-/* Math & Science Club — configuration, API client and date helpers.
+/* Math & Science Club: configuration, API client and date helpers.
    Shared by the club home page, the food sign-up page and the officer tools.
 
    The Supabase URL and "publishable" key are public by design: the key only reaches the
@@ -126,7 +126,7 @@
   }
 
   // ---------------------------------------------------------------- schedule
-  // { live, today, signups_open, events, error }  — falls back to data/events.json.
+  // { live, today, signups_open, events, error }; falls back to data/events.json.
   function load(root) {
     var fallback = function (why) {
       return fetch((root || "./") + "data/events.json").then(function (r) { return r.json(); }).then(function (d) {

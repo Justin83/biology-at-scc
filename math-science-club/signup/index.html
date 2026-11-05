@@ -42,7 +42,7 @@
 
 <main id="main">
   <h1>Food Sign-Up</h1>
-  <p class="lede">See what's already covered, then add what you're bringing. Works on any phone or computer — no account needed.</p>
+  <p class="lede">See what's already covered, then add what you're bringing. It works on any phone or computer, and you don't need an account.</p>
 
   <div id="su-status" role="status">
     <noscript><div class="club-banner club-banner--warn"><p>This page needs JavaScript to load the sign-up list.</p></div></noscript>
@@ -53,53 +53,7 @@
     <select id="su-event"></select>
   </div>
 
-  <section class="club-next" id="su-summary" aria-labelledby="su-event-title" hidden>
-    <h2 id="su-event-title">Signing up for</h2>
-    <div id="su-event-body"></div>
-  </section>
-
-  <section class="club-panel" aria-labelledby="su-list-title" id="su-list-wrap" hidden>
-    <h2 id="su-list-title">Who's bringing what</h2>
-    <div id="su-list" class="club-bring"></div>
-  </section>
-
-  <section class="club-panel" aria-labelledby="su-form-title" id="su-form-wrap" hidden>
-    <h2 id="su-form-title">Add what you're bringing</h2>
-    <form id="su-form" novalidate>
-      <div class="club-field">
-        <label for="su-name">Your name</label>
-        <input id="su-name" type="text" maxlength="60" autocomplete="name" aria-describedby="su-name-hint">
-        <p class="club-hint" id="su-name-hint">First name and last initial is enough. Your name and item are shown on this page so others can plan.</p>
-      </div>
-      <fieldset class="club-field" id="su-slots-wrap">
-        <legend>Category</legend>
-        <div class="club-choices" id="su-slots"></div>
-      </fieldset>
-      <div class="club-field">
-        <label for="su-item">What are you bringing?</label>
-        <input id="su-item" type="text" maxlength="120" autocomplete="off" placeholder="e.g., chocolate chip cookies">
-      </div>
-      <div class="club-field">
-        <label for="su-note">Allergy or diet note <span class="club-hint">(optional)</span></label>
-        <input id="su-note" type="text" maxlength="200" autocomplete="off" placeholder="e.g., contains peanuts, vegetarian, gluten-free">
-      </div>
-      <div class="club-hp" aria-hidden="true">
-        <label for="su-website">Leave this empty</label>
-        <input id="su-website" type="text" tabindex="-1" autocomplete="off">
-      </div>
-      <div class="club-actions">
-        <button type="submit" class="club-btn" id="su-submit">Sign me up</button>
-        <button type="button" class="club-btn club-btn--ghost" id="su-cancel-edit" hidden>Cancel change</button>
-      </div>
-      <p id="su-msg" class="club-msg" role="status" aria-live="polite"></p>
-    </form>
-  </section>
-
-  <section class="club-panel" aria-labelledby="su-mine-title" id="su-mine-wrap" hidden>
-    <h2 id="su-mine-title">Your sign-ups on this device</h2>
-    <p class="club-hint">You can change or remove these from this phone or computer. From another device, ask a club officer.</p>
-    <ul id="su-mine" class="club-mine"></ul>
-  </section>
+  <section class="club-panel club-su-page" id="su-app" aria-label="Food sign-up" hidden></section>
 
   <section class="club-panel" aria-labelledby="su-qr-title">
     <h2 id="su-qr-title">Share this sign-up</h2>
@@ -117,6 +71,7 @@
   </div>
 </footer>
 <script src="../assets/club.js" defer></script>
+<script src="../assets/signup-form.js" defer></script>
 <script src="../assets/signup.js" defer></script>
 </body>
 </html>

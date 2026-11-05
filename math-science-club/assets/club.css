@@ -1,4 +1,4 @@
-/* Math & Science Club — loaded after ../assets/style.css (site tokens: --bg, --fg,
+/* Math & Science Club. Loaded after ../assets/style.css (site tokens: --bg, --fg,
    --muted, --accent, --border, --card-bg; light and dark follow the system setting). */
 :root {
   --club-navy: #1d3b66;
@@ -152,3 +152,69 @@
   main { padding-top: 0; }
   .club-poster .club-qr img { width: 300px; }
 }
+
+/* ---------- v2: wider page, cards, pop-ups, big-screen QR, food themes ---------- */
+main.club-wide { max-width: 1120px; }
+.club-btn--big { font-size: 1.1rem; padding: 0.75rem 1.4rem; min-height: 3rem; }
+.club-top { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; align-items: stretch; margin: 1.5rem 0; }
+@media (min-width: 820px) { .club-top { grid-template-columns: minmax(0, 1fr) 280px; } }
+.club-top .club-next, .club-top .club-panel { margin: 0; }
+.club-scan { text-align: center; }
+.club-scan h2 { font-size: 1.05rem; margin: 0 0 0.6rem; }
+.club-scan img { display: block; width: 180px; height: 180px; margin: 0 auto 0.4rem; background: #fff; padding: 8px; border-radius: 10px; border: 1px solid var(--border); }
+.club-scan p { margin: 0.3rem 0; font-size: 0.95rem; }
+.club-scan .club-actions { justify-content: center; }
+@media (max-width: 819px) { .club-scan img { width: 140px; height: 140px; } }
+
+.club-theme { margin: 0.35rem 0; font-size: 0.98rem; }
+.club-theme strong { color: var(--accent); }
+.club-theme--big { font-size: 1.15rem; }
+
+.club-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 1rem; }
+.club-card { display: flex; flex-direction: column; gap: 0.15rem; padding: 1rem 1.05rem; border: 1px solid var(--border); border-radius: 14px; background: var(--card-bg); min-width: 0; }
+.club-card.is-next { border: 2px solid var(--accent); }
+.club-card.is-cancelled .club-card-title { text-decoration: line-through; }
+.club-card-top { display: grid; grid-template-columns: 4rem minmax(0, 1fr); gap: 0.8rem; align-items: start; margin-bottom: 0.35rem; }
+.club-card-title { margin: 0.1rem 0 0.25rem; font-size: 1.08rem; line-height: 1.3; }
+.club-card-chips { margin: 0; }
+.club-card-chips .club-chip { margin: 0 0.25rem 0.2rem 0; }
+.club-card-meta { margin: 0; color: var(--muted); font-size: 0.95rem; }
+.club-card-details { margin: 0.35rem 0 0; font-size: 0.95rem; }
+.club-card-actions { margin-top: auto; padding-top: 0.75rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.8rem; }
+.club-card-actions .club-hint { margin: 0; }
+
+/* pop-up windows (sign-up, officer editor) */
+.club-modal { width: min(760px, calc(100vw - 2rem)); max-height: calc(100vh - 2rem); padding: 0; border: 1px solid var(--border); border-radius: 16px; background: var(--bg); color: var(--fg); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35); }
+.club-modal--wide { width: min(1040px, calc(100vw - 2rem)); }
+.club-modal::backdrop { background: rgba(10, 20, 14, 0.6); }
+.club-modal-head { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.9rem 1.2rem; background: var(--club-soft); border-bottom: 1px solid var(--border); }
+.club-modal-head h2 { margin: 0; font-size: 1.2rem; }
+.club-modal > div:not(.club-modal-head), .club-modal > form { padding: 1rem 1.2rem 1.2rem; }
+@media (max-width: 600px) {
+  .club-modal, .club-modal--wide { width: 100vw; max-width: 100vw; height: 100%; max-height: 100%; margin: 0; border-radius: 0; border: 0; }
+}
+
+/* sign-up form (pop-up and sign-up page) */
+.club-su-event { border-left: 4px solid var(--accent); padding: 0.1rem 0 0.1rem 0.8rem; margin-bottom: 1rem; }
+.club-su-date { font-size: 1.35rem; font-weight: 800; margin: 0; }
+.club-su-meta { color: var(--muted); margin: 0.15rem 0; }
+.club-su-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+@media (min-width: 760px) { .club-su-grid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); } }
+.club-su-grid h2, .club-su-grid h3 { font-size: 1.1rem; margin: 0 0 0.6rem; }
+.club-su-list .club-bring h2, .club-su-list .club-bring h3 { font-size: 1rem; margin: 0 0 0.25rem; }
+.club-su-page { padding-top: 1.2rem; }
+
+/* big-screen QR */
+.club-bigqr { width: 100vw; height: 100vh; max-width: 100vw; max-height: 100vh; margin: 0; padding: 0; border: 0; background: #ffffff; color: #10140c; }
+.club-bigqr::backdrop { background: #ffffff; }
+.club-bigqr-inner { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem; text-align: center; }
+.club-bigqr h2 { margin: 0; font-size: clamp(1.6rem, 1rem + 3vw, 3.2rem); color: #1a3d27; }
+.club-bigqr-event { margin: 0; font-size: clamp(1.1rem, 0.8rem + 1.6vw, 2rem); font-weight: 700; }
+.club-bigqr img { width: min(62vh, 86vw); height: min(62vh, 86vw); }
+.club-bigqr-url { margin: 0; font-size: clamp(0.9rem, 0.7rem + 0.8vw, 1.3rem); color: #3c4a3a; word-break: break-all; }
+.club-bigqr .club-btn { background: #2e6b3e; border-color: #2e6b3e; color: #fff !important; }
+
+/* officer editor */
+.club-editor-cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 1.5rem; }
+@media (min-width: 860px) { .club-editor-cols { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } }
+.club-editor-foot { border-top: 1px solid var(--border); padding-top: 0.9rem; }

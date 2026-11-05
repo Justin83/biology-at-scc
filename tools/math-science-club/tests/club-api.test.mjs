@@ -27,7 +27,7 @@ const find = async (date, title) => (await events()).find((e) => e.starts_on ===
 test("seeded schedule matches the static fallback (data/events.json)", async () => {
   const live = await events();
   const stat = JSON.parse(fs.readFileSync(path.join(ROOT, "math-science-club/data/events.json"), "utf8")).events;
-  const strip = (e) => [e.starts_on, e.ends_on, e.start_time, e.end_time, e.title, e.kind, e.tentative, e.signup_enabled, JSON.stringify(e.slots)];
+  const strip = (e) => [e.starts_on, e.ends_on, e.start_time, e.end_time, e.title, e.theme, e.kind, e.tentative, e.signup_enabled, JSON.stringify(e.slots)];
   const seeded = live.filter((e) => stat.some((s) => s.starts_on === e.starts_on && s.title === e.title));
   assert.equal(seeded.length, 17);
   assert.deepEqual(seeded.map(strip), stat.map(strip));
@@ -41,7 +41,7 @@ test("November meeting is on the third Thursday and has food sign-up", async () 
   assert.ok(d.getUTCDate() > 14 && d.getUTCDate() <= 21); // third one
   assert.equal(nov.start_time, "17:00");
   assert.equal(nov.signup_enabled, true);
-  assert.equal(nov.slots.length, 6);
+  assert.deepEqual(nov.slots.map((s) => s.label), ["Main dish", "Side", "Snack", "Dessert", "Drinks"]); // no paper goods (002)
 });
 
 test("sign up, see it, change it, remove it (only with this device's token)", async () => {
@@ -82,12 +82,13 @@ test("officer code required; wrong code rejected", async () => {
 });
 
 test("officers: add, edit, cancel and delete an event; set up categories; remove a sign-up; close sign-ups", async () => {
-  const add = await admin("save_event", { starts_on: "2027-01-21", start_time: "17:00", title: "Math and Science Club Meeting", kind: "meeting",
+  const add = await admin("save_event", { starts_on: "2027-01-21", start_time: "17:00", title: "Math and Science Club Meeting", kind: "meeting", theme: "  Taco night  ",
     location: "Test room", signup_enabled: true, signup_note: "Pizza provided (test)", slots: [{ label: "Drinks", needed: "3" }, { label: "drinks" }, { label: "Dessert", needed: "" }, { label: "  " }] });
   assert.equal(add.ok, true);
   let ev = (await events()).find((e) => e.id === add.id);
   assert.deepEqual(ev.slots, [{ label: "Drinks", needed: 3 }, { label: "Dessert", needed: null }]);
   assert.equal(ev.location, "Test room");
+  assert.equal(ev.theme, "Taco night");
   assert.equal((await admin("save_event", { starts_on: "2027-01-21", title: "Math and Science Club Meeting" })).error, "duplicate_event");
   assert.equal((await admin("save_event", { title: "No date" })).error, "no_date");
   assert.equal((await admin("save_event", { starts_on: "2027-01-22", title: "Bad kind", kind: "rave" })).error, "bad_value");

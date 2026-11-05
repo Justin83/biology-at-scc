@@ -11,9 +11,9 @@ project as migration `club_v1`, with Justin's approval. `enabled` in
 
 | URL (under `math-science-club/`) | For | What it does |
 |---|---|---|
-| `./` | everyone | Next meeting (with a check that it falls on the third Thursday), upcoming events by month, earlier events, QR codes |
-| `signup/` | everyone (QR target) | Food sign-up: who is bringing what, by category; add, change or remove your own sign-up; no account |
-| `officers/` | club officers (`noindex`) | Edit dates and times; add, cancel or delete events; set up food categories; remove sign-ups; open or close sign-up; change the officer code |
+| `./` | everyone | Next meeting (third-Thursday check, food theme, sign-up button), a QR code with a **Show on the big screen** button for class, and event cards by month; food events have a **Sign up to bring food** button that opens the sign-up in a pop-up |
+| `signup/` | everyone (QR target) | The same sign-up as the pop-up, as its own page for phones: who is bringing what, by category; add, change or remove your own sign-up; no account |
+| `officers/` | club officers (`noindex`) | Edit dates, times, titles and food themes in a pop-up editor (two columns on a desktop); add, cancel or delete events; set up food categories; remove sign-ups; open or close sign-up; change the officer code |
 | `qr/` | print | Poster with the sign-up QR code (large) and the club page QR code |
 
 The site home page and the Math & Natural Sciences department page link to the club.
@@ -23,9 +23,11 @@ The site home page and the Math & Natural Sciences department page link to the c
 - Meetings are on **the third Thursday of every month at 5:00 PM**.
 - The schedule comes from the printed *MSSE Scholars Proposed Activities — Fall 2026
   Schedule*. Its tentative items (marked ** on the flyer) carry a "Tentative" tag.
-- To sign up for food, scan the QR code or open `signup/`. Choose a category, type your
-  name (first name and last initial is enough) and what you're bringing, and add an
-  allergy note if needed.
+- To sign up for food, use **Sign up to bring food** on the club page, scan the QR code,
+  or open `signup/`. Choose a category, type your name (first name and last initial is
+  enough) and what you're bringing, and add an allergy note if needed.
+- In class, **Show on the big screen** (next to the QR code on the club page) fills the
+  screen with the sign-up QR code for students to scan.
   - Names and items are shown on the page so people can avoid duplicates.
   - Only the phone or computer that made a sign-up can change or remove it; it keeps a
     private token for that sign-up.
@@ -37,17 +39,18 @@ The site home page and the Math & Natural Sciences department page link to the c
    only" box, or go to `officers/` directly. It is deliberately kept out of the main
    navigation.
 2. Enter the officer code. It is remembered only for that browser tab.
-3. **Events:** choose **Edit** next to an event to change it:
-   - its date, last day (for multi-day events), start and end time, title, type,
-     location or details;
+3. **Events:** choose **Edit** next to an event. The editor opens in a pop-up (two
+   columns on a desktop, full screen on a phone). You can change:
+   - its title, **food theme** (for example "Pasta" or "Tacos", shown on the card and in
+     the sign-up; blank shows "to be announced"), date, last day (for multi-day events),
+     start and end time, type, location or details;
    - **Tentative** marks it as may change. **Cancelled** keeps it on the page, crossed
      out. **Delete** removes it and its sign-ups.
    - **Add an event** creates a new one.
 4. **Food sign-up:** tick "Members can sign up to bring food" on an event, then:
    - add a note if useful (for example, "The club is providing pizza");
    - set the categories and, optionally, how many of each are needed. "Use the usual
-     categories" fills in Main dish, Side, Snack, Dessert, Drinks, and Plates, cups or
-     napkins;
+     categories" fills in Main dish, Side, Snack, Dessert and Drinks;
    - the November 19 meeting and the December 3 holiday party come set up this way.
 5. **Remove a sign-up:** open the event in the editor; its sign-ups are listed with
    Remove buttons.
@@ -120,6 +123,13 @@ to the real database.
    - a wrong officer code is refused;
    - the `club` schema is not exposed.
 4. Set `enabled: true` in `assets/club.js`.
+
+5. **Update 2026-11-05 (migration `club_v2`, `sql/002_club_theme.sql`):**
+   - adds the food theme;
+   - removes the paper plates, cups and napkins category from the seeded events.
+
+   The page moved to event cards with a sign-up pop-up, a big-screen QR code, and a
+   pop-up officer editor.
 
 Rollback: the `drop …` statements at the end of the SQL file. Setting `enabled: false`
 returns the pages to the printed schedule.
