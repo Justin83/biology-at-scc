@@ -150,3 +150,14 @@ footer a {
 footer p {
   margin: 0.35rem 0;
 }
+
+/* Links that leave the site open in a new tab; a small arrow marks them.
+   The arrow is decorative ("/ ''" gives it empty alt text); each link also
+   carries visually hidden text saying it opens in a new tab. */
+a[target="_blank"]::after {
+  content: "\2009\2197";
+  content: "\2009\2197" / "";
+  font-size: 0.85em;
+  text-decoration: none;
+  display: inline-block;
+}
