@@ -58,6 +58,25 @@
       "check_status": "ok"
     },
     {
+      "id": "osm",
+      "name": "OpenStreetMap (streets, businesses & places)",
+      "group": "base",
+      "provider": "OpenStreetMap contributors (OpenStreetMap Foundation tile server)",
+      "dataset": "OpenStreetMap standard map tiles",
+      "version": "Continuously edited by volunteers",
+      "resolution": "Street level (to zoom 19)",
+      "coverage": "Worldwide",
+      "limitations": "Community-mapped. In Somerset, business coverage is partial — some places are named (for example near campus: the Courtyard hotel and The Center for Rural Development) but many buildings have no name. For complete business listings, hours and Street View, use the 'Open in Google Maps' button on the map. Data © OpenStreetMap contributors, available under the Open Database License.",
+      "service_url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+      "service_type": "xyz_tiles",
+      "max_native_zoom": 19,
+      "attribution": "© OpenStreetMap contributors",
+      "attribution_url": "https://www.openstreetmap.org/copyright",
+      "default_on": false,
+      "checked_at": "2026-11-05",
+      "check_status": "ok"
+    },
+    {
       "id": "usgs-imagery",
       "name": "USGS Imagery",
       "group": "base",

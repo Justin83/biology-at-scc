@@ -147,6 +147,7 @@
 
   function makeLayer(def, root, cache) {
     var attr = esc(def.attribution || def.provider);
+    if (def.attribution_url) attr = '<a href="' + esc(def.attribution_url) + '" target="_blank" rel="noopener">' + attr + '<span class="visually-hidden"> (opens in a new tab)</span></a>';
     switch (def.service_type) {
       case "xyz_tiles":
         return Promise.resolve(L.tileLayer(def.service_url, { maxNativeZoom: def.max_native_zoom || 18, maxZoom: 19, opacity: def.opacity == null ? 1 : def.opacity, attribution: attr, crossOrigin: false }));
@@ -234,6 +235,25 @@
           }
         });
         map.addControl(new Recenter());
+        // "Open in Google Maps": opens the current view in Google Maps (official Maps URLs,
+        // no API key) for business listings, hours and Street View. Google's own map tiles
+        // are not loaded here — their terms do not allow it outside Google's APIs.
+        var GoogleLink = L.Control.extend({
+          options: { position: "topright" },
+          onAdd: function () {
+            var a = L.DomUtil.create("a", "fw-google leaflet-bar");
+            a.target = "_blank"; a.rel = "noopener";
+            a.innerHTML = 'Open in Google Maps<span class="visually-hidden"> — this map view, opens in a new tab</span>';
+            var update = function () {
+              var c = map.getCenter(), z = Math.min(21, Math.max(3, Math.round(map.getZoom())));
+              a.href = "https://www.google.com/maps/@?api=1&map_action=map&center=" + c.lat.toFixed(6) + "," + c.lng.toFixed(6) + "&zoom=" + z;
+            };
+            update(); map.on("moveend", update);
+            L.DomEvent.disableClickPropagation(a);
+            return a;
+          }
+        });
+        map.addControl(new GoogleLink());
         if (panelEl) buildPanel(panelEl, cfg, map, layers, bases, overlays, failed, base);
         var obs = cache["field-observations"];
         setStatus(obs && obs.records && obs.records.length === 0 ? "No field observations have been recorded yet, so the observation layer is empty." : "");

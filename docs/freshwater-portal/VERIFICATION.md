@@ -108,6 +108,15 @@ Queried 2026-11-05 from public services (all **Mapped**, none field-verified):
   each rendered near campus and toggled in the browser with no failed requests. The
   KYTC state-road service on KyGovMaps returned empty images and was not used.
 
+- **Businesses (added 2026-11-05).** Google Maps tiles are not loaded in the portal
+  (Google's terms allow them only through its APIs, which need a key and a billing
+  account). Instead every map has an "Open in Google Maps" link built with Google's
+  documented Maps URLs (no key): it opens the current center and zoom in a new tab;
+  browser test confirmed it updates on pan. OpenStreetMap standard tiles were added as a
+  base map with the required "© OpenStreetMap contributors" link; near campus OSM names
+  some places (e.g., Courtyard hotel, The Center for Rural Development) but many
+  buildings are unnamed, which the layer's limitations state.
+
 ## Map services
 
 Every layer in `data/map-layers.json` returned an image or tile near Allen Branch on
