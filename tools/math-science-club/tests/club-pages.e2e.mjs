@@ -63,10 +63,16 @@ try {
   assert.equal(await a.$$eval("#club-upcoming .club-card", (c) => c.length), 4);
   assert.equal(await a.$$eval("#club-upcoming .club-card [data-signup]", (c) => c.length), 2, "sign-up buttons on the two food events");
   assert.equal(await a.textContent("#club-past-count"), "13");
+  // officer tools: a button in the club bar at the top of the page
+  assert.equal(await a.isVisible(".club-bar a.club-bar-officer"), true);
+  assert.equal(await a.getAttribute(".club-bar a.club-bar-officer", "href"), "officers/");
+  // the landing-page QR and the big-screen view open the club website
+  assert.match(await a.getAttribute(".club-scan img", "src"), /qr-club\.svg$/);
   // big-screen QR
   await a.click("#club-bigqr-open");
+  assert.match(await a.getAttribute("#club-bigqr img", "src"), /qr-club\.svg$/);
   assert.equal(await a.isVisible("#club-bigqr img"), true);
-  assert.match(await text(a, "#club-bigqr-event"), /Thursday, November 19 · 5:00 PM/);
+  assert.match(await text(a, "#club-bigqr-event"), /Next meeting: Thursday, November 19 · 5:00 PM/);
   await a.click("#club-bigqr [data-close]");
 
   // student A signs up in the pop-up from the next-meeting card

@@ -237,3 +237,9 @@ main.club-wide { max-width: 1120px; }
 .club-pick-option input:checked + label .club-pick-check { display: block; }
 .club-choose-first { border-style: dashed; }
 .club-choose-first p { display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap; }
+
+/* officer tools button in the club bar (top of every club page) */
+.club-bar-officer { margin-left: auto; display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2.25rem; padding: 0.3rem 0.85rem; border-radius: 8px;
+  border: 2px solid var(--club-red-fg); color: var(--club-red-fg) !important; background: var(--bg); font-weight: 700; font-size: 0.92rem; text-decoration: none; }
+.club-bar-officer:hover { background: var(--club-red-bg); }
+.club-bar-officer[aria-current="page"] { background: var(--club-red-bg); }

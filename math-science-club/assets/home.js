@@ -79,8 +79,7 @@
       $("club-past-count").textContent = past.length;
       $("club-past").innerHTML = cards(past, null);
     }
-    var food = up.filter(function (e) { return e.signup_enabled && e.status !== "cancelled"; })[0];
-    $("club-bigqr-event").textContent = food ? C.dateLabel(food) + " · " + C.timeLabel(food) + (food.theme ? " · Food theme: " + food.theme : "") : "";
+    $("club-bigqr-event").textContent = next ? "Next meeting: " + C.dateLabel(next) + " · " + C.timeLabel(next) + (next.theme ? " · Food theme: " + next.theme : "") : "";
   }
 
   // ---------------------------------------------------------------- sign-up pop-up
