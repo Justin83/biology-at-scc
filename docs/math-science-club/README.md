@@ -69,9 +69,9 @@ images by `tools/math-science-club/make-logos.mjs`:
 
 | File | What it is |
 |---|---|
-| `assets/logos/shield-green.svg` | The shield logo on green. **Used on the site** (copied to `assets/logo.svg`) |
+| `assets/logos/shield-green.svg` | The shield logo on green |
 | `assets/logos/seal-green.svg` | The circular seal on green |
-| `assets/logos/seal-combined.svg` | A variation combining both: the shield and its six colored icons inside the seal, with right-side-up text on the lower arc |
+| `assets/logos/seal-combined.svg` | A variation combining both: the shield and its six colored icons inside the seal, with right-side-up text on the lower arc. **Used on the site** (copied to `assets/logo.svg`), chosen by Justin on 2026-11-05 |
 
 To switch logos, copy the chosen file over `math-science-club/assets/logo.svg`. Every
 club page uses that file. Because these are redraws, small details (letter shapes, icon
