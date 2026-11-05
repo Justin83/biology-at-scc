@@ -473,7 +473,7 @@ function genSites(ctx) {
   }).join("\n")}\n</div>\n`;
 }
 
-const GROUP_ORDER = ["base", "hydrology", "land", "karst", "infrastructure", "monitoring", "portal"];
+const GROUP_ORDER = ["base", "roads", "hydrology", "geology", "land", "karst", "infrastructure", "monitoring", "portal"];
 function genLayers(ctx) {
   const L = D.layers;
   const rows = GROUP_ORDER.flatMap((g) => L.records.filter((r) => r.group === g)).map((r) => `    <tr id="layer-${esc(r.id)}">

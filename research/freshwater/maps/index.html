@@ -80,7 +80,7 @@
         <p class="fw-map-fallback">The interactive map needs JavaScript. All mapped facts about Allen Branch are listed in the <a href="../sites/allen-branch/#facts">site profile table</a>, and the layer sources are listed <a href="#provenance">below</a>.</p>
       </div>
       <p class="fw-map-status" id="map-status" role="status"></p>
-      <p class="fw-muted" style="font-size:.88rem;margin:.25rem 0 0">Keyboard: focus the map, then use arrow keys to pan and <kbd>+</kbd>/<kbd>−</kbd> to zoom. Select a stream or point for details. Dark blue line with arrows: Allen Branch as mapped by USGS, with the dataset's flow direction. Dashed blue line: the mapped path downstream. Teal circles: registered water-quality monitoring locations. Small blue dots and green lines drawn by the NHD layer: mapped springs/seeps, sinks/rises and underground (karst) conduits. Navy marker: Somerset Community College, 808 Monticello Street — the center point (Kentucky 911 address point); dashed circles mark 0.5, 1 and 2 km from it. The <strong>⌂ Campus</strong> button re-centers the map.</p>
+      <p class="fw-muted" style="font-size:.88rem;margin:.25rem 0 0">Keyboard: focus the map, then use arrow keys to pan and <kbd>+</kbd>/<kbd>−</kbd> to zoom. Select a stream or point for details. Dark blue line with arrows: Allen Branch as mapped by USGS, with the dataset's flow direction. Dashed blue line: the mapped path downstream. Teal circles: registered water-quality monitoring locations. Small blue dots and green lines drawn by the NHD layer: mapped springs/seeps, sinks/rises and underground (karst) conduits. Navy marker: Somerset Community College, 808 Monticello Street — the center point (Kentucky 911 address point); dashed circles mark 0.5, 1 and 2 km from it. The <strong>⌂ Campus</strong> button re-centers the map. For directions and highways, choose the <em>Kentucky road map</em> base map, or turn on <em>Highways &amp; roads</em> over imagery or terrain.</p>
     </div>
     <aside class="fw-layer-panel" id="layer-panel" aria-labelledby="layer-panel-title">
       <h2 id="layer-panel-title">Map layers</h2>
@@ -129,7 +129,7 @@
     <div class="fw-section-head"><h2 id="karst">Karst: when groundwater ignores the map</h2><a href="../learn/cyanobacteria/nutrients-and-watersheds/#fig4-1-cap">See Figure 4.1 &rarr;</a></div>
     <div class="fw-prose" style="font-size:1.02rem">
       <p>Much of south-central Kentucky is underlain by limestone, which slowly dissolves to form sinkholes, springs, caves and sinking streams. In such <a href="../learn/glossary/#term-karst">karst</a> terrain, water that falls in one surface watershed can travel underground through conduits and emerge in another. The Kentucky Geological Survey's statewide map rates the bedrock along the mapped Allen Branch corridor as having <em>intense</em> to <em>prone</em> karst potential, and its 1:24,000 geologic maps show Upper Mississippian limestones there.</p>
-      <p>Two consequences follow for anyone using this map. First, surface watershed boundaries and stream lines describe where water would go over the land surface, not necessarily where it does go. Second, nothing about groundwater paths at Allen Branch can be concluded from these layers; only field evidence — observing where flow is gained or lost, chemistry, and, in karst, dye tracing by qualified investigators — can establish them. Turn on <em>Karst potential</em>, <em>Mapped sinkholes</em> and <em>Springs</em> in the layer panel to see the regional context.</p>
+      <p>Two consequences follow for anyone using this map. First, surface watershed boundaries and stream lines describe where water would go over the land surface, not necessarily where it does go. Second, nothing about groundwater paths at Allen Branch can be concluded from these layers; only field evidence — observing where flow is gained or lost, chemistry, and, in karst, dye tracing by qualified investigators — can establish them. Turn on <em>Karst potential</em>, <em>Mapped sinkholes</em>, <em>Springs</em> and <em>Dye traces &amp; karst groundwater basins</em> in the layer panel to see the regional context. The dye-trace layer is the closest thing to field evidence of underground flow on this map: Kentucky Geological Survey traces near Somerset run within about 1–2 km of campus, though none involves Allen Branch.</p>
     </div>
   </section>
 
@@ -150,6 +150,15 @@
       <td>Cartographic generalization: lines are drawn for legibility, not survey accuracy. Roads and names come from several national datasets of different dates.</td>
       <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
     </tr>
+    <tr id="layer-ky-road-map">
+      <th scope="row">Kentucky road map (Commonwealth Map)<br><span class="fw-muted">Base maps</span></th>
+      <td>Commonwealth of Kentucky, Division of Geographic Information (KyGovMaps)<br><span class="fw-muted">The Commonwealth Map — street base map (Ky_TCM_Street_Base_WGS84WM)</span></td>
+      <td>Continuously maintained tile cache</td>
+      <td>Multi-scale road map; street names and building outlines at close zoom</td>
+      <td>Kentucky</td>
+      <td>A cartographic road map for orientation and directions. Road and route data come from state and local sources; it does not show private roads, access permission, or which roads reach the creek.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
     <tr id="layer-usgs-imagery">
       <th scope="row">USGS Imagery<br><span class="fw-muted">Base maps</span></th>
       <td>U.S. Geological Survey, The National Map (USDA orthoimagery)<br><span class="fw-muted">USGS Imagery Only cached base map</span></td>
@@ -157,6 +166,15 @@
       <td>Visible to about 1:9,000 (roughly 1 m imagery)</td>
       <td>United States</td>
       <td>Leaf-on summer imagery hides narrow shaded streams under canopy. Imagery date varies by tile.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-usgs-imagery-topo">
+      <th scope="row">Imagery with roads &amp; labels<br><span class="fw-muted">Base maps</span></th>
+      <td>U.S. Geological Survey, The National Map<br><span class="fw-muted">USGS Imagery Topo cached base map (orthoimagery with US Topo roads, names and contours)</span></td>
+      <td>Service states 'Data refreshed April, 2026'</td>
+      <td>Visible to about 1:9,000</td>
+      <td>United States</td>
+      <td>Leaf-on imagery can hide narrow shaded channels; road and name overlays are generalized for legibility.</td>
       <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
     </tr>
     <tr id="layer-ky-naip-2022">
@@ -177,6 +195,15 @@
       <td>Shaded relief shows landforms (valleys, sinkholes, road fills) but no elevation values; it does not show where water flows underground.</td>
       <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
     </tr>
+    <tr id="layer-highways">
+      <th scope="row">Highways &amp; roads<br><span class="fw-muted">Roads &amp; highways</span></th>
+      <td>U.S. Geological Survey, The National Map<br><span class="fw-muted">National Transportation Dataset (transportation MapServer): interstates, U.S. and state routes with route shields; local roads at closer zoom</span></td>
+      <td>Service built from U.S. Census TIGER/Line and U.S. Forest Service road data</td>
+      <td>Scale-dependent: major highways at regional zoom, local roads when zoomed in</td>
+      <td>United States</td>
+      <td>Transparent overlay meant to sit on imagery, terrain or any base map. Road centerlines are generalized and may lag recent construction; the map says nothing about legal access to the creek.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
     <tr id="layer-nhd">
       <th scope="row">Streams &amp; waterbodies (NHD)<br><span class="fw-muted">Streams &amp; watersheds</span></th>
       <td>U.S. Geological Survey<br><span class="fw-muted">National Hydrography Dataset, high resolution (nhd MapServer) — streams, waterbodies, and karst features: springs/seeps and sinks/rises (points) and underground conduits (lines)</span></td>
@@ -193,6 +220,15 @@
       <td>1:24,000</td>
       <td>United States</td>
       <td>Hydrologic units are surface-topography units; a 12-digit unit is not the drainage basin of any particular small stream. In karst, groundwater can cross these boundaries.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-geology-24k">
+      <th scope="row">Bedrock geology (geologic map)<br><span class="fw-muted">Bedrock geology</span></th>
+      <td>Kentucky Geological Survey<br><span class="fw-muted">KY24KGeologicFormations_WGS84 — 1:24,000 geologic quadrangle data (1:500,000 map at regional zoom)</span></td>
+      <td>Digitized 1996–2006 from 707 USGS/KGS geologic quadrangle maps published 1960–1980; Allen Branch lies on the Delmer (GQ-909) and Somerset (GQ-1196) quadrangles</td>
+      <td>1:24,000 when zoomed in; 1:500,000 at regional zoom</td>
+      <td>Kentucky</td>
+      <td>Map units and contacts are geologists' interpretations from field mapping decades ago; contacts are approximate, and the map shows bedrock, not soil or groundwater paths. Select 'About' for the source quadrangle maps.</td>
       <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
     </tr>
     <tr id="layer-nlcd-2021">
@@ -229,6 +265,15 @@
       <td>Point locations of varying accuracy</td>
       <td>Kentucky</td>
       <td>Only springs that have been reported to the repository; locations vary in accuracy.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-karst-dye-traces">
+      <th scope="row">Dye traces &amp; karst groundwater basins<br><span class="fw-muted">Karst &amp; groundwater</span></th>
+      <td>Kentucky Geological Survey<br><span class="fw-muted">KYGWKarstBasins — dye injection and recovery sites, traced groundwater flow paths, and interpreted karst groundwater basins</span></td>
+      <td>Current service (compilation of dye-trace studies)</td>
+      <td>Point sites; flow paths connect injection to recovery sites; basin boundaries interpreted from multiple traces</td>
+      <td>Kentucky areas where dye tracing has been done</td>
+      <td>A traced flow path shows that dye travelled from one place to another, not the exact underground route. KGS notes that flow paths can shift at high flow, basins can overlap, and the dataset does not guarantee the accuracy of flow paths or basin boundaries. Areas without traces are unknown, not unconnected.</td>
       <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
     </tr>
     <tr id="layer-wastewater">

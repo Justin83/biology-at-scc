@@ -13,7 +13,7 @@ Page titles were also read to confirm each URL leads to the intended resource.
 - 1 redirects: USDA Cropland Data Layer viewer → `https://www.nass.usda.gov/research-and-science/cropland/viewer`
   (works; card shows the new destination; original link kept).
 - 4 flagged **Needs review** (link left unchanged):
-  - Kentucky Geological Survey `https://www.uky.edu/KGS/` — TLS certificate chain could not be verified by the checker (server-side chain issue likely; verification was not bypassed).
+  - Kentucky Geological Survey `https://www.uky.edu/KGS/` — TLS certificate chain could not be verified by the checker. **Resolved 2026-11-05:** KGS moved to `https://kygs.uky.edu/` (confirmed by Justin in a browser); the card now points there and passes the check.
   - USGS Water Data for Kentucky `https://waterdata.usgs.gov/state/Kentucky/` — HTTP 403 to automated request.
   - Google Scholar — HTTP 429 (rate-limited automated request).
   - GBIF — HTTP 403 (bot protection page).
@@ -92,6 +92,21 @@ Queried 2026-11-05 from public services (all **Mapped**, none field-verified):
   420). None is mapped within 25–50 m of the Allen Branch line.
 - Not computed on purpose: drainage area, land-cover percentages, distances, flow
   paths beyond NHD, groundwater routes.
+
+- **KGS dye traces (added 2026-11-05).** The KGS karst groundwater basin and dye-trace
+  service lists 61 dye-trace sites, 47 traced flow paths and 5 karst groundwater basins
+  within 84.72–84.50° W, 36.98–37.15° N. None is mapped on Allen Branch. Nearest to the
+  campus address point: Correll Swallet (injection, ~1.45 km), Weir Spring (recovery,
+  ~1.51 km), Railroad Mill Bottom Spring (recovery, ~1.60 km); nearest traced flow path
+  ~1.12 km from the Allen Branch line; the "Slide" basin ~1.5 km away. Straight-line
+  distances computed from the service geometry.
+- **Geologic quadrangle maps.** USGS GQ-909 (Delmer, 1971) and GQ-1196 (Somerset, 1974),
+  both by R. Q. Lewis: titles, years and DOIs verified with Crossref; author from the
+  USGS Publications Warehouse.
+- **Road layers (added 2026-11-05).** Kentucky Commonwealth Map street base map
+  (KyGovMaps), USGS Imagery Topo, and the USGS National Map transportation service were
+  each rendered near campus and toggled in the browser with no failed requests. The
+  KYTC state-road service on KyGovMaps returned empty images and was not used.
 
 ## Map services
 
