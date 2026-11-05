@@ -108,6 +108,8 @@ try {
   await b.fill("#su-item", "Lemonade");
   await b.click("#su-submit");
   await b.waitForFunction(() => /Lemonade/.test(document.getElementById("su-msg").textContent));
+  assert.match(await text(b, '#su-pick-options label:has-text("November 19")'), /2 people signed up/, "step 1 card count updates after signing up");
+  assert.equal(await b.isChecked("#su-ev-" + novId), true, "selection kept after the counts update");
 
   // A changes and then removes their entry (pop-up again). A's page loaded before B signed
   // up, so the pop-up must fetch fresh data to show B's lemonade.

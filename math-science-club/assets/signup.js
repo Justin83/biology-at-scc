@@ -24,14 +24,22 @@
         '<span><span class="club-pick-title">' + esc(e.title) + "</span>" +
         '<span class="club-pick-meta">' + esc(C.longDate(e.starts_on) + " · " + C.timeLabel(e)) + "</span>" +
         (theme ? '<span class="club-pick-meta">Food theme: ' + esc(theme) + "</span>" : "") +
-        '<span class="club-pick-meta">' + esc(countText(e)) + "</span>" +
+        '<span class="club-pick-meta" data-count="' + esc(e.id) + '">' + esc(countText(e)) + "</span>" +
         '<span class="club-pick-check">✓ Selected</span></span></label></div>';
     }).join("");
+  }
+  // keep the counts on the step 1 cards current after a sign-up is added, changed or removed
+  // (text only, so the selected card and keyboard focus stay as they are)
+  function refreshCounts() {
+    eligible(data).forEach(function (e) {
+      var el = document.querySelector('[data-count="' + e.id + '"]');
+      if (el) el.textContent = countText(e);
+    });
   }
   function pick(id, scroll) {
     var e = data.events.filter(function (x) { return x.id === id; })[0];
     if (!e) return;
-    if (!form) form = C.signupForm($("su-app"), { idPrefix: "su", headingLevel: 2, onChange: function (d) { data = d; } });
+    if (!form) form = C.signupForm($("su-app"), { idPrefix: "su", headingLevel: 2, onChange: function (d) { data = d; refreshCounts(); } });
     $("su-choose-first").hidden = true;
     $("su-app").hidden = false;
     form.show(data, e);
