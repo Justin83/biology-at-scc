@@ -154,13 +154,15 @@ try {
   await o.click("#of-save");
   await o.waitForFunction(() => /Saved/.test(document.getElementById("of-list-msg").textContent));
 
-  // static fallback (database off)
+  // fallback when the database cannot be reached: block every database request
   const s = await phone();
+  await s.route((url) => url.pathname.startsWith("/rest/v1/"), (route) => route.abort());
   await s.goto(SITE + "?api=off");
   await s.waitForSelector(".club-event");
-  assert.ok((await s.$$(".club-event")).length >= 4);
+  assert.ok((await s.$$(".club-event")).length >= 4, "printed schedule shown");
   await s.goto(SITE + "signup/?api=off");
   await s.waitForFunction(() => /isn't available|opens soon|could not be reached/.test(document.getElementById("su-status").textContent));
+  assert.equal(await s.isHidden("#su-form-wrap"), true, "no sign-up form without the database");
 
   assert.deepEqual(errors, [], "no page errors");
   console.log("PASS club pages end-to-end");

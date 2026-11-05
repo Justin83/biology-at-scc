@@ -10,7 +10,7 @@ GitHub Pages. Public URL once merged to `main`:
 | [DATA_MODEL.md](DATA_MODEL.md) | Entities, fields, roles and permissions |
 | [schema/001_freshwater_portal.sql](schema/001_freshwater_portal.sql) | Draft Phase 4 schema — **not applied** |
 | [VERIFICATION.md](VERIFICATION.md) | What was verified for the first release, how, and what still needs a person |
-| [FIELD_SUBMISSIONS.md](FIELD_SUBMISSIONS.md) | Student observation form with photos (EXIF time/GPS, QR codes), faculty review, privacy, storage, and the go-live steps — **not live yet** |
+| [FIELD_SUBMISSIONS.md](FIELD_SUBMISSIONS.md) | Student observation form with photos (EXIF time/GPS, QR codes), faculty review, privacy, storage; **database live since 2026-11-05**, submissions open when faculty set a class code |
 
 ## Layout
 
@@ -19,7 +19,7 @@ research/freshwater/
 ├── index.html, learn/, maps/, sites/, organisms/, methods/, resources/, projects/,
 │   observations/, standards/, search/          pages (finished static HTML)
 │   observations/submit/, observations/review/  student form and faculty review (see FIELD_SUBMISSIONS.md)
-├── sql/001_field_submissions.sql               observation database (Supabase) — not applied yet
+├── sql/001_field_submissions.sql               observation database (Supabase) — applied 2026-11-05 as fieldobs_v1
 ├── data/                                       seed data, one JSON file per future table
 │   └── geo/                                    small GeoJSON extracts (Allen Branch NHD, stations, campus point)
 └── assets/

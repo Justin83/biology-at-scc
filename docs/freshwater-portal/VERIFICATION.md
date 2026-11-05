@@ -185,6 +185,24 @@ project was not touched**, and `enabled` in `assets/fieldobs.js` is `false`.
   After one fix (dark-mode contrast of the red "Remove" and "Reject" buttons), all
   states showed 0 violations.
 
+### In production (2026-11-05, after Justin's approval)
+
+- Migration `fieldobs_v1` was applied to the SyllaBased project.
+- Public functions were called through the REST API with the publishable key:
+  - status shows closed;
+  - public observations come back empty;
+  - submitting is refused while closed;
+  - a wrong instructor key is refused.
+- The full submit → photo → finish → approve → public flow was run inside a transaction
+  that was then rolled back; afterwards there were 0 rows and submissions were still
+  closed.
+- The `fieldobs` schema is not exposed by the API, and anon has no usage on it.
+- The pages were loaded in a phone-sized browser against production:
+  - the submit page says submissions are closed;
+  - the review page signs in;
+  - the map and Observations page show the empty state;
+  - no console errors; axe shows 0 violations.
+
 ## Not verified — needs a person
 
 1. The four "Needs review" links, in a normal browser.

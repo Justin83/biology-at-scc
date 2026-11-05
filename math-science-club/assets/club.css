@@ -1,4 +1,4 @@
-/* Math & Natural Sciences Club — loaded after ../assets/style.css (site tokens: --bg, --fg,
+/* Math & Science Club — loaded after ../assets/style.css (site tokens: --bg, --fg,
    --muted, --accent, --border, --card-bg; light and dark follow the system setting). */
 :root {
   --club-navy: #1d3b66;
@@ -33,7 +33,7 @@
 .club-bar { background: var(--club-soft); border-bottom: 1px solid var(--border); }
 .club-bar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1.2rem; padding-top: 0.7rem; padding-bottom: 0.7rem; }
 .club-bar-name { font-weight: 700; color: var(--fg); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
-.club-bar-name img { width: 28px; height: 28px; }
+.club-bar-name img { width: 28px; height: 28px; border-radius: 6px; }
 .club-bar ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.2rem 1rem; margin: 0; padding: 0; }
 .club-bar ul a { text-decoration: none; font-size: 0.95rem; }
 .club-bar ul a:hover { text-decoration: underline; }
@@ -142,7 +142,7 @@
 
 /* printable poster */
 .club-poster { text-align: center; }
-.club-poster .club-logo { margin: 0 auto 0.5rem; display: block; }
+.club-poster .club-logo { margin: 0 auto 0.5rem; display: block; width: 200px; height: 200px; }
 .club-poster .club-qr { max-width: none; }
 .club-poster .club-qr img { width: min(320px, 80vw); height: auto; }
 .club-poster .club-qr-row { justify-content: center; }

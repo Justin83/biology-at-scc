@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Local stand-in for the Supabase REST API, for testing the Math & Natural Sciences Club
+// Local stand-in for the Supabase REST API, for testing the Math & Science Club
 // pages without touching the real database.
 //
 // It starts an in-memory PostgreSQL (PGlite, with pgcrypto), applies

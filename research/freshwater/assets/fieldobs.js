@@ -9,11 +9,12 @@
   "use strict";
 
   var CONFIG = {
-    // OFF until the database migration above has been applied with faculty approval.
-    // While false, students can fill in the form to practice (photos are read and
-    // checked on the phone) but nothing is sent, and public pages show only the
-    // published records committed in data/observations.json.
-    enabled: false,
+    // ON since 2026-11-05 (migration fieldobs_v1 applied with Justin's approval).
+    // Set to false to return to practice mode: the form then sends nothing and public
+    // pages show only the published records committed in data/observations.json.
+    // Students still cannot submit until faculty open submissions and set a class
+    // code on the review page.
+    enabled: true,
     supabaseUrl: "https://efxymeviokaocosmpqwf.supabase.co",
     supabaseKey: "sb_publishable_xoPXCFR7FN5X6as1E1tYAg_bmSpYMHE",
     // Stable address that the printed and on-screen QR codes point at.

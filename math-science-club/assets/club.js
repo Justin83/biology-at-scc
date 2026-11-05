@@ -1,4 +1,4 @@
-/* Math & Natural Sciences Club — configuration, API client and date helpers.
+/* Math & Science Club — configuration, API client and date helpers.
    Shared by the club home page, the food sign-up page and the officer tools.
 
    The Supabase URL and "publishable" key are public by design: the key only reaches the
@@ -8,9 +8,10 @@
   "use strict";
 
   var CONFIG = {
-    // When false (or when the database cannot be reached) the pages show the printed
-    // Fall 2026 schedule from data/events.json and food sign-up is unavailable.
-    enabled: false,
+    // ON since 2026-11-05 (migration club_v1 applied with Justin's approval). When
+    // false, or when the database cannot be reached, the pages show the printed Fall
+    // 2026 schedule from data/events.json and food sign-up is unavailable.
+    enabled: true,
     supabaseUrl: "https://efxymeviokaocosmpqwf.supabase.co",
     supabaseKey: "sb_publishable_xoPXCFR7FN5X6as1E1tYAg_bmSpYMHE",
     homeUrl: "https://justin83.github.io/biology-at-scc/math-science-club/",

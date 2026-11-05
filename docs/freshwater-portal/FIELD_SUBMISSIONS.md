@@ -3,11 +3,12 @@
 Students submit field observations, with up to six photos, from a phone. Faculty review
 every entry before anything is public.
 
-**Status (2026-11-05): built and tested against a local stand-in database. Not live.**
-The database part has **not** been applied to Supabase, and `enabled` in
-`research/freshwater/assets/fieldobs.js` is `false`. Until both change, the form runs in
-*practice mode*: students can fill it in and attach photos, the photos are read and
-checked on the phone, and nothing is sent anywhere.
+**Status (2026-11-05): live, with submissions closed until faculty open them.**
+With Justin's approval, the database part was applied to the SyllaBased Supabase project
+as migration `fieldobs_v1`, and `enabled` in `research/freshwater/assets/fieldobs.js` is
+now `true`. The instructor key is set (stored only as a bcrypt hash; it was given to Justin
+directly and is not in this repository). Students see "Submissions are closed" until faculty
+save a class code and open submissions on the review page.
 
 ## Pages
 
@@ -113,22 +114,29 @@ still accepted without photos.
 - **Exports:** the review page's JSON download includes student names. Keep it in
   faculty storage, never in this repository.
 
-## Going live — needs Justin's approval at each step
+## Going live — record
 
-1. Apply `research/freshwater/sql/001_field_submissions.sql` to the SyllaBased project
-   (`efxymeviokaocosmpqwf`) as migration `fieldobs_v1`, then run the Supabase security
-   advisors.
-2. Set the instructor key with the SQL at the end of the migration file. Keep the plain
-   key outside the repository.
-3. Set `enabled: true` in `research/freshwater/assets/fieldobs.js` and merge. Merging to
-   `main` publishes the site.
-4. On `observations/review/`: save a class code, open submissions, print the class QR.
-5. Test on real phones (iPhone Safari, Android Chrome), at least once at Allen Branch:
-   camera capture, library photos with and without location, "Use my current location",
-   map pin, and a weak signal.
+Done on 2026-11-05 with Justin's approval:
 
-Rollback: the `drop …` statements at the end of the migration remove everything it
-created. Setting `enabled: false` returns the site to practice mode.
+1. Applied `research/freshwater/sql/001_field_submissions.sql` to SyllaBased
+   (`efxymeviokaocosmpqwf`) as migration `fieldobs_v1`. The Supabase security advisors
+   report only the expected notices for this design: RLS without policies on the private
+   tables, and SECURITY DEFINER functions callable by anon (the same as the BIO 151
+   live-lab functions).
+2. Set the instructor key. Only the hash is stored; the plain key went to Justin.
+3. Set `enabled: true` in `research/freshwater/assets/fieldobs.js`.
+4. Production smoke test:
+   - every public function was called through the REST API with the publishable key;
+   - wrong keys are refused;
+   - the private schema is not exposed;
+   - the full submit → photo → finish → approve flow ran inside a transaction that was
+     rolled back, so no test data was kept.
+
+Still to do (faculty):
+
+- Save a class code, open submissions and print the class QR on the review page.
+- Test on real phones at Allen Branch: camera capture, library photos with and without
+  location, "Use my current location", the map pin, and a weak signal.
 
 ## Testing locally (no production access)
 
