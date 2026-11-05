@@ -97,7 +97,7 @@
   <li><a href="./resources/literature/"><span class="fw-stat-n">44</span> <span class="fw-stat-l">papers in the library</span></a></li>
   <li><a href="./learn/glossary/"><span class="fw-stat-n">49</span> <span class="fw-stat-l">glossary terms</span></a></li>
   <li><a href="./projects/"><span class="fw-stat-n">8</span> <span class="fw-stat-l">open research questions</span></a></li>
-  <li><a href="./observations/"><span class="fw-stat-n">0</span> <span class="fw-stat-l">published field observations</span></a></li>
+  <li><a href="./observations/"><span class="fw-stat-n" data-fw-obs-count>0</span> <span class="fw-stat-l">published field observations</span></a></li>
 </ul>
 <!-- /fw:counts -->
   </section>
@@ -234,11 +234,17 @@
         <h2 id="latest-observations">Latest observations</h2>
         <a href="observations/">Observation records &rarr;</a>
       </div>
-      <div class="fw-empty">
-        <p style="margin-top:0"><strong>No field observations have been recorded yet.</strong></p>
-        <p>When students visit Allen Branch, each faculty-reviewed visit will appear here with its date, station, weather, recent rainfall, measurements (with units and methods) and photographs.</p>
-        <p style="margin-bottom:0">Getting ready? Read the <a href="methods/#safety">field safety rules</a> and the <a href="observations/#fields">observation data dictionary</a>.</p>
+      <div data-fw-obs data-limit="3" data-compact data-root="./">
+        <div class="fw-empty">
+          <p style="margin-top:0"><strong>No field observations have been published yet.</strong></p>
+          <p>When students visit Allen Branch, each faculty-reviewed visit will appear here with its date, station, weather, recent rainfall, measurements (with units and methods) and photographs.</p>
+          <p style="margin-bottom:0">Getting ready? Read the <a href="methods/#safety">field safety rules</a> and the <a href="observations/#fields">observation data dictionary</a>.</p>
+        </div>
       </div>
+      <figure class="fw-qr fw-qr--small">
+        <img src="assets/qr-submit.svg" width="132" height="132" alt="QR code linking to the observation form">
+        <figcaption>Students: <a href="observations/submit/">submit an observation with photos</a> from your phone.</figcaption>
+      </figure>
     </section>
 
     <section class="fw-card span-12" aria-labelledby="featured-resources">
@@ -377,6 +383,8 @@
 </footer>
 <script src="./assets/portal.js" defer></script>
 <!-- /fw:footer -->
+<script src="assets/fieldobs.js" defer></script>
+<script src="assets/observations.js" defer></script>
 <script src="assets/vendor/leaflet/leaflet.js" defer></script>
 <script src="assets/map.js" defer></script>
 </body>

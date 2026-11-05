@@ -331,10 +331,16 @@
 
   <section class="fw-section" aria-labelledby="observations">
     <div class="fw-section-head"><h2 id="observations">Field observations</h2><a href="../../observations/">All observation records &rarr;</a></div>
-    <div class="fw-empty">
-      <p style="margin-top:0"><strong>No observations have been recorded at Allen Branch yet.</strong></p>
-      <p style="margin-bottom:0">Each visit will record date and time, observers, GPS position and accuracy, weather, recent rainfall, water temperature, pH, conductivity, dissolved oxygen, turbidity, nitrate, phosphate, depth, flow, canopy cover, substrate, visible biofilms, photographs and suspected organisms — every measurement with its unit and method. See the <a href="../../observations/#fields">observation data dictionary</a>.</p>
+    <div data-fw-obs data-site="allen-branch" data-limit="5" data-compact data-root="../../">
+      <div class="fw-empty">
+        <p style="margin-top:0"><strong>No observations have been published for Allen Branch yet.</strong></p>
+        <p style="margin-bottom:0">Each visit will record date and time, observers, GPS position and accuracy, weather, recent rainfall, water temperature, pH, conductivity, dissolved oxygen, turbidity, nitrate, phosphate, depth, flow, canopy cover, substrate, visible biofilms, photographs and suspected organisms — every measurement with its unit and method. See the <a href="../../observations/#fields">observation data dictionary</a>.</p>
+      </div>
     </div>
+    <figure class="fw-qr fw-qr--small">
+      <img src="../../assets/qr-submit.svg" width="132" height="132" alt="QR code linking to the observation form">
+      <figcaption>At the creek? <a href="../../observations/submit/">Submit an observation with photos</a> from your phone — the form reads the time and GPS position from your photos.</figcaption>
+    </figure>
   </section>
 
   <section class="fw-section" aria-labelledby="questions">
@@ -418,6 +424,8 @@
 </footer>
 <script src="../../assets/portal.js" defer></script>
 <!-- /fw:footer -->
+<script src="../../assets/fieldobs.js" defer></script>
+<script src="../../assets/observations.js" defer></script>
 <script src="../../assets/vendor/leaflet/leaflet.js" defer></script>
 <script src="../../assets/map.js" defer></script>
 </body>

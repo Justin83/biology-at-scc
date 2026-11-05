@@ -10,6 +10,7 @@ GitHub Pages. Public URL once merged to `main`:
 | [DATA_MODEL.md](DATA_MODEL.md) | Entities, fields, roles and permissions |
 | [schema/001_freshwater_portal.sql](schema/001_freshwater_portal.sql) | Draft Phase 4 schema — **not applied** |
 | [VERIFICATION.md](VERIFICATION.md) | What was verified for the first release, how, and what still needs a person |
+| [FIELD_SUBMISSIONS.md](FIELD_SUBMISSIONS.md) | Student observation form with photos (EXIF time/GPS, QR codes), faculty review, privacy, storage; **database live since 2026-11-05**, submissions open when faculty set a class code |
 
 ## Layout
 
@@ -17,16 +18,25 @@ GitHub Pages. Public URL once merged to `main`:
 research/freshwater/
 ├── index.html, learn/, maps/, sites/, organisms/, methods/, resources/, projects/,
 │   observations/, standards/, search/          pages (finished static HTML)
+│   observations/submit/, observations/review/  student form and faculty review (see FIELD_SUBMISSIONS.md)
+├── sql/001_field_submissions.sql               observation database (Supabase) — applied 2026-11-05 as fieldobs_v1
 ├── data/                                       seed data, one JSON file per future table
 │   └── geo/                                    small GeoJSON extracts (Allen Branch NHD, stations, campus point)
 └── assets/
     ├── portal.css, portal.js                   design system and shared behavior
     ├── map.js, search.js, atlas.js             map, portal search, atlas comparison
-    └── vendor/leaflet/                         Leaflet 1.9.4 (BSD-2-Clause), vendored
+    ├── fieldobs.js                             observation database config (enabled: false) + API client
+    ├── submit.js, review.js, observations.js   student form, faculty review, public display
+    ├── qr-submit.svg                           QR code for the form (make-qr.mjs)
+    └── vendor/                                 Leaflet 1.9.4 (BSD-2-Clause), exifr 7.1.3 (MIT),
+                                                qrcode-generator 1.4.4 (MIT), vendored with licenses
 tools/freshwater-portal/
 ├── build.mjs              in-place generator + validator
 ├── check-links.mjs        re-checks every Resource Library link, records results
-└── verify-references.mjs  re-checks every DOI against Crossref (read-only)
+├── verify-references.mjs  re-checks every DOI against Crossref (read-only)
+├── make-qr.mjs            regenerates assets/qr-submit.svg (--check to verify)
+├── local-api.mjs          local stand-in for the observation database (PGlite), for tests
+└── tests/                 database contract tests, browser end-to-end test, EXIF fixture
 ```
 
 ## Everyday commands (Node 18+, no `npm install`)
@@ -68,9 +78,11 @@ the page's `fw:references` list. An unknown key fails the build.
   content, add it to `data/articles.json`, run `build.mjs`.
 - **Change a site fact:** edit `data/sites.json`; every fact needs `evidence_status`,
   `source`, `source_url` and `retrieved_at`. Never upgrade evidence without new evidence.
-- **Publish an observation:** only faculty-approved records go in `data/observations.json`
-  (`review_status: "published"`). The build refuses anything else. Never commit drafts
-  or student contact details — this repository is public.
+- **Publish an observation:** once the observation database is live, students submit with
+  the form and faculty approve on the review page — nothing is committed. Before that,
+  only faculty-approved records go in `data/observations.json`
+  (`review_status: "published"`); the build refuses anything else. Never commit drafts,
+  exports or student contact details — this repository is public.
 
 ## Deployment
 

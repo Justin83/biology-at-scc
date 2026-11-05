@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Field Observations · Freshwater Research · Biology at SCC</title>
-<meta name="description" content="Faculty-reviewed field observations from Biology at SCC freshwater research sites, with the observation data dictionary, review workflow and privacy rules. No observations have been recorded yet.">
+<meta name="description" content="Faculty-reviewed field observations from Biology at SCC freshwater research sites, the mobile form (with QR code) that students use to submit observations and photos, the observation data dictionary, and the review and privacy rules.">
 <meta name="fw:section" content="observations">
 <meta name="fw:short" content="Observations">
 <link rel="stylesheet" href="../../../assets/style.css">
@@ -73,10 +73,34 @@
     <p class="lede">Every field visit, every measurement and every photograph that SCC students record — once a faculty reviewer has checked it. This page will become the portal's data record for Allen Branch and other sites.</p>
   </div>
 
-  <div class="fw-empty">
-    <p style="margin-top:0"><strong>No field observations have been recorded yet.</strong></p>
-    <p style="margin-bottom:0">The first records will come from faculty-led reconnaissance of Allen Branch. Until then, this page describes exactly what each record will contain, so that students can prepare. See the <a href="../methods/">methods</a> and the <a href="../sites/allen-branch/#investigation">Allen Branch checklist</a>.</p>
-  </div>
+  <section class="fw-section" aria-labelledby="approved" style="margin-top:0">
+    <div class="fw-section-head"><h2 id="approved">Approved observations</h2><a href="submit/">Submit an observation &rarr;</a></div>
+    <div data-fw-obs data-root="../">
+      <div class="fw-empty">
+        <p style="margin-top:0"><strong>No field observations have been published yet.</strong></p>
+        <p style="margin-bottom:0">The first records will come from faculty-led reconnaissance of Allen Branch. Until then, this page describes exactly what each record will contain, so that students can prepare. See the <a href="../methods/">methods</a> and the <a href="../sites/allen-branch/#investigation">Allen Branch checklist</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="fw-section" aria-labelledby="submit">
+    <div class="fw-section-head"><h2 id="submit">Submitting from the field</h2></div>
+    <div class="fw-feature">
+      <div>
+        <p>Students send observations from a phone with the <a href="submit/">observation form</a>: take or attach up to six photos, and the form reads the date, time and GPS position saved in them (many phones remove the position when sharing with a website, so the form can also use the phone's current location or a point tapped on the map). Then add the site, conditions, any measurements and who was there, and send the entry with the class code.</p>
+        <ul>
+          <li>Photos are shrunk and re-saved on the phone <strong>without their hidden data</strong> (camera model, exact position) before they are sent.</li>
+          <li>Nothing is public until a faculty reviewer approves it. Reviewers remove any photo that shows a recognizable person, license plate or home.</li>
+          <li>Names appear only for people who chose to show theirs; otherwise the credit is "SCC Biology students".</li>
+        </ul>
+        <p><a class="fw-btn" href="submit/">Open the observation form</a></p>
+      </div>
+      <figure class="fw-qr">
+        <img src="../assets/qr-submit.svg" width="220" height="220" alt="QR code linking to the observation form">
+        <figcaption>Scan with a phone camera to open the form. For class, faculty print a version of this code that also fills in the class code.</figcaption>
+      </figure>
+    </div>
+  </section>
 
   <section class="fw-section" aria-labelledby="fields">
     <div class="fw-section-head"><h2 id="fields">Observation data dictionary</h2></div>
@@ -87,20 +111,20 @@
       <thead><tr><th scope="col">Field</th><th scope="col">Content</th><th scope="col">Required</th></tr></thead>
       <tbody>
         <tr><td>site_id, station_id</td><td>Field site and sampling station</td><td>Site required; station once established</td></tr>
-        <tr><td>observed_at</td><td>Date and time with time zone</td><td>Yes</td></tr>
+        <tr><td>observed_at, observed_at_source</td><td>Date and time with time zone, and where it came from (photo timestamp, the phone's clock, or typed)</td><td>Yes</td></tr>
         <tr><td>observers</td><td>Student researchers and faculty present (public display honors consent)</td><td>Yes</td></tr>
-        <tr><td>latitude, longitude, gps_accuracy_m</td><td>Position and its stated accuracy</td><td>Yes</td></tr>
+        <tr><td>latitude, longitude, gps_accuracy_m, location_source</td><td>Position, its stated accuracy, and where it came from (photo GPS, the phone's location, a map point, or typed)</td><td>Recommended</td></tr>
         <tr><td>weather, air_temperature_c</td><td>Conditions at the time</td><td>Yes</td></tr>
-        <tr><td>rain_last_24h_mm, rain_last_72h_mm, rain_source</td><td>Recent rainfall and where it came from (e.g., Kentucky Mesonet station)</td><td>Yes</td></tr>
-        <tr><td>water_temperature, ph, specific_conductance, dissolved_oxygen, turbidity, nitrate_n, orthophosphate_p</td><td>Measurements, each with unit, method, detection limit and QC flag</td><td>As measured</td></tr>
+        <tr><td>rain_note</td><td>Recent rainfall (last 24–72 hours) and where it came from (e.g., Kentucky Mesonet station)</td><td>Recommended</td></tr>
+        <tr><td>water_temperature, ph, specific_conductance, dissolved_oxygen, turbidity, transparency_tube, nitrate_n, orthophosphate_p</td><td>Measurements, each with a fixed unit, the method or kit, and whether it was below the detection limit</td><td>As measured</td></tr>
         <tr><td>water_depth_cm, flow_observation</td><td>Depth at a marked point; flow category</td><td>Yes</td></tr>
         <tr><td>canopy_cover_pct, canopy_method</td><td>Canopy cover and how it was measured</td><td>Yes</td></tr>
         <tr><td>substrate</td><td>Bedrock, boulder, cobble, gravel, sand, silt/clay, wood, leaf litter</td><td>Yes</td></tr>
         <tr><td>visible_biofilm</td><td>None, thin, thick, mat or floating</td><td>Yes</td></tr>
-        <tr><td>photos</td><td>Upstream/downstream photos and close-ups, with credit and license</td><td>Recommended</td></tr>
+        <tr><td>photos</td><td>Up to six: upstream, downstream, stream bed and close-ups, each with a caption. Re-saved on the phone at up to 1600 pixels without embedded metadata; the time, GPS position and camera read from each original are kept as separate fields for the reviewer and are not published per photo</td><td>Recommended</td></tr>
         <tr><td>suspected_organisms</td><td>Provisional morphotypes or genera with identification level</td><td>If examined</td></tr>
         <tr><td>notes</td><td>Anything else observed</td><td>Optional</td></tr>
-        <tr><td>review_status, reviewed_by, reviewed_at</td><td>Draft → submitted → approved → published</td><td>System</td></tr>
+        <tr><td>receipt, status, review_note, reviewed_at</td><td>Receipt number given to the student (FW-…); status: uploading → waiting for review → changes requested, approved (published) or rejected → archived. Review notes are never public</td><td>System</td></tr>
       </tbody>
     </table>
     </div>
@@ -109,12 +133,12 @@
   <section class="fw-section" aria-labelledby="review">
     <div class="fw-section-head"><h2 id="review">Review and publication</h2></div>
     <ol>
-      <li><strong>Draft.</strong> Students enter their record after the visit.</li>
-      <li><strong>Submitted.</strong> The record goes to a faculty reviewer, who checks units, methods, calibration, photographs and identifications.</li>
-      <li><strong>Changes requested</strong> or <strong>approved.</strong></li>
-      <li><strong>Published.</strong> Only approved records appear here and on the map. Records are archived, never deleted, if they are later corrected.</li>
+      <li><strong>Draft.</strong> Students fill in the form; it is saved on their own phone until they send it.</li>
+      <li><strong>Waiting for review.</strong> The entry goes to a private database that this public website cannot read. A faculty reviewer checks units, methods, calibration, photographs and identifications.</li>
+      <li><strong>Changes requested</strong>, <strong>approved</strong> or <strong>rejected.</strong></li>
+      <li><strong>Published.</strong> Only approved entries appear here and on the map. Entries are archived rather than deleted if they are later corrected.</li>
     </ol>
-    <p>Until the authenticated research workspace is built (Phase 4 of the <a href="../standards/#roadmap">roadmap</a>), records are kept by faculty outside this public website. Unpublished records and student information are never stored in the site's public code repository.</p>
+    <p>Unpublished entries, review notes, and the names of students who did not choose to show them are never public and are never stored in the site's public code repository. Online submission is switched on by faculty; until then the form runs in practice mode and sends nothing. Faculty use the <a href="review/">review page</a> (instructor key required).</p>
   </section>
 </main>
 
@@ -145,5 +169,7 @@
 </footer>
 <script src="../assets/portal.js" defer></script>
 <!-- /fw:footer -->
+<script src="../assets/fieldobs.js" defer></script>
+<script src="../assets/observations.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Math &amp; Science Club · Biology at SCC</title>
+<meta name="description" content="Home page for Somerset Community College's Math &amp; Science Club: next meeting (third Thursday of each month), food sign-up, and the Fall 2026 schedule of meetings, astronomy nights, campus tours and events.">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="assets/club.css">
+</head>
+<body class="club" data-club-root="./">
+<a class="skip-link" href="#main">Skip to main content</a>
+<header>
+  <div class="wrap">
+    <a class="site-title" href="../index.html">Biology <span>at SCC</span></a>
+    <nav aria-label="Biology at SCC">
+      <ul>
+        <li><a href="../departments/">Departments</a></li>
+        <li><a href="../honors-symposium/">Honors Symposium</a></li>
+        <li><a href="../posters-presentations/">Posters &amp; Presentations</a></li>
+        <li><a href="../archive/">Archive</a></li>
+        <li><a href="../labs/">Lab</a></li>
+        <li><a href="../research/freshwater/">Research</a></li>
+        <li><a href="./" class="is-active">Club</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="club-bar">
+  <div class="wrap">
+    <a class="club-bar-name" href="./"><img src="assets/logo.svg" alt="" width="28" height="28">Math &amp; Science Club</a>
+    <nav aria-label="Club">
+      <ul>
+        <li><a href="./" aria-current="page">Club home</a></li>
+        <li><a href="signup/">Food sign-up</a></li>
+        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="qr/">QR poster</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<main id="main">
+  <section class="club-hero" aria-labelledby="club-title">
+    <img class="club-logo" src="assets/logo.svg" alt="KCTCS Somerset Math &amp; Science Club logo" width="120" height="120">
+    <div>
+      <p class="club-kicker">Somerset Community College</p>
+      <h1 id="club-title">Math &amp; Science Club</h1>
+      <p class="lede">Meetings, astronomy nights, campus tours and food — everything for club members in one place.</p>
+      <p class="club-rule"><strong>We meet the third Thursday of every month at 5:00 PM.</strong></p>
+    </div>
+  </section>
+
+  <section class="club-next" aria-labelledby="next-title" id="next">
+    <h2 id="next-title">Next meeting</h2>
+    <div id="club-next-body">
+      <p class="club-next-date">Thursday, November 19, 2026</p>
+      <p class="club-next-meta">5:00 PM · Math and Science Club Meeting · the third Thursday of November</p>
+      <p class="club-actions"><a class="club-btn" href="signup/">Sign up to bring food</a></p>
+    </div>
+  </section>
+
+  <section aria-labelledby="schedule-title" id="schedule">
+    <h2 id="schedule-title">Coming up</h2>
+    <div id="club-status" role="status"></div>
+    <div id="club-upcoming"><noscript><p>Turn on JavaScript to see the schedule, or view the <a href="data/events.json">schedule data</a>.</p></noscript></div>
+    <details class="club-past" id="club-past-wrap" hidden>
+      <summary>Earlier this semester (<span id="club-past-count">0</span>)</summary>
+      <div id="club-past"></div>
+    </details>
+    <div class="club-fine">
+      <p>From the printed <em>MSSE Scholars Proposed Activities — Fall 2026 Schedule</em>. Events marked <span class="club-chip club-chip--tentative">Tentative</span> may change because of weather or other factors.</p>
+      <p>While attendance at all activities is encouraged, MSSE scholars must take part in at least 4 each semester and meet with their mentor twice each semester. Changes are sent to your KCTCS student email.</p>
+    </div>
+  </section>
+
+  <section class="club-panel" aria-labelledby="qr-title">
+    <h2 id="qr-title">Scan to open on your phone</h2>
+    <div class="club-qr-row">
+      <figure class="club-qr">
+        <img src="assets/qr-signup.svg" width="200" height="200" alt="QR code for the club food sign-up page">
+        <figcaption><a href="signup/">Food sign-up</a></figcaption>
+      </figure>
+      <figure class="club-qr">
+        <img src="assets/qr-club.svg" width="200" height="200" alt="QR code for this club home page">
+        <figcaption><a href="./">This club page</a></figcaption>
+      </figure>
+    </div>
+    <p><a href="qr/">Printable QR poster</a> for the classroom door or meeting table.</p>
+  </section>
+
+  <aside class="club-officer-box" aria-labelledby="officer-title">
+    <h2 id="officer-title">For club officers only</h2>
+    <p>Change dates, add or cancel events, set up the food sign-up, or remove a sign-up. Needs the officer code.</p>
+    <a class="club-btn club-btn--danger" href="officers/">Open officer tools</a>
+  </aside>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Math &amp; Science Club &middot; Somerset Community College &middot; part of <a href="../index.html">Biology at SCC</a></p>
+    <p>Questions about this site? Contact <a href="mailto:justin.howard@kctcs.edu">justin.howard@kctcs.edu</a>.</p>
+  </div>
+</footer>
+<script src="assets/club.js" defer></script>
+<script src="assets/home.js" defer></script>
+</body>
+</html>

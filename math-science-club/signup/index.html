@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Food Sign-Up · Math &amp; Science Club · Biology at SCC</title>
+<meta name="description" content="Sign up to bring food to the next Math &amp; Science Club meeting at Somerset Community College, and see who is already bringing what. Works on any phone or computer, no account needed.">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="stylesheet" href="../assets/club.css">
+</head>
+<body class="club" data-club-root="../">
+<a class="skip-link" href="#main">Skip to main content</a>
+<header>
+  <div class="wrap">
+    <a class="site-title" href="../../index.html">Biology <span>at SCC</span></a>
+    <nav aria-label="Biology at SCC">
+      <ul>
+        <li><a href="../../departments/">Departments</a></li>
+        <li><a href="../../honors-symposium/">Honors Symposium</a></li>
+        <li><a href="../../posters-presentations/">Posters &amp; Presentations</a></li>
+        <li><a href="../../archive/">Archive</a></li>
+        <li><a href="../../labs/">Lab</a></li>
+        <li><a href="../../research/freshwater/">Research</a></li>
+        <li><a href="../" class="is-active">Club</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="club-bar">
+  <div class="wrap">
+    <a class="club-bar-name" href="../"><img src="../assets/logo.svg" alt="" width="28" height="28">Math &amp; Science Club</a>
+    <nav aria-label="Club">
+      <ul>
+        <li><a href="../">Club home</a></li>
+        <li><a href="./" aria-current="page">Food sign-up</a></li>
+        <li><a href="../#schedule">Schedule</a></li>
+        <li><a href="../qr/">QR poster</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<main id="main">
+  <h1>Food Sign-Up</h1>
+  <p class="lede">See what's already covered, then add what you're bringing. Works on any phone or computer — no account needed.</p>
+
+  <div id="su-status" role="status">
+    <noscript><div class="club-banner club-banner--warn"><p>This page needs JavaScript to load the sign-up list.</p></div></noscript>
+  </div>
+
+  <div class="club-field" id="su-event-wrap" hidden>
+    <label for="su-event">Which get-together?</label>
+    <select id="su-event"></select>
+  </div>
+
+  <section class="club-next" id="su-summary" aria-labelledby="su-event-title" hidden>
+    <h2 id="su-event-title">Signing up for</h2>
+    <div id="su-event-body"></div>
+  </section>
+
+  <section class="club-panel" aria-labelledby="su-list-title" id="su-list-wrap" hidden>
+    <h2 id="su-list-title">Who's bringing what</h2>
+    <div id="su-list" class="club-bring"></div>
+  </section>
+
+  <section class="club-panel" aria-labelledby="su-form-title" id="su-form-wrap" hidden>
+    <h2 id="su-form-title">Add what you're bringing</h2>
+    <form id="su-form" novalidate>
+      <div class="club-field">
+        <label for="su-name">Your name</label>
+        <input id="su-name" type="text" maxlength="60" autocomplete="name" aria-describedby="su-name-hint">
+        <p class="club-hint" id="su-name-hint">First name and last initial is enough. Your name and item are shown on this page so others can plan.</p>
+      </div>
+      <fieldset class="club-field" id="su-slots-wrap">
+        <legend>Category</legend>
+        <div class="club-choices" id="su-slots"></div>
+      </fieldset>
+      <div class="club-field">
+        <label for="su-item">What are you bringing?</label>
+        <input id="su-item" type="text" maxlength="120" autocomplete="off" placeholder="e.g., chocolate chip cookies">
+      </div>
+      <div class="club-field">
+        <label for="su-note">Allergy or diet note <span class="club-hint">(optional)</span></label>
+        <input id="su-note" type="text" maxlength="200" autocomplete="off" placeholder="e.g., contains peanuts, vegetarian, gluten-free">
+      </div>
+      <div class="club-hp" aria-hidden="true">
+        <label for="su-website">Leave this empty</label>
+        <input id="su-website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="club-actions">
+        <button type="submit" class="club-btn" id="su-submit">Sign me up</button>
+        <button type="button" class="club-btn club-btn--ghost" id="su-cancel-edit" hidden>Cancel change</button>
+      </div>
+      <p id="su-msg" class="club-msg" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <section class="club-panel" aria-labelledby="su-mine-title" id="su-mine-wrap" hidden>
+    <h2 id="su-mine-title">Your sign-ups on this device</h2>
+    <p class="club-hint">You can change or remove these from this phone or computer. From another device, ask a club officer.</p>
+    <ul id="su-mine" class="club-mine"></ul>
+  </section>
+
+  <section class="club-panel" aria-labelledby="su-qr-title">
+    <h2 id="su-qr-title">Share this sign-up</h2>
+    <figure class="club-qr">
+      <img src="../assets/qr-signup.svg" width="200" height="200" alt="QR code for this food sign-up page">
+      <figcaption>Scan with a phone camera to open this page.</figcaption>
+    </figure>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Math &amp; Science Club &middot; Somerset Community College &middot; part of <a href="../../index.html">Biology at SCC</a></p>
+    <p>Club officers: <a href="../officers/">officer tools</a> (code required).</p>
+  </div>
+</footer>
+<script src="../assets/club.js" defer></script>
+<script src="../assets/signup.js" defer></script>
+</body>
+</html>

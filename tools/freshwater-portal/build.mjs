@@ -513,9 +513,11 @@ function genCounts(ctx) {
     [lib, "papers in the library", "resources/literature/"],
     [D.glossary.records.length, "glossary terms", "learn/glossary/"],
     [D.questions.records.length, "open research questions", "projects/"],
-    [D.observations.records.length, "published field observations", "observations/"],
+    [D.observations.records.length, "published field observations", "observations/", " data-fw-obs-count"],
   ];
-  return `\n<ul class="fw-stats">\n${c.map(([n, l, href]) => `  <li><a href="${ctx.toPortal}${href}"><span class="fw-stat-n">${n}</span> <span class="fw-stat-l">${esc(l)}</span></a></li>`).join("\n")}\n</ul>\n`;
+  // data-fw-obs-count: assets/observations.js replaces the static count with the number of
+  // approved entries when the observation database is switched on.
+  return `\n<ul class="fw-stats">\n${c.map(([n, l, href, attr = ""]) => `  <li><a href="${ctx.toPortal}${href}"><span class="fw-stat-n"${attr}>${n}</span> <span class="fw-stat-l">${esc(l)}</span></a></li>`).join("\n")}\n</ul>\n`;
 }
 
 // ---------------------------------------------------------------- citations
@@ -629,7 +631,7 @@ const strip = (s) => s.replace(/<script[\s\S]*?<\/script>/g, " ").replace(/<[^>]
 function buildSearchIndex(pages) {
   const items = [];
   for (const { ctx, html } of pages) {
-    if (ctx.relPath === "search/") continue;
+    if (ctx.relPath === "search/" || /<meta name="robots" content="noindex/.test(html)) continue;
     const title = (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || ctx.short;
     const desc = (html.match(/<meta name="description" content="([^"]*)"/) || [])[1] || "";
     const main = (html.match(/<main id="main"[^>]*>([\s\S]*?)<\/main>/) || [])[1] || "";
