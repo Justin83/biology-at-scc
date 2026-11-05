@@ -14,9 +14,7 @@
     enabled: true,
     supabaseUrl: "https://efxymeviokaocosmpqwf.supabase.co",
     supabaseKey: "sb_publishable_xoPXCFR7FN5X6as1E1tYAg_bmSpYMHE",
-    homeUrl: "https://justin83.github.io/biology-at-scc/math-science-club/",
-    signupUrl: "https://justin83.github.io/biology-at-scc/math-science-club/signup/",
-    meetingRule: "the third Thursday of every month at 5:00 PM"
+    homeUrl: "https://justin83.github.io/biology-at-scc/math-science-club/"
   };
 
   // Local testing only: ?api=http://127.0.0.1:8789 (loopback addresses only) points the
@@ -110,11 +108,6 @@
     if (e.ends_on && e.ends_on !== e.starts_on) return shortDate(e.starts_on) + " – " + shortDate(e.ends_on) + (withYear ? ", " + parts(e.ends_on).y : "");
     return longDate(e.starts_on, withYear);
   }
-  function thirdThursday(y, m) { // m = 1..12; returns YYYY-MM-DD
-    var first = new Date(Date.UTC(y, m - 1, 1)).getUTCDay();
-    var day = 1 + ((4 - first + 7) % 7) + 14;
-    return y + "-" + pad(m) + "-" + pad(day);
-  }
   function daysBetween(a, b) { var A = parts(a), B = parts(b); return Math.round((Date.UTC(B.y, B.m - 1, B.d) - Date.UTC(A.y, A.m - 1, A.d)) / 864e5); }
   function relDays(today, iso) {
     var n = daysBetween(today, iso);
@@ -151,7 +144,7 @@
   window.Club = {
     config: CONFIG, live: live, isLocal: function () { return !!localApi; }, rpc: rpc, errorText: errorText,
     KINDS: KINDS, todayISO: todayISO, parts: parts, longDate: longDate, shortDate: shortDate, monthKey: monthKey,
-    monthLabel: monthLabel, timeLabel: timeLabel, dateLabel: dateLabel, clock: clock, thirdThursday: thirdThursday,
+    monthLabel: monthLabel, timeLabel: timeLabel, dateLabel: dateLabel, clock: clock,
     relDays: relDays, isPast: isPast, esc: esc, load: load, upcoming: upcoming, nextGathering: nextGathering, MON: MON, DOW: DOW
   };
 })();

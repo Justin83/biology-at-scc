@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-// Writes the club's QR codes from the URLs in math-science-club/assets/club.js:
-//   math-science-club/assets/qr-signup.svg  -> food sign-up page
-//   math-science-club/assets/qr-club.svg    -> club home page
+// Writes the club's one QR code from homeUrl in math-science-club/assets/club.js:
+//   math-science-club/assets/qr-club.svg -> club website (people go to the food sign-up from there)
 // Uses the vendored qrcode-generator 1.4.4 (MIT) in research/freshwater/assets/vendor/.
 //   node tools/math-science-club/make-qr.mjs          (write)
 //   node tools/math-science-club/make-qr.mjs --check  (exit 1 if a file is out of date)
@@ -35,7 +34,7 @@ function qrSvg(text, title) {
 }
 
 let stale = false;
-for (const [file, key] of [["qr-signup.svg", "signupUrl"], ["qr-club.svg", "homeUrl"]]) {
+for (const [file, key] of [["qr-club.svg", "homeUrl"]]) {
   const out = path.join(ROOT, "math-science-club/assets", file);
   const svg = qrSvg(url(key), `QR code: ${url(key)}`);
   if (process.argv.includes("--check")) {
