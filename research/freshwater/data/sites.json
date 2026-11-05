@@ -1,0 +1,231 @@
+{
+  "table": "field_sites",
+  "description": "Field-site records. Every fact carries an evidence_status (unverified | mapped | field_confirmed | lab_confirmed), its source and retrieval date. Nothing here was inferred from proximity, imagery alone, or assumption.",
+  "records": [
+    {
+      "id": "allen-branch",
+      "name": "Allen Branch",
+      "aliases": [],
+      "site_type": "stream",
+      "region": "Somerset, Pulaski County, Kentucky",
+      "county": "Pulaski",
+      "state": "KY",
+      "campus_reference": "Somerset Community College, main campus, 808 Monticello Street, Somerset, KY 42501",
+      "environment": "Freshwater stream",
+      "habitat_summary": "Shaded stream corridor (preliminary description)",
+      "watershed_status": "Under investigation",
+      "sampling_status": "Initial reconnaissance",
+      "is_featured": true,
+      "geometry_ref": "data/geo/allen-branch-nhd.geojson",
+      "access_notes": "Campus access route, permission requirements and a safe entry point have not yet been documented. Until faculty publish them here, visit only with a faculty member.",
+      "safety_notes": "Do not enter the water during or after heavy rain, when flow is high or the water is turbid. Wear gloves when handling water, sediment or biofilm, and wash hands afterward. Do not touch or collect surface scums or thick mats. Watch footing on wet rock and banks, and keep track of road crossings and culverts. Report any dead fish, animals or unusual scums to faculty rather than sampling them.",
+      "facts": [
+        {
+          "label": "Stream name",
+          "value": "Allen Branch (GNIS feature ID 00485848)",
+          "evidence_status": "mapped",
+          "source": "USGS National Hydrography Dataset (name and GNIS ID carried on the NHD flowline)",
+          "source_url": "https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer/6",
+          "retrieved_at": "2026-11-05",
+          "notes": "Aliases: none recorded. Local or historical names have not been checked."
+        },
+        {
+          "label": "NHD feature type",
+          "value": "Stream/River — intermittent (FCode 46003)",
+          "evidence_status": "mapped",
+          "source": "USGS NHD high-resolution flowline, reach code 05130103001019",
+          "source_url": "https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer/6",
+          "retrieved_at": "2026-11-05",
+          "notes": "A map classification. Whether the stream flows year-round, seasonally or only after rain has not been observed and is a research question."
+        },
+        {
+          "label": "Mapped length",
+          "value": "4.02 km (NHD flowline length)",
+          "evidence_status": "mapped",
+          "source": "USGS NHD attribute lengthkm",
+          "source_url": "https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer/6",
+          "retrieved_at": "2026-11-05",
+          "notes": "Length of the mapped centerline only; unmapped headwater channels are not included."
+        },
+        {
+          "label": "Mapped flow direction",
+          "value": "Generally west to east along the mapped line, toward its junction with Sinking Creek",
+          "evidence_status": "mapped",
+          "source": "USGS NHD digitized flow direction (flowdir = 1)",
+          "source_url": "https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer/6",
+          "retrieved_at": "2026-11-05",
+          "notes": "Field confirmation pending."
+        },
+        {
+          "label": "Downstream connection (mapped)",
+          "value": "Allen Branch → Sinking Creek (perennial) → Pitman Creek → Lake Cumberland (Cumberland River)",
+          "evidence_status": "mapped",
+          "source": "USGS NHD flowline network traced downstream reach by reach; Lake Cumberland identified as NHD waterbody GNIS 00490483 (reservoir)",
+          "source_url": "https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer",
+          "retrieved_at": "2026-11-05",
+          "notes": "This is the mapped surface path. It has not been walked or verified. In this karst setting, part of the flow may move underground, and the name 'Sinking Creek' itself hints at sinking streams. Do not treat the connection as established for any flow condition until field-checked."
+        },
+        {
+          "label": "Subwatershed (HUC 12)",
+          "value": "051301030204 — Lower Pitman Creek (128.26 km²)",
+          "evidence_status": "mapped",
+          "source": "USGS Watershed Boundary Dataset; the mapped Allen Branch line intersects only this 12-digit unit",
+          "source_url": "https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/6",
+          "retrieved_at": "2026-11-05",
+          "notes": "The area is that of the whole HUC 12, not of Allen Branch's own drainage. WBD lists the next unit downstream as 051301030401 (Meadow Creek–Cumberland River)."
+        },
+        {
+          "label": "Watershed (HUC 10) and subbasin (HUC 8)",
+          "value": "0513010302 — Pitman Creek–Cumberland River; 05130103 — Upper Cumberland–Lake Cumberland (Ohio Region 05)",
+          "evidence_status": "mapped",
+          "source": "USGS Watershed Boundary Dataset",
+          "source_url": "https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer",
+          "retrieved_at": "2026-11-05",
+          "notes": ""
+        },
+        {
+          "label": "Upstream drainage area",
+          "value": "Not yet delineated",
+          "evidence_status": "unverified",
+          "source": "—",
+          "source_url": "https://streamstats.usgs.gov/ss/",
+          "retrieved_at": "2026-11-05",
+          "notes": "To be delineated with USGS StreamStats or lidar in QGIS, with the method recorded. No area is estimated on this site until then."
+        },
+        {
+          "label": "Bedrock geology along the mapped corridor",
+          "value": "Upper Mississippian limestones: St. Louis Limestone at a point in the upper reach (Delmer Quadrangle, GQ-909); Salem and Warsaw Limestones at a point near the lower reach (Somerset Quadrangle, GQ-1196)",
+          "evidence_status": "mapped",
+          "source": "Kentucky Geological Survey 1:24,000 geologic map service (two points queried, not the whole corridor)",
+          "source_url": "https://kgs.uky.edu/arcgis/rest/services/GeologicMapData/KY24KGeologicFormations_WGS84/MapServer",
+          "retrieved_at": "2026-11-05",
+          "notes": ""
+        },
+        {
+          "label": "Karst potential (regional)",
+          "value": "'Intense' (Ste. Genevieve & St. Louis Limestones) at the upper-reach point; 'Prone' (Salem, Warsaw & Harrodsburg Limestones) at the lower-reach point",
+          "evidence_status": "mapped",
+          "source": "Kentucky Geological Survey 1:500,000 karst-potential map service",
+          "source_url": "https://kgs.uky.edu/arcgis/rest/services/GeologicMapData/KY500KKarstPotential_WGS84/MapServer",
+          "retrieved_at": "2026-11-05",
+          "notes": "Regional-scale classification. It indicates that groundwater flow may differ from surface drainage here; it does not show any specific sinkhole, spring or conduit on Allen Branch."
+        },
+        {
+          "label": "Surrounding land cover",
+          "value": "Not yet assessed",
+          "evidence_status": "unverified",
+          "source": "—",
+          "source_url": "",
+          "retrieved_at": "2026-11-05",
+          "notes": "NLCD 2021 can be viewed on the map. Land-cover percentages will be calculated only after the drainage area is delineated. Nearby land use is not evidence of what reaches the stream."
+        },
+        {
+          "label": "Monitoring stations on Allen Branch",
+          "value": "None found",
+          "evidence_status": "mapped",
+          "source": "Water Quality Portal station search for HUC 051301030204; USGS gage layer",
+          "source_url": "https://www.waterqualitydata.us/data/Station/search?huc=051301030204&mimeType=csv",
+          "retrieved_at": "2026-11-05",
+          "notes": "The same HUC 12 contains registered Kentucky Division of Water locations on Pitman Creek (CRW023 'Pitman Creek at Cabin Hollow Road'; CRW024 'Pitman Creek downstream of Somerset WWTP') and three U.S. Army Corps of Engineers, Nashville District locations (two stream, one reservoir). Registration does not mean current sampling."
+        },
+        {
+          "label": "Campus access point (coordinates)",
+          "value": "Not yet recorded",
+          "evidence_status": "unverified",
+          "source": "—",
+          "source_url": "",
+          "retrieved_at": "2026-11-05",
+          "notes": "The map shows the U.S. Census geocoded position of the campus street address for orientation only. A GPS position for the creek access point will be recorded on the first faculty-led visit."
+        },
+        {
+          "label": "Habitat",
+          "value": "Shaded stream corridor",
+          "evidence_status": "unverified",
+          "source": "Preliminary description supplied by faculty",
+          "source_url": "",
+          "retrieved_at": "2026-11-05",
+          "notes": "To be documented with canopy-cover measurements and photographs at defined stations."
+        },
+        {
+          "label": "Cyanobacteria at Allen Branch",
+          "value": "No observations recorded",
+          "evidence_status": "unverified",
+          "source": "—",
+          "source_url": "",
+          "retrieved_at": "2026-11-05",
+          "notes": "Allen Branch is not a documented bloom site. Whether benthic cyanobacteria occur here is an open question for student research."
+        }
+      ],
+      "investigation_tasks": [
+        { "id": "confirm-access", "task": "Confirm campus access coordinates", "status": "not_started", "evidence_status": "unverified", "summary": "Record a GPS position (with accuracy) for the safe access point used by classes, plus the route and any permissions needed.", "documentation": [] },
+        { "id": "verify-identity", "task": "Verify mapped stream identity", "status": "mapped", "evidence_status": "mapped", "summary": "NHD names the flowline 'Allen Branch' (GNIS 00485848). Still to do: confirm that the channel reached from campus is this mapped line, and check county and local sources for other names.", "documentation": [ { "label": "NHD flowline layer", "url": "https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer/6" } ] },
+        { "id": "delineate-drainage", "task": "Delineate upstream drainage", "status": "not_started", "evidence_status": "unverified", "summary": "Delineate the basin above defined sampling points with USGS StreamStats; record date, tool version and the pour-point coordinates.", "documentation": [ { "label": "USGS StreamStats", "url": "https://streamstats.usgs.gov/ss/" } ] },
+        { "id": "downstream-confluences", "task": "Identify downstream confluences", "status": "mapped", "evidence_status": "mapped", "summary": "NHD maps Allen Branch joining Sinking Creek, which flows to Pitman Creek. Field verification of the junction and of flow continuity at different seasons is pending.", "documentation": [ { "label": "Mapped path on the site map", "url": "#site-map" } ] },
+        { "id": "receiving-waters", "task": "Determine ultimate receiving waters", "status": "mapped", "evidence_status": "mapped", "summary": "NHD routes the mapped path into Lake Cumberland on the Cumberland River (Ohio River basin). Surface mapping only.", "documentation": [] },
+        { "id": "agricultural-land-cover", "task": "Assess agricultural land cover", "status": "not_started", "evidence_status": "unverified", "summary": "After delineation, summarize NLCD and Cropland Data Layer classes inside the basin in QGIS. Report areas with their data year and resolution. Land cover alone will not be used to infer pollution.", "documentation": [ { "label": "Cropland Data Layer", "url": "https://www.nass.usda.gov/Research_and_Science/Cropland/Viewer/" } ] },
+        { "id": "stormwater-inputs", "task": "Identify possible stormwater inputs", "status": "not_started", "evidence_status": "unverified", "summary": "Inventory pipes, ditches and culverts entering the channel during a dry-weather walk; photograph and GPS each one. Possible inputs are listed as possible until flow is observed.", "documentation": [] },
+        { "id": "karst-connectivity", "task": "Examine karst connectivity", "status": "in_progress", "evidence_status": "mapped", "summary": "KGS maps place the corridor on Mississippian limestones with 'intense' to 'prone' karst potential. Next: check mapped sinkholes and springs near the channel and look for losing or gaining reaches in the field.", "documentation": [ { "label": "KGS karst potential service", "url": "https://kgs.uky.edu/arcgis/rest/services/GeologicMapData/KY500KKarstPotential_WGS84/MapServer" } ] },
+        { "id": "sampling-stations", "task": "Establish sampling stations", "status": "not_started", "evidence_status": "unverified", "summary": "Choose safe, repeatable stations (for example upstream, near campus, and above the Sinking Creek junction), each with a code, GPS position and photo.", "documentation": [] },
+        { "id": "field-verification", "task": "Conduct field verification", "status": "not_started", "evidence_status": "unverified", "summary": "First faculty-led reconnaissance: confirm channel location, flow state, canopy, substrate and access, and record the visit as a field observation.", "documentation": [] }
+      ]
+    },
+    {
+      "id": "agricultural-pond",
+      "name": "Agricultural pond (to be selected)",
+      "aliases": [],
+      "site_type": "pond",
+      "region": "South-central Kentucky",
+      "county": null,
+      "state": "KY",
+      "campus_reference": null,
+      "environment": "Farm pond",
+      "habitat_summary": "Open, sunlit standing water — a contrast to a shaded stream",
+      "watershed_status": "Not started",
+      "sampling_status": "Proposed",
+      "is_featured": false,
+      "access_notes": "Requires landowner permission before any visit.",
+      "safety_notes": "Livestock ponds can hold toxic blooms; follow the bloom-safety rules on the Methods page.",
+      "facts": [],
+      "investigation_tasks": []
+    },
+    {
+      "id": "lake-cumberland-pitman",
+      "name": "Lake Cumberland — Pitman Creek embayment (proposed)",
+      "aliases": [],
+      "site_type": "reservoir",
+      "region": "Pulaski County, Kentucky",
+      "county": "Pulaski",
+      "state": "KY",
+      "campus_reference": null,
+      "environment": "Reservoir embayment",
+      "habitat_summary": "Where NHD routes the mapped Allen Branch–Sinking Creek–Pitman Creek path into Lake Cumberland",
+      "watershed_status": "Not started",
+      "sampling_status": "Proposed",
+      "is_featured": false,
+      "access_notes": "Public access and boating rules to be documented.",
+      "safety_notes": "Check current Kentucky HAB advisories before any reservoir visit.",
+      "facts": [],
+      "investigation_tasks": []
+    },
+    {
+      "id": "lake-linville",
+      "name": "Lake Linville (prior student project)",
+      "aliases": [],
+      "site_type": "lake",
+      "region": "Rockcastle County, Kentucky",
+      "county": "Rockcastle",
+      "state": "KY",
+      "campus_reference": null,
+      "environment": "Lake",
+      "habitat_summary": "Studied in an earlier SCC student water-quality poster",
+      "watershed_status": "See poster",
+      "sampling_status": "Prior project — not part of current sampling",
+      "is_featured": false,
+      "link": "../../posters-presentations/lake-linville/",
+      "access_notes": null,
+      "safety_notes": null,
+      "facts": [],
+      "investigation_tasks": []
+    }
+  ]
+}

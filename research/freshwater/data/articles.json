@@ -1,0 +1,140 @@
+{
+  "table": "wiki_articles",
+  "description": "Educational wiki structure. status: complete = full textbook text with references; outline = learning objectives, section outline, key terms, a short introduction and verified references, full text scheduled for Phase 2; planned = topic reserved.",
+  "units": [
+    {
+      "id": "cyanobacteria",
+      "title": "Cyanobacteria: Biology, Ecology, and Harmful Freshwater Blooms",
+      "short_title": "Cyanobacteria",
+      "path": "learn/cyanobacteria/",
+      "status": "active",
+      "summary": "A ten-chapter undergraduate text on the photosynthetic bacteria that shaped Earth's atmosphere, dominate many nutrient-rich waters today, and can produce toxins that matter for people, pets and livestock in Kentucky."
+    },
+    { "id": "nutrient-cycling", "title": "Nitrogen and Phosphorus in Freshwater", "short_title": "Nutrient cycling", "path": "learn/cyanobacteria/nutrients-and-watersheds/", "status": "planned", "summary": "Forms, sources and transformations of N and P from field to stream. Begins in Chapter 4 of the cyanobacteria unit." },
+    { "id": "food-webs", "title": "Freshwater Food Webs", "short_title": "Food webs", "path": "learn/cyanobacteria/food-webs/", "status": "planned", "summary": "Producers, grazers, predators and decomposers in streams and ponds. Begins in Chapter 6 of the cyanobacteria unit." },
+    { "id": "aquatic-microbiology", "title": "Aquatic Microbiology", "short_title": "Aquatic microbiology", "path": "learn/cyanobacteria/freshwater-ecology/", "status": "planned", "summary": "Biofilms, plankton and microbial interactions. Begins in Chapter 3 of the cyanobacteria unit." },
+    { "id": "watersheds-karst", "title": "Watersheds and Karst", "short_title": "Watersheds & karst", "path": "maps/", "status": "planned", "summary": "How water moves across and beneath the south-central Kentucky landscape. Begins on the Watersheds & Maps page." }
+  ],
+  "records": [
+    {
+      "id": "what-are-cyanobacteria", "unit": "cyanobacteria", "chapter_number": 1,
+      "title": "What Are Cyanobacteria?", "short_title": "What are cyanobacteria?",
+      "path": "learn/cyanobacteria/what-are-cyanobacteria/", "status": "complete", "last_reviewed": "2026-11-05",
+      "summary": "Photosynthetic bacteria, not algae: cell structure, oxygenic photosynthesis, pigments, and their role in Earth's oxygenation and the origin of chloroplasts.",
+      "learning_objectives": [
+        "Explain why cyanobacteria are classified as bacteria even though they are often called blue-green algae.",
+        "Compare the cellular organization of a cyanobacterium with that of a eukaryotic green alga.",
+        "Describe oxygenic photosynthesis and the roles of chlorophyll a, phycobiliproteins and thylakoid membranes.",
+        "Summarize the evidence linking cyanobacteria to the rise of atmospheric oxygen and to the origin of chloroplasts.",
+        "Describe the ecological roles of cyanobacteria as primary producers and nitrogen fixers."
+      ]
+    },
+    {
+      "id": "diversity-and-identification", "unit": "cyanobacteria", "chapter_number": 2,
+      "title": "Cyanobacterial Diversity and Identification", "short_title": "Diversity & identification",
+      "path": "learn/cyanobacteria/diversity-and-identification/", "status": "complete", "last_reviewed": "2026-11-05",
+      "summary": "Unicellular, colonial and filamentous forms; heterocytes, akinetes and gas vesicles; eight freshwater genera; why names change; and the limits of identification by microscope.",
+      "learning_objectives": [
+        "Distinguish unicellular, colonial and filamentous growth forms.",
+        "Identify heterocytes, akinetes, gas vesicles and mucilage and explain the function of each.",
+        "Recognize diagnostic features of eight common freshwater genera.",
+        "Explain why genus names such as Anabaena and Cylindrospermopsis have changed.",
+        "Explain why microscopic identification cannot determine species with certainty or show whether a population produces toxins."
+      ]
+    },
+    {
+      "id": "freshwater-ecology", "unit": "cyanobacteria", "chapter_number": 3,
+      "title": "Freshwater Ecology of Cyanobacteria", "short_title": "Freshwater ecology",
+      "path": "learn/cyanobacteria/freshwater-ecology/", "status": "outline", "last_reviewed": "2026-11-05",
+      "summary": "Planktonic versus benthic life; light, temperature, mixing and residence time; succession, competition, grazing and microbial partners — from shaded streams to sunlit ponds.",
+      "learning_objectives": [
+        "Contrast planktonic and benthic cyanobacteria and the habitats each occupies.",
+        "Explain how light, temperature, stratification and water residence time favor or limit cyanobacteria.",
+        "Predict how a shaded, flowing stream and an open, still pond differ in their likely cyanobacterial communities.",
+        "Describe seasonal succession and the roles of competition, grazing and microbial interactions."
+      ]
+    },
+    {
+      "id": "nutrients-and-watersheds", "unit": "cyanobacteria", "chapter_number": 4,
+      "title": "Nutrient Cycling and Agricultural Watersheds", "short_title": "Nutrients & watersheds",
+      "path": "learn/cyanobacteria/nutrients-and-watersheds/", "status": "outline", "last_reviewed": "2026-11-05",
+      "summary": "Nitrogen and phosphorus forms, limitation and co-limitation, eutrophication, and how fertilizer, manure, soil, wastewater and stormwater reach water — and when they don't.",
+      "learning_objectives": [
+        "Describe the major forms of nitrogen and phosphorus in fresh water and how they transform.",
+        "Explain nutrient limitation and co-limitation and why single-nutrient explanations of blooms are often wrong.",
+        "Identify external and internal nutrient sources in a watershed.",
+        "Distinguish proximity to farmland from hydrologic connectivity, including in karst."
+      ]
+    },
+    {
+      "id": "harmful-algal-blooms", "unit": "cyanobacteria", "chapter_number": 5,
+      "title": "Harmful Algal Blooms", "short_title": "Harmful algal blooms",
+      "path": "learn/cyanobacteria/harmful-algal-blooms/", "status": "complete", "last_reviewed": "2026-11-05",
+      "summary": "What a bloom is, why some are harmful, the four major cyanotoxin groups, oxygen depletion, health effects, U.S. guidance values and how Kentucky issues advisories.",
+      "learning_objectives": [
+        "Define a bloom and explain why bloom, harmful bloom and toxic bloom are different claims.",
+        "Compare microcystins, anatoxins, cylindrospermopsins and saxitoxins by target and producer.",
+        "Distinguish intracellular from dissolved toxin and explain why it matters for sampling and treatment.",
+        "Explain why cell counts, color and toxin concentration are related but not interchangeable.",
+        "Find and interpret current Kentucky advisories and U.S. EPA guidance values."
+      ]
+    },
+    {
+      "id": "food-webs", "unit": "cyanobacteria", "chapter_number": 6,
+      "title": "Cyanobacteria and Aquatic Food Webs", "short_title": "Food webs",
+      "path": "learn/cyanobacteria/food-webs/", "status": "outline", "last_reviewed": "2026-11-05",
+      "summary": "How green algae, diatoms, rotifers, copepods, Daphnia, snails, fish and decomposers interact with cyanobacteria — and why cyanobacteria are hard to eat.",
+      "learning_objectives": [
+        "Place cyanobacteria in a freshwater food web alongside green algae and diatoms.",
+        "Explain why cyanobacteria are often poor food: nutrition, shape, toxins and digestive inhibitors.",
+        "Describe evidence for naturally tolerant Daphnia populations and the role of gut microbiota."
+      ]
+    },
+    {
+      "id": "prevention-and-control", "unit": "cyanobacteria", "chapter_number": 7,
+      "title": "Bloom Prevention and Biological Control", "short_title": "Prevention & control",
+      "path": "learn/cyanobacteria/prevention-and-control/", "status": "outline", "last_reviewed": "2026-11-05",
+      "summary": "Nutrient management, restoration, buffers, mixing, algaecides, biomanipulation, grazer–cyanobacteria coevolution, microbiomes — and a careful look at engineered organisms.",
+      "learning_objectives": [
+        "Explain why reducing nutrient inputs is the foundation of bloom prevention.",
+        "Evaluate in-lake measures (mixing, algaecides, hydrogen peroxide) and their limits.",
+        "Describe biomanipulation and the conditions under which it succeeds or fails.",
+        "Distinguish contained laboratory research with modified organisms from environmental release, and outline ecological risk assessment."
+      ]
+    },
+    {
+      "id": "laboratory-methods", "unit": "cyanobacteria", "chapter_number": 8,
+      "title": "Studying Cyanobacteria in the Laboratory", "short_title": "Laboratory methods",
+      "path": "learn/cyanobacteria/laboratory-methods/", "status": "outline", "last_reviewed": "2026-11-05",
+      "summary": "Wet mounts, brightfield microscopy, calibration and photomicrography, metadata, water chemistry, pigments, molecular concepts and toxin testing — with the limits and safety rules for each.",
+      "learning_objectives": [
+        "Prepare and document a wet mount with calibrated measurements.",
+        "Record the environmental metadata that make an observation useful.",
+        "Explain what pigment, molecular and toxin methods can and cannot tell you.",
+        "Apply the safety rules for handling potentially toxic environmental samples."
+      ]
+    },
+    {
+      "id": "kentucky", "unit": "cyanobacteria", "chapter_number": 9,
+      "title": "Cyanobacteria in Kentucky", "short_title": "Kentucky",
+      "path": "learn/cyanobacteria/kentucky/", "status": "outline", "last_reviewed": "2026-11-05",
+      "summary": "What is documented about blooms in Kentucky's reservoirs, rivers and ponds since 2013, the agricultural and karst setting, and how much remains unknown near Somerset.",
+      "learning_objectives": [
+        "Summarize documented Kentucky HAB events and how advisories are issued.",
+        "Describe Kentucky's freshwater settings: large reservoirs, the Ohio River, small lakes and farm ponds, karst streams.",
+        "Distinguish documented Kentucky findings from hypotheses about Allen Branch or Lake Cumberland."
+      ]
+    },
+    {
+      "id": "open-questions", "unit": "cyanobacteria", "chapter_number": 10,
+      "title": "Open Research Questions", "short_title": "Open questions",
+      "path": "learn/cyanobacteria/open-questions/", "status": "complete", "last_reviewed": "2026-11-05",
+      "summary": "Undergraduate-scale research directions for Allen Branch and other south-central Kentucky waters, each linked to background, methods and references.",
+      "learning_objectives": [
+        "Turn a topic into a testable research question and hypothesis.",
+        "Match a question to feasible methods and an appropriate site.",
+        "Recognize what a first-year dataset can and cannot show."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Freshwater Ecology &amp; Watershed Research · Biology at SCC</title>
+<meta name="description" content="An undergraduate research portal from Biology at SCC exploring the biology, chemistry and geography of freshwater systems in south-central Kentucky, starting with Allen Branch at Somerset Community College.">
+<meta name="fw:section" content="home">
+<meta name="fw:short" content="Freshwater Research">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body class="fw">
+<!-- fw:header -->
+<script>(function(){var d=document.documentElement;d.classList.add("js");try{var t=localStorage.getItem("fw-theme");if(t==="light"||t==="dark")d.setAttribute("data-theme",t);}catch(e){}})();</script>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="site-title" href="../../index.html">Biology <span>at SCC</span></a>
+    <nav aria-label="Biology at SCC">
+      <ul>
+        <li><a href="../../departments/">Departments</a></li>
+        <li><a href="../../honors-symposium/">Honors Symposium</a></li>
+        <li><a href="../../posters-presentations/">Posters &amp; Presentations</a></li>
+        <li><a href="../../archive/">Archive</a></li>
+        <li><a href="../../labs/">Lab</a></li>
+        <li><a href="./" class="is-active">Research</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="fw-bar">
+  <div class="fw-bar-inner">
+    <a class="fw-brand" href="./"><span class="fw-brand-mark" aria-hidden="true"></span><span>Freshwater Ecology <span class="fw-brand-amp">&amp; Watershed Research</span></span></a>
+    <form class="fw-search" role="search" action="./search/" method="get">
+      <label class="visually-hidden" for="fw-q">Search the research portal</label>
+      <input id="fw-q" name="q" type="search" placeholder="Search topics, organisms, resources…" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <div class="fw-bar-tools">
+      <button type="button" class="fw-theme-toggle" data-theme-toggle aria-label="Color theme: automatic">Theme: Auto</button>
+      <button type="button" class="fw-menu-toggle" aria-expanded="false" aria-controls="fw-nav">Menu</button>
+    </div>
+  </div>
+  <nav id="fw-nav" class="fw-nav" aria-label="Research portal">
+    <ul>
+        <li><a href="./" aria-current="page">Research Home</a></li>
+        <li><a href="./learn/">Learn</a></li>
+        <li><a href="./learn/cyanobacteria/">Cyanobacteria</a></li>
+        <li><a href="./maps/">Watersheds &amp; Maps</a></li>
+        <li><a href="./sites/allen-branch/">Allen Branch</a></li>
+        <li><a href="./organisms/">Organism Atlas</a></li>
+        <li><a href="./methods/">Field Methods</a></li>
+        <li><a href="./resources/">Resource Library</a></li>
+        <li><a href="./projects/">Research Projects</a></li>
+        <li><a href="./observations/">Observations</a></li>
+    </ul>
+  </nav>
+</div>
+<nav class="fw-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="../../index.html">Biology at SCC</a></li>
+    <li><a href="./" aria-current="page">Freshwater Research</a></li>
+  </ol>
+</nav>
+<!-- /fw:header -->
+
+<main id="main">
+  <section class="fw-hero" aria-labelledby="page-title">
+    <svg class="fw-hero-art" viewBox="0 0 560 300" aria-hidden="true" focusable="false">
+      <g fill="none" stroke="var(--fw-teal)" stroke-opacity="0.22" stroke-width="1.2">
+        <path d="M20 260 C120 230 160 170 260 165 S430 120 540 40"/>
+        <path d="M20 280 C130 250 170 195 270 190 S440 150 560 70"/>
+        <path d="M40 300 C150 270 190 220 290 215 S460 180 560 110"/>
+        <path d="M0 230 C100 205 150 140 250 135 S420 90 520 15"/>
+        <path d="M0 200 C90 180 140 115 240 108 S400 60 480 0"/>
+      </g>
+      <path d="M30 290 C140 262 175 205 275 200 S450 160 560 90" fill="none" stroke="var(--fw-teal)" stroke-width="5" stroke-linecap="round" stroke-opacity="0.55"/>
+      <g fill="var(--fw-teal)" fill-opacity="0.5">
+        <circle cx="150" cy="240" r="4"/><circle cx="275" cy="200" r="4"/><circle cx="410" cy="168" r="4"/>
+      </g>
+    </svg>
+    <p class="fw-kicker">Biology at SCC · Undergraduate research</p>
+    <h1 id="page-title">Freshwater Ecology &amp; Watershed Research</h1>
+    <p class="fw-subtitle">Exploring the biology, chemistry, and geography of freshwater systems in south-central Kentucky.</p>
+    <p>Every stream and pond is a meeting point. Rain falling on fields, forests, roads and rooftops carries soil, nutrients and dissolved minerals downhill; in the water, microbial communities, algae and cyanobacteria take up those nutrients, grazers eat them, and decomposers return them. Studying a creek is therefore a way of studying the whole landscape around it — and the human activity on it.</p>
+    <p>This portal is where Somerset Community College students learn the science, explore the geography, and build careful, evidence-labeled research — beginning with Allen Branch, a stream mapped a short walk from the main campus.</p>
+    <div class="fw-hero-actions">
+      <a class="fw-btn" href="learn/cyanobacteria/">Start learning: Cyanobacteria</a>
+      <a class="fw-btn fw-btn--ghost" href="sites/allen-branch/">Allen Branch site profile</a>
+      <a class="fw-btn fw-btn--ghost" href="resources/">Resource Library</a>
+    </div>
+    <!-- fw:counts -->
+<ul class="fw-stats">
+  <li><a href="./resources/"><span class="fw-stat-n">34</span> <span class="fw-stat-l">curated resources</span></a></li>
+  <li><a href="./resources/literature/"><span class="fw-stat-n">44</span> <span class="fw-stat-l">papers in the library</span></a></li>
+  <li><a href="./learn/glossary/"><span class="fw-stat-n">49</span> <span class="fw-stat-l">glossary terms</span></a></li>
+  <li><a href="./projects/"><span class="fw-stat-n">8</span> <span class="fw-stat-l">open research questions</span></a></li>
+  <li><a href="./observations/"><span class="fw-stat-n">0</span> <span class="fw-stat-l">published field observations</span></a></li>
+</ul>
+<!-- /fw:counts -->
+  </section>
+
+  <div class="fw-dash">
+    <section class="fw-card span-5" aria-labelledby="featured-site">
+      <div class="fw-feature-text">
+        <p class="fw-feature-label">Featured research site</p>
+        <h2 id="featured-site">Allen Branch</h2>
+        <dl class="fw-kv">
+          <dt>Region</dt><dd>Somerset, Pulaski County, Kentucky</dd>
+          <dt>Campus reference</dt><dd>Somerset Community College</dd>
+          <dt>Environment</dt><dd>Freshwater stream</dd>
+          <dt>Preliminary habitat</dt><dd>Shaded stream corridor <span class="fw-badge fw-badge--unverified"><span aria-hidden="true">○</span> Unverified</span></dd>
+          <dt>Watershed status</dt><dd>Under investigation</dd>
+          <dt>Sampling status</dt><dd>Initial reconnaissance</dd>
+          <dt>Mapped as</dt><dd>Intermittent stream in the USGS National Hydrography Dataset <span class="fw-badge fw-badge--mapped"><span aria-hidden="true">◆</span> Mapped</span></dd>
+        </dl>
+        <p>Nothing about the creek's water quality or organisms has been measured yet. The site profile shows what is known, how it is known, and what students will check first.</p>
+        <p><a class="fw-btn" href="sites/allen-branch/">Open the full site profile</a></p>
+      </div>
+    </section>
+
+    <section class="fw-card span-7" aria-labelledby="explore-watershed">
+      <div class="fw-card-head">
+        <h2 id="explore-watershed">Explore the watershed</h2>
+        <a href="maps/">Full mapping tools &rarr;</a>
+      </div>
+      <div class="fw-map fw-map--small" data-fw-map="mini" data-root="./" data-layers="usgs-topo,nhd,allen-branch,campus-reference" data-status="home-map-status" role="region" aria-label="Preview map of Allen Branch near Somerset Community College, showing the USGS-mapped stream line with flow-direction arrows and the geocoded campus address">
+        <p class="fw-map-fallback">The interactive map needs JavaScript. The <a href="sites/allen-branch/">site profile</a> lists the same mapped facts in a table.</p>
+      </div>
+      <p class="fw-map-status" id="home-map-status" role="status"></p>
+      <p class="fw-muted" style="font-size:.88rem;margin:.3rem 0 0">Dark blue line with arrows: Allen Branch as mapped by USGS (flow direction from the dataset). Dashed line: the mapped path downstream. Navy square: the campus street address (approximate). All features are <strong>Mapped</strong>, not field-verified.</p>
+    </section>
+
+    <section class="fw-card span-12" aria-labelledby="topics">
+      <div class="fw-card-head">
+        <h2 id="topics">Featured learning topics</h2>
+        <a href="learn/">All learning materials &rarr;</a>
+      </div>
+      <div class="fw-topic-grid">
+        <a class="fw-topic" href="learn/cyanobacteria/"><strong>Cyanobacteria</strong><span>Photosynthetic bacteria that oxygenated Earth — and the cause of most harmful freshwater blooms.</span></a>
+        <a class="fw-topic fw-topic--green" href="learn/cyanobacteria/nutrients-and-watersheds/"><strong>Nutrient cycling</strong><span>How nitrogen and phosphorus move from land to water, and why "nearby" is not "connected".</span></a>
+        <a class="fw-topic fw-topic--navy" href="learn/cyanobacteria/food-webs/"><strong>Freshwater food webs</strong><span>Algae, grazers such as Daphnia, fish and decomposers — and why cyanobacteria are hard to eat.</span></a>
+        <a class="fw-topic fw-topic--amber" href="learn/cyanobacteria/freshwater-ecology/"><strong>Aquatic microbiology</strong><span>Biofilms, plankton and the microbial life coating every stream rock.</span></a>
+      </div>
+    </section>
+
+    <section class="fw-card span-12" aria-labelledby="field-sites">
+      <div class="fw-card-head">
+        <h2 id="field-sites">Field sites</h2>
+        <a href="sites/">Site inventory &rarr;</a>
+      </div>
+      <!-- fw:sites -->
+<div class="fw-site-grid">
+<article class="fw-site-card fw-site-card--featured" id="site-allen-branch">
+  <p class="fw-site-type">Freshwater stream · Somerset, Pulaski County, Kentucky</p>
+  <h3><a href="./sites/allen-branch/">Allen Branch</a></h3>
+  <p>Shaded stream corridor (preliminary description)</p>
+  <dl class="fw-meta">
+    <div><dt>Watershed status</dt><dd>Under investigation</dd></div>
+    <div><dt>Sampling status</dt><dd>Initial reconnaissance</dd></div>
+  </dl>
+  
+</article>
+<article class="fw-site-card" id="site-agricultural-pond">
+  <p class="fw-site-type">Farm pond · South-central Kentucky</p>
+  <h3>Agricultural pond (to be selected)</h3>
+  <p>Open, sunlit standing water — a contrast to a shaded stream</p>
+  <dl class="fw-meta">
+    <div><dt>Watershed status</dt><dd>Not started</dd></div>
+    <div><dt>Sampling status</dt><dd>Proposed</dd></div>
+  </dl>
+  <p class="fw-muted">Requires landowner permission before any visit.</p>
+</article>
+<article class="fw-site-card" id="site-lake-cumberland-pitman">
+  <p class="fw-site-type">Reservoir embayment · Pulaski County, Kentucky</p>
+  <h3>Lake Cumberland — Pitman Creek embayment (proposed)</h3>
+  <p>Where NHD routes the mapped Allen Branch–Sinking Creek–Pitman Creek path into Lake Cumberland</p>
+  <dl class="fw-meta">
+    <div><dt>Watershed status</dt><dd>Not started</dd></div>
+    <div><dt>Sampling status</dt><dd>Proposed</dd></div>
+  </dl>
+  <p class="fw-muted">Public access and boating rules to be documented.</p>
+</article>
+<article class="fw-site-card" id="site-lake-linville">
+  <p class="fw-site-type">Lake · Rockcastle County, Kentucky</p>
+  <h3><a href="./../../posters-presentations/lake-linville/">Lake Linville (prior student project)</a></h3>
+  <p>Studied in an earlier SCC student water-quality poster</p>
+  <dl class="fw-meta">
+    <div><dt>Watershed status</dt><dd>See poster</dd></div>
+    <div><dt>Sampling status</dt><dd>Prior project — not part of current sampling</dd></div>
+  </dl>
+  
+</article>
+</div>
+<!-- /fw:sites -->
+    </section>
+
+    <section class="fw-card span-6" aria-labelledby="questions">
+      <div class="fw-card-head">
+        <h2 id="questions">Research questions</h2>
+        <a href="projects/">All questions &amp; projects &rarr;</a>
+      </div>
+      <p class="fw-muted" style="margin-top:0">Open questions students can take on. None has started yet, so every one is marked <em>Proposed</em>.</p>
+      <!-- fw:questions compact="true" site="allen-branch" -->
+<ul class="fw-question-list fw-question-list--compact">
+  <li class="fw-question" id="q-shade-vs-sun">
+    <p class="fw-question-theme">Light and habitat <span class="fw-badge fw-badge--proposed"><span aria-hidden="true">○</span> Proposed</span></p>
+    <p class="fw-question-text">Do benthic cyanobacteria make up a larger share of the biofilm in sunlit stream reaches than in shaded reaches of the same stream?</p>
+    
+  </li>
+  <li class="fw-question" id="q-nutrients-community">
+    <p class="fw-question-theme">Nutrients and communities <span class="fw-badge fw-badge--proposed"><span aria-hidden="true">○</span> Proposed</span></p>
+    <p class="fw-question-text">Are nitrate and orthophosphate concentrations in Allen Branch related to the composition of its microbial biofilm?</p>
+    
+  </li>
+  <li class="fw-question" id="q-seasonal-biofilms">
+    <p class="fw-question-theme">Seasonality <span class="fw-badge fw-badge--proposed"><span aria-hidden="true">○</span> Proposed</span></p>
+    <p class="fw-question-text">How do benthic biofilms in Allen Branch change from spring to fall, and do cyanobacteria become more common as flow declines?</p>
+    
+  </li>
+  <li class="fw-question" id="q-land-use-chemistry">
+    <p class="fw-question-theme">Land use and stream chemistry <span class="fw-badge fw-badge--proposed"><span aria-hidden="true">○</span> Proposed</span></p>
+    <p class="fw-question-text">Once its drainage area is delineated, how does land cover in the Allen Branch basin compare with nearby basins, and does stream chemistry differ accordingly?</p>
+    
+  </li>
+</ul>
+<!-- /fw:questions -->
+    </section>
+
+    <section class="fw-card span-6" aria-labelledby="latest-observations">
+      <div class="fw-card-head">
+        <h2 id="latest-observations">Latest observations</h2>
+        <a href="observations/">Observation records &rarr;</a>
+      </div>
+      <div class="fw-empty">
+        <p style="margin-top:0"><strong>No field observations have been recorded yet.</strong></p>
+        <p>When students visit Allen Branch, each faculty-reviewed visit will appear here with its date, station, weather, recent rainfall, measurements (with units and methods) and photographs.</p>
+        <p style="margin-bottom:0">Getting ready? Read the <a href="methods/#safety">field safety rules</a> and the <a href="observations/#fields">observation data dictionary</a>.</p>
+      </div>
+    </section>
+
+    <section class="fw-card span-12" aria-labelledby="featured-resources">
+      <div class="fw-card-head">
+        <h2 id="featured-resources">Scientific resources — Kentucky first</h2>
+        <a href="resources/">Full Resource Library &rarr;</a>
+      </div>
+      <!-- fw:resources featured="true" limit="6" -->
+<div class="fw-resource-grid">
+<article class="fw-resource" id="res-kdow-habs" data-category="kentucky-resources" data-geo="kentucky" data-text="harmful algal blooms kentucky energy and environment cabinet, division of water kentucky resources kentucky's official harmful algal bloom (hab) program page: how the state monitors blooms, current recreational advisories, safety guidance for people and animals, and how to report a suspected bloom. current kentucky hab advisories and reporting kentucky">
+  <div class="fw-resource-top"><span class="fw-chip fw-chip--kentucky-resources">Kentucky Resources</span><span class="fw-geo fw-geo--kentucky">Kentucky</span></div>
+  <h3 class="fw-resource-title"><a href="https://eec.ky.gov/Environmental-Protection/Water/Monitor/Pages/HABS.aspx" rel="noopener">Harmful Algal Blooms<span class="visually-hidden"> (external site)</span></a></h3>
+  <p class="fw-resource-org">Kentucky Energy and Environment Cabinet, Division of Water</p>
+  <p class="fw-resource-desc">Kentucky's official harmful algal bloom (HAB) program page: how the state monitors blooms, current recreational advisories, safety guidance for people and animals, and how to report a suspected bloom.</p>
+  <dl class="fw-meta">
+    <div><dt>Primary use</dt><dd>Current Kentucky HAB advisories and reporting</dd></div>
+    <div><dt>Source type</dt><dd>Agency portal</dd></div>
+    <div><dt>Published / updated</dt><dd>Not stated by source</dd></div>
+    <div><dt>Link checked</dt><dd>2026-11-05 <span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Link OK</span></dd></div>
+  </dl>
+  
+</article>
+<article class="fw-resource" id="res-ky-water-maps" data-category="kentucky-resources" data-geo="kentucky" data-text="kentucky water maps portal kentucky energy and environment cabinet, division of water kentucky resources entry point to the division of water's web map applications, including watershed and water-health viewers and the hab viewer. start here to see which state map tools exist before searching for a dataset. finding the right state water map application kentucky">
+  <div class="fw-resource-top"><span class="fw-chip fw-chip--kentucky-resources">Kentucky Resources</span><span class="fw-geo fw-geo--kentucky">Kentucky</span></div>
+  <h3 class="fw-resource-title"><a href="https://watermaps.ky.gov/" rel="noopener">Kentucky Water Maps Portal<span class="visually-hidden"> (external site)</span></a></h3>
+  <p class="fw-resource-org">Kentucky Energy and Environment Cabinet, Division of Water</p>
+  <p class="fw-resource-desc">Entry point to the Division of Water's web map applications, including watershed and water-health viewers and the HAB viewer. Start here to see which state map tools exist before searching for a dataset.</p>
+  <dl class="fw-meta">
+    <div><dt>Primary use</dt><dd>Finding the right state water map application</dd></div>
+    <div><dt>Source type</dt><dd>Map application</dd></div>
+    <div><dt>Published / updated</dt><dd>Not stated by source</dd></div>
+    <div><dt>Link checked</dt><dd>2026-11-05 <span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Link OK</span></dd></div>
+  </dl>
+  
+</article>
+<article class="fw-resource" id="res-ky-watershed-explorer" data-category="watershed-mapping" data-geo="kentucky" data-text="kentucky watershed explorer kentucky energy and environment cabinet watershed mapping interactive viewer for exploring kentucky watersheds and the environmental and water-resource layers mapped within them. useful for placing a stream such as allen branch inside its hydrologic units. exploring watershed units and mapped water-resource layers kentucky">
+  <div class="fw-resource-top"><span class="fw-chip fw-chip--watershed-mapping">Watershed Mapping</span><span class="fw-geo fw-geo--kentucky">Kentucky</span></div>
+  <h3 class="fw-resource-title"><a href="https://eppcgis.ky.gov/watershed/" rel="noopener">Kentucky Watershed Explorer<span class="visually-hidden"> (external site)</span></a></h3>
+  <p class="fw-resource-org">Kentucky Energy and Environment Cabinet</p>
+  <p class="fw-resource-desc">Interactive viewer for exploring Kentucky watersheds and the environmental and water-resource layers mapped within them. Useful for placing a stream such as Allen Branch inside its hydrologic units.</p>
+  <dl class="fw-meta">
+    <div><dt>Primary use</dt><dd>Exploring watershed units and mapped water-resource layers</dd></div>
+    <div><dt>Source type</dt><dd>Map application</dd></div>
+    <div><dt>Published / updated</dt><dd>Not stated by source</dd></div>
+    <div><dt>Link checked</dt><dd>2026-11-05 <span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Link OK</span></dd></div>
+  </dl>
+  
+</article>
+<article class="fw-resource" id="res-kdow-water-quality" data-category="water-quality" data-geo="kentucky" data-text="water quality monitoring kentucky energy and environment cabinet, division of water water quality kentucky's surface-water monitoring programs, water-quality assessments and integrated reports, which state whether assessed waters support their designated uses. state monitoring programs and assessment reports kentucky">
+  <div class="fw-resource-top"><span class="fw-chip fw-chip--water-quality">Water Quality</span><span class="fw-geo fw-geo--kentucky">Kentucky</span></div>
+  <h3 class="fw-resource-title"><a href="https://eec.ky.gov/Environmental-Protection/Water/Monitor/Pages/default.aspx" rel="noopener">Water Quality Monitoring<span class="visually-hidden"> (external site)</span></a></h3>
+  <p class="fw-resource-org">Kentucky Energy and Environment Cabinet, Division of Water</p>
+  <p class="fw-resource-desc">Kentucky's surface-water monitoring programs, water-quality assessments and Integrated Reports, which state whether assessed waters support their designated uses.</p>
+  <dl class="fw-meta">
+    <div><dt>Primary use</dt><dd>State monitoring programs and assessment reports</dd></div>
+    <div><dt>Source type</dt><dd>Agency portal</dd></div>
+    <div><dt>Published / updated</dt><dd>Not stated by source</dd></div>
+    <div><dt>Link checked</dt><dd>2026-11-05 <span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Link OK</span></dd></div>
+  </dl>
+  
+</article>
+<article class="fw-resource" id="res-kdfwr-blue-green-algae" data-category="kentucky-resources" data-geo="kentucky" data-text="information on blue-green algae and harmful algae blooms kentucky department of fish &amp; wildlife resources kentucky resources public guidance for anglers and boaters on cyanobacteria (&quot;blue-green algae&quot;) in kentucky lakes, including what blooms look like and how to reduce exposure for people, pets and harvested fish. public education on blooms in kentucky lakes kentucky">
+  <div class="fw-resource-top"><span class="fw-chip fw-chip--kentucky-resources">Kentucky Resources</span><span class="fw-geo fw-geo--kentucky">Kentucky</span></div>
+  <h3 class="fw-resource-title"><a href="https://fw.ky.gov/Fish/Pages/Blue-Green-Algae-Info.aspx" rel="noopener">Information on Blue-Green Algae and Harmful Algae Blooms<span class="visually-hidden"> (external site)</span></a></h3>
+  <p class="fw-resource-org">Kentucky Department of Fish &amp; Wildlife Resources</p>
+  <p class="fw-resource-desc">Public guidance for anglers and boaters on cyanobacteria (&quot;blue-green algae&quot;) in Kentucky lakes, including what blooms look like and how to reduce exposure for people, pets and harvested fish.</p>
+  <dl class="fw-meta">
+    <div><dt>Primary use</dt><dd>Public education on blooms in Kentucky lakes</dd></div>
+    <div><dt>Source type</dt><dd>Guidance</dd></div>
+    <div><dt>Published / updated</dt><dd>Not stated by source</dd></div>
+    <div><dt>Link checked</dt><dd>2026-11-05 <span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Link OK</span></dd></div>
+  </dl>
+  
+</article>
+<article class="fw-resource" id="res-kgs" data-category="kentucky-resources" data-geo="kentucky" data-text="kentucky geological survey kentucky geological survey, university of kentucky kentucky resources state geological survey: geologic maps, groundwater and water-well data, karst and sinkhole mapping, and springs. essential for south-central kentucky, where limestone karst can route water underground in ways surface maps do not show. geology, groundwater and karst context kentucky">
+  <div class="fw-resource-top"><span class="fw-chip fw-chip--kentucky-resources">Kentucky Resources</span><span class="fw-geo fw-geo--kentucky">Kentucky</span></div>
+  <h3 class="fw-resource-title"><a href="https://www.uky.edu/KGS/" rel="noopener">Kentucky Geological Survey<span class="visually-hidden"> (external site)</span></a></h3>
+  <p class="fw-resource-org">Kentucky Geological Survey, University of Kentucky</p>
+  <p class="fw-resource-desc">State geological survey: geologic maps, groundwater and water-well data, karst and sinkhole mapping, and springs. Essential for south-central Kentucky, where limestone karst can route water underground in ways surface maps do not show.</p>
+  <dl class="fw-meta">
+    <div><dt>Primary use</dt><dd>Geology, groundwater and karst context</dd></div>
+    <div><dt>Source type</dt><dd>Agency portal</dd></div>
+    <div><dt>Published / updated</dt><dd>Not stated by source</dd></div>
+    <div><dt>Link checked</dt><dd>2026-11-05 <span class="fw-badge fw-badge--blocked-automated-check"><span aria-hidden="true">!</span> Needs review</span></dd></div>
+  </dl>
+  <p class="fw-linkcheck fw-linkcheck--warn"><strong>Needs administrator review:</strong> The automated check could not connect (SSL certificate problem: unable to get local issuer certificate); confirm in a browser (checked 2026-11-05). The link has not been changed.</p>
+</article>
+</div>
+<!-- /fw:resources -->
+    </section>
+
+    <section class="fw-card span-12" aria-labelledby="evidence">
+      <div class="fw-card-head">
+        <h2 id="evidence">How to read this portal</h2>
+        <a href="standards/">Evidence &amp; citation standards &rarr;</a>
+      </div>
+      <p style="margin-top:0">Every geographic fact carries a label saying how we know it. A fact never moves up the list without evidence.</p>
+      <ul class="fw-legend">
+        <li><span class="fw-badge fw-badge--unverified"><span aria-hidden="true">○</span> Unverified</span> stated or suspected, not yet checked</li>
+        <li><span class="fw-badge fw-badge--mapped"><span aria-hidden="true">◆</span> Mapped</span> shown in authoritative map data</li>
+        <li><span class="fw-badge fw-badge--field-confirmed"><span aria-hidden="true">✓</span> Field confirmed</span> observed on site and recorded</li>
+        <li><span class="fw-badge fw-badge--lab-confirmed"><span aria-hidden="true">■</span> Laboratory confirmed</span> measured in a laboratory</li>
+      </ul>
+      <div class="fw-callout fw-callout--safety">
+        <span class="fw-callout-title">Before any water visit</span>
+        Check current <a href="https://eec.ky.gov/Environmental-Protection/Water/Monitor/Pages/HABS.aspx" rel="noopener">Kentucky harmful algal bloom advisories</a>. Keep people and pets out of water with surface scum, mats or unusual color. When in doubt, stay out.
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- fw:footer -->
+<footer class="site-footer fw-footer">
+  <div class="wrap">
+    <div class="fw-footer-grid">
+      <div>
+        <p class="fw-footer-title">Freshwater Ecology &amp; Watershed Research</p>
+        <p>An undergraduate research and learning portal of Biology at SCC, focused on Allen Branch and the freshwater systems of south-central Kentucky.</p>
+      </div>
+      <div>
+        <p class="fw-footer-title">Evidence &amp; sources</p>
+        <ul>
+          <li><a href="./standards/">Evidence labels &amp; citation standards</a></li>
+          <li><a href="./resources/literature/">Research paper library</a></li>
+          <li><a href="./learn/glossary/">Glossary</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="fw-footer-title">Safety</p>
+        <p>Before visiting any lake, pond or stream, check current <a href="https://eec.ky.gov/Environmental-Protection/Water/Monitor/Pages/HABS.aspx" rel="noopener">Kentucky harmful algal bloom advisories</a>. When in doubt, stay out.</p>
+      </div>
+    </div>
+    <p>Biology at SCC &middot; Somerset Community College &middot; content licensed <a href="../../LICENSE">CC BY 4.0</a> unless noted &middot; map data &copy; their providers as credited on each layer</p>
+    <p>Questions about this site? Contact <a href="mailto:justin.howard@kctcs.edu">justin.howard@kctcs.edu</a>.</p>
+  </div>
+</footer>
+<script src="./assets/portal.js" defer></script>
+<!-- /fw:footer -->
+<script src="assets/vendor/leaflet/leaflet.js" defer></script>
+<script src="assets/map.js" defer></script>
+</body>
+</html>

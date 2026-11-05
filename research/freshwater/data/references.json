@@ -1,0 +1,3114 @@
+{
+ "table": "research_references",
+ "description": "Bibliography for the portal. Journal metadata (title, authors, year, journal, volume, pages, DOI) was retrieved from Crossref, not typed from memory; USGS report numbers from the USGS Publications Warehouse; web pages were opened and read on the verified_at date. Records with in_library=true appear in the Research Paper Library with original summaries whose status is stated in summary_status.",
+ "topics": {
+  "kentucky-blooms": "Cyanobacterial blooms in Kentucky",
+  "nutrients-agriculture": "Nutrients & agricultural watersheds",
+  "microcystis-ecology": "Microcystis ecology",
+  "species-composition": "Species composition & occurrence",
+  "benthic-cyanobacteria": "Benthic cyanobacteria",
+  "daphnia-grazing": "Daphnia & zooplankton grazing",
+  "digestive-inhibitors": "Digestive inhibitors",
+  "toxin-tolerance": "Cyanotoxin tolerance",
+  "biological-control": "Bloom control & biological control",
+  "monitoring": "Monitoring & assessment",
+  "karst-hydrology": "Karst & groundwater",
+  "taxonomy": "Taxonomy",
+  "toxins-health": "Toxins & health"
+ },
+ "records": [
+  {
+   "id": "chengappa1989",
+   "reference_type": "journal_article",
+   "title": "Blue-green algae (Anabaena spiroides) toxicosis in pigs",
+   "authors": [
+    "Chengappa, M. M.",
+    "Pace, Lanny W.",
+    "McLaughlin, Bruce G."
+   ],
+   "year": 1989,
+   "container": "Journal of the American Veterinary Medical Association",
+   "volume": "194",
+   "issue": "12",
+   "pages": "1724-1725",
+   "doi": "10.2460/javma.1989.194.12.1724",
+   "url": "https://doi.org/10.2460/javma.1989.194.12.1724",
+   "publisher": "American Veterinary Medical Association (AVMA)",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Kentucky (farm pond)",
+   "topics": [
+    "kentucky-blooms",
+    "toxins-health"
+   ],
+   "organisms": [
+    "Anabaena spiroides (now Dolichospermum)"
+   ],
+   "methodology": "Veterinary case report: clinical signs, necropsy, and microscopy of pond water, vomitus and stomach contents.",
+   "key_findings": "Seven of 26 finishing hogs on a Kentucky farm were affected after drinking pond water dominated by a bloom identified as Anabaena spiroides.",
+   "limitations": "Single case; toxin identity was not measured with modern analytical chemistry.",
+   "summary": "One of very few published records of cyanobacterial poisoning of livestock in Kentucky, linking deaths of farm pigs to a pond bloom.",
+   "full_text": "subscription",
+   "related_articles": [
+    "harmful-algal-blooms",
+    "kentucky"
+   ]
+  },
+  {
+   "id": "moore2016",
+   "reference_type": "journal_article",
+   "title": "Comparison of Protein Phosphatase Inhibition Assay with LC-MS/MS for Diagnosis of Microcystin Toxicosis in Veterinary Cases",
+   "authors": [
+    "Moore, Caroline",
+    "Juan, Jeanette",
+    "Lin, Yanping",
+    "Gaskill, Cynthia",
+    "Puschner, Birgit"
+   ],
+   "year": 2016,
+   "container": "Marine Drugs",
+   "volume": "14",
+   "issue": "3",
+   "pages": "54",
+   "doi": "10.3390/md14030054",
+   "url": "https://doi.org/10.3390/md14030054",
+   "publisher": "MDPI AG",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Kentucky case (with another U.S. case)",
+   "topics": [
+    "kentucky-blooms",
+    "toxins-health"
+   ],
+   "organisms": [
+    "Microcystis (toxin source not identified to genus in the Kentucky case)"
+   ],
+   "methodology": "Comparison of a protein phosphatase inhibition assay with LC-MS/MS on samples from veterinary poisoning investigations.",
+   "key_findings": "Describes the deaths of 15 cattle around two Kentucky ponds in August 2013; microcystin-LR was detected in one pond and in rumen samples, but not in the second pond.",
+   "limitations": "A methods paper; the Kentucky event is one illustrative case rather than a survey.",
+   "summary": "Shows how microcystin poisoning in livestock is confirmed analytically, using a 2013 Kentucky cattle die-off as a case study.",
+   "full_text": "open_access",
+   "related_articles": [
+    "harmful-algal-blooms",
+    "laboratory-methods",
+    "kentucky"
+   ]
+  },
+  {
+   "id": "hughes_marion2021",
+   "reference_type": "journal_article",
+   "title": "Cyanobacteria Growth in Nitrogen- & Phosphorus-Spiked Water from a Hypereutrophic Reservoir in Kentucky, USA",
+   "authors": [
+    "Hughes, Sarah E.",
+    "Marion, Jason W."
+   ],
+   "year": 2021,
+   "container": "Journal of Environmental Protection",
+   "volume": "12",
+   "issue": "02",
+   "pages": "75-89",
+   "doi": "10.4236/jep.2021.122006",
+   "url": "https://doi.org/10.4236/jep.2021.122006",
+   "publisher": "Scientific Research Publishing, Inc.",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Summary based on a research assistant's reading of the abstract; the portal editor has not read the abstract directly — verify before relying on details.",
+   "geographic_scope": "Kentucky (Guist Creek Lake)",
+   "topics": [
+    "kentucky-blooms",
+    "nutrients-agriculture"
+   ],
+   "organisms": [
+    "Cyanobacteria (phycocyanin)"
+   ],
+   "methodology": "Laboratory microcosms of reservoir water spiked with nitrogen and/or phosphorus; cyanobacteria tracked as phycocyanin.",
+   "key_findings": "Phosphate alone did not increase cyanobacteria, while added nitrogen did, suggesting phosphorus was not limiting when the water was collected.",
+   "limitations": "Short microcosm experiment from one reservoir and date; the authors call for more robust designs. Published by SCIRP — weigh the venue.",
+   "summary": "A Kentucky reservoir experiment illustrating that the limiting nutrient for cyanobacteria can be nitrogen rather than phosphorus at a given time and place.",
+   "full_text": "open_access",
+   "related_articles": [
+    "nutrients-and-watersheds",
+    "kentucky"
+   ]
+  },
+  {
+   "id": "nietch2022",
+   "reference_type": "journal_article",
+   "title": "Development of a Risk Characterization Tool for Harmful Cyanobacteria Blooms on the Ohio River",
+   "authors": [
+    "Nietch, Christopher T.",
+    "Gains-Germain, Leslie",
+    "Lazorchak, James",
+    "Keely, Scott P.",
+    "Youngstrom, Gregory",
+    "Urichich, Emilee M.",
+    "Astifan, Brian",
+    "DaSilva, Abram",
+    "Mayfield, Heather"
+   ],
+   "year": 2022,
+   "container": "Water",
+   "volume": "14",
+   "issue": "4",
+   "pages": "644",
+   "doi": "10.3390/w14040644",
+   "url": "https://doi.org/10.3390/w14040644",
+   "publisher": "MDPI AG",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Ohio River (Kentucky border)",
+   "topics": [
+    "kentucky-blooms",
+    "monitoring"
+   ],
+   "organisms": [
+    "Cyanobacteria"
+   ],
+   "methodology": "Bayesian regression models built on 25 years of discharge data for 20 sites along the Ohio River.",
+   "key_findings": "Bloom occurrence and persistence were predicted from antecedent flow conditions, calibrated on the 2015 and 2019 Ohio River blooms.",
+   "limitations": "Flow-only predictors; does not model toxin production.",
+   "summary": "Explains why low, slow summer flows set the stage for the Ohio River blooms that triggered Kentucky advisories in 2015 and 2019.",
+   "full_text": "open_access",
+   "related_articles": [
+    "freshwater-ecology",
+    "kentucky"
+   ]
+  },
+  {
+   "id": "zuellig2021",
+   "reference_type": "government_report",
+   "title": "Cyanobacteria, cyanotoxin synthetase gene, and cyanotoxin occurrence among selected large river sites of the conterminous United States, 2017–18",
+   "authors": [
+    "Zuellig, Robert E.",
+    "Graham, Jennifer L.",
+    "Stelzer, Erin A.",
+    "Loftin, Keith A.",
+    "Rosen, Barry H."
+   ],
+   "year": 2021,
+   "container": "U.S. Geological Survey Scientific Investigations Report 2021-5121",
+   "doi": "10.3133/sir20215121",
+   "url": "https://doi.org/10.3133/sir20215121",
+   "publisher": "US Geological Survey",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "11 large U.S. rivers incl. the Ohio River at Cannelton",
+   "topics": [
+    "monitoring",
+    "species-composition",
+    "kentucky-blooms"
+   ],
+   "organisms": [
+    "Cyanobacteria"
+   ],
+   "methodology": "USGS pilot sampling (2017–18) of cyanobacteria, toxin-synthetase genes and cyanotoxins at large-river sites.",
+   "key_findings": "Toxin-producing cyanobacteria, toxin genes and cyanotoxins occur in large rivers under ambient (non-bloom) conditions; the report notes the 2015 and 2019 Ohio River events that led to advisories in Kentucky and neighboring states.",
+   "limitations": "Two years, few sites; not designed to characterize any single river fully.",
+   "summary": "USGS evidence that cyanobacteria and their toxins are a river issue, not only a lake issue — including on Kentucky's northern border.",
+   "full_text": "open_access",
+   "related_articles": [
+    "harmful-algal-blooms",
+    "kentucky"
+   ]
+  },
+  {
+   "id": "hill2026",
+   "reference_type": "journal_article",
+   "title": "Tracking Toxins: A Pilot Investigation of Cyanotoxins in North-Central Tennessee’s Surface Waters and Wells",
+   "authors": [
+    "Hill, Kristi L.",
+    "Jaegge, Andrea C.",
+    "Moore, Devin M.",
+    "Byl, Thomas D."
+   ],
+   "year": 2026,
+   "container": "Toxins",
+   "volume": "18",
+   "issue": "6",
+   "pages": "239",
+   "doi": "10.3390/toxins18060239",
+   "url": "https://doi.org/10.3390/toxins18060239",
+   "publisher": "MDPI AG",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "North-central Tennessee, Cumberland basin (regional analog)",
+   "topics": [
+    "monitoring",
+    "karst-hydrology",
+    "kentucky-blooms"
+   ],
+   "organisms": [
+    "Cyanobacteria"
+   ],
+   "methodology": "USGS and Tennessee Dept. of Environment & Conservation sampled 18 sites, including two wells under surface-water influence, every two weeks (Sept 2022–Nov 2024).",
+   "key_findings": "At least one cyanotoxin was detected at every site; the highest levels were in deep reservoirs, and dissolved microcystin was inversely related to Cumberland River water levels.",
+   "limitations": "Tennessee sites — an analog for, not evidence about, Lake Cumberland or Pulaski County waters.",
+   "summary": "The closest published analog to the Somerset area: cyanotoxin monitoring in a karst landscape on the Cumberland River system downstream in Tennessee.",
+   "full_text": "open_access",
+   "related_articles": [
+    "kentucky",
+    "open-questions"
+   ]
+  },
+  {
+   "id": "li_murdock2025",
+   "reference_type": "journal_article",
+   "title": "Nutrient concentration, stoichiometry, and timing of delivery can regulate cyanobacterial dominance and microcystin production in rivers",
+   "authors": [
+    "Li, Jingjing",
+    "Murdock, Justin"
+   ],
+   "year": 2025,
+   "container": "Journal of Environmental Management",
+   "volume": "377",
+   "pages": "124714",
+   "doi": "10.1016/j.jenvman.2025.124714",
+   "url": "https://doi.org/10.1016/j.jenvman.2025.124714",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Summary based on a research assistant's reading of the abstract; the portal editor has not read the abstract directly — verify before relying on details.",
+   "geographic_scope": "Cumberland River, Tennessee (regional analog)",
+   "topics": [
+    "nutrients-agriculture",
+    "microcystis-ecology",
+    "species-composition"
+   ],
+   "organisms": [
+    "Microcystis",
+    "Dolichospermum"
+   ],
+   "methodology": "36-day incubations of Cumberland River water across four nitrogen–phosphorus gradient scenarios.",
+   "key_findings": "Phytoplankton were co-limited by N and P; N-fixing Dolichospermum dominated at very low N:P, while Microcystis dominated when both nutrients were added.",
+   "limitations": "Laboratory incubations of one river's water.",
+   "summary": "Experimental evidence from the Cumberland River that the amount, ratio and timing of N and P shape which cyanobacteria win.",
+   "full_text": "unknown",
+   "related_articles": [
+    "nutrients-and-watersheds",
+    "kentucky"
+   ]
+  },
+  {
+   "id": "crain_martin2009",
+   "reference_type": "government_report",
+   "title": "Concentrations, and estimated loads and yields of total nitrogen and total phosphorus at selected water-quality monitoring network stations in Kentucky, 1979-2004",
+   "authors": [
+    "Crain, Angela S.",
+    "Martin, Gary R."
+   ],
+   "year": 2009,
+   "container": "U.S. Geological Survey Scientific Investigations Report 2009-5240",
+   "doi": "10.3133/sir20095240",
+   "url": "https://doi.org/10.3133/sir20095240",
+   "publisher": "US Geological Survey",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Kentucky statewide (55 streams)",
+   "topics": [
+    "nutrients-agriculture",
+    "karst-hydrology"
+   ],
+   "methodology": "USGS analysis of total nitrogen and total phosphorus concentrations, loads and yields at Kentucky monitoring stations, 1979–2004.",
+   "key_findings": "Agricultural basins had higher TN and TP than forested basins, and intensely karst basins had higher median TN and TP than basins with little or no karst.",
+   "limitations": "Historical record; station network does not include small streams such as Allen Branch.",
+   "summary": "The statewide baseline for nitrogen and phosphorus in Kentucky streams, with explicit comparison of karst and non-karst basins.",
+   "full_text": "open_access",
+   "related_articles": [
+    "nutrients-and-watersheds",
+    "kentucky"
+   ]
+  },
+  {
+   "id": "crain2010",
+   "reference_type": "government_report",
+   "title": "Nutrients, Select Pesticides, and Suspended Sediment in the Karst Terrane of the Sinking Creek Basin, Kentucky, 2004-06",
+   "authors": [
+    "Crain, Angela S."
+   ],
+   "year": 2010,
+   "container": "U.S. Geological Survey Scientific Investigations Report 2010-5167",
+   "doi": "10.3133/sir20105167",
+   "url": "https://doi.org/10.3133/sir20105167",
+   "publisher": "US Geological Survey",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Sinking Creek Basin, western-central Kentucky (Breckinridge/Meade area) — NOT the Sinking Creek in Somerset",
+   "topics": [
+    "nutrients-agriculture",
+    "karst-hydrology"
+   ],
+   "methodology": "Streamflow, nutrient, pesticide and suspended-sediment sampling at seven stations, 2004–06.",
+   "key_findings": "Median nitrite-plus-nitrate was 1.6 mg/L; total phosphorus exceeded 0.1 mg/L in 45% of samples; nutrient concentrations were generally higher in spring and summer, matching fertilizer application periods.",
+   "limitations": "Different watershed from the Sinking Creek that receives Allen Branch in NHD; use it as a karst-agriculture analog only.",
+   "summary": "A detailed USGS study of agricultural nutrients in a Kentucky karst basin — and a reminder to check which of Kentucky's several Sinking Creeks a source describes.",
+   "full_text": "open_access",
+   "related_articles": [
+    "nutrients-and-watersheds",
+    "kentucky"
+   ]
+  },
+  {
+   "id": "currens2002",
+   "reference_type": "journal_article",
+   "title": "Changes in groundwater quality in a conduit-flow-dominated karst aquifer, following BMP implementation",
+   "authors": [
+    "Currens, James"
+   ],
+   "year": 2002,
+   "container": "Environmental Geology",
+   "volume": "42",
+   "issue": "5",
+   "pages": "525-531",
+   "doi": "10.1007/s00254-001-0515-6",
+   "url": "https://doi.org/10.1007/s00254-001-0515-6",
+   "publisher": "Springer Science and Business Media LLC",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Summary based on a research assistant's reading of the abstract; the portal editor has not read the abstract directly — verify before relying on details.",
+   "geographic_scope": "Pleasant Grove Spring basin, Logan County, Kentucky",
+   "topics": [
+    "nutrients-agriculture",
+    "karst-hydrology",
+    "biological-control"
+   ],
+   "methodology": "Before-and-after monitoring of groundwater quality at a karst spring following agricultural best-management-practice (BMP) implementation.",
+   "key_findings": "Nitrate-N at the spring was essentially unchanged after BMP implementation despite wide enrollment of the watershed.",
+   "limitations": "One spring basin; abstract not read directly by the portal editor — verify against the full text before relying on specific numbers.",
+   "summary": "Kentucky karst evidence that nutrient management can take a long time to show up in spring water.",
+   "full_text": "subscription",
+   "related_articles": [
+    "nutrients-and-watersheds",
+    "prevention-and-control",
+    "kentucky"
+   ]
+  },
+  {
+   "id": "carpenter1998",
+   "reference_type": "journal_article",
+   "title": "Nonpoint pollution of surface waters with phosphorus and nitrogen",
+   "authors": [
+    "Carpenter, S. R.",
+    "Caraco, N. F.",
+    "Correll, D. L.",
+    "Howarth, R. W.",
+    "Sharpley, A. N.",
+    "Smith, V. H."
+   ],
+   "year": 1998,
+   "container": "Ecological Applications",
+   "volume": "8",
+   "issue": "3",
+   "pages": "559-568",
+   "doi": "10.1890/1051-0761(1998)008[0559:nposww]2.0.co;2",
+   "url": "https://doi.org/10.1890/1051-0761(1998)008[0559:nposww]2.0.co;2",
+   "publisher": "Wiley",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Summary written by the portal editor from general knowledge of this widely cited review; abstract not retrieved — verify against the article.",
+   "geographic_scope": "Global review",
+   "topics": [
+    "nutrients-agriculture"
+   ],
+   "methodology": "Review of nonpoint (diffuse) sources of nitrogen and phosphorus to surface waters.",
+   "key_findings": "Agriculture and urban runoff are major diffuse sources of N and P; excess inputs cause eutrophication, and managing diffuse sources requires landscape-scale action.",
+   "limitations": "Review from 1998; later work refined the roles of N versus P.",
+   "summary": "Classic review explaining how fertilizer, manure and urban runoff move nitrogen and phosphorus from land into water.",
+   "full_text": "unknown",
+   "related_articles": [
+    "nutrients-and-watersheds"
+   ]
+  },
+  {
+   "id": "schindler2008",
+   "reference_type": "journal_article",
+   "title": "Eutrophication of lakes cannot be controlled by reducing nitrogen input: Results of a 37-year whole-ecosystem experiment",
+   "authors": [
+    "Schindler, David W.",
+    "Hecky, R. E.",
+    "Findlay, D. L.",
+    "Stainton, M. P.",
+    "Parker, B. R.",
+    "Paterson, M. J.",
+    "Beaty, K. G.",
+    "Lyng, M.",
+    "Kasian, S. E. M."
+   ],
+   "year": 2008,
+   "container": "Proceedings of the National Academy of Sciences",
+   "volume": "105",
+   "issue": "32",
+   "pages": "11254-11258",
+   "doi": "10.1073/pnas.0805108105",
+   "url": "https://doi.org/10.1073/pnas.0805108105",
+   "publisher": "National Academy of Sciences",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Lake 227, Experimental Lakes Area, Ontario",
+   "topics": [
+    "nutrients-agriculture",
+    "species-composition"
+   ],
+   "organisms": [
+    "Nitrogen-fixing cyanobacteria"
+   ],
+   "methodology": "37-year whole-lake fertilization experiment with constant P and decreasing (then zero) N additions.",
+   "key_findings": "Cutting nitrogen inputs favored nitrogen-fixing cyanobacteria; N fixation kept biomass proportional to phosphorus, and the lake stayed highly eutrophic.",
+   "limitations": "A small, deep, low-nutrient Precambrian Shield lake; transferability to shallow, turbid or flowing waters is debated (see Paerl et al. 2016).",
+   "summary": "Landmark whole-ecosystem evidence for phosphorus control in lakes — and the source of a long debate about nitrogen.",
+   "full_text": "open_access",
+   "related_articles": [
+    "nutrients-and-watersheds",
+    "prevention-and-control"
+   ]
+  },
+  {
+   "id": "paerl2016tango",
+   "reference_type": "journal_article",
+   "title": "It Takes Two to Tango: When and Where Dual Nutrient (N & P) Reductions Are Needed to Protect Lakes and Downstream Ecosystems",
+   "authors": [
+    "Paerl, Hans W.",
+    "Scott, J. Thad",
+    "McCarthy, Mark J.",
+    "Newell, Silvia E.",
+    "Gardner, Wayne S.",
+    "Havens, Karl E.",
+    "Hoffman, Daniel K.",
+    "Wilhelm, Steven W.",
+    "Wurtsbaugh, Wayne A."
+   ],
+   "year": 2016,
+   "container": "Environmental Science & Technology",
+   "volume": "50",
+   "issue": "20",
+   "pages": "10805-10813",
+   "doi": "10.1021/acs.est.6b02575",
+   "url": "https://doi.org/10.1021/acs.est.6b02575",
+   "publisher": "American Chemical Society (ACS)",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Global synthesis",
+   "topics": [
+    "nutrients-agriculture",
+    "biological-control"
+   ],
+   "organisms": [
+    "Cyanobacteria"
+   ],
+   "methodology": "Synthesis of whole-lake experiments, mesocosm studies and nutrient-loading data.",
+   "key_findings": "Reducing P alone has worked in some lakes but not others; HABs are often stimulated more by combined N and P enrichment, so dual nutrient reductions are needed in many systems.",
+   "limitations": "Synthesis; the balance of evidence differs among lake types.",
+   "summary": "The case for managing both nitrogen and phosphorus to control harmful blooms, and the counterpart to Schindler et al. (2008).",
+   "full_text": "unknown",
+   "related_articles": [
+    "nutrients-and-watersheds",
+    "prevention-and-control"
+   ]
+  },
+  {
+   "id": "elser2007",
+   "reference_type": "journal_article",
+   "title": "Global analysis of nitrogen and phosphorus limitation of primary producers in freshwater, marine and terrestrial ecosystems",
+   "authors": [
+    "Elser, James J.",
+    "Bracken, Matthew E.S.",
+    "Cleland, Elsa E.",
+    "Gruner, Daniel S.",
+    "Harpole, W. Stanley",
+    "Hillebrand, Helmut",
+    "Ngai, Jacqueline T.",
+    "Seabloom, Eric W.",
+    "Shurin, Jonathan B.",
+    "Smith, Jennifer E."
+   ],
+   "year": 2007,
+   "container": "Ecology Letters",
+   "volume": "10",
+   "issue": "12",
+   "pages": "1135-1142",
+   "doi": "10.1111/j.1461-0248.2007.01113.x",
+   "url": "https://doi.org/10.1111/j.1461-0248.2007.01113.x",
+   "publisher": "Wiley",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Global meta-analysis",
+   "topics": [
+    "nutrients-agriculture"
+   ],
+   "methodology": "Meta-analysis of N and P enrichment experiments in freshwater, marine and terrestrial ecosystems.",
+   "key_findings": "N and P limitation were equivalent in freshwater, and simultaneous N+P enrichment produced strongly synergistic responses in all three environments.",
+   "limitations": "Experiments differ widely in scale and duration.",
+   "summary": "Shows that co-limitation by nitrogen and phosphorus is common — the reason this portal avoids 'phosphorus alone' or 'nitrogen alone' explanations.",
+   "full_text": "unknown",
+   "related_articles": [
+    "nutrients-and-watersheds"
+   ]
+  },
+  {
+   "id": "harke2016",
+   "reference_type": "journal_article",
+   "title": "A review of the global ecology, genomics, and biogeography of the toxic cyanobacterium, Microcystis spp.",
+   "authors": [
+    "Harke, Matthew J.",
+    "Steffen, Morgan M.",
+    "Gobler, Christopher J.",
+    "Otten, Timothy G.",
+    "Wilhelm, Steven W.",
+    "Wood, Susanna A.",
+    "Paerl, Hans W."
+   ],
+   "year": 2016,
+   "container": "Harmful Algae",
+   "volume": "54",
+   "pages": "4-20",
+   "doi": "10.1016/j.hal.2015.12.007",
+   "url": "https://doi.org/10.1016/j.hal.2015.12.007",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Global review",
+   "topics": [
+    "microcystis-ecology",
+    "toxins-health"
+   ],
+   "organisms": [
+    "Microcystis"
+   ],
+   "methodology": "Review of Microcystis distribution, toxins, genomics, phylogeny and ecology.",
+   "key_findings": "Blooms documented in at least 108 countries (79 reporting microcystin); genomes are highly dynamic, and toxic and non-toxic strains co-occur.",
+   "limitations": "Review.",
+   "summary": "The standard modern overview of Microcystis, the most common bloom-former in eutrophic lakes and ponds.",
+   "full_text": "unknown",
+   "related_articles": [
+    "diversity-and-identification",
+    "freshwater-ecology",
+    "harmful-algal-blooms"
+   ]
+  },
+  {
+   "id": "kurmayer2003",
+   "reference_type": "journal_article",
+   "title": "The Abundance of Microcystin-Producing Genotypes Correlates Positively with Colony Size in Microcystis sp. and Determines Its Microcystin Net Production in Lake Wannsee",
+   "authors": [
+    "Kurmayer, Rainer",
+    "Christiansen, Guntram",
+    "Chorus, Ingrid"
+   ],
+   "year": 2003,
+   "container": "Applied and Environmental Microbiology",
+   "volume": "69",
+   "issue": "2",
+   "pages": "787-795",
+   "doi": "10.1128/aem.69.2.787-795.2003",
+   "url": "https://doi.org/10.1128/aem.69.2.787-795.2003",
+   "publisher": "American Society for Microbiology",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Lake Wannsee, Berlin, Germany",
+   "topics": [
+    "microcystis-ecology",
+    "toxins-health"
+   ],
+   "organisms": [
+    "Microcystis"
+   ],
+   "methodology": "Size-fractionation of field colonies with counts, genotyping of microcystin-synthetase genes, and toxin analysis.",
+   "key_findings": "The proportion of microcystin-producing genotypes increased with colony size and largely determined microcystin net production.",
+   "limitations": "One lake, one summer.",
+   "summary": "Field evidence that toxic and non-toxic Microcystis genotypes coexist, so the same-looking bloom can carry very different toxin loads.",
+   "full_text": "open_access",
+   "related_articles": [
+    "diversity-and-identification",
+    "harmful-algal-blooms"
+   ]
+  },
+  {
+   "id": "davis2009",
+   "reference_type": "journal_article",
+   "title": "The effects of temperature and nutrients on the growth and dynamics of toxic and non-toxic strains of Microcystis during cyanobacteria blooms",
+   "authors": [
+    "Davis, Timothy W.",
+    "Berry, Dianna L.",
+    "Boyer, Gregory L.",
+    "Gobler, Christopher J."
+   ],
+   "year": 2009,
+   "container": "Harmful Algae",
+   "volume": "8",
+   "issue": "5",
+   "pages": "715-725",
+   "doi": "10.1016/j.hal.2009.02.004",
+   "url": "https://doi.org/10.1016/j.hal.2009.02.004",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft written from a database-generated synopsis; full abstract not retrieved.",
+   "geographic_scope": "Lakes in the northeastern U.S.",
+   "topics": [
+    "microcystis-ecology",
+    "toxins-health"
+   ],
+   "organisms": [
+    "Microcystis"
+   ],
+   "methodology": "Field surveys and experiments comparing toxic (mcyD-carrying) and non-toxic Microcystis under temperature and nutrient manipulations.",
+   "key_findings": "The abundance of toxic (mcyD) Microcystis predicted microcystin better than total cyanobacteria, total Microcystis or chlorophyll a.",
+   "limitations": "Summary based on a database-generated synopsis, not the full abstract — verify against the article.",
+   "summary": "Why toxin-gene measurements outperform cell counts for predicting microcystin.",
+   "full_text": "unknown",
+   "related_articles": [
+    "harmful-algal-blooms",
+    "laboratory-methods"
+   ]
+  },
+  {
+   "id": "loftin2016nla",
+   "reference_type": "journal_article",
+   "title": "Cyanotoxins in inland lakes of the United States: Occurrence and potential recreational health risks in the EPA National Lakes Assessment 2007",
+   "authors": [
+    "Loftin, Keith A.",
+    "Graham, Jennifer L.",
+    "Hilborn, Elizabeth D.",
+    "Lehmann, Sarah C.",
+    "Meyer, Michael T.",
+    "Dietze, Julie E.",
+    "Griffith, Christopher B."
+   ],
+   "year": 2016,
+   "container": "Harmful Algae",
+   "volume": "56",
+   "pages": "77-90",
+   "doi": "10.1016/j.hal.2016.04.001",
+   "url": "https://doi.org/10.1016/j.hal.2016.04.001",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "United States (1,161 lakes)",
+   "topics": [
+    "monitoring",
+    "species-composition",
+    "toxins-health"
+   ],
+   "organisms": [
+    "Cyanobacteria"
+   ],
+   "methodology": "Nationwide survey (EPA National Lakes Assessment 2007) of cyanotoxins (ELISA) and cyanobacteria.",
+   "key_findings": "Microcystins were detected in 32% of samples, cylindrospermopsins in 4.0% and saxitoxins in 7.7%; cyanobacteria were present in 98% and dominant in 76% of samples.",
+   "limitations": "One summer of sampling; ELISA measures toxin classes rather than individual congeners.",
+   "summary": "The national picture: cyanobacteria are nearly everywhere, and microcystins are detected in about a third of U.S. lakes.",
+   "full_text": "unknown",
+   "related_articles": [
+    "harmful-algal-blooms",
+    "kentucky"
+   ]
+  },
+  {
+   "id": "graham2010",
+   "reference_type": "journal_article",
+   "title": "Cyanotoxin Mixtures and Taste-and-Odor Compounds in Cyanobacterial Blooms from the Midwestern United States",
+   "authors": [
+    "Graham, Jennifer L.",
+    "Loftin, Keith A.",
+    "Meyer, Michael T.",
+    "Ziegler, Andrew C."
+   ],
+   "year": 2010,
+   "container": "Environmental Science & Technology",
+   "volume": "44",
+   "issue": "19",
+   "pages": "7361-7368",
+   "doi": "10.1021/es1008938",
+   "url": "https://doi.org/10.1021/es1008938",
+   "publisher": "American Chemical Society (ACS)",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "23 Midwestern U.S. lakes",
+   "topics": [
+    "species-composition",
+    "toxins-health"
+   ],
+   "organisms": [
+    "Aphanizomenon",
+    "Raphidiopsis (Cylindrospermopsis)",
+    "Microcystis"
+   ],
+   "methodology": "Bloom sampling with community composition, 13 cyanotoxins (LC/MS/MS and immunoassay) and two taste-and-odor compounds.",
+   "key_findings": "Microcystins occurred in all blooms; community composition was not strongly correlated with toxin occurrence, and toxin mixtures were common.",
+   "limitations": "Blooms only (not non-bloom conditions).",
+   "summary": "Shows that which cyanobacteria dominate a bloom does not reliably predict which toxins are present.",
+   "full_text": "unknown",
+   "related_articles": [
+    "diversity-and-identification",
+    "harmful-algal-blooms"
+   ]
+  },
+  {
+   "id": "li2016",
+   "reference_type": "journal_article",
+   "title": "An overview of diversity, occurrence, genetics and toxin production of bloom-forming Dolichospermum (Anabaena) species",
+   "authors": [
+    "Li, Xiaochuang",
+    "Dreher, Theo W.",
+    "Li, Renhui"
+   ],
+   "year": 2016,
+   "container": "Harmful Algae",
+   "volume": "54",
+   "pages": "54-68",
+   "doi": "10.1016/j.hal.2015.10.015",
+   "url": "https://doi.org/10.1016/j.hal.2015.10.015",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Global review",
+   "topics": [
+    "species-composition",
+    "taxonomy"
+   ],
+   "organisms": [
+    "Dolichospermum"
+   ],
+   "methodology": "Review of Dolichospermum taxonomy, genetics, bloom occurrence and secondary metabolites.",
+   "key_findings": "Dolichospermum is the genus name for most planktonic former Anabaena; it is among the most widespread bloom-formers and commonly produces toxins and taste-and-odor compounds.",
+   "limitations": "Review.",
+   "summary": "Explains the Anabaena → Dolichospermum name change and what is known about this nitrogen-fixing bloom-former.",
+   "full_text": "unknown",
+   "related_articles": [
+    "diversity-and-identification"
+   ]
+  },
+  {
+   "id": "cires_ballot2016",
+   "reference_type": "journal_article",
+   "title": "A review of the phylogeny, ecology and toxin production of bloom-forming Aphanizomenon spp. and related species within the Nostocales (cyanobacteria)",
+   "authors": [
+    "Cirés, Samuel",
+    "Ballot, Andreas"
+   ],
+   "year": 2016,
+   "container": "Harmful Algae",
+   "volume": "54",
+   "pages": "21-43",
+   "doi": "10.1016/j.hal.2015.09.007",
+   "url": "https://doi.org/10.1016/j.hal.2015.09.007",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Global review",
+   "topics": [
+    "species-composition",
+    "taxonomy"
+   ],
+   "organisms": [
+    "Aphanizomenon",
+    "Cuspidothrix",
+    "Sphaerospermopsis",
+    "Chrysosporum"
+   ],
+   "methodology": "Review of phylogeny, ecology, biogeography and toxin genes of 'Aphanizomenon' species.",
+   "key_findings": "The traditional genus is heterogeneous — at least five phylogenetically distant groups — and its members can produce microcystins, anatoxins, saxitoxins and cylindrospermopsin.",
+   "limitations": "Review; taxonomy still under revision.",
+   "summary": "A clear example of why morphology-based genus names in cyanobacteria keep changing.",
+   "full_text": "unknown",
+   "related_articles": [
+    "diversity-and-identification"
+   ]
+  },
+  {
+   "id": "quiblier2013",
+   "reference_type": "journal_article",
+   "title": "A review of current knowledge on toxic benthic freshwater cyanobacteria – Ecology, toxin production and risk management",
+   "authors": [
+    "Quiblier, Catherine",
+    "Wood, Susanna",
+    "Echenique-Subiabre, Isidora",
+    "Heath, Mark",
+    "Villeneuve, Aurélie",
+    "Humbert, Jean-François"
+   ],
+   "year": 2013,
+   "container": "Water Research",
+   "volume": "47",
+   "issue": "15",
+   "pages": "5464-5479",
+   "doi": "10.1016/j.watres.2013.06.042",
+   "url": "https://doi.org/10.1016/j.watres.2013.06.042",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Global review",
+   "topics": [
+    "benthic-cyanobacteria",
+    "toxins-health"
+   ],
+   "organisms": [
+    "Microcoleus (Phormidium)",
+    "Oscillatoria-like taxa"
+   ],
+   "methodology": "Review of toxic benthic freshwater cyanobacteria.",
+   "key_findings": "Benthic cyanobacteria produce most known cyanotoxins and have been increasingly linked to animal poisonings; long-term studies of why mats proliferate are few.",
+   "limitations": "Review.",
+   "summary": "Essential background for stream work: in shallow flowing water, the cyanobacteria to look for are often attached mats, not floating scums.",
+   "full_text": "unknown",
+   "related_articles": [
+    "freshwater-ecology",
+    "harmful-algal-blooms"
+   ]
+  },
+  {
+   "id": "wood2020",
+   "reference_type": "journal_article",
+   "title": "Toxic benthic freshwater cyanobacterial proliferations: Challenges and solutions for enhancing knowledge and improving monitoring and mitigation",
+   "authors": [
+    "Wood, Susanna A.",
+    "Kelly, Laura T.",
+    "Bouma‐Gregson, Keith",
+    "Humbert, Jean‐François",
+    "Laughinghouse, Haywood Dail",
+    "Lazorchak, James",
+    "McAllister, Tara G.",
+    "McQueen, Andrew",
+    "Pokrzywinski, Kaytee",
+    "Puddick, Jonathan"
+   ],
+   "year": 2020,
+   "container": "Freshwater Biology",
+   "volume": "65",
+   "issue": "10",
+   "pages": "1824-1842",
+   "doi": "10.1111/fwb.13532",
+   "url": "https://doi.org/10.1111/fwb.13532",
+   "publisher": "Wiley",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "author_count": 16,
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Global review",
+   "topics": [
+    "benthic-cyanobacteria",
+    "monitoring"
+   ],
+   "organisms": [
+    "Microcoleus",
+    "Dolichospermum (benthic)"
+   ],
+   "methodology": "Review of ecology, toxin production, monitoring and mitigation of benthic cyanobacterial proliferations.",
+   "key_findings": "Toxic benthic proliferations occur in streams, rivers, lakes and ponds in at least 19 countries; flow and other physical drivers rank high among controlling factors.",
+   "limitations": "Few species and habitats are well studied.",
+   "summary": "The most complete guide to monitoring attached cyanobacterial mats in rivers and streams.",
+   "full_text": "unknown",
+   "related_articles": [
+    "freshwater-ecology",
+    "laboratory-methods"
+   ]
+  },
+  {
+   "id": "fetscher2015",
+   "reference_type": "journal_article",
+   "title": "Wadeable streams as widespread sources of benthic cyanotoxins in California, USA",
+   "authors": [
+    "Fetscher, A. Elizabeth",
+    "Howard, Meredith D.A.",
+    "Stancheva, Rosalina",
+    "Kudela, Raphael M.",
+    "Stein, Eric D.",
+    "Sutula, Martha A.",
+    "Busse, Lilian B.",
+    "Sheath, Robert G."
+   ],
+   "year": 2015,
+   "container": "Harmful Algae",
+   "volume": "49",
+   "pages": "105-116",
+   "doi": "10.1016/j.hal.2015.09.002",
+   "url": "https://doi.org/10.1016/j.hal.2015.09.002",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Summary based on the article title only; abstract not retrieved — verify.",
+   "geographic_scope": "California wadeable streams",
+   "topics": [
+    "benthic-cyanobacteria",
+    "monitoring"
+   ],
+   "organisms": [
+    "Benthic cyanobacteria"
+   ],
+   "methodology": "Statewide stream bioassessment survey including benthic algae and cyanotoxins.",
+   "key_findings": "Wadeable streams were widespread sources of benthic cyanotoxins.",
+   "limitations": "Abstract not retrieved — summary from title and general knowledge; verify against the article.",
+   "summary": "Evidence that small streams, not only lakes, can carry cyanotoxins from attached algae.",
+   "full_text": "unknown",
+   "related_articles": [
+    "freshwater-ecology",
+    "open-questions"
+   ]
+  },
+  {
+   "id": "loftin2016streams",
+   "reference_type": "journal_article",
+   "title": "Spatial and temporal variation in microcystin occurrence in wadeable streams in the southeastern United States",
+   "authors": [
+    "Loftin, Keith A.",
+    "Clark, Jimmy M.",
+    "Journey, Celeste A.",
+    "Kolpin, Dana W.",
+    "Van Metre, Peter C.",
+    "Carlisle, Daren",
+    "Bradley, Paul M."
+   ],
+   "year": 2016,
+   "container": "Environmental Toxicology and Chemistry",
+   "volume": "35",
+   "issue": "9",
+   "pages": "2281-2287",
+   "doi": "10.1002/etc.3391",
+   "url": "https://doi.org/10.1002/etc.3391",
+   "publisher": "Oxford University Press (OUP)",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Southeastern U.S. Piedmont (75 streams)",
+   "topics": [
+    "benthic-cyanobacteria",
+    "monitoring"
+   ],
+   "organisms": [
+    "Cyanobacteria"
+   ],
+   "methodology": "June 2014 reconnaissance of microcystin (ELISA, limit 0.10 µg/L) in 75 wadeable streams.",
+   "key_findings": "Microcystins were detected in 39% of streams (maximum 3.2 µg/L).",
+   "limitations": "One sampling window; low concentrations; Piedmont, not karst.",
+   "summary": "The nearest U.S. survey of cyanotoxins in small streams — a model for a first Allen Branch study design.",
+   "full_text": "unknown",
+   "related_articles": [
+    "freshwater-ecology",
+    "open-questions"
+   ]
+  },
+  {
+   "id": "bouma2017",
+   "reference_type": "journal_article",
+   "title": "Rise and fall of toxic benthic freshwater cyanobacteria (Anabaena spp.) in the Eel river: Buoyancy and dispersal",
+   "authors": [
+    "Bouma-Gregson, Keith",
+    "Power, Mary E.",
+    "Bormans, Myriam"
+   ],
+   "year": 2017,
+   "container": "Harmful Algae",
+   "volume": "66",
+   "pages": "79-87",
+   "doi": "10.1016/j.hal.2017.05.007",
+   "url": "https://doi.org/10.1016/j.hal.2017.05.007",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "South Fork Eel River, California",
+   "topics": [
+    "benthic-cyanobacteria"
+   ],
+   "organisms": [
+    "Anabaena (benthic)"
+   ],
+   "methodology": "Field experiments on mat buoyancy under light manipulation.",
+   "key_findings": "Benthic Anabaena-dominated mats floated and sank within minutes, driven by oxygen bubbles from photosynthesis — a mechanism for downstream dispersal.",
+   "limitations": "One river system.",
+   "summary": "Shows how attached stream mats detach and float, which matters for where samples should be collected.",
+   "full_text": "unknown",
+   "related_articles": [
+    "freshwater-ecology"
+   ]
+  },
+  {
+   "id": "wilson2006",
+   "reference_type": "journal_article",
+   "title": "Effects of cyanobacterial toxicity and morphology on the population growth of freshwater zooplankton: Meta‐analyses of laboratory experiments",
+   "authors": [
+    "Wilson, Alan E.",
+    "Sarnelle, Orlando",
+    "Tillmanns, Angeline R."
+   ],
+   "year": 2006,
+   "container": "Limnology and Oceanography",
+   "volume": "51",
+   "issue": "4",
+   "pages": "1915-1924",
+   "doi": "10.4319/lo.2006.51.4.1915",
+   "url": "https://doi.org/10.4319/lo.2006.51.4.1915",
+   "publisher": "Wiley",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Meta-analysis (66 lab studies)",
+   "topics": [
+    "daphnia-grazing"
+   ],
+   "organisms": [
+    "Daphnia",
+    "Zooplankton"
+   ],
+   "methodology": "Meta-analyses of 597 laboratory comparisons of zooplankton fed cyanobacteria versus nutritious algae.",
+   "key_findings": "Cyanobacteria were poor food relative to small green algae and flagellates; filamentous forms were better food than single-celled (often toxic) forms in these experiments.",
+   "limitations": "Laboratory studies; many used one Daphnia species unexposed to cyanobacteria.",
+   "summary": "The quantitative baseline for 'cyanobacteria are bad food' — and its surprises.",
+   "full_text": "unknown",
+   "related_articles": [
+    "food-webs"
+   ]
+  },
+  {
+   "id": "tillmanns2008",
+   "reference_type": "journal_article",
+   "title": "Meta-analysis of cyanobacterial effects on zooplankton population growth rate: species-specific responses",
+   "authors": [
+    "Tillmanns, Angeline R.",
+    "Wilson, Alan E.",
+    "Pick, Frances R.",
+    "Sarnelle, Orlando"
+   ],
+   "year": 2008,
+   "container": "Fundamental and Applied Limnology",
+   "volume": "171",
+   "issue": "4",
+   "pages": "285-295",
+   "doi": "10.1127/1863-9135/2008/0171-0285",
+   "url": "https://doi.org/10.1127/1863-9135/2008/0171-0285",
+   "publisher": "Schweizerbart",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft written from a database-generated synopsis; full abstract not retrieved.",
+   "geographic_scope": "Meta-analysis",
+   "topics": [
+    "daphnia-grazing"
+   ],
+   "organisms": [
+    "Zooplankton"
+   ],
+   "methodology": "Meta-analysis of cyanobacterial effects on zooplankton population growth rate by species.",
+   "key_findings": "Responses were strongly species-specific; general support for toxicity or mechanical interference as the main mechanism was not found.",
+   "limitations": "Summary from a database-generated synopsis — verify against the article.",
+   "summary": "Different grazer species respond very differently to the same cyanobacteria.",
+   "full_text": "unknown",
+   "related_articles": [
+    "food-webs"
+   ]
+  },
+  {
+   "id": "ger2016",
+   "reference_type": "journal_article",
+   "title": "The interaction between cyanobacteria and zooplankton in a more eutrophic world",
+   "authors": [
+    "Ger, Kemal Ali",
+    "Urrutia-Cordero, Pablo",
+    "Frost, Paul C.",
+    "Hansson, Lars-Anders",
+    "Sarnelle, Orlando",
+    "Wilson, Alan E.",
+    "Lürling, Miquel"
+   ],
+   "year": 2016,
+   "container": "Harmful Algae",
+   "volume": "54",
+   "pages": "128-144",
+   "doi": "10.1016/j.hal.2015.12.005",
+   "url": "https://doi.org/10.1016/j.hal.2015.12.005",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Global review",
+   "topics": [
+    "daphnia-grazing",
+    "toxin-tolerance"
+   ],
+   "organisms": [
+    "Daphnia",
+    "Copepods",
+    "Rotifers"
+   ],
+   "methodology": "Review of laboratory and field studies of cyanobacteria–zooplankton interactions.",
+   "key_findings": "Despite poor food quality and defenses, blooms often coexist with abundant small-bodied zooplankton; grazer responses are diverse and flexible.",
+   "limitations": "Review.",
+   "summary": "Moves beyond 'Daphnia vs. cyanobacteria' to the whole zooplankton community.",
+   "full_text": "unknown",
+   "related_articles": [
+    "food-webs",
+    "prevention-and-control"
+   ]
+  },
+  {
+   "id": "schwarzenberger2010",
+   "reference_type": "journal_article",
+   "title": "Gene expression and activity of digestive proteases in Daphnia: effects of cyanobacterial protease inhibitors",
+   "authors": [
+    "Schwarzenberger, Anke",
+    "Zitt, Anja",
+    "Kroth, Peter",
+    "Mueller, Stefan",
+    "Von Elert, Eric"
+   ],
+   "year": 2010,
+   "container": "BMC Physiology",
+   "volume": "10",
+   "issue": "1",
+   "pages": "6",
+   "doi": "10.1186/1472-6793-10-6",
+   "url": "https://doi.org/10.1186/1472-6793-10-6",
+   "publisher": "Springer Science and Business Media LLC",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Laboratory (Daphnia magna)",
+   "topics": [
+    "digestive-inhibitors",
+    "toxin-tolerance"
+   ],
+   "organisms": [
+    "Daphnia magna",
+    "Microcystis"
+   ],
+   "methodology": "Activity-stained gels and gene-expression analysis of Daphnia digestive proteases after exposure to cyanobacterial protease inhibitors.",
+   "key_findings": "Nine digestive proteases were detected in D. magna; exposure to cyanobacterial protease inhibitors changed protease expression and activity, a physiological response to dietary inhibitors.",
+   "limitations": "Laboratory clone and diets.",
+   "summary": "Shows that cyanobacterial compounds act on Daphnia's digestive enzymes, and that Daphnia responds physiologically.",
+   "full_text": "open_access",
+   "related_articles": [
+    "food-webs"
+   ]
+  },
+  {
+   "id": "vonelert2004",
+   "reference_type": "journal_article",
+   "title": "Protease activity in gut of Daphnia magna: evidence for trypsin and chymotrypsin enzymes",
+   "authors": [
+    "von Elert, Eric",
+    "Agrawal, Manish Kumar",
+    "Gebauer, Christine",
+    "Jaensch, Heike",
+    "Bauer, Ulrike",
+    "Zitt, Anja"
+   ],
+   "year": 2004,
+   "container": "Comparative Biochemistry and Physiology Part B: Biochemistry and Molecular Biology",
+   "volume": "137",
+   "issue": "3",
+   "pages": "287-296",
+   "doi": "10.1016/j.cbpc.2003.11.008",
+   "url": "https://doi.org/10.1016/j.cbpc.2003.11.008",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Laboratory (Daphnia magna)",
+   "topics": [
+    "digestive-inhibitors"
+   ],
+   "organisms": [
+    "Daphnia magna"
+   ],
+   "methodology": "Biochemical characterization of gut protease activities.",
+   "key_findings": "Trypsin and chymotrypsin activities accounted for most proteolytic activity in Daphnia gut contents — the enzymes targeted by cyanobacterial protease inhibitors.",
+   "limitations": "Enzyme characterization only.",
+   "summary": "Identifies the digestive enzymes that cyanobacterial inhibitors interfere with.",
+   "full_text": "unknown",
+   "related_articles": [
+    "food-webs"
+   ]
+  },
+  {
+   "id": "hairston1999",
+   "reference_type": "journal_article",
+   "title": "Rapid evolution revealed by dormant eggs",
+   "authors": [
+    "Hairston, Nelson G.",
+    "Lampert, Winfried",
+    "Cáceres, Carla E.",
+    "Holtmeier, Cami L.",
+    "Weider, Lawrence J.",
+    "Gaedke, Ursula",
+    "Fischer, Janet M.",
+    "Fox, Jennifer A.",
+    "Post, David M."
+   ],
+   "year": 1999,
+   "container": "Nature",
+   "volume": "401",
+   "issue": "6752",
+   "pages": "446-446",
+   "doi": "10.1038/46731",
+   "url": "https://doi.org/10.1038/46731",
+   "publisher": "Springer Science and Business Media LLC",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft written from a database-generated synopsis; full abstract not retrieved.",
+   "geographic_scope": "Lake Constance (Bodensee), Central Europe",
+   "topics": [
+    "toxin-tolerance",
+    "daphnia-grazing"
+   ],
+   "organisms": [
+    "Daphnia galeata"
+   ],
+   "methodology": "Hatching Daphnia from dated dormant eggs in sediment and testing resistance to dietary cyanobacteria.",
+   "key_findings": "Mean resistance of Daphnia genotypes to dietary cyanobacteria increased during the lake's eutrophication.",
+   "limitations": "Summary from a database-generated synopsis — verify against the article.",
+   "summary": "'Resurrection ecology' evidence that grazers can evolve tolerance to cyanobacteria within decades.",
+   "full_text": "unknown",
+   "related_articles": [
+    "food-webs",
+    "prevention-and-control"
+   ]
+  },
+  {
+   "id": "sarnelle_wilson2005",
+   "reference_type": "journal_article",
+   "title": "Local adaptation of Daphnia pulicaria to toxic cyanobacteria",
+   "authors": [
+    "Sarnelle, Orlando",
+    "Wilson, Alan E."
+   ],
+   "year": 2005,
+   "container": "Limnology and Oceanography",
+   "volume": "50",
+   "issue": "5",
+   "pages": "1565-1570",
+   "doi": "10.4319/lo.2005.50.5.1565",
+   "url": "https://doi.org/10.4319/lo.2005.50.5.1565",
+   "publisher": "Wiley",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Summary based on the article title and editor's knowledge; abstract not retrieved — verify.",
+   "geographic_scope": "Michigan lakes",
+   "topics": [
+    "toxin-tolerance",
+    "daphnia-grazing"
+   ],
+   "organisms": [
+    "Daphnia pulicaria",
+    "Microcystis"
+   ],
+   "methodology": "Comparison of Daphnia populations from lakes with different histories of toxic cyanobacteria.",
+   "key_findings": "Daphnia from lakes with high Microcystis exposure tolerated toxic Microcystis better than populations from low-exposure lakes (local adaptation).",
+   "limitations": "Abstract not retrieved; summary from the title and general knowledge — verify against the article.",
+   "summary": "Field-population evidence that naturally tolerant Daphnia exist where toxic cyanobacteria are common.",
+   "full_text": "unknown",
+   "related_articles": [
+    "food-webs",
+    "prevention-and-control"
+   ]
+  },
+  {
+   "id": "macke2017",
+   "reference_type": "journal_article",
+   "title": "Host-genotype dependent gut microbiota drives zooplankton tolerance to toxic cyanobacteria",
+   "authors": [
+    "Macke, Emilie",
+    "Callens, Martijn",
+    "De Meester, Luc",
+    "Decaestecker, Ellen"
+   ],
+   "year": 2017,
+   "container": "Nature Communications",
+   "volume": "8",
+   "issue": "1",
+   "pages": "1608",
+   "doi": "10.1038/s41467-017-01714-x",
+   "url": "https://doi.org/10.1038/s41467-017-01714-x",
+   "publisher": "Springer Science and Business Media LLC",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Laboratory (Daphnia magna)",
+   "topics": [
+    "toxin-tolerance"
+   ],
+   "organisms": [
+    "Daphnia magna",
+    "Microcystis"
+   ],
+   "methodology": "Gut-microbiota transplants between Daphnia clones and metagenetic analysis.",
+   "key_findings": "Both host genotype and gut microbiota mediated tolerance to toxic cyanobacteria; tolerance followed the microbiota donor.",
+   "limitations": "Laboratory clones.",
+   "summary": "Evidence that a grazer's gut microbiome can confer tolerance to toxic cyanobacteria.",
+   "full_text": "open_access",
+   "related_articles": [
+    "food-webs",
+    "prevention-and-control"
+   ]
+  },
+  {
+   "id": "shapiro_wright1984",
+   "reference_type": "journal_article",
+   "title": "Lake restoration by biomanipulation: Round Lake, Minnesota, the first two years",
+   "authors": [
+    "Shapiro, Joseph",
+    "Wright, David I."
+   ],
+   "year": 1984,
+   "container": "Freshwater Biology",
+   "volume": "14",
+   "issue": "4",
+   "pages": "371-383",
+   "doi": "10.1111/j.1365-2427.1984.tb00161.x",
+   "url": "https://doi.org/10.1111/j.1365-2427.1984.tb00161.x",
+   "publisher": "Wiley",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Summary based on the article title and editor's knowledge; abstract not retrieved — verify.",
+   "geographic_scope": "Round Lake, Minnesota",
+   "topics": [
+    "biological-control"
+   ],
+   "organisms": [
+    "Daphnia",
+    "Fish"
+   ],
+   "methodology": "Whole-lake fish manipulation (biomanipulation) with before-and-after monitoring.",
+   "key_findings": "Early results of removing planktivorous fish to increase large grazers and improve water clarity.",
+   "limitations": "Summary from title/synopsis; abstract not retrieved — verify against the article.",
+   "summary": "An early whole-lake test of biomanipulation, the idea of controlling algae from the top of the food web.",
+   "full_text": "unknown",
+   "related_articles": [
+    "prevention-and-control"
+   ]
+  },
+  {
+   "id": "jeppesen2012",
+   "reference_type": "book_chapter",
+   "title": "Biomanipulation as a Restoration Tool to Combat Eutrophication",
+   "authors": [
+    "Jeppesen, Erik",
+    "Søndergaard, Martin",
+    "Lauridsen, Torben L.",
+    "Davidson, Thomas A.",
+    "Liu, Zhengwen",
+    "Mazzeo, Nestor",
+    "Trochine, Carolina",
+    "Özkan, Korhan",
+    "Jensen, Henning S.",
+    "Trolle, Dennis"
+   ],
+   "year": 2012,
+   "container": "Advances in Ecological Research",
+   "pages": "411-488",
+   "doi": "10.1016/b978-0-12-398315-2.00006-5",
+   "url": "https://doi.org/10.1016/b978-0-12-398315-2.00006-5",
+   "publisher": "Elsevier",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "author_count": 19,
+   "in_library": true,
+   "summary_status": "Draft written from a database-generated synopsis; full abstract not retrieved.",
+   "geographic_scope": "Review (mostly temperate lakes)",
+   "topics": [
+    "biological-control"
+   ],
+   "organisms": [
+    "Fish",
+    "Zooplankton",
+    "Macrophytes"
+   ],
+   "methodology": "Review of biomanipulation and related biological restoration methods.",
+   "key_findings": "Biomanipulation can improve water clarity in the short term; long-term stability usually requires nutrient-load reduction and may benefit from combined methods.",
+   "limitations": "Summary from a database-generated synopsis — verify against the chapter.",
+   "summary": "The standard review of biomanipulation as a lake-restoration tool.",
+   "full_text": "unknown",
+   "related_articles": [
+    "prevention-and-control"
+   ]
+  },
+  {
+   "id": "matthijs2012",
+   "reference_type": "journal_article",
+   "title": "Selective suppression of harmful cyanobacteria in an entire lake with hydrogen peroxide",
+   "authors": [
+    "Matthijs, Hans C.P.",
+    "Visser, Petra M.",
+    "Reeze, Bart",
+    "Meeuse, Jeroen",
+    "Slot, Pieter C.",
+    "Wijn, Geert",
+    "Talens, Renée",
+    "Huisman, Jef"
+   ],
+   "year": 2012,
+   "container": "Water Research",
+   "volume": "46",
+   "issue": "5",
+   "pages": "1460-1472",
+   "doi": "10.1016/j.watres.2011.11.016",
+   "url": "https://doi.org/10.1016/j.watres.2011.11.016",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Lake Koetshuis, the Netherlands",
+   "topics": [
+    "biological-control"
+   ],
+   "organisms": [
+    "Planktothrix agardhii"
+   ],
+   "methodology": "Laboratory exposures, in-lake enclosures, then a whole-lake hydrogen peroxide treatment (2 mg/L).",
+   "key_findings": "Dilute H2O2 selectively suppressed cyanobacteria with little effect on eukaryotic phytoplankton, zooplankton or macrofauna in enclosure tests.",
+   "limitations": "Treats the symptom, not nutrient causes; effects are temporary.",
+   "summary": "A carefully staged whole-lake test of a selective chemical treatment — and a model of how to test a control method.",
+   "full_text": "unknown",
+   "related_articles": [
+    "prevention-and-control"
+   ]
+  },
+  {
+   "id": "lurling_mucci2020",
+   "reference_type": "journal_article",
+   "title": "Mitigating eutrophication nuisance: in-lake measures are becoming inevitable in eutrophic waters in the Netherlands",
+   "authors": [
+    "Lürling, Miquel",
+    "Mucci, Maíra"
+   ],
+   "year": 2020,
+   "container": "Hydrobiologia",
+   "volume": "847",
+   "issue": "21",
+   "pages": "4447-4467",
+   "doi": "10.1007/s10750-020-04297-9",
+   "url": "https://doi.org/10.1007/s10750-020-04297-9",
+   "publisher": "Springer Science and Business Media LLC",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "The Netherlands",
+   "topics": [
+    "biological-control"
+   ],
+   "organisms": [
+    "Cyanobacteria"
+   ],
+   "methodology": "Survey of peer-reviewed and grey literature on in-lake interventions against cyanobacterial blooms.",
+   "key_findings": "Many measures (air-bubble or oil screens, surface mixers, low-energy ultrasound, 'effective micro-organisms', fish introduction) had little or no effect; others were more effective but variable.",
+   "limitations": "Dutch shallow lakes; mixed evidence quality.",
+   "summary": "A frank appraisal of which bloom-control products and methods actually work.",
+   "full_text": "open_access",
+   "related_articles": [
+    "prevention-and-control"
+   ]
+  },
+  {
+   "id": "visser2016",
+   "reference_type": "journal_article",
+   "title": "Artificial mixing to control cyanobacterial blooms: a review",
+   "authors": [
+    "Visser, Petra M.",
+    "Ibelings, Bas W.",
+    "Bormans, Myriam",
+    "Huisman, Jef"
+   ],
+   "year": 2016,
+   "container": "Aquatic Ecology",
+   "volume": "50",
+   "issue": "3",
+   "pages": "423-441",
+   "doi": "10.1007/s10452-015-9537-0",
+   "url": "https://doi.org/10.1007/s10452-015-9537-0",
+   "publisher": "Springer Science and Business Media LLC",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Review",
+   "topics": [
+    "biological-control"
+   ],
+   "organisms": [
+    "Cyanobacteria"
+   ],
+   "methodology": "Review of artificial mixing studies in lakes and reservoirs.",
+   "key_findings": "Mixing raises oxygen and can shift dominance from cyanobacteria to green algae and diatoms when the mixed depth is large enough; it often fails in shallow systems.",
+   "limitations": "Review; outcomes depend strongly on system depth and design.",
+   "summary": "When aeration and mixing can work against cyanobacteria — and why it often doesn't.",
+   "full_text": "unknown",
+   "related_articles": [
+    "prevention-and-control"
+   ]
+  },
+  {
+   "id": "snow2005",
+   "reference_type": "journal_article",
+   "title": "Genetically engineered organisms and the environment: current status and recommendations",
+   "authors": [
+    "Snow, A. A.",
+    "Andow, D. A.",
+    "Gepts, P.",
+    "Hallerman, E. M.",
+    "Power, A.",
+    "Tiedje, J. M.",
+    "Wolfenbarger, L. L."
+   ],
+   "year": 2005,
+   "container": "Ecological Applications",
+   "volume": "15",
+   "issue": "2",
+   "pages": "377-404",
+   "doi": "10.1890/04-0539",
+   "url": "https://doi.org/10.1890/04-0539",
+   "publisher": "Wiley",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Position paper (U.S.)",
+   "topics": [
+    "biological-control"
+   ],
+   "organisms": [
+    "Genetically engineered organisms"
+   ],
+   "methodology": "Ecological Society of America assessment of field-released genetically engineered organisms.",
+   "key_findings": "GEOs could help environmental management, but deliberate or inadvertent releases could have negative ecological effects; recommends case-by-case, science-based risk assessment.",
+   "limitations": "Predates gene-drive technology.",
+   "summary": "The ecological framework for thinking about any proposal to release modified organisms — including grazers or microbes aimed at blooms.",
+   "full_text": "unknown",
+   "related_articles": [
+    "prevention-and-control"
+   ]
+  },
+  {
+   "id": "graham2016ofr",
+   "reference_type": "government_report",
+   "title": "Cyanobacterial harmful algal blooms and U.S. Geological Survey science capabilities",
+   "authors": [
+    "Graham, Jennifer L.",
+    "Dubrovsky, Neil M.",
+    "Eberts, Sandra M."
+   ],
+   "year": 2016,
+   "container": "U.S. Geological Survey Open-File Report 2016-1174",
+   "pages": "1-12",
+   "doi": "10.3133/ofr20161174",
+   "url": "https://doi.org/10.3133/ofr20161174",
+   "publisher": "US Geological Survey",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "United States",
+   "topics": [
+    "monitoring"
+   ],
+   "organisms": [
+    "Cyanobacteria"
+   ],
+   "methodology": "Overview of USGS cyanoHAB science capabilities.",
+   "key_findings": "Major unanswered questions remain about occurrence, environmental triggers for toxicity, and predicting timing, duration and toxicity of blooms.",
+   "limitations": "Overview, not a study.",
+   "summary": "A short guide to how USGS studies cyanobacteria — useful for planning methods.",
+   "full_text": "open_access",
+   "related_articles": [
+    "laboratory-methods"
+   ]
+  },
+  {
+   "id": "rosen2015ofr",
+   "reference_type": "government_report",
+   "title": "Field and laboratory guide to freshwater cyanobacteria harmful algal blooms for Native American and Alaska Native communities",
+   "authors": [
+    "Rosen, Barry H.",
+    "St. Amand, Ann"
+   ],
+   "year": 2015,
+   "container": "U.S. Geological Survey Open-File Report 2015-1164",
+   "doi": "10.3133/ofr20151164",
+   "url": "https://doi.org/10.3133/ofr20151164",
+   "publisher": "US Geological Survey",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "United States",
+   "topics": [
+    "monitoring",
+    "taxonomy"
+   ],
+   "organisms": [
+    "Bloom-forming cyanobacteria"
+   ],
+   "methodology": "Illustrated field and laboratory identification guide.",
+   "key_findings": "Provides field images of cyanobacterial blooms and look-alikes (non-toxic algae, floating plants) and guidance on microscopic identification.",
+   "limitations": "Identification guide; toxin production cannot be determined by identification alone.",
+   "summary": "A free, illustrated USGS guide to recognizing cyanobacterial blooms and look-alikes in the field and under the microscope.",
+   "full_text": "open_access",
+   "related_articles": [
+    "diversity-and-identification",
+    "laboratory-methods"
+   ]
+  },
+  {
+   "id": "graham2020rivers",
+   "reference_type": "journal_article",
+   "title": "Cyanotoxin occurrence in large rivers of the United States",
+   "authors": [
+    "Graham, Jennifer L.",
+    "Dubrovsky, Neil M.",
+    "Foster, Guy M.",
+    "King, Lindsey R.",
+    "Loftin, Keith A.",
+    "Rosen, Barry H.",
+    "Stelzer, Erin A."
+   ],
+   "year": 2020,
+   "container": "Inland Waters",
+   "volume": "10",
+   "issue": "1",
+   "pages": "109-117",
+   "doi": "10.1080/20442041.2019.1700749",
+   "url": "https://doi.org/10.1080/20442041.2019.1700749",
+   "publisher": "Informa UK Limited",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "11 large U.S. rivers",
+   "topics": [
+    "monitoring",
+    "species-composition"
+   ],
+   "organisms": [
+    "Pseudanabaena",
+    "Planktothrix"
+   ],
+   "methodology": "Sampling June–September 2017 for cyanobacteria, toxin-synthetase genes and cyanotoxins.",
+   "key_findings": "Cyanobacteria were present in all rivers (82% of samples) but rarely dominated; Pseudanabaena and Planktothrix were most frequent.",
+   "limitations": "One season.",
+   "summary": "Cyanobacteria are routine members of river phytoplankton even when no bloom is visible.",
+   "full_text": "unknown",
+   "related_articles": [
+    "freshwater-ecology",
+    "kentucky"
+   ]
+  },
+  {
+   "id": "huisman2018",
+   "reference_type": "journal_article",
+   "title": "Cyanobacterial blooms",
+   "authors": [
+    "Huisman, Jef",
+    "Codd, Geoffrey A.",
+    "Paerl, Hans W.",
+    "Ibelings, Bas W.",
+    "Verspagen, Jolanda M. H.",
+    "Visser, Petra M."
+   ],
+   "year": 2018,
+   "container": "Nature Reviews Microbiology",
+   "volume": "16",
+   "issue": "8",
+   "pages": "471-483",
+   "doi": "10.1038/s41579-018-0040-1",
+   "url": "https://doi.org/10.1038/s41579-018-0040-1",
+   "publisher": "Springer Science and Business Media LLC",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "paerl_otten2013",
+   "reference_type": "journal_article",
+   "title": "Harmful Cyanobacterial Blooms: Causes, Consequences, and Controls",
+   "authors": [
+    "Paerl, Hans W.",
+    "Otten, Timothy G."
+   ],
+   "year": 2013,
+   "container": "Microbial Ecology",
+   "volume": "65",
+   "issue": "4",
+   "pages": "995-1010",
+   "doi": "10.1007/s00248-012-0159-y",
+   "url": "https://doi.org/10.1007/s00248-012-0159-y",
+   "publisher": "Springer Science and Business Media LLC",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "paerl_huisman2008",
+   "reference_type": "journal_article",
+   "title": "Blooms Like It Hot",
+   "authors": [
+    "Paerl, Hans W.",
+    "Huisman, Jef"
+   ],
+   "year": 2008,
+   "container": "Science",
+   "volume": "320",
+   "issue": "5872",
+   "pages": "57-58",
+   "doi": "10.1126/science.1155398",
+   "url": "https://doi.org/10.1126/science.1155398",
+   "publisher": "American Association for the Advancement of Science (AAAS)",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "conley2009",
+   "reference_type": "journal_article",
+   "title": "Controlling Eutrophication: Nitrogen and Phosphorus",
+   "authors": [
+    "Conley, Daniel J.",
+    "Paerl, Hans W.",
+    "Howarth, Robert W.",
+    "Boesch, Donald F.",
+    "Seitzinger, Sybil P.",
+    "Havens, Karl E.",
+    "Lancelot, Christiane",
+    "Likens, Gene E."
+   ],
+   "year": 2009,
+   "container": "Science",
+   "volume": "323",
+   "issue": "5917",
+   "pages": "1014-1015",
+   "doi": "10.1126/science.1167755",
+   "url": "https://doi.org/10.1126/science.1167755",
+   "publisher": "American Association for the Advancement of Science (AAAS)",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "wurtsbaugh2019",
+   "reference_type": "journal_article",
+   "title": "Nutrients, eutrophication and harmful algal blooms along the freshwater to marine continuum",
+   "authors": [
+    "Wurtsbaugh, Wayne A.",
+    "Paerl, Hans W.",
+    "Dodds, Walter K."
+   ],
+   "year": 2019,
+   "container": "WIREs Water",
+   "volume": "6",
+   "issue": "5",
+   "pages": "e1373",
+   "doi": "10.1002/wat2.1373",
+   "url": "https://doi.org/10.1002/wat2.1373",
+   "publisher": "Wiley",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "carmichael2001",
+   "reference_type": "journal_article",
+   "title": "Health Effects of Toxin-Producing Cyanobacteria: “The CyanoHABs”",
+   "authors": [
+    "Carmichael, Wayne W."
+   ],
+   "year": 2001,
+   "container": "Human and Ecological Risk Assessment: An International Journal",
+   "volume": "7",
+   "issue": "5",
+   "pages": "1393-1407",
+   "doi": "10.1080/20018091095087",
+   "url": "https://doi.org/10.1080/20018091095087",
+   "publisher": "Informa UK Limited",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "buratti2017",
+   "reference_type": "journal_article",
+   "title": "Cyanotoxins: producing organisms, occurrence, toxicity, mechanism of action and human health toxicological risk evaluation",
+   "authors": [
+    "Buratti, Franca M.",
+    "Manganelli, Maura",
+    "Vichi, Susanna",
+    "Stefanelli, Mara",
+    "Scardala, Simona",
+    "Testai, Emanuela",
+    "Funari, Enzo"
+   ],
+   "year": 2017,
+   "container": "Archives of Toxicology",
+   "volume": "91",
+   "issue": "3",
+   "pages": "1049-1130",
+   "doi": "10.1007/s00204-016-1913-6",
+   "url": "https://doi.org/10.1007/s00204-016-1913-6",
+   "publisher": "Springer Science and Business Media LLC",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "wacklin2009",
+   "reference_type": "journal_article",
+   "title": "Nomenclatural validation of the genetically revised cyanobacterial genus Dolichospermum (RALFS ex BORNET et FLAHAULT) comb. nova.",
+   "authors": [
+    "Wacklin, Pirjo",
+    "Hoffmann, Lucien",
+    "Komárek, Jiří"
+   ],
+   "year": 2009,
+   "container": "Fottea",
+   "volume": "9",
+   "issue": "1",
+   "pages": "59-64",
+   "doi": "10.5507/fot.2009.005",
+   "url": "https://doi.org/10.5507/fot.2009.005",
+   "publisher": "Palacky University Olomouc",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "strunecky2023",
+   "reference_type": "journal_article",
+   "title": "An updated classification of cyanobacterial orders and families based on phylogenomic and polyphasic analysis",
+   "authors": [
+    "Strunecký, Otakar",
+    "Ivanova, Anna Pavlovna",
+    "Mareš, Jan"
+   ],
+   "year": 2023,
+   "container": "Journal of Phycology",
+   "volume": "59",
+   "issue": "1",
+   "pages": "12-51",
+   "doi": "10.1111/jpy.13304",
+   "url": "https://doi.org/10.1111/jpy.13304",
+   "publisher": "Wiley",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "aguilera2018",
+   "reference_type": "journal_article",
+   "title": "The polyphasic analysis of two native Raphidiopsis isolates supports the unification of the genera Raphidiopsis and Cylindrospermopsis (Nostocales, Cyanobacteria)",
+   "authors": [
+    "Aguilera, Anabella",
+    "Gómez, Esther Berrendero",
+    "Kaštovský, Jan",
+    "Echenique, Ricardo O.",
+    "Salerno, Graciela L."
+   ],
+   "year": 2018,
+   "container": "Phycologia",
+   "volume": "57",
+   "issue": "2",
+   "pages": "130-146",
+   "doi": "10.2216/17-2.1",
+   "url": "https://doi.org/10.2216/17-2.1",
+   "publisher": "Informa UK Limited",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "strunecky2013",
+   "reference_type": "journal_article",
+   "title": "Molecular and morphological criteria for revision of the genus M icrocoleus ( O scillatoriales, C yanobacteria)",
+   "authors": [
+    "Strunecký, Otakar",
+    "Komárek, Jiří",
+    "Johansen, Jeffrey",
+    "Lukešová, Alena",
+    "Elster, Josef"
+   ],
+   "year": 2013,
+   "container": "Journal of Phycology",
+   "volume": "49",
+   "issue": "6",
+   "pages": "1167-1180",
+   "doi": "10.1111/jpy.12128",
+   "url": "https://doi.org/10.1111/jpy.12128",
+   "publisher": "Wiley",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "lyons2014",
+   "reference_type": "journal_article",
+   "title": "The rise of oxygen in Earth’s early ocean and atmosphere",
+   "authors": [
+    "Lyons, Timothy W.",
+    "Reinhard, Christopher T.",
+    "Planavsky, Noah J."
+   ],
+   "year": 2014,
+   "container": "Nature",
+   "volume": "506",
+   "issue": "7488",
+   "pages": "307-315",
+   "doi": "10.1038/nature13068",
+   "url": "https://doi.org/10.1038/nature13068",
+   "publisher": "Springer Science and Business Media LLC",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "archibald2015",
+   "reference_type": "journal_article",
+   "title": "Endosymbiosis and Eukaryotic Cell Evolution",
+   "authors": [
+    "Archibald, John M."
+   ],
+   "year": 2015,
+   "container": "Current Biology",
+   "volume": "25",
+   "issue": "19",
+   "pages": "R911-R921",
+   "doi": "10.1016/j.cub.2015.07.055",
+   "url": "https://doi.org/10.1016/j.cub.2015.07.055",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "ponce2017",
+   "reference_type": "journal_article",
+   "title": "An Early-Branching Freshwater Cyanobacterium at the Origin of Plastids",
+   "authors": [
+    "Ponce-Toledo, Rafael I.",
+    "Deschamps, Philippe",
+    "López-García, Purificación",
+    "Zivanovic, Yvan",
+    "Benzerara, Karim",
+    "Moreira, David"
+   ],
+   "year": 2017,
+   "container": "Current Biology",
+   "volume": "27",
+   "issue": "3",
+   "pages": "386-391",
+   "doi": "10.1016/j.cub.2016.11.056",
+   "url": "https://doi.org/10.1016/j.cub.2016.11.056",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "walsby1994",
+   "reference_type": "journal_article",
+   "title": "Gas vesicles",
+   "authors": [
+    "Walsby, A E"
+   ],
+   "year": 1994,
+   "container": "Microbiological Reviews",
+   "volume": "58",
+   "issue": "1",
+   "pages": "94-144",
+   "doi": "10.1128/mr.58.1.94-144.1994",
+   "url": "https://doi.org/10.1128/mr.58.1.94-144.1994",
+   "publisher": "American Society for Microbiology",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "ger2014",
+   "reference_type": "journal_article",
+   "title": "Understanding cyanobacteria‐zooplankton interactions in a more eutrophic world",
+   "authors": [
+    "Ger, Kemal A.",
+    "Hansson, Lars‐Anders",
+    "Lürling, Miquel"
+   ],
+   "year": 2014,
+   "container": "Freshwater Biology",
+   "volume": "59",
+   "issue": "9",
+   "pages": "1783-1798",
+   "doi": "10.1111/fwb.12393",
+   "url": "https://doi.org/10.1111/fwb.12393",
+   "publisher": "Wiley",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "jancula2011",
+   "reference_type": "journal_article",
+   "title": "Critical review of actually available chemical compounds for prevention and management of cyanobacterial blooms",
+   "authors": [
+    "Jančula, Daniel",
+    "Maršálek, Blahoslav"
+   ],
+   "year": 2011,
+   "container": "Chemosphere",
+   "volume": "85",
+   "issue": "9",
+   "pages": "1415-1422",
+   "doi": "10.1016/j.chemosphere.2011.08.036",
+   "url": "https://doi.org/10.1016/j.chemosphere.2011.08.036",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "chorus_welker2021",
+   "reference_type": "book",
+   "title": "Toxic Cyanobacteria in Water",
+   "authors": [
+    "Chorus, Ingrid (ed.)",
+    "Welker, Martin (ed.)"
+   ],
+   "year": 2021,
+   "doi": "10.1201/9781003081449",
+   "url": "https://doi.org/10.1201/9781003081449",
+   "publisher": "CRC Press",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "dodds2009",
+   "reference_type": "journal_article",
+   "title": "Eutrophication of U.S. Freshwaters: Analysis of Potential Economic Damages",
+   "authors": [
+    "Dodds, Walter K.",
+    "Bouska, Wes W.",
+    "Eitzmann, Jeffrey L.",
+    "Pilger, Tyler J.",
+    "Pitts, Kristen L.",
+    "Riley, Alyssa J.",
+    "Schloesser, Joshua T.",
+    "Thornbrugh, Darren J."
+   ],
+   "year": 2009,
+   "container": "Environmental Science & Technology",
+   "volume": "43",
+   "issue": "1",
+   "pages": "12-19",
+   "doi": "10.1021/es801217q",
+   "url": "https://doi.org/10.1021/es801217q",
+   "publisher": "American Chemical Society (ACS)",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "dodds_smith2016",
+   "reference_type": "journal_article",
+   "title": "Nitrogen, phosphorus, and eutrophication in streams",
+   "authors": [
+    "Dodds, Walter",
+    "Smith, Val"
+   ],
+   "year": 2016,
+   "container": "Inland Waters",
+   "volume": "6",
+   "issue": "2",
+   "pages": "155-164",
+   "doi": "10.5268/iw-6.2.909",
+   "url": "https://doi.org/10.5268/iw-6.2.909",
+   "publisher": "Freshwater Biological Association",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "smith1983",
+   "reference_type": "journal_article",
+   "title": "Low Nitrogen to Phosphorus Ratios Favor Dominance by Blue-Green Algae in Lake Phytoplankton",
+   "authors": [
+    "Smith, Val H."
+   ],
+   "year": 1983,
+   "container": "Science",
+   "volume": "221",
+   "issue": "4611",
+   "pages": "669-671",
+   "doi": "10.1126/science.221.4611.669",
+   "url": "https://doi.org/10.1126/science.221.4611.669",
+   "publisher": "American Association for the Advancement of Science (AAAS)",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "sondergaard2003",
+   "reference_type": "journal_article",
+   "title": "Role of sediment and internal loading of phosphorus in shallow lakes",
+   "authors": [
+    "Søndergaard, Martin",
+    "Jensen, Jens Peder",
+    "Jeppesen, Erik"
+   ],
+   "year": 2003,
+   "container": "Hydrobiologia",
+   "volume": "506-509",
+   "issue": "1-3",
+   "pages": "135-145",
+   "doi": "10.1023/b:hydr.0000008611.12704.dd",
+   "url": "https://doi.org/10.1023/b:hydr.0000008611.12704.dd",
+   "publisher": "Springer Science and Business Media LLC",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "reynolds2006",
+   "reference_type": "book",
+   "title": "The Ecology of Phytoplankton",
+   "authors": [
+    "Reynolds, C. S."
+   ],
+   "year": 2006,
+   "doi": "10.1017/cbo9780511542145",
+   "url": "https://doi.org/10.1017/cbo9780511542145",
+   "publisher": "Cambridge University Press",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "whitton2012",
+   "reference_type": "book",
+   "title": "Ecology of Cyanobacteria II",
+   "authors": [
+    "Whitton, Brian A. (ed.)"
+   ],
+   "year": 2012,
+   "doi": "10.1007/978-94-007-3855-3",
+   "url": "https://doi.org/10.1007/978-94-007-3855-3",
+   "publisher": "Springer Netherlands",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "kumar2010",
+   "reference_type": "journal_article",
+   "title": "Cyanobacterial Heterocysts",
+   "authors": [
+    "Kumar, K.",
+    "Mella-Herrera, R. A.",
+    "Golden, J. W."
+   ],
+   "year": 2010,
+   "container": "Cold Spring Harbor Perspectives in Biology",
+   "volume": "2",
+   "issue": "4",
+   "pages": "a000315-a000315",
+   "doi": "10.1101/cshperspect.a000315",
+   "url": "https://doi.org/10.1101/cshperspect.a000315",
+   "publisher": "Cold Spring Harbor Laboratory",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "kaplanlevy2010",
+   "reference_type": "book_chapter",
+   "title": "Akinetes: Dormant Cells of Cyanobacteria",
+   "authors": [
+    "Kaplan-Levy, Ruth N.",
+    "Hadas, Ora",
+    "Summers, Michael L.",
+    "Rücker, Jacqueline",
+    "Sukenik, Assaf"
+   ],
+   "year": 2010,
+   "container": "Topics in Current Genetics",
+   "pages": "5-27",
+   "doi": "10.1007/978-3-642-12422-8_2",
+   "url": "https://doi.org/10.1007/978-3-642-12422-8_2",
+   "publisher": "Springer Berlin Heidelberg",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "schirrmeister2013",
+   "reference_type": "journal_article",
+   "title": "Evolution of multicellularity coincided with increased diversification of cyanobacteria and the Great Oxidation Event",
+   "authors": [
+    "Schirrmeister, Bettina E.",
+    "de Vos, Jurriaan M.",
+    "Antonelli, Alexandre",
+    "Bagheri, Homayoun C."
+   ],
+   "year": 2013,
+   "container": "Proceedings of the National Academy of Sciences",
+   "volume": "110",
+   "issue": "5",
+   "pages": "1791-1796",
+   "doi": "10.1073/pnas.1209927110",
+   "url": "https://doi.org/10.1073/pnas.1209927110",
+   "publisher": "National Academy of Sciences",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "sanchezbaracaldo2022",
+   "reference_type": "journal_article",
+   "title": "Cyanobacteria and biogeochemical cycles through Earth history",
+   "authors": [
+    "Sánchez-Baracaldo, Patricia",
+    "Bianchini, Giorgio",
+    "Wilson, Jamie D.",
+    "Knoll, Andrew H."
+   ],
+   "year": 2022,
+   "container": "Trends in Microbiology",
+   "volume": "30",
+   "issue": "2",
+   "pages": "143-157",
+   "doi": "10.1016/j.tim.2021.05.008",
+   "url": "https://doi.org/10.1016/j.tim.2021.05.008",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "maccoll1998",
+   "reference_type": "journal_article",
+   "title": "Cyanobacterial Phycobilisomes",
+   "authors": [
+    "MacColl, Robert"
+   ],
+   "year": 1998,
+   "container": "Journal of Structural Biology",
+   "volume": "124",
+   "issue": "2-3",
+   "pages": "311-334",
+   "doi": "10.1006/jsbi.1998.4062",
+   "url": "https://doi.org/10.1006/jsbi.1998.4062",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "burford2016",
+   "reference_type": "journal_article",
+   "title": "Understanding the winning strategies used by the bloom-forming cyanobacterium Cylindrospermopsis raciborskii",
+   "authors": [
+    "Burford, Michele A.",
+    "Beardall, John",
+    "Willis, Anusuya",
+    "Orr, Philip T.",
+    "Magalhaes, Valeria F.",
+    "Rangel, Luciana M.",
+    "Azevedo, Sandra M.F.O.E.",
+    "Neilan, Brett A."
+   ],
+   "year": 2016,
+   "container": "Harmful Algae",
+   "volume": "54",
+   "pages": "44-53",
+   "doi": "10.1016/j.hal.2015.10.012",
+   "url": "https://doi.org/10.1016/j.hal.2015.10.012",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "carey2012",
+   "reference_type": "journal_article",
+   "title": "Eco-physiological adaptations that favour freshwater cyanobacteria in a changing climate",
+   "authors": [
+    "Carey, Cayelan C.",
+    "Ibelings, Bas W.",
+    "Hoffmann, Emily P.",
+    "Hamilton, David P.",
+    "Brookes, Justin D."
+   ],
+   "year": 2012,
+   "container": "Water Research",
+   "volume": "46",
+   "issue": "5",
+   "pages": "1394-1407",
+   "doi": "10.1016/j.watres.2011.12.016",
+   "url": "https://doi.org/10.1016/j.watres.2011.12.016",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "sommer2012",
+   "reference_type": "journal_article",
+   "title": "Beyond the Plankton Ecology Group (PEG) Model: Mechanisms Driving Plankton Succession",
+   "authors": [
+    "Sommer, Ulrich",
+    "Adrian, Rita",
+    "De Senerpont Domis, Lisette",
+    "Elser, James J.",
+    "Gaedke, Ursula",
+    "Ibelings, Bas",
+    "Jeppesen, Erik",
+    "Lürling, Miquel",
+    "Molinero, Juan Carlos",
+    "Mooij, Wolf M.",
+    "van Donk, Ellen",
+    "Winder, Monika"
+   ],
+   "year": 2012,
+   "container": "Annual Review of Ecology, Evolution, and Systematics",
+   "volume": "43",
+   "issue": "1",
+   "pages": "429-448",
+   "doi": "10.1146/annurev-ecolsys-110411-160251",
+   "url": "https://doi.org/10.1146/annurev-ecolsys-110411-160251",
+   "publisher": "Annual Reviews",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "hilborn_beasley2015",
+   "reference_type": "journal_article",
+   "title": "One Health and Cyanobacteria in Freshwater Systems: Animal Illnesses and Deaths Are Sentinel Events for Human Health Risks",
+   "authors": [
+    "Hilborn, Elizabeth",
+    "Beasley, Val"
+   ],
+   "year": 2015,
+   "container": "Toxins",
+   "volume": "7",
+   "issue": "4",
+   "pages": "1374-1395",
+   "doi": "10.3390/toxins7041374",
+   "url": "https://doi.org/10.3390/toxins7041374",
+   "publisher": "MDPI AG",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "backer2013",
+   "reference_type": "journal_article",
+   "title": "Canine Cyanotoxin Poisonings in the United States (1920s–2012): Review of Suspected and Confirmed Cases from Three Data Sources",
+   "authors": [
+    "Backer, Lorraine",
+    "Landsberg, Jan",
+    "Miller, Melissa",
+    "Keel, Kevin",
+    "Taylor, Tegwin"
+   ],
+   "year": 2013,
+   "container": "Toxins",
+   "volume": "5",
+   "issue": "9",
+   "pages": "1597-1628",
+   "doi": "10.3390/toxins5091597",
+   "url": "https://doi.org/10.3390/toxins5091597",
+   "publisher": "MDPI AG",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "lurling2016",
+   "reference_type": "journal_article",
+   "title": "Evaluation of several end-of-pipe measures proposed to control cyanobacteria",
+   "authors": [
+    "Lürling, Miquel",
+    "Waajen, Guido",
+    "de Senerpont Domis, Lisette N."
+   ],
+   "year": 2016,
+   "container": "Aquatic Ecology",
+   "volume": "50",
+   "issue": "3",
+   "pages": "499-519",
+   "doi": "10.1007/s10452-015-9563-y",
+   "url": "https://doi.org/10.1007/s10452-015-9563-y",
+   "publisher": "Springer Science and Business Media LLC",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "johnk2008",
+   "reference_type": "journal_article",
+   "title": "Summer heatwaves promote blooms of harmful cyanobacteria",
+   "authors": [
+    "Jöhnk, Klaus D.",
+    "Huisman, JEF",
+    "Sharples, Jonathan",
+    "Sommeijer, BEN",
+    "Visser, Petra M.",
+    "Stroom, Jasper M."
+   ],
+   "year": 2008,
+   "container": "Global Change Biology",
+   "volume": "14",
+   "issue": "3",
+   "pages": "495-512",
+   "doi": "10.1111/j.1365-2486.2007.01510.x",
+   "url": "https://doi.org/10.1111/j.1365-2486.2007.01510.x",
+   "publisher": "Wiley",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "mantzouki2018",
+   "reference_type": "journal_article",
+   "title": "Temperature Effects Explain Continental Scale Distribution of Cyanobacterial Toxins",
+   "authors": [
+    "Mantzouki, Evanthia",
+    "Lürling, Miquel",
+    "Fastner, Jutta",
+    "De Senerpont Domis, Lisette",
+    "Wilk-Woźniak, Elżbieta",
+    "Koreivienė, Judita",
+    "Seelen, Laura",
+    "Teurlincx, Sven",
+    "Verstijnen, Yvon",
+    "Krztoń, Wojciech"
+   ],
+   "year": 2018,
+   "container": "Toxins",
+   "volume": "10",
+   "issue": "4",
+   "pages": "156",
+   "doi": "10.3390/toxins10040156",
+   "url": "https://doi.org/10.3390/toxins10040156",
+   "publisher": "MDPI AG",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "author_count": 195,
+   "in_library": false
+  },
+  {
+   "id": "merel2013",
+   "reference_type": "journal_article",
+   "title": "State of knowledge and concerns on cyanobacterial blooms and cyanotoxins",
+   "authors": [
+    "Merel, Sylvain",
+    "Walker, David",
+    "Chicana, Ruth",
+    "Snyder, Shane",
+    "Baurès, Estelle",
+    "Thomas, Olivier"
+   ],
+   "year": 2013,
+   "container": "Environment International",
+   "volume": "59",
+   "pages": "303-327",
+   "doi": "10.1016/j.envint.2013.06.013",
+   "url": "https://doi.org/10.1016/j.envint.2013.06.013",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "rippka1974",
+   "reference_type": "journal_article",
+   "title": "A cyanobacterium which lacks thylakoids",
+   "authors": [
+    "Rippka, R.",
+    "Waterbury, J.",
+    "Cohen-Bazire, G."
+   ],
+   "year": 1974,
+   "container": "Archives of Microbiology",
+   "volume": "100",
+   "issue": "1",
+   "pages": "419-436",
+   "doi": "10.1007/bf00446333",
+   "url": "https://doi.org/10.1007/bf00446333",
+   "publisher": "Springer Science and Business Media LLC",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "kerfeld2016",
+   "reference_type": "journal_article",
+   "title": "Assembly, function and evolution of cyanobacterial carboxysomes",
+   "authors": [
+    "Kerfeld, Cheryl A",
+    "Melnicki, Matthew R"
+   ],
+   "year": 2016,
+   "container": "Current Opinion in Plant Biology",
+   "volume": "31",
+   "pages": "66-75",
+   "doi": "10.1016/j.pbi.2016.03.009",
+   "url": "https://doi.org/10.1016/j.pbi.2016.03.009",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "pick2016",
+   "reference_type": "journal_article",
+   "title": "Blooming algae: a Canadian perspective on the rise of toxic cyanobacteria",
+   "authors": [
+    "Pick, Frances R."
+   ],
+   "year": 2016,
+   "container": "Canadian Journal of Fisheries and Aquatic Sciences",
+   "volume": "73",
+   "issue": "7",
+   "pages": "1149-1158",
+   "doi": "10.1139/cjfas-2015-0470",
+   "url": "https://doi.org/10.1139/cjfas-2015-0470",
+   "publisher": "Canadian Science Publishing",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "brookes_carey2011",
+   "reference_type": "journal_article",
+   "title": "Resilience to Blooms",
+   "authors": [
+    "Brookes, Justin D.",
+    "Carey, Cayelan C."
+   ],
+   "year": 2011,
+   "container": "Science",
+   "volume": "334",
+   "issue": "6052",
+   "pages": "46-47",
+   "doi": "10.1126/science.1207349",
+   "url": "https://doi.org/10.1126/science.1207349",
+   "publisher": "American Association for the Advancement of Science (AAAS)",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "nasem2016genedrives",
+   "reference_type": "book",
+   "title": "Gene Drives on the Horizon",
+   "authors": [
+    "National Academies of Sciences, Engineering, and Medicine"
+   ],
+   "year": 2016,
+   "doi": "10.17226/23405",
+   "url": "https://doi.org/10.17226/23405",
+   "publisher": "National Academies Press",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "kurmayer2016",
+   "reference_type": "journal_article",
+   "title": "Role of toxic and bioactive secondary metabolites in colonization and bloom formation by filamentous cyanobacteria Planktothrix",
+   "authors": [
+    "Kurmayer, Rainer",
+    "Deng, Li",
+    "Entfellner, Elisabeth"
+   ],
+   "year": 2016,
+   "container": "Harmful Algae",
+   "volume": "54",
+   "pages": "69-86",
+   "doi": "10.1016/j.hal.2016.01.004",
+   "url": "https://doi.org/10.1016/j.hal.2016.01.004",
+   "publisher": "Elsevier BV",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "yurista2004",
+   "reference_type": "journal_article",
+   "title": "Nutrient Patterns in a Mainstem Reservoir, Kentucky Lake, USA, Over a 10-year Period",
+   "authors": [
+    "Yurista, P. M.",
+    "White, D. S.",
+    "Kipphut, G. W.",
+    "Johnston, K.",
+    "Rice, G.",
+    "Hendricks, S. P."
+   ],
+   "year": 2004,
+   "container": "Lake and Reservoir Management",
+   "volume": "20",
+   "issue": "2",
+   "pages": "148-163",
+   "doi": "10.1080/07438140409354359",
+   "url": "https://doi.org/10.1080/07438140409354359",
+   "publisher": "Informa UK Limited",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "tumolo2017",
+   "reference_type": "journal_article",
+   "title": "Top-down effects of an invasive omnivore: detection in long-term monitoring of large-river reservoir chlorophyll-a",
+   "authors": [
+    "Tumolo, Benjamin B.",
+    "Flinn, Michael B."
+   ],
+   "year": 2017,
+   "container": "Oecologia",
+   "volume": "185",
+   "issue": "2",
+   "pages": "293-303",
+   "doi": "10.1007/s00442-017-3937-x",
+   "url": "https://doi.org/10.1007/s00442-017-3937-x",
+   "publisher": "Springer Science and Business Media LLC",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "crain2017",
+   "reference_type": "government_report",
+   "title": "Multiple-source tracking: Investigating sources of pathogens, nutrients, and sediment in the Upper Little River Basin, Kentucky, water years 2013–14",
+   "authors": [
+    "Crain, Angela S.",
+    "Cherry, Mac A.",
+    "Williamson, Tanja N.",
+    "Bunch, Aubrey R."
+   ],
+   "year": 2017,
+   "container": "U.S. Geological Survey Scientific Investigations Report 2017-5086",
+   "doi": "10.3133/sir20175086",
+   "url": "https://doi.org/10.3133/sir20175086",
+   "publisher": "US Geological Survey",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "yeager2026",
+   "reference_type": "journal_article",
+   "title": "Physical, chemical, and biological controls on algal dynamics in the Greenup Pool of the Ohio River",
+   "authors": [
+    "Yeager-Armstead, Mindy",
+    "Brady, Geneve",
+    "Hoffman, Austin"
+   ],
+   "year": 2026,
+   "container": "PLOS One",
+   "volume": "21",
+   "issue": "10",
+   "pages": "e0360624",
+   "doi": "10.1371/journal.pone.0360624",
+   "url": "https://doi.org/10.1371/journal.pone.0360624",
+   "publisher": "Public Library of Science (PLoS)",
+   "verified_with": "crossref",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "epa_rec2019",
+   "reference_type": "web_page",
+   "title": "Protecting Human Health from Cyanotoxin Exposure During Recreation",
+   "authors": [
+    "U.S. Environmental Protection Agency"
+   ],
+   "year": 2019,
+   "container": "U.S. EPA Harmful Algal Blooms program",
+   "url": "https://www.epa.gov/habs/protecting-human-health-cyanotoxin-exposure-during-recreation",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "note": "States EPA's 2019 recommended recreational criteria/swimming advisory values: microcystins 8 µg/L, cylindrospermopsin 15 µg/L.",
+   "in_library": false
+  },
+  {
+   "id": "epa_dwha2015",
+   "reference_type": "web_page",
+   "title": "EPA Drinking Water Health Advisories for Cyanotoxins",
+   "authors": [
+    "U.S. Environmental Protection Agency"
+   ],
+   "year": 2015,
+   "container": "U.S. EPA Harmful Algal Blooms program",
+   "url": "https://www.epa.gov/habs/epa-drinking-water-health-advisories-cyanotoxins",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "note": "10-day health advisories (2015): microcystins 0.3 µg/L (bottle-fed infants and pre-school children) and 1.6 µg/L (school-age children and adults); cylindrospermopsin 0.7 and 3.0 µg/L.",
+   "in_library": false
+  },
+  {
+   "id": "epa_visual",
+   "reference_type": "web_page",
+   "title": "Visually Identifying Signs of a Cyanobacterial Bloom",
+   "authors": [
+    "U.S. Environmental Protection Agency"
+   ],
+   "container": "U.S. EPA Harmful Algal Blooms program",
+   "url": "https://www.epa.gov/habs/visually-identifying-signs-cyanobacterial-bloom",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "epa_labs",
+   "reference_type": "web_page",
+   "title": "Laboratories that Analyze for Cyanobacteria and Cyanotoxins",
+   "authors": [
+    "U.S. Environmental Protection Agency"
+   ],
+   "container": "U.S. EPA Harmful Algal Blooms program",
+   "url": "https://www.epa.gov/habs/laboratories-analyze-cyanobacteria-and-cyanotoxins",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "epa_state_thresholds",
+   "reference_type": "web_page",
+   "title": "State & Tribal Toxin Thresholds",
+   "authors": [
+    "U.S. Environmental Protection Agency"
+   ],
+   "year": 2026,
+   "container": "U.S. EPA Harmful Algal Blooms program",
+   "url": "https://www.epa.gov/habs/state-tribal-toxin-thresholds",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "note": "Accessed 2026-11-05: the table lists Kentucky as 'No Thresholds' for drinking water and recreation, with the caveat that only publicly accessible thresholds are listed.",
+   "in_library": false
+  },
+  {
+   "id": "epa_learn",
+   "reference_type": "web_page",
+   "title": "Learn about Harmful Algae, Cyanobacteria and Cyanotoxins",
+   "authors": [
+    "U.S. Environmental Protection Agency"
+   ],
+   "container": "U.S. EPA Harmful Algal Blooms program",
+   "url": "https://www.epa.gov/habs/learn-about-harmful-algae-cyanobacteria-and-cyanotoxins",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "openstax_micro",
+   "reference_type": "book_chapter",
+   "title": "4.3 Nonproteobacteria Gram-Negative Bacteria and Phototrophic Bacteria",
+   "authors": [
+    "Parker, Nina",
+    "Schneegurt, Mark",
+    "Thi Tu, Anh-Hue",
+    "Lister, Philip",
+    "Forster, Brian M."
+   ],
+   "year": 2016,
+   "container": "Microbiology (OpenStax)",
+   "url": "https://openstax.org/books/microbiology/pages/4-3-nonproteobacteria-gram-negative-bacteria-and-phototrophic-bacteria",
+   "publisher": "OpenStax, Rice University",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "note": "Open textbook (CC BY 4.0).",
+   "in_library": false
+  },
+  {
+   "id": "openstax_bio",
+   "reference_type": "book_chapter",
+   "title": "22.1 Prokaryotic Diversity",
+   "authors": [
+    "Clark, Mary Ann",
+    "Douglas, Matthew",
+    "Choi, Jung"
+   ],
+   "year": 2018,
+   "container": "Biology 2e (OpenStax)",
+   "url": "https://openstax.org/books/biology-2e/pages/22-1-prokaryotic-diversity",
+   "publisher": "OpenStax, Rice University",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "note": "Open textbook (CC BY 4.0).",
+   "in_library": false
+  },
+  {
+   "id": "delacruz2017",
+   "reference_type": "journal_article",
+   "title": "Harmful Algae Bloom Occurrence in Urban Ponds: Relationship of Toxin Levels with Cell Density and Species Composition",
+   "authors": [
+    "de la Cruz, A.",
+    "Logsdon, R.",
+    "Lye, D.",
+    "Guglielmi, S.",
+    "Rice, A.",
+    "Kannan, M. S."
+   ],
+   "year": 2017,
+   "container": "Journal of Earth and Environmental Science",
+   "volume": "25",
+   "pages": "704-726",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6865815/",
+   "verified_with": "pubmed",
+   "verified_at": "2026-11-05",
+   "note": "PMID 31750421; PMCID PMC6865815. The DOI printed on the PubMed record (10.29011/JEES-148.100048) did not resolve when checked, so it is cited by PMCID.",
+   "in_library": true,
+   "summary_status": "Draft summary written from the published abstract; not yet faculty-reviewed.",
+   "geographic_scope": "Northern Kentucky (urban ponds)",
+   "topics": [
+    "kentucky-blooms",
+    "microcystis-ecology",
+    "monitoring"
+   ],
+   "organisms": [
+    "Microcystis"
+   ],
+   "methodology": "Year-long monitoring (Oct 2012–Sep 2013) of algal communities, basic water quality and microcystin in several urban retention ponds.",
+   "key_findings": "Blooms were mostly Microcystis and occurred throughout the year; basic water-quality variables (including nitrate and soluble reactive phosphate) did not correlate with cyanobacteria or microcystin, and toxin levels did not always track Microcystis cell counts.",
+   "limitations": "Small number of ponds in one urban area; the DOI listed on the PubMed record does not resolve, so cite by PMID/PMCID.",
+   "summary": "Kentucky evidence that small constructed ponds can host Microcystis blooms year-round and that cell counts are a poor stand-in for toxin concentration.",
+   "full_text": "open_access",
+   "related_articles": [
+    "harmful-algal-blooms",
+    "kentucky"
+   ]
+  },
+  {
+   "id": "kycab2013_taylorsville",
+   "reference_type": "web_page",
+   "title": "Public Advised of Potential Health Risks with Exposure to Water in Taylorsville Lake",
+   "authors": [
+    "Kentucky Energy and Environment Cabinet"
+   ],
+   "year": 2013,
+   "container": "Naturally Connected (Cabinet news)",
+   "url": "https://kydep.wordpress.com/2013/06/28/public-advised-of-potential-health-risks-with-exposure-to-water-in-taylorsville-lake/",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "kycab2013_fourlakes",
+   "reference_type": "web_page",
+   "title": "Harmful algal blooms found at four more Kentucky lakes",
+   "authors": [
+    "Kentucky Energy and Environment Cabinet"
+   ],
+   "year": 2013,
+   "container": "Naturally Connected (Cabinet news)",
+   "url": "https://kydep.wordpress.com/2013/10/21/harmful-algal-blooms-found-at-four-more-kentucky-lakes/",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "kycab2015_ohio",
+   "reference_type": "web_page",
+   "title": "Recreational advisory issued for Ohio River due to harmful algal bloom",
+   "authors": [
+    "Kentucky Energy and Environment Cabinet"
+   ],
+   "year": 2015,
+   "container": "Naturally Connected (Cabinet news)",
+   "url": "https://kydep.wordpress.com/2015/09/18/recreational-advisory-issued-for-ohio-river-due-to-armful-algal-bloom/",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "kycab2015_mcalpine",
+   "reference_type": "web_page",
+   "title": "Recreational Advisory for lower McAlpine pool of Ohio River lifted after results below advisory level",
+   "authors": [
+    "Kentucky Energy and Environment Cabinet"
+   ],
+   "year": 2015,
+   "container": "Naturally Connected (Cabinet news)",
+   "url": "https://kydep.wordpress.com/2015/10/09/recreational-advisory-for-lower-mcalpine-pool-of-ohio-river-lifted-after-results-below-advisory-level/",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "kycab2016_watch",
+   "reference_type": "web_page",
+   "title": "Harmful Algal Bloom Public Health Watch Issued for Boltz Lake in Grant County",
+   "authors": [
+    "Kentucky Energy and Environment Cabinet"
+   ],
+   "year": 2016,
+   "container": "Naturally Connected (Cabinet news)",
+   "url": "https://kydep.wordpress.com/2016/09/02/harmful-algal-bloom-public-health-watch-issued-for-boltz-lake-in-grant-county/",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "kycab2016_warning",
+   "reference_type": "web_page",
+   "title": "Harmful Algal Bloom Public Health Watch Upgraded to Warning for Boltz Lake in Grant County",
+   "authors": [
+    "Kentucky Energy and Environment Cabinet"
+   ],
+   "year": 2016,
+   "container": "Naturally Connected (Cabinet news)",
+   "url": "https://kydep.wordpress.com/2016/09/22/harmful-algal-bloom-public-health-watch-upgraded-to-warning-for-boltz-lake-in-grant-county/",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "kycab2019_ohio",
+   "reference_type": "web_page",
+   "title": "Harmful Algal Bloom Recreational Public Health Advisory Issued",
+   "authors": [
+    "Kentucky Energy and Environment Cabinet"
+   ],
+   "year": 2019,
+   "container": "Naturally Connected (Cabinet news)",
+   "url": "https://kydep.wordpress.com/2019/09/26/harmful-algal-bloom-recreational-public-health-advisory-issued/",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "kycab2022_nrs",
+   "reference_type": "web_page",
+   "title": "Kentucky's Nutrient Reduction Strategy, a step forward in improving water quality",
+   "authors": [
+    "Kentucky Energy and Environment Cabinet"
+   ],
+   "year": 2022,
+   "container": "Naturally Connected (Cabinet news)",
+   "url": "https://kydep.wordpress.com/2022/10/10/kentuckys-nutrient-reduction-strategy-a-step-forward-in-improving-water-quality/",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "kycab2026_oldspringfield",
+   "reference_type": "web_page",
+   "title": "Harmful Algal Bloom Confirmed on Old Springfield Reservoir",
+   "authors": [
+    "Kentucky Energy and Environment Cabinet"
+   ],
+   "year": 2026,
+   "container": "Naturally Connected (Cabinet news)",
+   "url": "https://kydep.wordpress.com/2026/10/28/harmful-algal-bloom-confirmed-on-old-springfield-reservoir/",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "usgs_nhd",
+   "reference_type": "dataset",
+   "title": "National Hydrography Dataset (NHD), high resolution — map service",
+   "authors": [
+    "U.S. Geological Survey"
+   ],
+   "year": 2026,
+   "container": "The National Map",
+   "url": "https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "note": "Service states 'Data Refreshed October, 2026'. Queried 2026-11-05.",
+   "in_library": false
+  },
+  {
+   "id": "usgs_wbd",
+   "reference_type": "dataset",
+   "title": "Watershed Boundary Dataset (WBD) — map service",
+   "authors": [
+    "U.S. Geological Survey"
+   ],
+   "year": 2026,
+   "container": "The National Map",
+   "url": "https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "note": "Service states 'Data refreshed October, 2026'. Queried 2026-11-05.",
+   "in_library": false
+  },
+  {
+   "id": "census_geocoder",
+   "reference_type": "dataset",
+   "title": "Census Geocoder (Public_AR_Current benchmark)",
+   "authors": [
+    "U.S. Census Bureau"
+   ],
+   "year": 2026,
+   "container": "U.S. Census Bureau",
+   "url": "https://geocoding.geo.census.gov/geocoder/",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "note": "Address-range interpolation; the returned point is approximate. Queried 2026-11-05.",
+   "in_library": false
+  },
+  {
+   "id": "wqp_stations",
+   "reference_type": "dataset",
+   "title": "Water Quality Portal — monitoring locations in HUC 051301030204",
+   "authors": [
+    "National Water Quality Monitoring Council"
+   ],
+   "year": 2026,
+   "container": "Water Quality Portal",
+   "url": "https://www.waterqualitydata.us/data/Station/search?huc=051301030204&mimeType=csv",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "note": "Queried 2026-11-05.",
+   "in_library": false
+  }
+ ]
+}

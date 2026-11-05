@@ -1,0 +1,138 @@
+{
+ "type": "FeatureCollection",
+ "name": "wqp-stations-lower-pitman-creek",
+ "metadata": {
+  "source": "Water Quality Portal (USGS, EPA, National Water Quality Monitoring Council), Station search by HUC 051301030204",
+  "source_url": "https://www.waterqualitydata.us/data/Station/search?huc=051301030204&mimeType=csv",
+  "retrieved_at": "2026-11-05",
+  "limitations": "Lists monitoring locations registered in the Water Quality Portal within the HUC12 \u2014 not proof of current monitoring, and none are on Allen Branch. Duplicate records for the same physical site can appear under different organization identifiers (21KY and 21KY_WQX are both Kentucky Division of Water). Air-quality (AQS) locations returned by the search are excluded."
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -84.57631,
+     37.045731
+    ]
+   },
+   "properties": {
+    "organization": "21KY",
+    "organization_name": "Kentucky Division of Water",
+    "location_id": "21KY-CRW023",
+    "location_name": "Pitman Creek at Cabin Hollow Road",
+    "location_type": "River/Stream",
+    "huc12": "051301030204"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -84.59591,
+     37.04391
+    ]
+   },
+   "properties": {
+    "organization": "21KY",
+    "organization_name": "Kentucky Division of Water",
+    "location_id": "21KY-CRW024",
+    "location_name": "Pitman Creek downstream of Somerset WWTP",
+    "location_type": "River/Stream",
+    "huc12": "051301030204"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -84.57631,
+     37.04573
+    ]
+   },
+   "properties": {
+    "organization": "21KY_WQX",
+    "organization_name": "KY WQX",
+    "location_id": "21KY_WQX-CRW023",
+    "location_name": "Pitman Creek",
+    "location_type": "River/Stream",
+    "huc12": "051301030204"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -84.59591,
+     37.04391
+    ]
+   },
+   "properties": {
+    "organization": "21KY_WQX",
+    "organization_name": "KY WQX",
+    "location_id": "21KY_WQX-CRW024",
+    "location_name": "Pitman Creek",
+    "location_type": "River/Stream",
+    "huc12": "051301030204"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -84.59139,
+     37.04472
+    ]
+   },
+   "properties": {
+    "organization": "USACOEND",
+    "organization_name": "U.S. Army Corps of Engineers, Nashville District",
+    "location_id": "USACOEND-3WOL10022",
+    "location_name": "3WOL10022",
+    "location_type": "River/Stream",
+    "huc12": "051301030204"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -84.5975,
+     37.04444
+    ]
+   },
+   "properties": {
+    "organization": "USACOEND",
+    "organization_name": "U.S. Army Corps of Engineers, Nashville District",
+    "location_id": "USACOEND-3WOL10026",
+    "location_name": "3WOL10026",
+    "location_type": "River/Stream",
+    "huc12": "051301030204"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -84.60747,
+     37.01536
+    ]
+   },
+   "properties": {
+    "organization": "USACOEND",
+    "organization_name": "U.S. Army Corps of Engineers, Nashville District",
+    "location_id": "USACOEND-3WOL20010",
+    "location_name": "3WOL20010",
+    "location_type": "Reservoir",
+    "huc12": "051301030204"
+   }
+  }
+ ]
+}

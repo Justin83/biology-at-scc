@@ -1,0 +1,27 @@
+{
+ "type": "FeatureCollection",
+ "name": "campus-reference",
+ "metadata": {
+  "source": "U.S. Census Bureau Geocoder, benchmark Public_AR_Current, query '808 Monticello St, Somerset, KY 42501'",
+  "source_url": "https://geocoding.geo.census.gov/geocoder/",
+  "retrieved_at": "2026-11-05",
+  "limitations": "Address-range interpolation along a street centerline. This is an approximate map reference for the campus street address \u2014 not a campus access point, not a sampling station, and not field-confirmed."
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -84.618622,
+     37.061784
+    ]
+   },
+   "properties": {
+    "name": "Somerset Community College \u2014 geocoded street address",
+    "matched_address": "808 MONTICELLO ST, SOMERSET, KY, 42501",
+    "evidence_status": "mapped"
+   }
+  }
+ ]
+}

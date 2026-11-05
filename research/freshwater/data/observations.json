@@ -1,0 +1,5 @@
+{
+  "table": "field_observations",
+  "description": "Published, faculty-reviewed field observations. Empty: no field visit has been recorded yet. Student drafts and unpublished records are never stored in this public repository.",
+  "records": []
+}
