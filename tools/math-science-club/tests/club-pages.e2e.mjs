@@ -99,8 +99,11 @@ try {
   await b.click("#su-submit");
   await b.waitForFunction(() => /Lemonade/.test(document.getElementById("su-msg").textContent));
 
-  // A changes and then removes their entry (pop-up again)
+  // A changes and then removes their entry (pop-up again). A's page loaded before B signed
+  // up, so the pop-up must fetch fresh data to show B's lemonade.
   await a.click("#club-next-body [data-signup]");
+  await a.waitForSelector("#club-signup-dialog[open]");
+  assert.match(await text(a, "#m-list"), /E2E Student B: Lemonade/, "pop-up shows sign-ups made after the page loaded");
   await a.click("#m-mine [data-edit]");
   await a.fill("#m-item", "Cookies");
   await a.check('input[name="m-slot"][value="Snack"]');

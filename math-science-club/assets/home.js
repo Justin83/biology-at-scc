@@ -84,15 +84,24 @@
   }
 
   // ---------------------------------------------------------------- sign-up pop-up
+  // Fetch the latest schedule first, so the pop-up shows sign-ups other people made
+  // after this page loaded (and any change an officer made to the event).
   function openSignup(id, from) {
-    var e = data.events.filter(function (x) { return x.id === id; })[0];
-    if (!e) return;
     opener = from || null;
-    if (!form) form = C.signupForm($("club-signup-body"), { idPrefix: "m", headingLevel: 3, onChange: function (d) { data = d; renderAll(); } });
-    form.show(data, e);
-    $("club-modal-title").textContent = "Sign up to bring food";
-    $("club-signup-dialog").showModal();
-    form.focusFirst();
+    if (from) from.setAttribute("aria-busy", "true");
+    C.load(root).then(function (d) { if (d.live) { data = d; renderAll(); } }, function () { /* keep what we have */ }).then(function () {
+      if (from) from.removeAttribute("aria-busy");
+      var e = data.events.filter(function (x) { return x.id === id; })[0];
+      if (!e || !canSignUp(e)) {
+        $("club-status").innerHTML = '<div class="club-banner club-banner--warn"><p>Sign-up for that event isn\'t open anymore.</p></div>';
+        return;
+      }
+      if (!form) form = C.signupForm($("club-signup-body"), { idPrefix: "m", headingLevel: 3, onChange: function (d) { data = d; renderAll(); } });
+      form.show(data, e);
+      $("club-modal-title").textContent = "Sign up to bring food";
+      $("club-signup-dialog").showModal();
+      form.focusFirst();
+    });
   }
   document.addEventListener("click", function (ev) {
     var a = ev.target.closest("[data-signup]");
