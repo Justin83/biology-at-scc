@@ -43,8 +43,9 @@ const CHAPTERS = D.articles.records.slice().sort((a, b) => a.chapter_number - b.
 // ---------------------------------------------------------------- helpers
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const slug = (s) => String(s).toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+// Links that leave the site open in a new tab; screen-reader users are told so.
 const ext = (url, text, cls = "") =>
-  `<a${cls ? ` class="${cls}"` : ""} href="${esc(url)}" rel="noopener">${text}<span class="visually-hidden"> (external site)</span></a>`;
+  `<a${cls ? ` class="${cls}"` : ""} href="${esc(url)}" target="_blank" rel="noopener">${text}<span class="visually-hidden"> (external site, opens in a new tab)</span></a>`;
 
 const NAV = [
   ["", "Research Home", "home"],
@@ -232,7 +233,7 @@ function genFooter(ctx) {
       </div>
       <div>
         <p class="fw-footer-title">Safety</p>
-        <p>Before visiting any lake, pond or stream, check current <a href="https://eec.ky.gov/Environmental-Protection/Water/Monitor/Pages/HABS.aspx" rel="noopener">Kentucky harmful algal bloom advisories</a>. When in doubt, stay out.</p>
+        <p>Before visiting any lake, pond or stream, check current <a href="https://eec.ky.gov/Environmental-Protection/Water/Monitor/Pages/HABS.aspx" target="_blank" rel="noopener">Kentucky harmful algal bloom advisories<span class="visually-hidden"> (opens in a new tab)</span></a>. When in doubt, stay out.</p>
       </div>
     </div>
     <p>Biology at SCC &middot; Somerset Community College &middot; content licensed <a href="${ctx.toSite}LICENSE">CC BY 4.0</a> unless noted &middot; map data &copy; their providers as credited on each layer</p>
@@ -565,6 +566,9 @@ function validatePage(ctx, html) {
   if (!/<meta name="description" content="[^"]+"/.test(html)) warn(`${r}: missing meta description`);
   if (!/<main id="main"/.test(html)) warn(`${r}: missing <main id="main">`);
   if (html.includes("&amp;amp;")) warn(`${r}: double-escaped ampersand ("&amp;amp;")`);
+  for (const m of html.matchAll(/<a\b[^>]*\bhref="https?:\/\/[^"]*"[^>]*>/g)) {
+    if (!/\btarget="_blank"/.test(m[0])) warn(`${r}: external link without target="_blank": ${m[0].slice(0, 90)}`);
+  }
   for (const name of ["header", "footer"]) if (!html.includes(`<!-- fw:${name} -->`)) warn(`${r}: missing fw:${name} region`);
   const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
   const dup = ids.filter((x, i) => ids.indexOf(x) !== i);

@@ -450,7 +450,7 @@ body.fw {
 .fw-resource-title { margin: 0.2rem 0 0; font-size: 1.05rem; line-height: 1.3; }
 .fw-resource-title a { text-decoration: none; }
 .fw-resource-title a:hover { text-decoration: underline; }
-.fw-resource-title a::after { content: " ↗"; font-size: 0.85em; color: var(--fw-muted); }
+.fw-resource-title a::after { color: var(--fw-muted); }
 .fw-resource-org { margin: 0; font-size: 0.88rem; color: var(--fw-muted); font-weight: 600; }
 .fw-resource-desc { margin: 0.2rem 0 0.4rem; font-size: 0.94rem; }
 .fw-meta { margin: auto 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem 0.8rem; font-size: 0.82rem; border-top: 1px solid var(--fw-border); padding-top: 0.55rem; }

@@ -189,7 +189,7 @@
       var map = L.map(el, { center: v.center, zoom: mode === "mini" ? v.zoom - 1 : v.zoom, scrollWheelZoom: mode !== "mini", keyboard: true, zoomControl: true });
       var pane = map.createPane("fwDynamic"); pane.style.zIndex = 350; pane.style.pointerEvents = "none";
       L.control.scale({ metric: true, imperial: true }).addTo(map);
-      map.attributionControl.setPrefix('<a href="https://leafletjs.com" rel="noopener">Leaflet</a>');
+      map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet<span class="visually-hidden"> (opens in a new tab)</span></a>');
       var defs = cfg.records.filter(function (d) { return mode === "full" || only.indexOf(d.id) !== -1; });
       var cache = {}, layers = {}, failed = {};
       var bases = defs.filter(function (d) { return d.group === "base"; });
