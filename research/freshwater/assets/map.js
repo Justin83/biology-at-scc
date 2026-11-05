@@ -95,6 +95,7 @@
     geo.features.forEach(function (f) {
       if (f.properties.role === "study_stream") flowArrows(f.geometry.coordinates, 350).forEach(function (m) { m.addTo(group); });
     });
+    group.studyBounds = L.geoJSON({ type: "FeatureCollection", features: geo.features.filter(function (f) { return f.properties.role === "study_stream"; }) }).getBounds();
     return group;
   }
   function stationLayer(geo) {
@@ -110,14 +111,29 @@
   function referenceLayer(geo) {
     return L.geoJSON(geo, {
       pointToLayer: function (f, ll) {
-        return L.marker(ll, { keyboard: true, title: f.properties.name, icon: L.divIcon({ className: "", iconSize: [22, 22], iconAnchor: [11, 11],
-          html: '<svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="3" y="3" width="16" height="16" rx="3" fill="#13294b" stroke="#fff" stroke-width="2"/><path d="M7 15V9l4-3 4 3v6z" fill="#fff"/></svg>' }) });
+        return L.marker(ll, { keyboard: true, title: f.properties.name, zIndexOffset: 1000, icon: L.divIcon({ className: "fw-campus-marker", iconSize: [30, 30], iconAnchor: [15, 15],
+          html: '<svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="#13294b" stroke="#fff" stroke-width="2.5"/><path d="M9 21V13l6-4.5 6 4.5v8h-4v-5h-4v5z" fill="#fff"/></svg>' }) });
       },
       onEachFeature: function (f, layer) {
-        layer.bindPopup('<div class="fw-popup"><h3>Somerset Community College</h3><p>Geocoded street address: ' + esc(f.properties.matched_address) +
-          "</p><p><strong>Approximate.</strong> U.S. Census address-range interpolation — not the creek access point and not a sampling station.</p></div>");
+        layer.bindTooltip("SCC · 808 Monticello St", { permanent: true, direction: "right", offset: [14, 0], className: "fw-campus-label" });
+        layer.bindPopup('<div class="fw-popup"><h3>Somerset Community College</h3><p>' + esc(f.properties.matched_address) +
+          "</p><p>The center point of every map in this portal. Located with the Kentucky 911 Site Structure Address Points (Pulaski County 911 record, updated " + esc(f.properties.updated) +
+          ").</p><p>This is the campus street address — not the creek access point and not a sampling station.</p></div>");
       }
     });
+  }
+  function ringLayer(geo) {
+    var c = geo.features[0].geometry.coordinates, center = L.latLng(c[1], c[0]);
+    var g = L.featureGroup();
+    // labels on different sides so they never stack at small map scales
+    [[500, "w"], [1000, "s"], [2000, "n"]].forEach(function (rs) {
+      var r = rs[0], side = rs[1];
+      L.circle(center, { radius: r, color: "#13294b", weight: 1.5, opacity: 0.75, dashArray: "6 6", fill: false, interactive: false }).addTo(g);
+      var dLat = r / 110540, dLng = r / (111320 * Math.cos(center.lat * Math.PI / 180));
+      var at = side === "n" ? L.latLng(center.lat + dLat, center.lng) : side === "s" ? L.latLng(center.lat - dLat, center.lng) : L.latLng(center.lat, center.lng - dLng);
+      L.marker(at, { interactive: false, keyboard: false, icon: L.divIcon({ className: "fw-ring-label fw-ring-label--" + side, iconSize: [56, 18], iconAnchor: side === "w" ? [58, 9] : [28, 9], html: "<span>" + (r / 1000) + " km</span>" }) }).addTo(g);
+    });
+    return g;
   }
   function observationLayer(data) {
     var recs = (data && data.records) || [];
@@ -137,10 +153,12 @@
       case "arcgis_export":
         return Promise.resolve(new ArcGISDynamic(def.service_url, { layersParam: def.layers_param, opacity: def.opacity == null ? 1 : def.opacity, attribution: attr }));
       case "geojson":
+      case "rings":
       case "observations":
         return fetch(root + def.service_url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (geo) {
           cache[def.id] = geo;
           var lyr = def.service_type === "observations" ? observationLayer(geo)
+            : def.service_type === "rings" ? ringLayer(geo)
             : def.style === "stream" ? streamLayer(geo)
             : def.style === "stations" ? stationLayer(geo)
             : referenceLayer(geo);
@@ -189,9 +207,33 @@
             if (!failed[id]) { failed[id] = true; var d = defs.filter(function (x) { return x.id === id; })[0]; setStatus((d ? d.name : id) + ": the provider's service did not respond for some tiles. Other layers are unaffected."); markFailed(id); }
           });
         });
-        if (layers["allen-branch"] && layers["allen-branch"].getBounds) {
-          map.fitBounds(layers["allen-branch"].getBounds().pad(mode === "mini" ? 0.15 : 0.35));
-        }
+        // The campus address is the center of every map. Zoom so the whole mapped
+        // Allen Branch line fits, by mirroring its extent around the campus point.
+        var center = L.latLng(v.center[0], v.center[1]);
+        var home = function () {
+          var ab = layers["allen-branch"] && (layers["allen-branch"].studyBounds || (layers["allen-branch"].getBounds && layers["allen-branch"].getBounds()));
+          if (!ab || !ab.isValid()) { map.setView(center, mode === "mini" ? v.zoom - 1 : v.zoom); return; }
+          var sym = L.latLngBounds([center, center]);
+          [ab.getSouthWest(), ab.getNorthEast(), ab.getNorthWest(), ab.getSouthEast()].forEach(function (p) {
+            sym.extend(p); sym.extend(L.latLng(2 * center.lat - p.lat, 2 * center.lng - p.lng));
+          });
+          map.fitBounds(sym, { padding: [mode === "mini" ? 12 : 28, mode === "mini" ? 12 : 28], animate: false });
+          map.setView(center, map.getZoom(), { animate: false });
+        };
+        home();
+        var Recenter = L.Control.extend({
+          options: { position: "topleft" },
+          onAdd: function () {
+            var b = L.DomUtil.create("button", "fw-recenter leaflet-bar");
+            b.type = "button"; b.innerHTML = '<span aria-hidden="true">⌂</span> Campus';
+            b.title = "Re-center on 808 Monticello Street";
+            b.setAttribute("aria-label", "Re-center the map on Somerset Community College, 808 Monticello Street");
+            L.DomEvent.disableClickPropagation(b);
+            L.DomEvent.on(b, "click", home);
+            return b;
+          }
+        });
+        map.addControl(new Recenter());
         if (panelEl) buildPanel(panelEl, cfg, map, layers, bases, overlays, failed, base);
         var obs = cache["field-observations"];
         setStatus(obs && obs.records && obs.records.length === 0 ? "No field observations have been recorded yet, so the observation layer is empty." : "");

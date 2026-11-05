@@ -1,7 +1,14 @@
 {
   "table": "spatial_layers",
   "description": "Map layers used by research/freshwater/assets/map.js. Public layers are requested live from the provider's service (nothing large is copied into this repository). Every layer states provider, dataset, version, resolution, coverage and known limitations. check_status records the last time a tile or image was successfully requested from the service near Allen Branch.",
-  "default_view": { "center": [37.0605, -84.6215], "zoom": 15, "note": "Centered between the U.S. Census geocoded campus address and the NHD-mapped Allen Branch centerline. Not a sampling location." },
+  "default_view": {
+    "center": [
+      37.059788,
+      -84.616904
+    ],
+    "zoom": 15,
+    "note": "Every portal map is centered on 808 Monticello Street, Somerset Community College's main-campus address, as located by the Kentucky 911 Site Structure Address Points. The zoom is then set so that the whole mapped Allen Branch line fits around that center."
+  },
   "groups": {
     "base": "Base maps",
     "hydrology": "Streams & watersheds",
@@ -89,11 +96,11 @@
       "name": "Streams & waterbodies (NHD)",
       "group": "hydrology",
       "provider": "U.S. Geological Survey",
-      "dataset": "National Hydrography Dataset, high resolution (nhd MapServer)",
+      "dataset": "National Hydrography Dataset, high resolution (nhd MapServer) — streams, waterbodies, and karst features: springs/seeps and sinks/rises (points) and underground conduits (lines)",
       "version": "Service states 'Data Refreshed October, 2026'",
       "resolution": "1:24,000 or better",
       "coverage": "United States",
-      "limitations": "Mapped centerlines, not field surveys. Perennial/intermittent/ephemeral classes come from map compilation and may not match current flow. Small headwater channels and karst conduits are often missing.",
+      "limitations": "Mapped features, not field surveys. Perennial/intermittent/ephemeral classes come from map compilation and may not match current flow. Small headwater channels are often missing. Springs, sinks and underground conduits are shown only where they have been mapped; a conduit line shows a mapped connection, not its exact underground route, and unmapped karst connections are common.",
       "service_url": "https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer",
       "service_type": "arcgis_export",
       "attribution": "USGS NHD",
@@ -270,18 +277,36 @@
     },
     {
       "id": "campus-reference",
-      "name": "Campus street address (geocoded)",
+      "name": "808 Monticello Street — campus center point",
       "group": "portal",
-      "provider": "U.S. Census Bureau Geocoder",
-      "dataset": "data/geo/campus-reference.geojson — '808 Monticello St, Somerset, KY 42501'",
-      "version": "Benchmark Public_AR_Current, retrieved 2026-11-05",
-      "resolution": "Address-range interpolation (approximate)",
+      "provider": "Kentucky 911 Services Board (record maintained by Pulaski County 911), via KyGovMaps",
+      "dataset": "Kentucky 911 Site Structure Address Points — saved extract data/geo/campus-reference.geojson",
+      "version": "Address record updated 2022-05-03; retrieved 2026-11-05",
+      "resolution": "Single address point (placement method not stated in the record)",
       "coverage": "One point",
-      "limitations": "An approximate position for the street address only. It is not the campus access point to the creek, not a sampling station, and not field-confirmed.",
+      "limitations": "Locates the campus street address and is the center point of every map. It is not the creek access point, not a sampling station, and not field-confirmed. The U.S. Census Geocoder places the same address 268 m to the northwest; the 911 address point is used instead.",
       "service_url": "data/geo/campus-reference.geojson",
       "service_type": "geojson",
       "style": "reference",
-      "attribution": "U.S. Census Bureau",
+      "attribution": "Kentucky 911 Services Board; Pulaski County 911",
+      "default_on": true,
+      "checked_at": "2026-11-05",
+      "check_status": "ok"
+    },
+    {
+      "id": "campus-rings",
+      "name": "Distance circles from campus (0.5, 1, 2 km)",
+      "group": "portal",
+      "provider": "Biology at SCC (drawn around the campus address point)",
+      "dataset": "Circles of fixed radius centered on 808 Monticello Street",
+      "version": "Generated in the browser",
+      "resolution": "Exact radii: 0.5, 1 and 2 km",
+      "coverage": "2 km around campus",
+      "limitations": "Straight-line distance only. The circles are an orientation aid, not a study-area boundary, a watershed, a walking distance or an access route.",
+      "service_url": "data/geo/campus-reference.geojson",
+      "service_type": "rings",
+      "style": "rings",
+      "attribution": "Biology at SCC",
       "default_on": true,
       "checked_at": "2026-11-05",
       "check_status": "ok"
@@ -306,10 +331,25 @@
     }
   ],
   "not_available": [
-    { "layer": "Culverts and road crossings", "reason": "No public statewide culvert inventory was found. Roads appear on the USGS Topo base map; culverts on Allen Branch need a field inventory." },
-    { "layer": "Upstream drainage area of Allen Branch", "reason": "Not yet delineated. To be produced with USGS StreamStats (or lidar-based delineation in QGIS) and stored with its method and date." },
-    { "layer": "Stormwater outfalls (campus and city)", "reason": "Not available as a public layer found so far; requires municipal records or field inventory." },
-    { "layer": "Complete discharge-permit (KPDES) facilities", "reason": "The wastewater layer above is an infrastructure inventory, not the full permit list. EPA ECHO facility search is the next source to integrate." },
-    { "layer": "Allen Branch sampling stations", "reason": "None established yet. Stations will be added after field reconnaissance with GPS coordinates and stated accuracy." }
+    {
+      "layer": "Culverts and road crossings",
+      "reason": "No public statewide culvert inventory was found. Roads appear on the USGS Topo base map; culverts on Allen Branch need a field inventory."
+    },
+    {
+      "layer": "Upstream drainage area of Allen Branch",
+      "reason": "Not yet delineated. To be produced with USGS StreamStats (or lidar-based delineation in QGIS) and stored with its method and date."
+    },
+    {
+      "layer": "Stormwater outfalls (campus and city)",
+      "reason": "Not available as a public layer found so far; requires municipal records or field inventory."
+    },
+    {
+      "layer": "Complete discharge-permit (KPDES) facilities",
+      "reason": "The wastewater layer above is an infrastructure inventory, not the full permit list. EPA ECHO facility search is the next source to integrate."
+    },
+    {
+      "layer": "Allen Branch sampling stations",
+      "reason": "None established yet. Stations will be added after field reconnaissance with GPS coordinates and stated accuracy."
+    }
   ]
 }

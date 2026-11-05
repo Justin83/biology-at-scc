@@ -3110,6 +3110,21 @@
    "in_library": false
   },
   {
+   "id": "ky911_address_points",
+   "reference_type": "dataset",
+   "title": "Kentucky 911 Site Structure Address Points — map service",
+   "authors": [
+    "Kentucky 911 Services Board"
+   ],
+   "year": 2026,
+   "container": "KyGovMaps (Commonwealth of Kentucky)",
+   "url": "https://kygisserver.ky.gov/arcgis/rest/services/WGS84WM_Services/Ky_911_Site_Structure_Address_Points_WGS84WM/MapServer/0",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "note": "Record for 808 Monticello St maintained by Pulaski County 911 (pulaski911.com), updated 2022-05-03. Queried 2026-11-05.",
+   "in_library": false
+  },
+  {
    "id": "census_geocoder",
    "reference_type": "dataset",
    "title": "Census Geocoder (Public_AR_Current benchmark)",

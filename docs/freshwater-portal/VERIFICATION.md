@@ -22,12 +22,12 @@ Page titles were also read to confirm each URL leads to the intended resource.
 
 ## Bibliography
 
-- 115 references in `research/freshwater/data/references.json`; 44 are in the Research
+- 116 references in `research/freshwater/data/references.json`; 44 are in the Research
   Paper Library.
 - All DOI metadata (authors, year, title, journal, volume, issue, pages) was retrieved from
   the Crossref API, not typed from memory. USGS report numbers came from the USGS
   Publications Warehouse API. `verify-references.mjs` re-checked every DOI (title and
-  year) against Crossref after the bibliography was assembled.
+  year) against Crossref after the bibliography was assembled: 91 of 91 match.
 - Three candidate DOIs did not match the intended articles and were dropped
   (one Komárek et al. 2014 Preslia DOI that does not exist in Crossref; two DOIs that
   resolved to unrelated papers).
@@ -76,8 +76,20 @@ Queried 2026-11-05 from public services (all **Mapped**, none field-verified):
   potential: "Intense" and "Prone".
 - Water Quality Portal: no monitoring location on Allen Branch; KDOW CRW023/CRW024 on
   Pitman Creek and three USACE Nashville District locations in the HUC12.
-- U.S. Census Geocoder: 808 Monticello St geocodes to (37.061784, −84.618622) by
-  address-range interpolation. Shown only as an approximate reference point.
+- **Map center point — 808 Monticello Street.** Every portal map is centered on the
+  Kentucky 911 Site Structure Address Point for 808 MONTICELLO ST, SOMERSET 42501
+  (Pulaski County 911 record, updated 2022-05-03): 37.059788, −84.616904. The U.S. Census
+  Geocoder interpolates the same address 268 m to the northwest (37.061784, −84.618622);
+  the 911 address point is used instead and the difference is documented on the site.
+  Browser test: on the home preview, Maps page and Allen Branch page (desktop and phone)
+  the campus marker renders within 1 px of the map's center, and the ⌂ Campus control
+  re-centers after panning.
+- Straight-line distance from that point to the nearest point of the NHD Allen Branch
+  centerline: about 250 m; the line extends to about 2.2 km away. Distance circles
+  (0.5/1/2 km) are drawn around the point as an orientation aid only.
+- NHD karst features: within 84.66–84.58° W, 37.04–37.10° N, NHD maps 18 springs/seeps
+  (FType 458), 10 sinks/rises (FType 450) and 15 underground-conduit flowlines (FType
+  420). None is mapped within 25–50 m of the Allen Branch line.
 - Not computed on purpose: drainage area, land-cover percentages, distances, flow
   paths beyond NHD, groundwater routes.
 

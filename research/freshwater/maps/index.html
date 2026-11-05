@@ -71,16 +71,16 @@
   <div class="fw-page-head">
     <p class="fw-kicker">Geography &amp; drainage</p>
     <h1>Watersheds &amp; Maps</h1>
-    <p class="lede">Explore Allen Branch and the land around it using public map services from the U.S. Geological Survey, the Kentucky Geological Survey and the Commonwealth of Kentucky. Layers are requested live from each provider, so nothing is copied or redrawn here — and every layer states who made it, when, at what resolution, and what it cannot show.</p>
+    <p class="lede">Every map in this portal is centered on Somerset Community College at 808 Monticello Street, Somerset. From there, explore Allen Branch and the land around it using public map services from the U.S. Geological Survey, the Kentucky Geological Survey and the Commonwealth of Kentucky. Layers are requested live from each provider, so nothing is copied or redrawn here — and every layer states who made it, when, at what resolution, and what it cannot show.</p>
   </div>
 
   <div class="fw-map-shell" id="site-map">
     <div>
-      <div class="fw-map" data-fw-map="full" data-root="../" data-panel="layer-panel" data-status="map-status" role="region" aria-label="Interactive map of Allen Branch near Somerset Community College. Use the layer panel to change base maps and overlays. The same facts are listed in the tables below the map.">
+      <div class="fw-map" data-fw-map="full" data-root="../" data-panel="layer-panel" data-status="map-status" role="region" aria-label="Interactive map centered on Somerset Community College, 808 Monticello Street, showing Allen Branch and its watershed. Use the layer panel to change base maps and overlays. The same facts are listed in the tables below the map.">
         <p class="fw-map-fallback">The interactive map needs JavaScript. All mapped facts about Allen Branch are listed in the <a href="../sites/allen-branch/#facts">site profile table</a>, and the layer sources are listed <a href="#provenance">below</a>.</p>
       </div>
       <p class="fw-map-status" id="map-status" role="status"></p>
-      <p class="fw-muted" style="font-size:.88rem;margin:.25rem 0 0">Keyboard: focus the map, then use arrow keys to pan and <kbd>+</kbd>/<kbd>−</kbd> to zoom. Select a stream or point for details. Dark blue line with arrows: Allen Branch as mapped by USGS, with the dataset's flow direction. Dashed blue line: the mapped path downstream. Teal circles: registered water-quality monitoring locations. Navy square: the geocoded campus street address (approximate).</p>
+      <p class="fw-muted" style="font-size:.88rem;margin:.25rem 0 0">Keyboard: focus the map, then use arrow keys to pan and <kbd>+</kbd>/<kbd>−</kbd> to zoom. Select a stream or point for details. Dark blue line with arrows: Allen Branch as mapped by USGS, with the dataset's flow direction. Dashed blue line: the mapped path downstream. Teal circles: registered water-quality monitoring locations. Small blue dots and green lines drawn by the NHD layer: mapped springs/seeps, sinks/rises and underground (karst) conduits. Navy marker: Somerset Community College, 808 Monticello Street — the center point (Kentucky 911 address point); dashed circles mark 0.5, 1 and 2 km from it. The <strong>⌂ Campus</strong> button re-centers the map.</p>
     </div>
     <aside class="fw-layer-panel" id="layer-panel" aria-labelledby="layer-panel-title">
       <h2 id="layer-panel-title">Map layers</h2>
@@ -179,11 +179,11 @@
     </tr>
     <tr id="layer-nhd">
       <th scope="row">Streams &amp; waterbodies (NHD)<br><span class="fw-muted">Streams &amp; watersheds</span></th>
-      <td>U.S. Geological Survey<br><span class="fw-muted">National Hydrography Dataset, high resolution (nhd MapServer)</span></td>
+      <td>U.S. Geological Survey<br><span class="fw-muted">National Hydrography Dataset, high resolution (nhd MapServer) — streams, waterbodies, and karst features: springs/seeps and sinks/rises (points) and underground conduits (lines)</span></td>
       <td>Service states 'Data Refreshed October, 2026'</td>
       <td>1:24,000 or better</td>
       <td>United States</td>
-      <td>Mapped centerlines, not field surveys. Perennial/intermittent/ephemeral classes come from map compilation and may not match current flow. Small headwater channels and karst conduits are often missing.</td>
+      <td>Mapped features, not field surveys. Perennial/intermittent/ephemeral classes come from map compilation and may not match current flow. Small headwater channels are often missing. Springs, sinks and underground conduits are shown only where they have been mapped; a conduit line shows a mapped connection, not its exact underground route, and unmapped karst connections are common.</td>
       <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
     </tr>
     <tr id="layer-wbd">
@@ -268,12 +268,21 @@
       <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
     </tr>
     <tr id="layer-campus-reference">
-      <th scope="row">Campus street address (geocoded)<br><span class="fw-muted">Portal data (Allen Branch)</span></th>
-      <td>U.S. Census Bureau Geocoder<br><span class="fw-muted">data/geo/campus-reference.geojson — '808 Monticello St, Somerset, KY 42501'</span></td>
-      <td>Benchmark Public_AR_Current, retrieved 2026-11-05</td>
-      <td>Address-range interpolation (approximate)</td>
+      <th scope="row">808 Monticello Street — campus center point<br><span class="fw-muted">Portal data (Allen Branch)</span></th>
+      <td>Kentucky 911 Services Board (record maintained by Pulaski County 911), via KyGovMaps<br><span class="fw-muted">Kentucky 911 Site Structure Address Points — saved extract data/geo/campus-reference.geojson</span></td>
+      <td>Address record updated 2022-05-03; retrieved 2026-11-05</td>
+      <td>Single address point (placement method not stated in the record)</td>
       <td>One point</td>
-      <td>An approximate position for the street address only. It is not the campus access point to the creek, not a sampling station, and not field-confirmed.</td>
+      <td>Locates the campus street address and is the center point of every map. It is not the creek access point, not a sampling station, and not field-confirmed. The U.S. Census Geocoder places the same address 268 m to the northwest; the 911 address point is used instead.</td>
+      <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
+    </tr>
+    <tr id="layer-campus-rings">
+      <th scope="row">Distance circles from campus (0.5, 1, 2 km)<br><span class="fw-muted">Portal data (Allen Branch)</span></th>
+      <td>Biology at SCC (drawn around the campus address point)<br><span class="fw-muted">Circles of fixed radius centered on 808 Monticello Street</span></td>
+      <td>Generated in the browser</td>
+      <td>Exact radii: 0.5, 1 and 2 km</td>
+      <td>2 km around campus</td>
+      <td>Straight-line distance only. The circles are an orientation aid, not a study-area boundary, a watershed, a walking distance or an access route.</td>
       <td><span class="fw-badge fw-badge--ok"><span aria-hidden="true">✓</span> Responding</span> <span class="fw-muted">2026-11-05</span></td>
     </tr>
     <tr id="layer-field-observations">

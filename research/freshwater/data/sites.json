@@ -30,6 +30,24 @@
           "notes": "Aliases: none recorded. Local or historical names have not been checked."
         },
         {
+          "label": "Campus center point",
+          "value": "808 Monticello Street, Somerset, KY 42501 — the center of every portal map (37.05979, −84.61690)",
+          "evidence_status": "mapped",
+          "source": "Kentucky 911 Site Structure Address Points (Pulaski County 911 record, updated 2022-05-03), via KyGovMaps",
+          "source_url": "https://kygisserver.ky.gov/arcgis/rest/services/WGS84WM_Services/Ky_911_Site_Structure_Address_Points_WGS84WM/MapServer/0",
+          "retrieved_at": "2026-11-05",
+          "notes": "An address point, not a surveyed campus location. The U.S. Census Geocoder places the same address 268 m to the northwest by street-range interpolation; the 911 address point is used instead."
+        },
+        {
+          "label": "Distance from campus center to the mapped stream",
+          "value": "About 250 m (straight line) to the nearest point of the NHD Allen Branch centerline; the mapped line extends to about 2.2 km away",
+          "evidence_status": "mapped",
+          "source": "Computed from the two mapped datasets above (911 address point; USGS NHD flowline)",
+          "source_url": "",
+          "retrieved_at": "2026-11-05",
+          "notes": "Straight-line map distance only — not a walking route, an access point, or a field measurement."
+        },
+        {
           "label": "NHD feature type",
           "value": "Stream/River — intermittent (FCode 46003)",
           "evidence_status": "mapped",
@@ -111,6 +129,15 @@
           "notes": "Regional-scale classification. It indicates that groundwater flow may differ from surface drainage here; it does not show any specific sinkhole, spring or conduit on Allen Branch."
         },
         {
+          "label": "Mapped karst features (NHD)",
+          "value": "None mapped on or within 25–50 m of the Allen Branch line. Nearby, NHD maps springs/seeps, sinks/rises and underground conduits — 18, 10 and 15 features respectively in a roughly 7 × 7 km box around campus",
+          "evidence_status": "mapped",
+          "source": "USGS NHD point layer (FType 458 SpringSeep, 450 SinkRise) and flowlines (FType 420 Underground Conduit)",
+          "source_url": "https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer",
+          "retrieved_at": "2026-11-05",
+          "notes": "Absence of a mapped feature is not evidence that none exists; most karst connections are unmapped. Box: 84.66–84.58° W, 37.04–37.10° N."
+        },
+        {
           "label": "Surrounding land cover",
           "value": "Not yet assessed",
           "evidence_status": "unverified",
@@ -135,7 +162,7 @@
           "source": "—",
           "source_url": "",
           "retrieved_at": "2026-11-05",
-          "notes": "The map shows the U.S. Census geocoded position of the campus street address for orientation only. A GPS position for the creek access point will be recorded on the first faculty-led visit."
+          "notes": "Not the same as the campus street address. Every portal map is centered on 808 Monticello Street (see 'Campus center point'); a GPS position for the actual creek access point will be recorded on the first faculty-led visit."
         },
         {
           "label": "Habitat",
@@ -157,16 +184,111 @@
         }
       ],
       "investigation_tasks": [
-        { "id": "confirm-access", "task": "Confirm campus access coordinates", "status": "not_started", "evidence_status": "unverified", "summary": "Record a GPS position (with accuracy) for the safe access point used by classes, plus the route and any permissions needed.", "documentation": [] },
-        { "id": "verify-identity", "task": "Verify mapped stream identity", "status": "mapped", "evidence_status": "mapped", "summary": "NHD names the flowline 'Allen Branch' (GNIS 00485848). Still to do: confirm that the channel reached from campus is this mapped line, and check county and local sources for other names.", "documentation": [ { "label": "NHD flowline layer", "url": "https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer/6" } ] },
-        { "id": "delineate-drainage", "task": "Delineate upstream drainage", "status": "not_started", "evidence_status": "unverified", "summary": "Delineate the basin above defined sampling points with USGS StreamStats; record date, tool version and the pour-point coordinates.", "documentation": [ { "label": "USGS StreamStats", "url": "https://streamstats.usgs.gov/ss/" } ] },
-        { "id": "downstream-confluences", "task": "Identify downstream confluences", "status": "mapped", "evidence_status": "mapped", "summary": "NHD maps Allen Branch joining Sinking Creek, which flows to Pitman Creek. Field verification of the junction and of flow continuity at different seasons is pending.", "documentation": [ { "label": "Mapped path on the site map", "url": "#site-map" } ] },
-        { "id": "receiving-waters", "task": "Determine ultimate receiving waters", "status": "mapped", "evidence_status": "mapped", "summary": "NHD routes the mapped path into Lake Cumberland on the Cumberland River (Ohio River basin). Surface mapping only.", "documentation": [] },
-        { "id": "agricultural-land-cover", "task": "Assess agricultural land cover", "status": "not_started", "evidence_status": "unverified", "summary": "After delineation, summarize NLCD and Cropland Data Layer classes inside the basin in QGIS. Report areas with their data year and resolution. Land cover alone will not be used to infer pollution.", "documentation": [ { "label": "Cropland Data Layer", "url": "https://www.nass.usda.gov/Research_and_Science/Cropland/Viewer/" } ] },
-        { "id": "stormwater-inputs", "task": "Identify possible stormwater inputs", "status": "not_started", "evidence_status": "unverified", "summary": "Inventory pipes, ditches and culverts entering the channel during a dry-weather walk; photograph and GPS each one. Possible inputs are listed as possible until flow is observed.", "documentation": [] },
-        { "id": "karst-connectivity", "task": "Examine karst connectivity", "status": "in_progress", "evidence_status": "mapped", "summary": "KGS maps place the corridor on Mississippian limestones with 'intense' to 'prone' karst potential. Next: check mapped sinkholes and springs near the channel and look for losing or gaining reaches in the field.", "documentation": [ { "label": "KGS karst potential service", "url": "https://kgs.uky.edu/arcgis/rest/services/GeologicMapData/KY500KKarstPotential_WGS84/MapServer" } ] },
-        { "id": "sampling-stations", "task": "Establish sampling stations", "status": "not_started", "evidence_status": "unverified", "summary": "Choose safe, repeatable stations (for example upstream, near campus, and above the Sinking Creek junction), each with a code, GPS position and photo.", "documentation": [] },
-        { "id": "field-verification", "task": "Conduct field verification", "status": "not_started", "evidence_status": "unverified", "summary": "First faculty-led reconnaissance: confirm channel location, flow state, canopy, substrate and access, and record the visit as a field observation.", "documentation": [] }
+        {
+          "id": "confirm-access",
+          "task": "Confirm campus access coordinates",
+          "status": "not_started",
+          "evidence_status": "unverified",
+          "summary": "Record a GPS position (with accuracy) for the safe access point used by classes, plus the route and any permissions needed.",
+          "documentation": []
+        },
+        {
+          "id": "verify-identity",
+          "task": "Verify mapped stream identity",
+          "status": "mapped",
+          "evidence_status": "mapped",
+          "summary": "NHD names the flowline 'Allen Branch' (GNIS 00485848). Still to do: confirm that the channel reached from campus is this mapped line, and check county and local sources for other names.",
+          "documentation": [
+            {
+              "label": "NHD flowline layer",
+              "url": "https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer/6"
+            }
+          ]
+        },
+        {
+          "id": "delineate-drainage",
+          "task": "Delineate upstream drainage",
+          "status": "not_started",
+          "evidence_status": "unverified",
+          "summary": "Delineate the basin above defined sampling points with USGS StreamStats; record date, tool version and the pour-point coordinates.",
+          "documentation": [
+            {
+              "label": "USGS StreamStats",
+              "url": "https://streamstats.usgs.gov/ss/"
+            }
+          ]
+        },
+        {
+          "id": "downstream-confluences",
+          "task": "Identify downstream confluences",
+          "status": "mapped",
+          "evidence_status": "mapped",
+          "summary": "NHD maps Allen Branch joining Sinking Creek, which flows to Pitman Creek. Field verification of the junction and of flow continuity at different seasons is pending.",
+          "documentation": [
+            {
+              "label": "Mapped path on the site map",
+              "url": "#site-map"
+            }
+          ]
+        },
+        {
+          "id": "receiving-waters",
+          "task": "Determine ultimate receiving waters",
+          "status": "mapped",
+          "evidence_status": "mapped",
+          "summary": "NHD routes the mapped path into Lake Cumberland on the Cumberland River (Ohio River basin). Surface mapping only.",
+          "documentation": []
+        },
+        {
+          "id": "agricultural-land-cover",
+          "task": "Assess agricultural land cover",
+          "status": "not_started",
+          "evidence_status": "unverified",
+          "summary": "After delineation, summarize NLCD and Cropland Data Layer classes inside the basin in QGIS. Report areas with their data year and resolution. Land cover alone will not be used to infer pollution.",
+          "documentation": [
+            {
+              "label": "Cropland Data Layer",
+              "url": "https://www.nass.usda.gov/Research_and_Science/Cropland/Viewer/"
+            }
+          ]
+        },
+        {
+          "id": "stormwater-inputs",
+          "task": "Identify possible stormwater inputs",
+          "status": "not_started",
+          "evidence_status": "unverified",
+          "summary": "Inventory pipes, ditches and culverts entering the channel during a dry-weather walk; photograph and GPS each one. Possible inputs are listed as possible until flow is observed.",
+          "documentation": []
+        },
+        {
+          "id": "karst-connectivity",
+          "task": "Examine karst connectivity",
+          "status": "in_progress",
+          "evidence_status": "mapped",
+          "summary": "KGS maps place the corridor on Mississippian limestones with 'intense' to 'prone' karst potential, and NHD maps springs, sinks and underground conduits nearby — though none on the Allen Branch line itself. Next: check KGS sinkhole and spring layers near the channel and look for losing or gaining reaches in the field.",
+          "documentation": [
+            {
+              "label": "KGS karst potential service",
+              "url": "https://kgs.uky.edu/arcgis/rest/services/GeologicMapData/KY500KKarstPotential_WGS84/MapServer"
+            }
+          ]
+        },
+        {
+          "id": "sampling-stations",
+          "task": "Establish sampling stations",
+          "status": "not_started",
+          "evidence_status": "unverified",
+          "summary": "Choose safe, repeatable stations (for example upstream, near campus, and above the Sinking Creek junction), each with a code, GPS position and photo.",
+          "documentation": []
+        },
+        {
+          "id": "field-verification",
+          "task": "Conduct field verification",
+          "status": "not_started",
+          "evidence_status": "unverified",
+          "summary": "First faculty-led reconnaissance: confirm channel location, flow state, canopy, substrate and access, and record the visit as a field observation.",
+          "documentation": []
+        }
       ]
     },
     {
