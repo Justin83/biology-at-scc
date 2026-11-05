@@ -86,10 +86,20 @@ try {
   await a.click("#club-signup-dialog [data-close]");
   assert.match(await text(a, "#club-next-body"), /1 person has signed up/);
 
-  // student B on another phone, on the QR sign-up page: sees A's entry, cannot change it
+  // student B on another phone, on the QR sign-up page. Choosing the get-together is a
+  // required first step: nothing is preselected and the form stays hidden until then.
+  const novId = await a.getAttribute("#club-next-body [data-signup]", "data-signup");
   const b = await phone();
   await b.goto(SITE + "signup/" + Q);
+  await b.waitForSelector("#su-pick:not([hidden])");
+  assert.equal(await b.$$eval('input[name="su-event"]', (r) => r.length), 2, "both food events offered");
+  assert.equal(await b.$$eval('input[name="su-event"]:checked', (r) => r.length), 0, "nothing preselected");
+  assert.equal(await b.isHidden("#su-app"), true, "form hidden until a get-together is chosen");
+  assert.equal(await b.isVisible("#su-choose-first"), true);
+  await b.click('#su-pick-options label:has-text("November 19")');
   await b.waitForSelector("#su-app:not([hidden]) #su-list li");
+  assert.ok(b.url().includes("event=" + novId), "choice kept in the address");
+  // sees A's entry, cannot change it
   assert.match(await text(b, "#su-list"), /E2E Student A: Brownies/);
   assert.doesNotMatch(await text(b, "#su-list"), /\(you\)/);
   assert.equal(await b.isHidden("#su-mine-wrap"), true);
@@ -98,6 +108,8 @@ try {
   await b.fill("#su-item", "Lemonade");
   await b.click("#su-submit");
   await b.waitForFunction(() => /Lemonade/.test(document.getElementById("su-msg").textContent));
+  assert.match(await text(b, '#su-pick-options label:has-text("November 19")'), /2 people signed up/, "step 1 card count updates after signing up");
+  assert.equal(await b.isChecked("#su-ev-" + novId), true, "selection kept after the counts update");
 
   // A changes and then removes their entry (pop-up again). A's page loaded before B signed
   // up, so the pop-up must fetch fresh data to show B's lemonade.
@@ -156,8 +168,9 @@ try {
   assert.match(await text(a, "#club-next-body"), /Food theme: Tacos/);
   assert.match(await text(a, "#club-next-body"), /E2E Room 101/);
   assert.match(await text(a, '.club-card:has-text("E2E January Meeting")'), /Cancelled[\s\S]*Food theme: Pasta/);
-  await a.goto(SITE + "signup/" + Q);
-  await a.waitForSelector("#su-list");
+  await a.goto(SITE + "signup/" + Q + "&event=" + novId); // a card's link names its event
+  await a.waitForSelector("#su-app:not([hidden]) #su-list");
+  assert.equal(await a.isChecked("#su-ev-" + novId), true, "event from the link is preselected");
   assert.match(await text(a, "#su-list"), /Drinks 0 of 3 needed/);
   assert.match(await text(a, "#su-info"), /Food theme: Tacos/);
 
