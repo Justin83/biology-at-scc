@@ -3051,6 +3051,35 @@
    "in_library": false
   },
   {
+   "id": "kycab2014_lift",
+   "reference_type": "web_page",
+   "title": "Division of Water lifts Harmful Algal Bloom Advisory for six Kentucky Lakes",
+   "authors": [
+    "Kentucky Energy and Environment Cabinet"
+   ],
+   "year": 2014,
+   "container": "Naturally Connected (Cabinet news)",
+   "url": "https://kydep.wordpress.com/2014/10/28/division-of-water-lifts-harmful-algal-bloom-advisory-for-six-kentucky-lakes/",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "in_library": false
+  },
+  {
+   "id": "epa_dw_manage",
+   "reference_type": "web_page",
+   "title": "Managing Algal Toxins in Drinking Water",
+   "authors": [
+    "U.S. Environmental Protection Agency"
+   ],
+   "year": 2026,
+   "container": "U.S. EPA Harmful Algal Blooms program",
+   "url": "https://www.epa.gov/habs/managing-algal-toxins-drinking-water",
+   "verified_with": "source_page",
+   "verified_at": "2026-11-05",
+   "note": "Page last updated June 23, 2026.",
+   "in_library": false
+  },
+  {
    "id": "usgs_nhd",
    "reference_type": "dataset",
    "title": "National Hydrography Dataset (NHD), high resolution — map service",

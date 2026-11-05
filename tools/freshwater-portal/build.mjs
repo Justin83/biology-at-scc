@@ -382,7 +382,7 @@ function genOrganisms(ctx) {
   const cats = D.organisms.categories;
   return "\n" + cats.map((cat) => {
     const recs = D.organisms.records.filter((o) => o.group === cat.id);
-    return `<section class="fw-atlas-group" aria-labelledby="cat-${esc(cat.id)}">
+    return `<section class="fw-atlas-group" aria-labelledby="cat-${esc(cat.id)}"${recs.length ? ' data-filter-section="organisms"' : ""}>
   <h2 id="cat-${esc(cat.id)}">${esc(cat.name)}</h2>
   <p class="fw-atlas-group-summary">${esc(cat.summary)} <span class="fw-muted">${esc(cat.status)}.</span></p>
   ${recs.length ? `<div class="fw-atlas-grid" data-filter-list="organisms">\n${recs.map((o) => {

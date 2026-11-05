@@ -366,6 +366,38 @@
       "check_detail": "HTTP 200"
     },
     {
+      "id": "usgs-nfm",
+      "title": "National Field Manual for the Collection of Water-Quality Data",
+      "organization": "U.S. Geological Survey",
+      "category": "Laboratory Methods",
+      "description": "The USGS standard procedures for collecting and processing water-quality samples and field measurements — temperature, pH, conductivity, dissolved oxygen, turbidity — including calibration and quality control.",
+      "geographic_relevance": "national",
+      "primary_use": "Field measurement and calibration procedures",
+      "url": "https://www.usgs.gov/mission-areas/water-resources/science/national-field-manual-collection-water-quality-data-nfm",
+      "publication_date": null,
+      "source_type": "guidance",
+      "featured": false,
+      "last_checked": "2026-11-05",
+      "check_status": "ok",
+      "check_detail": "HTTP 200"
+    },
+    {
+      "id": "epa-hab-labs",
+      "title": "Laboratories that Analyze for Cyanobacteria and Cyanotoxins",
+      "organization": "U.S. Environmental Protection Agency",
+      "category": "Laboratory Methods",
+      "description": "EPA's starting point for finding laboratories that identify cyanobacteria and measure cyanotoxins. Toxin testing for portal projects goes through qualified laboratories, never the teaching lab.",
+      "geographic_relevance": "national",
+      "primary_use": "Arranging cyanobacteria identification or toxin analysis",
+      "url": "https://www.epa.gov/habs/laboratories-analyze-cyanobacteria-and-cyanotoxins",
+      "publication_date": null,
+      "source_type": "guidance",
+      "featured": false,
+      "last_checked": "2026-11-05",
+      "check_status": "ok",
+      "check_detail": "HTTP 200"
+    },
+    {
       "id": "pubmed",
       "title": "PubMed",
       "organization": "National Library of Medicine",

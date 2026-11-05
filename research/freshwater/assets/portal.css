@@ -501,7 +501,7 @@ body.fw {
 .fw-organism-media .fw-muted { font-weight: 400; font-size: 0.78rem; }
 .fw-authority { font-size: 0.8rem; font-weight: 400; color: var(--fw-muted); }
 .fw-taxonomy { font-size: 0.8rem; color: var(--fw-muted); margin: 0 0 0.4rem; }
-.fw-tax-rank { text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.05em; color: var(--fw-muted); opacity: 0.85; }
+.fw-tax-rank { text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; color: var(--fw-muted); }
 .fw-organism-form { font-size: 0.9rem; margin: 0.3rem 0; }
 .fw-organism-status { margin: 0.7rem 0 0; font-size: 0.82rem; display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
 
@@ -650,3 +650,20 @@ body.fw {
 .fw-fig-legend ol { margin: 0; padding-left: 1.6rem; }
 .fw-fig-legend li { margin: 0.15rem 0; }
 .fw-prose .fw-figure { max-width: none; }
+.fw-methods-toc { padding: 0 0.9rem 0.8rem; }
+.fw-methods-toc .fw-toc { border-left: 0; padding-left: 0; font-size: 0.9rem; }
+.fw-methods-toc .fw-toc-title { display: none; }
+
+/* Scroll containers must contain absolutely positioned descendants (e.g. visually-hidden
+   link text), otherwise those escape the overflow clip and widen the page on phones. */
+.fw-table-scroll, .fw-fact-table-wrap, .fw-figure-scroll { position: relative; }
+.fw-tax-rank { opacity: 1; }
+.fw-search-page form { flex-wrap: wrap; }
+.fw-search-page input { min-width: 0; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .fw-search-page button { color: #0f1722; } }
+:root[data-theme="dark"] .fw-search-page button { color: #0f1722; }
+.fw-layer-prov dd { overflow-wrap: anywhere; }
+@media (max-width: 520px) {
+  .fw-kv { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .fw-kv dt { margin-top: 0.5rem; font-size: 0.82rem; }
+}
