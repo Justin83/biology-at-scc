@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 // Vector versions of the Math & Science Club logos, recolored for this site.
-//   1. shield-green.svg — the club's shield logo (gold shield, six colored icons, "KCTCS
+//   1. shield-green.svg: the club's shield logo (gold shield, six colored icons, "KCTCS
 //      SOMERSET / MATH & SCIENCE CLUB") on the site's deep green instead of navy.
-//   2. seal-green.svg   — the club's circular seal (gold ring, ring text, four white
+//   2. seal-green.svg: the club's circular seal (gold ring, ring text, four white
 //      icons) on the same green.
-//   3. seal-combined.svg — a variation that combines both: the shield and its colored
+//   3. seal-combined.svg: a variation that combines both: the shield and its colored
 //      icons inside the seal, with right-side-up text on the lower arc.
 // The originals were shared as screenshots, so these are redrawn by hand, not traced:
 // colors are kept (gold, icon colors, white), shapes and lettering are close matches.
@@ -149,7 +149,7 @@ function sealLogo() {
   const extra = ((wArc - wNatural) * Math.PI / 180) * (R + sz * 0.35) / (white.length - 1);
   b += g.svg + ring(CINZEL, white, sz, cx, cy, R, 90, "out", sp + extra, C.white).svg;
   ["molecule", "microscope", "atomWhite", "graph"].forEach((n, i) => { b += place(n, 110 + i * 60, 200, 50); });
-  return svg(400, "Math and Science Club, Somerset Community College — seal", b);
+  return svg(400, "Math and Science Club, Somerset Community College seal", b);
 }
 
 // ---------------------------------------------------------------- 3. seal + shield combined
@@ -168,7 +168,7 @@ function combinedLogo() {
   b += `<path d="${rounded(pts, 34 * s)}" fill="none" stroke="${C.goldShield}" stroke-width="5" stroke-linejoin="round"/>`;
   ["flask", "sprout", "integral"].forEach((n, i) => { b += place(n, 156 + i * 44, 170, 36); });
   ["planet", "atom", "crystal"].forEach((n, i) => { b += place(n, 156 + i * 44, 216, 36); });
-  return svg(400, "Math and Science Club, Somerset Community College — seal with shield", b);
+  return svg(400, "Math and Science Club, Somerset Community College seal with shield", b);
 }
 
 fs.mkdirSync(OUT, { recursive: true });

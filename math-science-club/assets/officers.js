@@ -9,7 +9,7 @@
   var esc = C.esc;
   var root = document.body.getAttribute("data-club-root") || "../";
   var KEY = "club-officer-code";
-  var DEFAULT_SLOTS = ["Main dish", "Side", "Snack", "Dessert", "Drinks", "Plates, cups or napkins"];
+  var DEFAULT_SLOTS = ["Main dish", "Side", "Snack", "Dessert", "Drinks"];
   var code = null, data = null, editing = null, settings = null;
 
   function msg(id, text, kind) { var el = $(id); el.textContent = text || ""; el.className = "club-msg" + (kind ? " is-" + kind : ""); }
@@ -48,7 +48,8 @@
   $("of-signout").addEventListener("click", function () {
     code = null;
     try { sessionStorage.removeItem(KEY); } catch (e) { /* ignore */ }
-    $("of-app").hidden = true; $("of-signin").hidden = false; $("of-editor").hidden = true;
+    closeEditor();
+    $("of-app").hidden = true; $("of-signin").hidden = false;
     $("of-code").focus();
   });
 
@@ -72,7 +73,7 @@
     var n = (e.signups || []).length;
     return '<li class="' + (C.isPast(e, data.today) ? "is-past" : "") + '"><div><p><strong>' + esc(C.shortDate(e.starts_on)) + "</strong> · " + esc(C.timeLabel(e)) + " · " + esc(e.title) +
       (e.tentative ? ' <span class="club-chip club-chip--tentative">Tentative</span>' : "") + (e.status === "cancelled" ? ' <span class="club-chip club-chip--cancelled">Cancelled</span>' : "") + "</p>" +
-      (e.signup_enabled ? '<p class="club-hint">Food sign-up on · ' + n + (n === 1 ? " sign-up" : " sign-ups") + "</p>" : "") +
+      (e.signup_enabled || e.theme ? '<p class="club-hint">' + [e.theme ? "Food theme: " + esc(e.theme) : "", e.signup_enabled ? "Food sign-up on · " + n + (n === 1 ? " sign-up" : " sign-ups") : ""].filter(Boolean).join(" · ") + "</p>" : "") +
       '</div><button type="button" class="club-btn club-btn--ghost club-btn--small" data-edit="' + esc(e.id) + '">Edit<span class="visually-hidden"> ' + esc(e.title + ", " + C.shortDate(e.starts_on)) + "</span></button></li>";
   }
   function load(keepId) {
@@ -84,7 +85,7 @@
       var up = C.upcoming(d), past = d.events.filter(function (e) { return C.isPast(e, d.today); }).reverse();
       $("of-upcoming").innerHTML = up.length ? up.map(row).join("") : "<li>No upcoming events.</li>";
       $("of-past").innerHTML = past.length ? past.map(row).join("") : "<li>No past events.</li>";
-      if (keepId) { var e = d.events.filter(function (x) { return x.id === keepId; })[0]; if (e && !$("of-editor").hidden) fillSignups(e); }
+      if (keepId) { var e = d.events.filter(function (x) { return x.id === keepId; })[0]; if (e && $("of-editor").open) fillSignups(e); }
     });
   }
   [$("of-upcoming"), $("of-past")].forEach(function (ul) {
@@ -117,7 +118,7 @@
     var list = e && e.signups || [];
     $("of-signups-wrap").hidden = !e || !e.signup_enabled;
     $("of-signups").innerHTML = list.length ? list.map(function (s) {
-      return "<li><p>" + esc(s.name) + " — " + esc(s.item) + " (" + esc(s.slot) + ")" + (s.note ? ' <span class="club-hint">' + esc(s.note) + "</span>" : "") + "</p>" +
+      return "<li><p>" + esc(s.name) + ": " + esc(s.item) + " (" + esc(s.slot) + ")" + (s.note ? ' <span class="club-hint">' + esc(s.note) + "</span>" : "") + "</p>" +
         '<button type="button" class="club-btn club-btn--danger club-btn--small" data-remove-signup="' + esc(s.id) + '">Remove<span class="visually-hidden"> ' + esc(s.name + "'s " + s.item) + "</span></button></li>";
     }).join("") : "<li>No sign-ups yet.</li>";
   }
@@ -130,6 +131,7 @@
     $("of-start").value = e && e.start_time ? e.start_time : "";
     $("of-end").value = e && e.end_time ? e.end_time : "";
     $("of-title").value = e ? e.title : "";
+    $("of-theme").value = e && e.theme || "";
     $("of-kind").value = e ? e.kind : "meeting";
     $("of-location").value = e && e.location || "";
     $("of-details").value = e && e.details || "";
@@ -142,17 +144,18 @@
     $("of-delete").hidden = !e;
     fillSignups(e);
     msg("of-form-msg", "");
-    $("of-editor").hidden = false;
-    $("of-editor").scrollIntoView({ block: "start" });
-    $("of-editor").focus();
+    if ($("of-editor").showModal) $("of-editor").showModal(); else $("of-editor").setAttribute("open", "");
+    $("of-title").focus();
   }
-  function closeEditor() {
-    $("of-editor").hidden = true;
+  function closeEditor() { if ($("of-editor").open) $("of-editor").close(); }
+  $("of-editor").addEventListener("close", function () {
     editing = null;
-    if (opener && document.body.contains(opener)) opener.focus(); else $("of-add").focus();
-  }
-  $("of-add").addEventListener("click", function () { openEditor(null, this); $("of-date").focus(); });
+    var target = opener && document.body.contains(opener) ? opener : opener && document.querySelector('[data-edit="' + opener.getAttribute("data-edit") + '"]');
+    (target || $("of-add")).focus();
+  });
+  $("of-add").addEventListener("click", function () { openEditor(null, this); });
   $("of-close").addEventListener("click", closeEditor);
+  $("of-close-x").addEventListener("click", closeEditor);
   $("of-signup").addEventListener("change", toggleSignupSetup);
   $("of-slot-add").addEventListener("click", function () {
     $("of-slots").insertAdjacentHTML("beforeend", slotRow("", null, slotCounter++));
@@ -171,7 +174,7 @@
     ev.preventDefault();
     var p = {
       id: editing ? editing.id : null, starts_on: $("of-date").value, ends_on: $("of-end-date").value,
-      start_time: $("of-start").value, end_time: $("of-end").value, title: $("of-title").value.trim(),
+      start_time: $("of-start").value, end_time: $("of-end").value, title: $("of-title").value.trim(), theme: $("of-theme").value.trim(),
       kind: $("of-kind").value, location: $("of-location").value.trim(), details: $("of-details").value.trim(),
       tentative: $("of-tentative").checked, status: $("of-cancelled").checked ? "cancelled" : "scheduled",
       signup_enabled: $("of-signup").checked, signup_note: $("of-signup-note").value.trim(), slots: readSlots()
@@ -191,10 +194,8 @@
       var id = r.id;
       load().then(function () {
         msg("of-list-msg", "Saved: " + p.title + " (" + C.shortDate(p.starts_on) + "). The club page shows the change now.", "ok");
-        $("of-editor").hidden = true;
-        editing = null;
-        var b = document.querySelector('[data-edit="' + id + '"]');
-        (b || $("of-add")).focus();
+        opener = document.querySelector('[data-edit="' + id + '"]') || opener;
+        closeEditor();
       });
     });
   });
@@ -206,8 +207,9 @@
     admin("delete_event", { id: editing.id }).then(function (r) {
       if (!r.ok) { msg("of-form-msg", C.errorText(r), "error"); return; }
       var title = editing.title;
-      $("of-editor").hidden = true; editing = null;
-      load().then(function () { msg("of-list-msg", "Deleted: " + title + ".", "ok"); $("of-add").focus(); });
+      opener = null;
+      closeEditor();
+      load().then(function () { msg("of-list-msg", "Deleted: " + title + ".", "ok"); });
     });
   });
   $("of-signups").addEventListener("click", function (ev) {

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Math &amp; Science Club · Biology at SCC</title>
-<meta name="description" content="Home page for Somerset Community College's Math &amp; Science Club: next meeting (third Thursday of each month), food sign-up, and the Fall 2026 schedule of meetings, astronomy nights, campus tours and events.">
+<meta name="description" content="Somerset Community College's Math &amp; Science Club: the next meeting (third Thursday of each month), the food sign-up, and the Fall 2026 schedule of meetings, astronomy nights, campus tours and other events.">
 <link rel="stylesheet" href="../assets/style.css">
 <link rel="stylesheet" href="assets/club.css">
 </head>
@@ -40,25 +40,34 @@
   </div>
 </div>
 
-<main id="main">
+<main id="main" class="club-wide">
   <section class="club-hero" aria-labelledby="club-title">
     <img class="club-logo" src="assets/logo.svg" alt="Math &amp; Science Club, Somerset Community College logo" width="120" height="120">
     <div>
       <p class="club-kicker">Somerset Community College</p>
       <h1 id="club-title">Math &amp; Science Club</h1>
-      <p class="lede">Meetings, astronomy nights, campus tours and food — everything for club members in one place.</p>
+      <p class="lede">Meeting dates, upcoming events and the food sign-up for club members.</p>
       <p class="club-rule"><strong>We meet the third Thursday of every month at 5:00 PM.</strong></p>
     </div>
   </section>
 
-  <section class="club-next" aria-labelledby="next-title" id="next">
-    <h2 id="next-title">Next meeting</h2>
-    <div id="club-next-body">
-      <p class="club-next-date">Thursday, November 19, 2026</p>
-      <p class="club-next-meta">5:00 PM · Math and Science Club Meeting · the third Thursday of November</p>
-      <p class="club-actions"><a class="club-btn" href="signup/">Sign up to bring food</a></p>
-    </div>
-  </section>
+  <div class="club-top">
+    <section class="club-next" aria-labelledby="next-title" id="next">
+      <h2 id="next-title">Next meeting</h2>
+      <div id="club-next-body">
+        <p class="club-next-date">Thursday, November 19, 2026</p>
+        <p class="club-next-meta">5:00 PM · Math and Science Club Meeting</p>
+        <p class="club-actions"><a class="club-btn club-btn--big" href="signup/">Sign up to bring food</a></p>
+      </div>
+    </section>
+
+    <section class="club-panel club-scan" aria-labelledby="scan-title">
+      <h2 id="scan-title">Sign up from your phone</h2>
+      <img src="assets/qr-signup.svg" width="180" height="180" alt="QR code for the club food sign-up page">
+      <p>Scan with your phone's camera to open the food sign-up.</p>
+      <p class="club-actions"><button type="button" class="club-btn club-btn--ghost" id="club-bigqr-open">Show on the big screen</button></p>
+    </section>
+  </div>
 
   <section aria-labelledby="schedule-title" id="schedule">
     <h2 id="schedule-title">Coming up</h2>
@@ -69,32 +78,36 @@
       <div id="club-past"></div>
     </details>
     <div class="club-fine">
-      <p>From the printed <em>MSSE Scholars Proposed Activities — Fall 2026 Schedule</em>. Events marked <span class="club-chip club-chip--tentative">Tentative</span> may change because of weather or other factors.</p>
-      <p>While attendance at all activities is encouraged, MSSE scholars must take part in at least 4 each semester and meet with their mentor twice each semester. Changes are sent to your KCTCS student email.</p>
+      <p>Dates come from the printed <em>MSSE Scholars Proposed Activities</em> schedule for Fall 2026. Events marked <span class="club-chip club-chip--tentative">Tentative</span> could change because of weather or other reasons.</p>
+      <p>Attendance at all activities is encouraged. MSSE scholars need to attend at least 4 each semester and meet with their mentor twice. Schedule changes are sent to your KCTCS student email.</p>
+      <p>Want a paper copy for the classroom door? Print the <a href="qr/">QR poster</a>.</p>
     </div>
-  </section>
-
-  <section class="club-panel" aria-labelledby="qr-title">
-    <h2 id="qr-title">Scan to open on your phone</h2>
-    <div class="club-qr-row">
-      <figure class="club-qr">
-        <img src="assets/qr-signup.svg" width="200" height="200" alt="QR code for the club food sign-up page">
-        <figcaption><a href="signup/">Food sign-up</a></figcaption>
-      </figure>
-      <figure class="club-qr">
-        <img src="assets/qr-club.svg" width="200" height="200" alt="QR code for this club home page">
-        <figcaption><a href="./">This club page</a></figcaption>
-      </figure>
-    </div>
-    <p><a href="qr/">Printable QR poster</a> for the classroom door or meeting table.</p>
   </section>
 
   <aside class="club-officer-box" aria-labelledby="officer-title">
     <h2 id="officer-title">For club officers only</h2>
-    <p>Change dates, add or cancel events, set up the food sign-up, or remove a sign-up. Needs the officer code.</p>
+    <p>Change dates and food themes, add or cancel events, set up the food sign-up, or remove a sign-up. You'll need the officer code.</p>
     <a class="club-btn club-btn--danger" href="officers/">Open officer tools</a>
   </aside>
 </main>
+
+<dialog class="club-modal" id="club-signup-dialog" aria-labelledby="club-modal-title">
+  <div class="club-modal-head">
+    <h2 id="club-modal-title">Sign up to bring food</h2>
+    <button type="button" class="club-btn club-btn--ghost club-btn--small" data-close>Close</button>
+  </div>
+  <div id="club-signup-body"></div>
+</dialog>
+
+<dialog class="club-bigqr" id="club-bigqr" aria-labelledby="club-bigqr-title">
+  <div class="club-bigqr-inner">
+    <h2 id="club-bigqr-title">Scan to sign up to bring food</h2>
+    <p class="club-bigqr-event" id="club-bigqr-event"></p>
+    <img src="assets/qr-signup.svg" alt="QR code for the club food sign-up page" width="600" height="600">
+    <p class="club-bigqr-url">justin83.github.io/biology-at-scc/math-science-club/signup/</p>
+    <p class="club-actions"><button type="button" class="club-btn" data-close>Close</button></p>
+  </div>
+</dialog>
 
 <footer>
   <div class="wrap">
@@ -103,6 +116,7 @@
   </div>
 </footer>
 <script src="assets/club.js" defer></script>
+<script src="assets/signup-form.js" defer></script>
 <script src="assets/home.js" defer></script>
 </body>
 </html>

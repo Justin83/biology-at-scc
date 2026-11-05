@@ -76,7 +76,7 @@
 
     <section aria-labelledby="of-events-title">
       <h2 id="of-events-title">Events</h2>
-      <p>Choose <strong>Edit</strong> to change a date or time, cancel an event, or set up its food sign-up.</p>
+      <p>Choose <strong>Edit</strong> to change a date, time or food theme, cancel an event, or set up its food sign-up.</p>
       <div class="club-actions"><button type="button" class="club-btn" id="of-add">Add an event</button></div>
       <p id="of-list-msg" class="club-msg" role="status" aria-live="polite"></p>
       <h3>Coming up</h3>
@@ -87,54 +87,6 @@
       </details>
     </section>
 
-    <section class="club-panel club-editor" id="of-editor" aria-labelledby="of-editor-title" tabindex="-1" hidden>
-      <h2 id="of-editor-title">Edit event</h2>
-      <form id="of-form" novalidate>
-        <div class="club-row">
-          <div class="club-field"><label for="of-date">Date</label><input id="of-date" type="date" required></div>
-          <div class="club-field"><label for="of-end-date">Last day <span class="club-hint">(multi-day only)</span></label><input id="of-end-date" type="date"></div>
-        </div>
-        <div class="club-row">
-          <div class="club-field"><label for="of-start">Start time <span class="club-hint">(blank = all day)</span></label><input id="of-start" type="time"></div>
-          <div class="club-field"><label for="of-end">End time <span class="club-hint">(optional)</span></label><input id="of-end" type="time"></div>
-        </div>
-        <div class="club-field"><label for="of-title">Title</label><input id="of-title" type="text" maxlength="120" required></div>
-        <div class="club-row">
-          <div class="club-field"><label for="of-kind">Type</label><select id="of-kind"></select></div>
-          <div class="club-field"><label for="of-location">Location <span class="club-hint">(optional)</span></label><input id="of-location" type="text" maxlength="120"></div>
-        </div>
-        <div class="club-field"><label for="of-details">Details <span class="club-hint">(optional, shown on the club page)</span></label><textarea id="of-details" maxlength="1000" rows="2"></textarea></div>
-        <fieldset class="club-field">
-          <legend>Status</legend>
-          <div class="club-choice"><input type="checkbox" id="of-tentative"><label for="of-tentative">Tentative (may change)</label></div>
-          <div class="club-choice"><input type="checkbox" id="of-cancelled"><label for="of-cancelled">Cancelled (stays on the page, crossed out)</label></div>
-        </fieldset>
-        <fieldset class="club-field">
-          <legend>Food sign-up</legend>
-          <div class="club-choice"><input type="checkbox" id="of-signup"><label for="of-signup">Members can sign up to bring food for this event</label></div>
-          <div id="of-signup-setup">
-            <div class="club-field"><label for="of-signup-note">Note for people signing up <span class="club-hint">(optional)</span></label>
-              <input id="of-signup-note" type="text" maxlength="300" placeholder="e.g., The club is providing pizza — bring sides, desserts and drinks."></div>
-            <p><strong>Categories</strong> <span class="club-hint">— what people can sign up for. "How many" is optional.</span></p>
-            <div id="of-slots"></div>
-            <div class="club-actions">
-              <button type="button" class="club-btn club-btn--ghost club-btn--small" id="of-slot-add">Add a category</button>
-              <button type="button" class="club-btn club-btn--ghost club-btn--small" id="of-slot-default">Use the usual categories</button>
-            </div>
-          </div>
-        </fieldset>
-        <div class="club-actions">
-          <button type="submit" class="club-btn" id="of-save">Save event</button>
-          <button type="button" class="club-btn club-btn--ghost" id="of-close">Close without saving</button>
-          <button type="button" class="club-btn club-btn--danger" id="of-delete">Delete event</button>
-        </div>
-        <p id="of-form-msg" class="club-msg" role="status" aria-live="polite"></p>
-      </form>
-      <div id="of-signups-wrap">
-        <h3>Sign-ups for this event</h3>
-        <ul id="of-signups" class="club-officer-list"></ul>
-      </div>
-    </section>
 
     <details class="club-panel">
       <summary><strong>Change the officer code</strong></summary>
@@ -146,6 +98,67 @@
     </details>
   </div>
 </main>
+
+<dialog class="club-modal club-modal--wide club-editor" id="of-editor" aria-labelledby="of-editor-title">
+  <div class="club-modal-head">
+    <h2 id="of-editor-title">Edit event</h2>
+    <button type="button" class="club-btn club-btn--ghost club-btn--small" id="of-close-x">Close</button>
+  </div>
+  <form id="of-form" novalidate>
+    <div class="club-editor-cols">
+      <div>
+        <div class="club-field"><label for="of-title">Title</label><input id="of-title" type="text" maxlength="120" required></div>
+        <div class="club-field"><label for="of-theme">Food theme <span class="club-hint">(optional)</span></label>
+          <input id="of-theme" type="text" maxlength="60" placeholder="e.g., Pasta, Tacos, Breakfast for dinner" aria-describedby="of-theme-hint">
+          <p class="club-hint" id="of-theme-hint">Shown on the event card and in the sign-up. Leave blank and it says "to be announced".</p></div>
+        <div class="club-row">
+          <div class="club-field"><label for="of-date">Date</label><input id="of-date" type="date" required></div>
+          <div class="club-field"><label for="of-end-date">Last day <span class="club-hint">(multi-day only)</span></label><input id="of-end-date" type="date"></div>
+        </div>
+        <div class="club-row">
+          <div class="club-field"><label for="of-start">Start time <span class="club-hint">(blank = all day)</span></label><input id="of-start" type="time"></div>
+          <div class="club-field"><label for="of-end">End time <span class="club-hint">(optional)</span></label><input id="of-end" type="time"></div>
+        </div>
+        <div class="club-row">
+          <div class="club-field"><label for="of-kind">Type</label><select id="of-kind"></select></div>
+          <div class="club-field"><label for="of-location">Location <span class="club-hint">(optional)</span></label><input id="of-location" type="text" maxlength="120"></div>
+        </div>
+        <div class="club-field"><label for="of-details">Details <span class="club-hint">(optional, shown on the card)</span></label><textarea id="of-details" maxlength="1000" rows="2"></textarea></div>
+        <fieldset class="club-field">
+          <legend>Status</legend>
+          <div class="club-choice"><input type="checkbox" id="of-tentative"><label for="of-tentative">Tentative (may change)</label></div>
+          <div class="club-choice"><input type="checkbox" id="of-cancelled"><label for="of-cancelled">Cancelled (stays on the page, crossed out)</label></div>
+        </fieldset>
+      </div>
+      <div>
+        <fieldset class="club-field">
+          <legend>Food sign-up</legend>
+          <div class="club-choice"><input type="checkbox" id="of-signup"><label for="of-signup">Members can sign up to bring food for this event</label></div>
+          <div id="of-signup-setup">
+            <div class="club-field"><label for="of-signup-note">Note for people signing up <span class="club-hint">(optional)</span></label>
+              <input id="of-signup-note" type="text" maxlength="300" placeholder="e.g., The club is providing pizza, so bring sides, desserts or drinks."></div>
+            <p><strong>Categories</strong> <span class="club-hint">(what people can sign up to bring; "How many" is optional)</span></p>
+            <div id="of-slots"></div>
+            <div class="club-actions">
+              <button type="button" class="club-btn club-btn--ghost club-btn--small" id="of-slot-add">Add a category</button>
+              <button type="button" class="club-btn club-btn--ghost club-btn--small" id="of-slot-default">Use the usual categories</button>
+            </div>
+          </div>
+        </fieldset>
+        <div id="of-signups-wrap">
+          <h3>Sign-ups for this event</h3>
+          <ul id="of-signups" class="club-officer-list"></ul>
+        </div>
+      </div>
+    </div>
+    <div class="club-actions club-editor-foot">
+      <button type="submit" class="club-btn" id="of-save">Save event</button>
+      <button type="button" class="club-btn club-btn--ghost" id="of-close">Close without saving</button>
+      <button type="button" class="club-btn club-btn--danger" id="of-delete">Delete event</button>
+    </div>
+    <p id="of-form-msg" class="club-msg" role="status" aria-live="polite"></p>
+  </form>
+</dialog>
 
 <footer>
   <div class="wrap">
