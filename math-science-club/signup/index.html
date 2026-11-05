@@ -48,9 +48,13 @@
     <noscript><div class="club-banner club-banner--warn"><p>This page needs JavaScript to load the sign-up list.</p></div></noscript>
   </div>
 
-  <div class="club-field" id="su-event-wrap" hidden>
-    <label for="su-event">Which get-together?</label>
-    <select id="su-event"></select>
+  <fieldset class="club-pick" id="su-pick" hidden>
+    <legend><span class="club-step" aria-hidden="true">1</span> Choose the get-together <span class="club-req">(required)</span></legend>
+    <div class="club-pick-options" id="su-pick-options"></div>
+  </fieldset>
+
+  <div class="club-banner club-choose-first" id="su-choose-first" hidden>
+    <p><span class="club-step" aria-hidden="true">2</span> <strong>Choose a get-together above</strong> to see what's covered and add what you're bringing.</p>
   </div>
 
   <section class="club-panel club-su-page" id="su-app" aria-label="Food sign-up" hidden></section>

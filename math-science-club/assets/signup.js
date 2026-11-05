@@ -1,5 +1,7 @@
-/* Food sign-up page (the QR target): pick the get-together, then the shared form in
-   signup-form.js. ?event=<id> preselects one; otherwise the next one with sign-up. */
+/* Food sign-up page (the QR target).
+   Step 1 (required): choose the get-together. Nothing is preselected unless the link
+   names one (?event=<id>, used by the buttons on the club page cards).
+   Step 2: the shared form in signup-form.js, shown only after a choice. */
 (function () {
   "use strict";
   var C = window.Club;
@@ -11,11 +13,32 @@
 
   function status(html) { $("su-status").innerHTML = html || ""; }
   function eligible(d) { return C.upcoming(d).filter(function (e) { return e.signup_enabled && e.status !== "cancelled"; }); }
-  function pick(id) {
-    var e = data.events.filter(function (x) { return x.id === id; })[0] || eligible(data)[0];
+  function countText(e) { var n = (e.signups || []).length; return n === 0 ? "nobody signed up yet" : n === 1 ? "1 person signed up" : n + " people signed up"; }
+
+  function options(list) {
+    $("su-pick-options").innerHTML = list.map(function (e) {
+      var p = C.parts(e.starts_on), id = "su-ev-" + esc(e.id), theme = C.themeText(e);
+      return '<div class="club-pick-option"><input type="radio" name="su-event" id="' + id + '" value="' + esc(e.id) + '">' +
+        '<label for="' + id + '"><span class="club-date" aria-hidden="true"><span class="dow">' + C.DOW[new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay()].slice(0, 3) +
+        '</span><span class="day">' + p.d + '</span><span class="mon">' + C.MON[p.m - 1].slice(0, 3) + "</span></span>" +
+        '<span><span class="club-pick-title">' + esc(e.title) + "</span>" +
+        '<span class="club-pick-meta">' + esc(C.longDate(e.starts_on) + " · " + C.timeLabel(e)) + "</span>" +
+        (theme ? '<span class="club-pick-meta">Food theme: ' + esc(theme) + "</span>" : "") +
+        '<span class="club-pick-meta">' + esc(countText(e)) + "</span>" +
+        '<span class="club-pick-check">✓ Selected</span></span></label></div>';
+    }).join("");
+  }
+  function pick(id, scroll) {
+    var e = data.events.filter(function (x) { return x.id === id; })[0];
+    if (!e) return;
     if (!form) form = C.signupForm($("su-app"), { idPrefix: "su", headingLevel: 2, onChange: function (d) { data = d; } });
+    $("su-choose-first").hidden = true;
     $("su-app").hidden = false;
     form.show(data, e);
+    try { // keep the choice if the page is reloaded or shared
+      var u = new URL(location.href); u.searchParams.set("event", id); history.replaceState(null, "", u.pathname + u.search + u.hash);
+    } catch (err) { /* old browser */ }
+    if (scroll) $("su-app").scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   C.load(root).then(function (d) {
@@ -32,14 +55,18 @@
       status('<div class="club-banner"><p><strong>No upcoming get-together has food sign-up yet.</strong> Club officers set it up for each meeting. See the <a href="' + root + '#schedule">schedule</a>.</p></div>');
       return;
     }
-    $("su-event-wrap").hidden = list.length < 2;
-    $("su-event").innerHTML = list.map(function (e) {
-      return '<option value="' + esc(e.id) + '">' + esc(C.shortDate(e.starts_on) + ": " + e.title + (e.theme ? " (" + e.theme + ")" : "")) + "</option>";
-    }).join("");
+    options(list);
+    $("su-pick").hidden = false;
     var want = new URLSearchParams(location.search).get("event");
-    if (want && list.some(function (e) { return e.id === want; })) $("su-event").value = want;
-    pick($("su-event").value);
+    if (want && list.some(function (e) { return e.id === want; })) {
+      document.getElementById("su-ev-" + want).checked = true;
+      pick(want, false);
+    } else {
+      $("su-choose-first").hidden = false;
+    }
   }, function () { status('<div class="club-banner club-banner--warn"><p>The sign-up list could not be loaded. Reload to try again.</p></div>'); });
 
-  $("su-event").addEventListener("change", function () { pick(this.value); });
+  $("su-pick-options").addEventListener("change", function (ev) {
+    if (ev.target.name === "su-event") pick(ev.target.value, true);
+  });
 })();

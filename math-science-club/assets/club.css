@@ -113,8 +113,8 @@
 
 /* who's bringing what */
 .club-bring { display: grid; gap: 0.8rem; }
-.club-bring h3 { margin: 0 0 0.3rem; font-size: 1rem; display: flex; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
-.club-bring h3 span { font-weight: 600; color: var(--muted); font-size: 0.9rem; }
+.club-bring h2, .club-bring h3 { margin: 0 0 0.3rem; font-size: 1rem; display: flex; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
+.club-bring h2 span, .club-bring h3 span { font-weight: 600; color: var(--muted); font-size: 0.9rem; }
 .club-bring ul { margin: 0; padding-left: 1.2rem; }
 .club-bring li { margin: 0.15rem 0; }
 .club-bring .is-mine { font-weight: 700; }
@@ -218,3 +218,22 @@ main.club-wide { max-width: 1120px; }
 .club-editor-cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 1.5rem; }
 @media (min-width: 860px) { .club-editor-cols { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } }
 .club-editor-foot { border-top: 1px solid var(--border); padding-top: 0.9rem; }
+
+/* ---------- sign-up page: choose the get-together (required step 1) ---------- */
+.club-step { display: inline-grid; place-items: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--accent); color: var(--club-on-accent); font-size: 0.95rem; font-weight: 800; margin-right: 0.35rem; vertical-align: 0.1em; }
+.club-req { font-size: 0.85rem; font-weight: 600; color: var(--club-red-fg); }
+.club-pick { border: 2px solid var(--accent); border-radius: 14px; padding: 0.9rem 1.1rem 1.1rem; margin: 1.2rem 0; background: var(--bg); min-width: 0; }
+.club-pick legend { font-size: 1.2rem; font-weight: 800; padding: 0 0.4rem; }
+.club-pick-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 0.8rem; margin-top: 0.5rem; }
+.club-pick-option { position: relative; min-width: 0; }
+.club-pick-option input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+.club-pick-option label { display: grid; grid-template-columns: 4rem minmax(0, 1fr); gap: 0.8rem; align-items: start; height: 100%; padding: 0.85rem; border: 2px solid var(--border); border-radius: 12px; background: var(--card-bg); cursor: pointer; }
+.club-pick-option label:hover { border-color: var(--accent); }
+.club-pick-option input:checked + label { border-color: var(--accent); background: var(--club-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+.club-pick-option input:focus-visible + label { outline: 3px solid var(--club-gold); outline-offset: 2px; }
+.club-pick-title { display: block; font-weight: 800; font-size: 1.05rem; line-height: 1.3; }
+.club-pick-meta { display: block; color: var(--muted); font-size: 0.93rem; margin-top: 0.15rem; }
+.club-pick-check { display: none; margin-top: 0.4rem; font-weight: 700; color: var(--accent); }
+.club-pick-option input:checked + label .club-pick-check { display: block; }
+.club-choose-first { border-style: dashed; }
+.club-choose-first p { display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap; }

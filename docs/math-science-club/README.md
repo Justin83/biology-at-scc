@@ -12,7 +12,7 @@ project as migration `club_v1`, with Justin's approval. `enabled` in
 | URL (under `math-science-club/`) | For | What it does |
 |---|---|---|
 | `./` | everyone | Next meeting (third-Thursday check, food theme, sign-up button), a QR code with a **Show on the big screen** button for class, and event cards by month; food events have a **Sign up to bring food** button that opens the sign-up in a pop-up |
-| `signup/` | everyone (QR target) | The same sign-up as the pop-up, as its own page for phones: who is bringing what, by category; add, change or remove your own sign-up; no account |
+| `signup/` | everyone (QR target) | The same sign-up as the pop-up, as its own page for phones. **Step 1 (required):** choose the get-together from large cards; nothing is preselected unless the link names one (the card buttons do). **Step 2:** who is bringing what, by category; add, change or remove your own sign-up; no account |
 | `officers/` | club officers (`noindex`) | Edit dates, times, titles and food themes in a pop-up editor (two columns on a desktop); add, cancel or delete events; set up food categories; remove sign-ups; open or close sign-up; change the officer code |
 | `qr/` | print | Poster with the sign-up QR code (large) and the club page QR code |
 
