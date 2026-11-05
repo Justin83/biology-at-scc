@@ -683,6 +683,7 @@ body.fw {
 .fw .leaflet-control.fw-google:hover { background: #f4f4f4; color: #13294b; }
 
 /* ---------- field observation form (observations/submit/) and review ------------- */
+.fw [hidden] { display: none !important; } /* the hidden attribute wins over component display rules */
 .fw-form { max-width: 46rem; }
 .fw-form-step { margin: 1.25rem 0; padding: 1.1rem 1.15rem 1.25rem; background: var(--fw-bg); border: 1px solid var(--fw-border); border-radius: var(--fw-radius); box-shadow: var(--fw-shadow); }
 .fw-form-step > h2 { margin: 0 0 0.6rem; font-size: 1.25rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 0.55rem; }

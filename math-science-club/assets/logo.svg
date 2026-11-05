@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Math and Natural Sciences Club logo (placeholder)">
+  <!-- PLACEHOLDER: replace this file with the club's logo (same file name, or update the
+       <img src> on the club pages). A square image works best; it is shown in a circle. -->
+  <circle cx="60" cy="60" r="57" fill="#eef5ef" stroke="#2e6b3e" stroke-width="3"/>
+  <circle cx="60" cy="60" r="47" fill="none" stroke="#2e6b3e" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <ellipse cx="60" cy="50" rx="24" ry="9" fill="none" stroke="#1d3b66" stroke-width="2"/>
+  <ellipse cx="60" cy="50" rx="24" ry="9" fill="none" stroke="#1d3b66" stroke-width="2" transform="rotate(60 60 50)"/>
+  <ellipse cx="60" cy="50" rx="24" ry="9" fill="none" stroke="#1d3b66" stroke-width="2" transform="rotate(-60 60 50)"/>
+  <circle cx="60" cy="50" r="4" fill="#2e6b3e"/>
+  <text x="60" y="88" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1d3b66">M&amp;NS</text>
+  <text x="60" y="101" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="8" fill="#2e6b3e">CLUB LOGO</text>
+</svg>

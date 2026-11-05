@@ -1,0 +1,333 @@
+{
+  "source": "MSSE Scholars Proposed Activities — Fall 2026 Schedule (printed flyer), transcribed 2026-11-05",
+  "note": "Fallback copy of the seed in math-science-club/sql/001_club.sql. When online sign-up is on, the page reads the live schedule instead.",
+  "flyer_footnotes": [
+    "** next to a date means it is highly tentative due to weather, needing finalization, or other factors.",
+    "While attendance at all activities is encouraged, MSSE scholars must participate in a minimum of 4 each semester and meet with their mentor twice each semester.",
+    "All changes will be communicated through your KCTCS student email."
+  ],
+  "events": [
+    {
+      "id": "2026-08-20-math-and-science-club-social",
+      "starts_on": "2026-08-20",
+      "ends_on": null,
+      "start_time": "17:00",
+      "end_time": null,
+      "title": "Math and Science Club Social",
+      "kind": "social",
+      "location": null,
+      "details": null,
+      "tentative": false,
+      "status": "scheduled",
+      "signup_enabled": false,
+      "signup_note": null,
+      "slots": []
+    },
+    {
+      "id": "2026-08-28-august-astronomy-night",
+      "starts_on": "2026-08-28",
+      "ends_on": null,
+      "start_time": "20:00",
+      "end_time": null,
+      "title": "August Astronomy Night",
+      "kind": "astronomy",
+      "location": null,
+      "details": null,
+      "tentative": true,
+      "status": "scheduled",
+      "signup_enabled": false,
+      "signup_note": null,
+      "slots": []
+    },
+    {
+      "id": "2026-09-11-ul-campus-tour",
+      "starts_on": "2026-09-11",
+      "ends_on": null,
+      "start_time": null,
+      "end_time": null,
+      "title": "UL Campus Tour",
+      "kind": "campus-tour",
+      "location": null,
+      "details": null,
+      "tentative": true,
+      "status": "scheduled",
+      "signup_enabled": false,
+      "signup_note": null,
+      "slots": []
+    },
+    {
+      "id": "2026-09-17-math-and-science-club-meeting",
+      "starts_on": "2026-09-17",
+      "ends_on": null,
+      "start_time": "17:00",
+      "end_time": null,
+      "title": "Math and Science Club Meeting",
+      "kind": "meeting",
+      "location": null,
+      "details": null,
+      "tentative": false,
+      "status": "scheduled",
+      "signup_enabled": false,
+      "signup_note": null,
+      "slots": []
+    },
+    {
+      "id": "2026-09-18-september-astronomy-night",
+      "starts_on": "2026-09-18",
+      "ends_on": null,
+      "start_time": "20:00",
+      "end_time": null,
+      "title": "September Astronomy Night",
+      "kind": "astronomy",
+      "location": null,
+      "details": null,
+      "tentative": false,
+      "status": "scheduled",
+      "signup_enabled": false,
+      "signup_note": null,
+      "slots": []
+    },
+    {
+      "id": "2026-09-23-spades-competition",
+      "starts_on": "2026-09-23",
+      "ends_on": null,
+      "start_time": "09:00",
+      "end_time": "15:00",
+      "title": "Spades Competition",
+      "kind": "competition",
+      "location": null,
+      "details": null,
+      "tentative": false,
+      "status": "scheduled",
+      "signup_enabled": false,
+      "signup_note": null,
+      "slots": []
+    },
+    {
+      "id": "2026-09-25-ul-campus-tour",
+      "starts_on": "2026-09-25",
+      "ends_on": null,
+      "start_time": null,
+      "end_time": null,
+      "title": "UL Campus Tour",
+      "kind": "campus-tour",
+      "location": null,
+      "details": null,
+      "tentative": false,
+      "status": "scheduled",
+      "signup_enabled": false,
+      "signup_note": null,
+      "slots": []
+    },
+    {
+      "id": "2026-10-02-wku-campus-tour",
+      "starts_on": "2026-10-02",
+      "ends_on": null,
+      "start_time": null,
+      "end_time": null,
+      "title": "WKU Campus Tour",
+      "kind": "campus-tour",
+      "location": null,
+      "details": null,
+      "tentative": false,
+      "status": "scheduled",
+      "signup_enabled": false,
+      "signup_note": null,
+      "slots": []
+    },
+    {
+      "id": "2026-10-09-stem-conference-washington-dc",
+      "starts_on": "2026-10-09",
+      "ends_on": "2026-10-11",
+      "start_time": null,
+      "end_time": null,
+      "title": "STEM Conference @ Washington DC",
+      "kind": "conference",
+      "location": null,
+      "details": null,
+      "tentative": false,
+      "status": "scheduled",
+      "signup_enabled": false,
+      "signup_note": null,
+      "slots": []
+    },
+    {
+      "id": "2026-10-15-math-and-science-club-meeting",
+      "starts_on": "2026-10-15",
+      "ends_on": null,
+      "start_time": "17:00",
+      "end_time": null,
+      "title": "Math and Science Club Meeting",
+      "kind": "meeting",
+      "location": null,
+      "details": null,
+      "tentative": false,
+      "status": "scheduled",
+      "signup_enabled": false,
+      "signup_note": null,
+      "slots": []
+    },
+    {
+      "id": "2026-10-16-october-star-party",
+      "starts_on": "2026-10-16",
+      "ends_on": null,
+      "start_time": "20:00",
+      "end_time": null,
+      "title": "October Star Party",
+      "kind": "astronomy",
+      "location": null,
+      "details": null,
+      "tentative": true,
+      "status": "scheduled",
+      "signup_enabled": false,
+      "signup_note": null,
+      "slots": []
+    },
+    {
+      "id": "2026-10-30-laurel-steam-day",
+      "starts_on": "2026-10-30",
+      "ends_on": null,
+      "start_time": "08:00",
+      "end_time": null,
+      "title": "Laurel STEAM Day",
+      "kind": "event",
+      "location": null,
+      "details": null,
+      "tentative": false,
+      "status": "scheduled",
+      "signup_enabled": false,
+      "signup_note": null,
+      "slots": []
+    },
+    {
+      "id": "2026-10-30-laurel-star-party",
+      "starts_on": "2026-10-30",
+      "ends_on": null,
+      "start_time": "20:00",
+      "end_time": null,
+      "title": "Laurel Star Party",
+      "kind": "astronomy",
+      "location": null,
+      "details": null,
+      "tentative": false,
+      "status": "scheduled",
+      "signup_enabled": false,
+      "signup_note": null,
+      "slots": []
+    },
+    {
+      "id": "2026-11-19-math-and-science-club-meeting",
+      "starts_on": "2026-11-19",
+      "ends_on": null,
+      "start_time": "17:00",
+      "end_time": null,
+      "title": "Math and Science Club Meeting",
+      "kind": "meeting",
+      "location": null,
+      "details": null,
+      "tentative": false,
+      "status": "scheduled",
+      "signup_enabled": true,
+      "signup_note": null,
+      "slots": [
+        {
+          "label": "Main dish",
+          "needed": null
+        },
+        {
+          "label": "Side",
+          "needed": null
+        },
+        {
+          "label": "Snack",
+          "needed": null
+        },
+        {
+          "label": "Dessert",
+          "needed": null
+        },
+        {
+          "label": "Drinks",
+          "needed": null
+        },
+        {
+          "label": "Plates, cups or napkins",
+          "needed": null
+        }
+      ]
+    },
+    {
+      "id": "2026-11-20-somerset-student-showcase",
+      "starts_on": "2026-11-20",
+      "ends_on": null,
+      "start_time": "10:00",
+      "end_time": "15:00",
+      "title": "Somerset Student Showcase",
+      "kind": "event",
+      "location": null,
+      "details": null,
+      "tentative": false,
+      "status": "scheduled",
+      "signup_enabled": false,
+      "signup_note": null,
+      "slots": []
+    },
+    {
+      "id": "2026-12-03-math-and-science-club-holiday-party",
+      "starts_on": "2026-12-03",
+      "ends_on": null,
+      "start_time": "17:00",
+      "end_time": null,
+      "title": "Math and Science Club Holiday Party",
+      "kind": "social",
+      "location": null,
+      "details": null,
+      "tentative": false,
+      "status": "scheduled",
+      "signup_enabled": true,
+      "signup_note": null,
+      "slots": [
+        {
+          "label": "Main dish",
+          "needed": null
+        },
+        {
+          "label": "Side",
+          "needed": null
+        },
+        {
+          "label": "Snack",
+          "needed": null
+        },
+        {
+          "label": "Dessert",
+          "needed": null
+        },
+        {
+          "label": "Drinks",
+          "needed": null
+        },
+        {
+          "label": "Plates, cups or napkins",
+          "needed": null
+        }
+      ]
+    },
+    {
+      "id": "2026-12-10-fall-graduation",
+      "starts_on": "2026-12-10",
+      "ends_on": null,
+      "start_time": "17:00",
+      "end_time": null,
+      "title": "Fall Graduation",
+      "kind": "graduation",
+      "location": null,
+      "details": null,
+      "tentative": false,
+      "status": "scheduled",
+      "signup_enabled": false,
+      "signup_note": null,
+      "slots": []
+    }
+  ]
+}
