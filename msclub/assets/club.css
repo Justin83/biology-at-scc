@@ -187,6 +187,8 @@ main.club-wide { max-width: 1120px; }
 .club-scan p { margin: 0.3rem 0; font-size: 0.95rem; }
 .club-scan .club-actions { justify-content: center; }
 @media (max-width: 819px) { .club-scan img { width: 140px; height: 140px; } }
+/* on a phone the QR panel only points back to the page you're on: computers only */
+@media (max-width: 699px) { .club-scan { display: none; } }
 
 .club-theme { margin: 0.35rem 0; font-size: 0.98rem; }
 .club-theme strong { color: var(--accent); }

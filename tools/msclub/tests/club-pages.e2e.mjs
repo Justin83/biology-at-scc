@@ -81,14 +81,8 @@ try {
   // officer tools: a button in the club bar at the top of the page
   assert.equal(await a.isVisible(".club-bar a.club-bar-officer"), true);
   assert.equal(await a.getAttribute(".club-bar a.club-bar-officer", "href"), "officers/");
-  // the landing-page QR and the big-screen view open the club website
-  assert.match(await a.getAttribute(".club-scan img", "src"), /qr-club\.svg$/);
-  // big-screen QR
-  await a.click("#club-bigqr-open");
-  assert.match(await a.getAttribute("#club-bigqr img", "src"), /qr-club\.svg$/);
-  assert.equal(await a.isVisible("#club-bigqr img"), true);
-  assert.match(await text(a, "#club-bigqr-event"), /Next meeting: Thursday, November 19 · 5:00 PM/);
-  await a.click("#club-bigqr [data-close]");
+  // on a phone there is no QR panel (it would only point back to this page)
+  assert.equal(await a.isVisible(".club-scan"), false, "no QR panel on a phone");
 
   // student A signs up in the pop-up from the next-meeting card
   await a.click("#club-next-body [data-signup]");
@@ -169,6 +163,14 @@ try {
   const o = await desktop();
   await o.goto(SITE + Q);
   await o.waitForSelector("#club-next-body .club-next-bring");
+  // on a computer: the landing-page QR and the big-screen view open the club website
+  assert.equal(await o.isVisible(".club-scan"), true);
+  assert.match(await o.getAttribute(".club-scan img", "src"), /qr-club\.svg$/);
+  await o.click("#club-bigqr-open");
+  assert.match(await o.getAttribute("#club-bigqr img", "src"), /qr-club\.svg$/);
+  assert.equal(await o.isVisible("#club-bigqr img"), true);
+  assert.match(await text(o, "#club-bigqr-event"), /Next meeting: Thursday, November 19 · 5:00 PM/);
+  await o.click("#club-bigqr [data-close]");
   const [infoD, bringD] = [await o.$eval(".club-next-info", (e) => e.getBoundingClientRect().toJSON()), await o.$eval(".club-next-bring", (e) => e.getBoundingClientRect().toJSON())];
   assert.ok(bringD.left >= infoD.right && bringD.top < infoD.bottom, "desktop: list sits beside the meeting details");
   await o.click("#club-next-body [data-signup]");
