@@ -172,10 +172,25 @@
     return up.filter(function (e) { return e.kind === "meeting"; })[0] || up.filter(function (e) { return e.signup_enabled; })[0] || null;
   }
 
+  // ---------------------------------------------------------------- flyers
+  // msclub/flyers/flyers.json, oldest first (made by tools/msclub/flyers/make-flyers.mjs).
+  // A flyer with an event date is current through that day, then it's archived; one
+  // without an event date stays current until it's marked archived. Current event flyers
+  // show on the home page (computers only); Officer tools lists them all.
+  function loadFlyers(root) {
+    return fetch((root || "./") + "flyers/flyers.json")
+      .then(function (r) { return r.ok ? r.json() : { flyers: [] }; })
+      .then(function (d) { return d.flyers || []; }, function () { return []; });
+  }
+  function flyerCurrent(f, today) { return !f.archived && (!f.event_date || f.event_date >= today); }
+  function flyerOnHome(f, today) { return !!f.event_date && flyerCurrent(f, today); }
+  function plainDate(iso) { var p = parts(iso); return MON[p.m - 1] + " " + p.d + ", " + p.y; }
+
   window.Club = {
     config: CONFIG, live: live, isLocal: function () { return !!localApi; }, rpc: rpc, errorText: errorText,
     KINDS: KINDS, SIGNUP: SIGNUP, signupKind: signupKind, signupSpec: signupSpec, peopleCount: peopleCount, signupCount: signupCount, todayISO: todayISO, parts: parts, longDate: longDate, shortDate: shortDate, monthKey: monthKey,
     monthLabel: monthLabel, timeLabel: timeLabel, dateLabel: dateLabel, clock: clock,
-    relDays: relDays, isPast: isPast, esc: esc, load: load, upcoming: upcoming, nextGathering: nextGathering, MON: MON, DOW: DOW
+    relDays: relDays, isPast: isPast, esc: esc, load: load, upcoming: upcoming, nextGathering: nextGathering, MON: MON, DOW: DOW,
+    loadFlyers: loadFlyers, flyerCurrent: flyerCurrent, flyerOnHome: flyerOnHome, plainDate: plainDate
   };
 })();

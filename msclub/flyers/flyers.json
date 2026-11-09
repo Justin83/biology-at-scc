@@ -1,0 +1,25 @@
+{
+  "note": "Club flyers, oldest first. Made by tools/msclub/flyers/make-flyers.mjs; do not edit by hand. A flyer with an event_date shows on the club home page (computers) through that date, then moves to the archive in Officer tools.",
+  "flyers": [
+    {
+      "id": "2026-website",
+      "title": "The club has a website",
+      "about": "Announces the club website with its QR code. Made for the acrylic display stand.",
+      "made": "2026-11-09",
+      "event_date": null,
+      "pdf": "2026-website.pdf",
+      "preview": "2026-website.jpg",
+      "download": "Math-Science-Club-website-flyer.pdf"
+    },
+    {
+      "id": "2026-11-19-thanksgiving-dinner",
+      "title": "Thanksgiving Dinner",
+      "about": "Club meeting, Thursday, November 19, 2026, 5:00 PM. Asks members to bring food.",
+      "made": "2026-11-09",
+      "event_date": "2026-11-19",
+      "pdf": "2026-11-19-thanksgiving-dinner.pdf",
+      "preview": "2026-11-19-thanksgiving-dinner.jpg",
+      "download": "Math-Science-Club-Thanksgiving-Dinner-flyer.pdf"
+    }
+  ]
+}

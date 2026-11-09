@@ -24,7 +24,7 @@ const { chromium, devices } = require("playwright");
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const API = (process.env.CLUB_API_URL || "http://127.0.0.1:8789").replace(/\/$/, "");
 const CODE = process.env.CLUB_OFFICER_CODE || "local-officer-code";
-const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml" };
+const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml", ".pdf": "application/pdf", ".jpg": "image/jpeg" };
 const server = http.createServer((req, res) => {
   let p = decodeURIComponent(new URL(req.url, "http://x").pathname);
   if (p.endsWith("/")) p += "index.html";
@@ -83,6 +83,8 @@ try {
   assert.equal(await a.getAttribute(".club-bar a.club-bar-officer", "href"), "officers/");
   // on a phone there is no QR panel (it would only point back to this page)
   assert.equal(await a.isVisible(".club-scan"), false, "no QR panel on a phone");
+  await a.waitForSelector("#club-flyers[data-shown]", { state: "attached" });
+  assert.equal(await a.isVisible("#club-flyers .club-flyer"), false, "no flyer on a phone");
 
   // student A signs up in the pop-up from the next-meeting card
   await a.click("#club-next-body [data-signup]");
@@ -181,12 +183,25 @@ try {
   await o.waitForSelector("#club-next-body .club-next-bring");
   // on a computer: the landing-page QR and the big-screen view open the club website
   assert.equal(await o.isVisible(".club-scan"), true);
-  assert.match(await o.getAttribute(".club-scan img", "src"), /qr-club\.svg$/);
+  assert.match(await o.getAttribute(".club-scan-qr", "src"), /qr-club\.svg$/);
   await o.click("#club-bigqr-open");
   assert.match(await o.getAttribute("#club-bigqr img", "src"), /qr-club\.svg$/);
   assert.equal(await o.isVisible("#club-bigqr img"), true);
   assert.match(await text(o, "#club-bigqr-event"), /Next meeting: Thursday, November 19 · 5:00 PM/);
   await o.click("#club-bigqr [data-close]");
+  // the Thanksgiving flyer is under the QR code until November 19; it opens the PDF to view or print
+  await o.waitForSelector("#club-flyers:not([hidden]) .club-flyer");
+  assert.equal(await o.$$eval("#club-flyers .club-flyer", (l) => l.length), 1, "one event flyer (the website flyer isn't tied to an event)");
+  assert.match(await text(o, "#club-flyers"), /Flyer Thanksgiving Dinner View or print \(PDF\)/);
+  const flyerLink = await o.$eval("#club-flyers .club-flyer", (x) => ({ href: x.href, target: x.target }));
+  assert.match(flyerLink.href, /\/msclub\/flyers\/2026-11-19-thanksgiving-dinner\.pdf$/);
+  assert.equal(flyerLink.target, "_blank");
+  await o.waitForFunction(() => { const i = document.querySelector("#club-flyers img"); return i.complete && i.naturalWidth > 0; });
+  const flyerPdf = await o.request.get(flyerLink.href);
+  assert.equal(flyerPdf.status(), 200);
+  assert.equal((await flyerPdf.body()).subarray(0, 5).toString(), "%PDF-");
+  assert.deepEqual(await o.evaluate(() => [Club.flyerOnHome({ event_date: "2026-11-19" }, "2026-11-19"), Club.flyerOnHome({ event_date: "2026-11-19" }, "2026-11-20"), Club.flyerOnHome({ event_date: null }, "2026-11-05")]),
+    [true, false, false], "an event flyer shows through its day; the website flyer never shows here");
   const [infoD, bringD] = [await o.$eval(".club-next-info", (e) => e.getBoundingClientRect().toJSON()), await o.$eval(".club-next-bring", (e) => e.getBoundingClientRect().toJSON())];
   assert.ok(bringD.left >= infoD.right && bringD.top < infoD.bottom, "desktop: list sits beside the meeting details");
   await o.click("#club-next-body [data-signup]");
@@ -201,6 +216,13 @@ try {
   await o.fill("#of-code", CODE);
   await o.click("#of-signin-form button[type=submit]");
   await o.waitForSelector("#of-app:not([hidden]) #of-upcoming li");
+  // flyer library: oldest first (the website flyer first), View or print and Download; nothing archived yet
+  await o.waitForSelector("#of-flyers .club-flyer-item");
+  assert.deepEqual(await o.$$eval("#of-flyers h3", (h) => h.map((x) => x.textContent)), ["The club has a website", "Thanksgiving Dinner"]);
+  assert.equal(await o.textContent("#of-flyers-archive-count"), "0");
+  assert.match(await text(o, '#of-flyers li:has-text("Thanksgiving")'), /Made November 9, 2026\. On the club home page through Thursday, November 19, 2026\. View or print/);
+  assert.equal(await o.getAttribute('#of-flyers li:has-text("Thanksgiving") a[download]', "download"), "Math-Science-Club-Thanksgiving-Dinner-flyer.pdf");
+  assert.equal(await o.getAttribute('#of-flyers li:has-text("Thanksgiving") a[target=_blank].club-btn', "href"), "../flyers/2026-11-19-thanksgiving-dinner.pdf");
   await o.click('#of-upcoming li:has-text("Nov 19") [data-edit]');
   await o.waitForSelector("#of-editor[open]");
   assert.equal(await o.isVisible("#of-slots-setup"), false, "no categories to set up for food");
@@ -337,6 +359,28 @@ try {
   await o.fill("#of-location", "");
   await o.click("#of-save");
   await o.waitForFunction(() => /Saved/.test(document.getElementById("of-list-msg").textContent));
+
+  // once a flyer's event date has passed it leaves the home page and moves to the archive
+  // (here the Thanksgiving flyer's date is moved to November 1; the test database's today is November 5)
+  const r = await desktop();
+  await r.route("**/flyers/flyers.json", async (route) => {
+    const res = await route.fetch(), j = await res.json();
+    j.flyers.find((f) => f.id === "2026-11-19-thanksgiving-dinner").event_date = "2026-11-01";
+    await route.fulfill({ response: res, json: j });
+  });
+  await r.goto(SITE + Q);
+  await r.waitForSelector("#club-flyers[data-shown]", { state: "attached" });
+  assert.equal(await r.getAttribute("#club-flyers", "data-shown"), "0");
+  assert.equal(await r.isVisible("#club-flyers"), false, "past flyer is off the home page");
+  assert.equal(await r.isVisible(".club-scan-qr"), true, "the website QR code stays");
+  await r.goto(SITE + "officers/" + Q);
+  await r.fill("#of-code", CODE);
+  await r.click("#of-signin-form button[type=submit]");
+  await r.waitForSelector("#of-flyers-archive .club-flyer-item", { state: "attached" }); // inside the closed Archive
+  assert.deepEqual(await r.$$eval("#of-flyers h3", (h) => h.map((x) => x.textContent)), ["The club has a website"]);
+  assert.equal(await r.textContent("#of-flyers-archive-count"), "1");
+  await r.click('summary:has-text("Archive")');
+  assert.match(await text(r, "#of-flyers-archive"), /Thanksgiving Dinner[\s\S]*Made November 9, 2026\. Event: Sunday, November 1, 2026\./);
 
   // fallback when the database cannot be reached: block every database request
   const s = await phone();

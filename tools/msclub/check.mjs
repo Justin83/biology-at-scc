@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Checks the club pages (msclub/**/index.html): one <h1>, <title>, meta
 // description, <main id="main">, unique ids, alt text, local links and anchors that
-// resolve, external links that open in a new tab, the schedule data, and the QR code.
+// resolve, external links that open in a new tab, the schedule data, the QR code and the
+// flyer library.
 //   node tools/msclub/check.mjs
 import fs from "node:fs";
 import path from "node:path";
@@ -58,5 +59,10 @@ for (const e of ev) {
 try { execFileSync(process.execPath, [path.join(ROOT, "tools/msclub/make-qr.mjs"), "--check"], { stdio: "pipe" }); }
 catch (e) { warn(String(e.stderr || e.message).trim()); }
 
+// the flyer library (msclub/flyers/) matches its source, tools/msclub/flyers/make-flyers.mjs
+try { execFileSync(process.execPath, [path.join(ROOT, "tools/msclub/flyers/make-flyers.mjs"), "--check"], { stdio: "pipe" }); }
+catch (e) { warn(String(e.stderr || e.message).trim()); }
+const flyers = JSON.parse(fs.readFileSync(path.join(CLUB, "flyers/flyers.json"), "utf8")).flyers;
+
 if (problems.length) { console.error(problems.join("\n")); process.exit(1); }
-console.log(`msclub: ${pages.length} pages OK, ${ev.length} events, QR code current`);
+console.log(`msclub: ${pages.length} pages OK, ${ev.length} events, QR code current, ${flyers.length} flyers in the library`);

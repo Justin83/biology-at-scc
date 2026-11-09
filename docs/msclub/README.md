@@ -12,9 +12,9 @@ project as migration `club_v1`, with Justin's approval. `enabled` in
 
 | URL (under `msclub/`) | For | What it does |
 |---|---|---|
-| `./` | everyone | Next meeting (food theme, **who's bringing what** beside the details on a computer and above the button on a phone, sign-up button), the club's QR code (computers only; a phone is already on the page) with a **Show on the big screen** button for class, and event cards by month; food events have a **Sign up to bring food** button that opens the sign-up in a pop-up |
+| `./` | everyone | Next meeting (food theme, **who's bringing what** beside the details on a computer and above the button on a phone, sign-up button), the club's QR code (computers only; a phone is already on the page) with a **Show on the big screen** button for class and, beside it, the flyer for each upcoming event (see [Flyers](#flyers)), and event cards by month; food events have a **Sign up to bring food** button that opens the sign-up in a pop-up |
 | `signup/` | everyone | Event sign-up (club-bar tab **Event sign-up**). Clickable cards in two groups: **Club meetings** (meetings and socials, where people bring food) and **Events and trips** (any other event an officer turns sign-up on for; the group is hidden while there are none). Nothing is preselected unless the link names one (the card buttons do). Choosing a card opens who's bringing what and the form below the cards; add, change or remove your own sign-up; no account |
-| `officers/` | club officers (`noindex`) | Edit dates, times, titles and food themes in a pop-up editor (two columns on a desktop); add, cancel or delete events; set up food categories; remove sign-ups; open or close sign-up; change the officer code |
+| `officers/` | club officers (`noindex`) | Edit dates, times, titles and food themes in a pop-up editor (two columns on a desktop); add, postpone, cancel or delete events; set up sign-up (bring food, volunteers or who's going); remove sign-ups; open or close sign-up; the **Flyer library**; change the officer code |
 | `qr/` | print | Poster with the club's QR code (linked from every club page's footer) |
 
 The site home page links to the club. Club pages carry a **Back to Biology at SCC** link at
@@ -75,11 +75,54 @@ club home).
 5. **Remove a sign-up:** open the event in the editor; its sign-ups are listed with
    Remove buttons.
 6. **Close food sign-up** stops all new sign-ups and changes until it is reopened.
-7. **Change the officer code** (at least 8 characters) at the bottom of the officer
+7. **Flyer library:** every club flyer, oldest first, with **View or print** (opens the PDF
+   in the browser) and **Download**. Flyers for events that have passed are under
+   **Archive**. See [Flyers](#flyers).
+8. **Change the officer code** (at least 8 characters) at the bottom of the officer
    tools. The new code works immediately, so share it with the other officers.
 
 The officer code is stored only as a bcrypt hash. It was given to Justin directly and is
 not in this repository.
+
+## Flyers
+
+The club's flyers are letter-size PDFs in `msclub/flyers/`, each with a preview picture,
+listed oldest first in `msclub/flyers/flyers.json`. They are made by
+`tools/msclub/flyers/make-flyers.mjs`, which holds each flyer's text and design, so any
+flyer can be remade or used as the starting point for a new one (for example next year's
+Thanksgiving dinner).
+
+- **Club home page (computers only):** a flyer for an event is shown beside the QR code
+  through the day of the event. Its picture and name open the PDF in the browser to view
+  or print. The next day it leaves the home page; the club's QR code stays. Phones show no
+  flyers (the QR panel is hidden on phones).
+- **Flyer library (Officer tools):** every flyer, oldest first, with **View or print** and
+  **Download**. A flyer whose event has passed moves to **Archive**, where it can still be
+  viewed and downloaded, as a record of what the club did.
+- A flyer that isn't for an event (the website flyer) stays in the library's current list
+  and never shows on the home page.
+
+| Flyer | Made | Event | File |
+|---|---|---|---|
+| The club has a website (for the acrylic display stand) | 2026-11-09 | none | `2026-website.pdf` |
+| Thanksgiving Dinner | 2026-11-09 | 2026-11-19 | `2026-11-19-thanksgiving-dinner.pdf` |
+
+The Thanksgiving flyer was approved before food sign-ups dropped their categories; its
+checklist still says "Pick a main dish, side, dessert or drinks". The website itself no
+longer asks for a category.
+
+**To add a flyer:** add an entry at the end of `FLYERS` in `make-flyers.mjs` (id, made date,
+event date or `null`, title, a one-line description, download name, text and design; copy
+an earlier entry to reuse its design), then render it:
+
+```bash
+cd tools/msclub && npm install --no-save @fontsource/bebas-neue@5.1.0 @fontsource/josefin-sans@5.1.0 && cd ../..   # once
+NODE_PATH=$(npm root -g) node tools/msclub/flyers/make-flyers.mjs <id>   # writes <id>.pdf, <id>.jpg and flyers.json
+node tools/msclub/check.mjs                                              # checks the library matches its source
+```
+
+To take a flyer off the home page early (or retire the website flyer when a new one
+replaces it), add `archived: true` to its entry and run the script.
 
 ## Logo
 
@@ -132,9 +175,9 @@ on white, where it would be too hard to read.
 ```bash
 npm install --no-save @electric-sql/pglite@0.5.8      # once
 CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
-node --test tools/msclub/tests/*.test.mjs   # 7 database contract tests
+node --test tools/msclub/tests/*.test.mjs   # 10 database contract tests
 NODE_PATH=$(npm root -g) node tools/msclub/tests/club-pages.e2e.mjs   # browser test (Playwright)
-node tools/msclub/check.mjs                 # page checks, schedule data, QR code
+node tools/msclub/check.mjs                 # page checks, schedule data, QR code, flyer library
 node tools/msclub/make-qr.mjs               # regenerate the QR code
 ```
 

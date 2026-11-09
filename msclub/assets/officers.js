@@ -90,9 +90,32 @@
       (e.signup_enabled || e.theme ? '<p class="club-hint">' + [e.theme ? "Food theme: " + esc(e.theme) : "", e.signup_enabled ? "Sign-up on: " + C.signupSpec(e).short + " · " + n + (n === 1 ? " sign-up" : " sign-ups") : ""].filter(Boolean).join(" · ") + "</p>" : "") +
       '</div><button type="button" class="club-btn club-btn--ghost club-btn--small" data-edit="' + esc(e.id) + '">Edit<span class="visually-hidden"> ' + esc(e.title + ", " + C.shortDate(e.starts_on)) + "</span></button></li>";
   }
+  // ---------------------------------------------------------------- flyer library
+  function flyerItem(f, today) {
+    var pdf = esc(root + "flyers/" + f.pdf), name = esc(f.title), when = "";
+    if (f.event_date) when = C.flyerCurrent(f, today) ? " On the club home page through " + C.longDate(f.event_date, true) + "." : " Event: " + C.longDate(f.event_date, true) + ".";
+    return '<li class="club-flyer-item">' +
+      '<a class="club-flyer-thumb" href="' + pdf + '" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="' + esc(root + "flyers/" + f.preview) + '" width="612" height="792" alt="" loading="lazy"></a>' +
+      '<div><h3>' + name + "</h3>" + (f.about ? "<p>" + esc(f.about) + "</p>" : "") +
+      '<p class="club-hint">Made ' + esc(C.plainDate(f.made)) + "." + esc(when) + "</p>" +
+      '<p class="club-actions"><a class="club-btn club-btn--ghost club-btn--small" href="' + pdf + '" target="_blank" rel="noopener">View or print<span class="visually-hidden"> the ' + name + " flyer (PDF, opens in a new tab)</span></a>" +
+      '<a class="club-btn club-btn--ghost club-btn--small" href="' + pdf + '" download="' + esc(f.download) + '">Download<span class="visually-hidden"> the ' + name + " flyer (PDF)</span></a></p></div></li>";
+  }
+  var flyers = null;
+  function showFlyers(today) {
+    (flyers ? Promise.resolve(flyers) : C.loadFlyers(root)).then(function (list) {
+      flyers = list;
+      var cur = list.filter(function (f) { return C.flyerCurrent(f, today); }), old = list.filter(function (f) { return !C.flyerCurrent(f, today); });
+      $("of-flyers").innerHTML = cur.length ? cur.map(function (f) { return flyerItem(f, today); }).join("") : "<li>No current flyers.</li>";
+      $("of-flyers-archive").innerHTML = old.length ? old.map(function (f) { return flyerItem(f, today); }).join("") : "<li>No archived flyers yet.</li>";
+      $("of-flyers-archive-count").textContent = old.length;
+    });
+  }
+
   function load(keepId) {
     msg("of-list-msg", "Loading…");
     return C.load(root).then(function (d) {
+      showFlyers(d.today);
       if (!d.live) { msg("of-list-msg", "The club database could not be reached. Reload to try again.", "error"); return; }
       data = d;
       msg("of-list-msg", "");
