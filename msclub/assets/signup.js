@@ -1,7 +1,7 @@
-/* Food sign-up page.
-   Step 1 (required): choose the get-together. Nothing is preselected unless the link
-   names one (?event=<id>, used by the buttons on the club page cards).
-   Step 2: the shared form in signup-form.js, shown only after a choice. */
+/* Event sign-up page: clickable cards, club meetings (food) in one group and other events
+   and trips in another. Nothing is preselected unless the link names one
+   (?event=<id>, used by the buttons on the club page cards). Choosing a card opens the
+   shared form in signup-form.js below the cards. */
 (function () {
   "use strict";
   var C = window.Club;
@@ -15,8 +15,10 @@
   function eligible(d) { return C.upcoming(d).filter(function (e) { return e.signup_enabled && e.status !== "cancelled"; }); }
   function countText(e) { var n = (e.signups || []).length; return n === 0 ? "nobody signed up yet" : n === 1 ? "1 person signed up" : n + " people signed up"; }
 
-  function options(list) {
-    $("su-pick-options").innerHTML = list.map(function (e) {
+  // club get-togethers (meetings and socials, where people bring food) vs. everything else
+  function isMeeting(e) { return e.kind === "meeting" || e.kind === "social"; }
+  function cardsHtml(list) {
+    return list.map(function (e) {
       var p = C.parts(e.starts_on), id = "su-ev-" + esc(e.id), theme = C.themeText(e);
       return '<div class="club-pick-option"><input type="radio" name="su-event" id="' + id + '" value="' + esc(e.id) + '">' +
         '<label for="' + id + '"><span class="club-date" aria-hidden="true"><span class="dow">' + C.DOW[new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay()].slice(0, 3) +
@@ -27,6 +29,13 @@
         '<span class="club-pick-meta" data-count="' + esc(e.id) + '">' + esc(countText(e)) + "</span>" +
         '<span class="club-pick-check">✓ Selected</span></span></label></div>';
     }).join("");
+  }
+  function options(list) {
+    var meetings = list.filter(isMeeting), events = list.filter(function (e) { return !isMeeting(e); });
+    $("su-pick-options").innerHTML = cardsHtml(meetings);
+    $("su-pick-events").innerHTML = cardsHtml(events);
+    $("su-meetings").hidden = !meetings.length;
+    $("su-events").hidden = !events.length;
   }
   // keep the counts on the step 1 cards current after a sign-up is added, changed or removed
   // (text only, so the selected card and keyboard focus stay as they are)
@@ -40,7 +49,6 @@
     var e = data.events.filter(function (x) { return x.id === id; })[0];
     if (!e) return;
     if (!form) form = C.signupForm($("su-app"), { idPrefix: "su", headingLevel: 2, onChange: function (d) { data = d; refreshCounts(); } });
-    $("su-choose-first").hidden = true;
     $("su-app").hidden = false;
     form.show(data, e);
     try { // keep the choice if the page is reloaded or shared
@@ -69,12 +77,10 @@
     if (want && list.some(function (e) { return e.id === want; })) {
       document.getElementById("su-ev-" + want).checked = true;
       pick(want, false);
-    } else {
-      $("su-choose-first").hidden = false;
     }
   }, function () { status('<div class="club-banner club-banner--warn"><p>The sign-up list could not be loaded. Reload to try again.</p></div>'); });
 
-  $("su-pick-options").addEventListener("change", function (ev) {
+  $("su-pick").addEventListener("change", function (ev) {
     if (ev.target.name === "su-event") pick(ev.target.value, true);
   });
 })();

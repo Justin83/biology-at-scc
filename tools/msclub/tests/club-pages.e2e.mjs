@@ -104,8 +104,9 @@ try {
   assert.match(await text(a, "#club-next-body"), /1 person has signed up/);
   assert.match(await text(a, "#club-next-body .club-next-bring"), /Dessert 1 signed up Brownies · E2E Student A \(contains nuts\) \(you\)/, "card list updates after signing up");
 
-  // student B on another phone, on the sign-up page. Choosing the get-together is a
-  // required first step: nothing is preselected and the form stays hidden until then.
+  // student B on another phone, on the sign-up page: clickable cards (club meetings in
+  // one group, other events and trips in another); nothing is preselected and the form
+  // stays hidden until a card is chosen.
   const novId = await a.getAttribute("#club-next-body [data-signup]", "data-signup");
   const b = await phone();
   await b.goto(SITE + "signup/" + Q);
@@ -113,7 +114,14 @@ try {
   assert.equal(await b.$$eval('input[name="su-event"]', (r) => r.length), 2, "both food events offered");
   assert.equal(await b.$$eval('input[name="su-event"]:checked', (r) => r.length), 0, "nothing preselected");
   assert.equal(await b.isHidden("#su-app"), true, "form hidden until a get-together is chosen");
-  assert.equal(await b.isVisible("#su-choose-first"), true);
+  assert.match(await text(b, "#su-meetings"), /Club meetings[\s\S]*Math and Science Club Meeting[\s\S]*Holiday Party/i);
+  assert.equal(await b.isVisible("#su-events"), false, "no events-and-trips group until an event has sign-up");
+  assert.equal(await b.$$eval("main .lede", (x) => x.length), 0, "no intro line");
+  assert.equal(await b.getAttribute("main h1", "class"), "visually-hidden", "page heading is for screen readers only");
+  assert.equal((await b.textContent("main h1")).trim(), "Event sign-up");
+  // QR poster: in the footer, not the club bar
+  assert.equal(await b.$$eval('.club-bar a[href$="qr/"]', (x) => x.length), 0);
+  assert.equal(await b.$$eval('footer a[href="../qr/"]', (x) => x.length), 1);
   // one QR code on the whole club site, and it opens the club website (people go to
   // the food sign-up from there): none on this page, the same one on the poster
   assert.equal(await b.$$eval('img[src*="qr"]', (x) => x.length), 0, "no QR code on the sign-up page");
@@ -192,6 +200,15 @@ try {
   await o.fill("#of-theme", "Pasta");
   await o.click("#of-save");
   await o.waitForFunction(() => /E2E January Meeting/.test(document.getElementById("of-list-msg").textContent));
+  // an event with sign-up that isn't a club meeting goes in its own group
+  await o.click("#of-add");
+  await o.fill("#of-date", "2027-02-12");
+  await o.fill("#of-start", "08:00");
+  await o.fill("#of-title", "E2E Campus Trip");
+  await o.selectOption("#of-kind", "campus-tour");
+  await o.check("#of-signup");
+  await o.click("#of-save");
+  await o.waitForFunction(() => /E2E Campus Trip/.test(document.getElementById("of-list-msg").textContent));
   await o.click('#of-upcoming li:has-text("E2E January Meeting") [data-edit]');
   await o.check("#of-cancelled");
   await o.click("#of-save");
@@ -208,11 +225,16 @@ try {
   assert.equal(await a.isChecked("#su-ev-" + novId), true, "event from the link is preselected");
   assert.match(await text(a, "#su-list"), /Drinks 0 of 3 needed/);
   assert.match(await text(a, "#su-info"), /Food theme: Tacos/);
+  assert.match(await text(a, "#su-events"), /Events and trips[\s\S]*E2E Campus Trip/i, "trip listed under events and trips");
+  assert.doesNotMatch(await text(a, "#su-meetings"), /E2E Campus Trip/);
 
   // clean up: delete the test event, put the November meeting back the way it was
   await o.click('#of-upcoming li:has-text("E2E January Meeting") [data-edit]');
   await o.click("#of-delete");
   await o.waitForFunction(() => /Deleted/.test(document.getElementById("of-list-msg").textContent));
+  await o.click('#of-upcoming li:has-text("E2E Campus Trip") [data-edit]');
+  await o.click("#of-delete");
+  await o.waitForFunction(() => /Deleted[\s\S]*E2E Campus Trip|E2E Campus Trip[\s\S]*deleted/i.test(document.getElementById("of-list-msg").textContent));
   await o.click('#of-upcoming li:has-text("Nov 19") [data-edit]');
   await o.fill("#of-theme", "");
   await o.fill("#of-location", "");
@@ -234,7 +256,7 @@ try {
   assert.deepEqual(errors, [], "no page errors");
   console.log("PASS club pages end-to-end");
 } catch (e) {
-  console.error("FAIL", e.message);
+  console.error("FAIL", e.message, (e.stack || "").split("\n").find((l) => l.includes("club-pages.e2e")) || "");
   process.exitCode = 1;
 } finally {
   if (browser) await browser.close();
