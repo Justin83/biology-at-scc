@@ -12,7 +12,7 @@
   var data = null, form = null;
 
   function status(html) { $("su-status").innerHTML = html || ""; }
-  function eligible(d) { return C.upcoming(d).filter(function (e) { return e.signup_enabled && e.status !== "cancelled"; }); }
+  function eligible(d) { return C.upcoming(d).filter(function (e) { return e.signup_enabled && e.status === "scheduled"; }); }
   function countText(e) { var n = (e.signups || []).length; return n === 0 ? "nobody signed up yet" : n === 1 ? "1 person signed up" : n + " people signed up"; }
 
   // club get-togethers where people bring food vs. events and trips (work this event,

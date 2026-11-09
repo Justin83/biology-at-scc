@@ -46,8 +46,11 @@ club home).
    - its title, **food theme** (for example "Pasta" or "Tacos", shown on the card and in
      the sign-up; blank shows "to be announced"), date, last day (for multi-day events),
      start and end time, type, location or details;
-   - **Tentative** marks it as may change. **Cancelled** keeps it on the page, crossed
-     out. **Delete** removes it and its sign-ups.
+   - **Tentative** marks it as may change. **Postponed** keeps it on the page with a
+     Postponed pill and closes its sign-up until it's set back (new date to be
+     announced). **Cancelled** keeps it on the page, crossed out. **Delete** removes it
+     and its sign-ups.
+   - Types: Club meeting, Social, Astronomy, Campus tour, Conference, Event, Graduation.
    - **Add an event** creates a new one.
 4. **Sign-up:** tick "Members can sign up for this event", then choose what people sign
    up for:
@@ -151,6 +154,10 @@ to the real database.
    - turns on a volunteer sign-up for STEAM Day Somerset 2027 (Friday, March 5, 2027, the
      event an officer added: 8:00 AM to 4:30 PM, North Campus) with shifts (Setup,
      Activity tables, Cleanup) and a draft S-STEM scholar note that officers can edit.
+
+7. **Update 2026-11-09 (migration `club_v4`, `sql/004_club_social_postponed.sql`):**
+   - the Competition type is retired; the Spades Competition is now a Social;
+   - adds the Postponed status (pill on the card; sign-up closed while postponed).
 
 Rollback: the `drop …` statements at the end of the SQL file. Setting `enabled: false`
 returns the pages to the printed schedule.

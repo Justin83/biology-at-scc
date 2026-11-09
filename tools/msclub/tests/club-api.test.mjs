@@ -1,4 +1,4 @@
-// Contract tests for the club API (msclub/sql/001_club.sql, 002, 003).
+// Contract tests for the club API (msclub/sql/001_club.sql, 002, 003, 004).
 // Run against the local stand-in (never production), with "today" fixed so the seeded
 // Fall 2026 schedule has upcoming events:
 //   CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
@@ -121,6 +121,20 @@ test("who's going: a trip with a number of spots", async () => {
   assert.equal((await rpc("club_signup", { p_event_id: ev.id, p_entry: { name: "Trip C.", slot: "Going" } })).ok, true, "a spot opened up");
   assert.equal((await admin("save_event", { starts_on: "2027-04-10", title: "Bad kind of sign-up", signup_kind: "potluck" })).error, "bad_value");
   assert.equal((await admin("delete_event", { id: ev.id })).ok, true);
+});
+
+test("no Competition type (Spades is a Social); Postponed closes sign-up", async () => {
+  const spades = await find("2026-09-23", "Spades Competition");
+  assert.equal(spades.kind, "social", "004 moved competition events to social");
+  assert.equal((await admin("save_event", { starts_on: "2027-02-01", title: "Old type", kind: "competition" })).error, "bad_value");
+  let dec = await find("2026-12-03", "Math and Science Club Holiday Party");
+  assert.equal((await admin("save_event", { ...dec, status: "postponed" })).ok, true);
+  dec = await find("2026-12-03", "Math and Science Club Holiday Party");
+  assert.equal(dec.status, "postponed");
+  assert.equal((await rpc("club_signup", { p_event_id: dec.id, p_entry: { name: "P.", slot: "Side", item: "Rolls" } })).error, "no_signup");
+  assert.equal((await admin("save_event", { ...dec, status: "maybe" })).error, "bad_value");
+  assert.equal((await admin("save_event", { ...dec, status: "scheduled" })).ok, true);
+  assert.equal((await find("2026-12-03", "Math and Science Club Holiday Party")).status, "scheduled");
 });
 
 test("officer code required; wrong code rejected", async () => {
