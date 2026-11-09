@@ -65,6 +65,11 @@ try {
   assert.equal(await a.textContent("#club-past-count"), "13");
   // club bar tab
   assert.equal((await a.textContent('.club-bar nav a[href="signup/"]')).trim(), "Event sign-up");
+  assert.equal((await a.textContent('.club-bar nav a[aria-current="page"]')).trim(), "Home");
+  // the main site's links are replaced by one way back
+  assert.equal((await a.textContent("header .club-back")).replace(/\s+/g, " ").trim(), "← Back to Biology at SCC");
+  assert.equal(await a.getAttribute("header .club-back", "href"), "../index.html");
+  assert.equal(await a.$$eval("header nav", (n) => n.length), 0, "no main-site link row on club pages");
   // who's bringing what is on the next-meeting card, above the button on a phone
   assert.match(await text(a, "#club-next-body .club-next-bring"), /Who's bringing what[\s\S]*Dessert nobody yet/i);
   const [bringBox, actBox] = [await a.$eval(".club-next-bring", (e) => e.getBoundingClientRect().toJSON()), await a.$eval(".club-next-actions", (e) => e.getBoundingClientRect().toJSON())];

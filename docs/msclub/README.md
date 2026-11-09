@@ -17,7 +17,9 @@ project as migration `club_v1`, with Justin's approval. `enabled` in
 | `officers/` | club officers (`noindex`) | Edit dates, times, titles and food themes in a pop-up editor (two columns on a desktop); add, cancel or delete events; set up food categories; remove sign-ups; open or close sign-up; change the officer code |
 | `qr/` | print | Poster with the club's QR code |
 
-The site home page links to the club.
+The site home page links to the club. Club pages carry a **Back to Biology at SCC** link at
+the top instead of the main site's menu; the green club bar's first link is **Home** (the
+club home).
 
 ## For members
 

@@ -30,6 +30,10 @@
 .club nav a[aria-current="page"], .club nav a.is-active { color: var(--fg); font-weight: 600; }
 
 /* section bar */
+/* slim bar above the club bar: the way back to the main site */
+.club-back-bar .wrap { padding-top: 0.45rem; padding-bottom: 0.45rem; }
+.club-back { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2.25rem; font-weight: 600; color: var(--accent); text-decoration: none; }
+.club-back:hover, .club-back:focus-visible { text-decoration: underline; }
 .club-bar { background: var(--club-soft); border-bottom: 1px solid var(--border); }
 .club-bar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1.2rem; padding-top: 0.7rem; padding-bottom: 0.7rem; }
 .club-bar-name { font-weight: 700; color: var(--fg); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
@@ -203,7 +207,9 @@ main.club-wide { max-width: 1120px; }
 .club-su-meta { color: var(--muted); margin: 0.15rem 0; }
 .club-su-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; align-items: start; }
 @media (min-width: 760px) { .club-su-grid { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); } }
-.club-su-form > h2, .club-su-form > h3, .club-su-form h2, .club-su-form h3 { font-size: 1.1rem; margin: 0 0 0.6rem; }
+/* two separate spaces: the list (tinted) and the form (light border) */
+.club-su-form { border: 1px solid var(--border); border-radius: 12px; padding: 0.85rem 1rem 1rem; background: var(--bg); }
+.club-su-form h2, .club-su-form h3 { font-size: 1.1rem; margin: 0 0 0.6rem; }
 
 /* next-meeting card: who's bringing what beside the details (wide) or above the button (narrow) */
 .club-next { container-type: inline-size; }
