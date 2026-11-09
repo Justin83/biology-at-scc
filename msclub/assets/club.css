@@ -135,9 +135,11 @@
 .club-bring-panel .club-bring-cat > h3, .club-bring-panel .club-bring-cat > h4 { margin: 0; font-size: 1rem; line-height: 1.3; display: flex; justify-content: space-between; align-items: baseline; gap: 0.25rem 0.75rem; flex-wrap: wrap; }
 .club-bring-cat > h3 span, .club-bring-cat > h4 span { font-weight: 600; color: var(--muted); font-size: 0.88rem; }
 .club-bring ul { list-style: none; margin: 0.35rem 0 0; padding: 0; display: grid; gap: 0.25rem; }
+.club-bring-cat > ul:first-child { margin-top: 0; }
 .club-bring li { line-height: 1.35; overflow-wrap: anywhere; }
 .club-bring li.is-mine .who { font-weight: 700; }
 .club-bring .note { color: var(--muted); font-size: 0.9rem; }
+.club-bring-none { margin: 0; color: var(--muted); }
 .club-bring .you { color: var(--accent); font-weight: 700; font-size: 0.9rem; }
 .club-mine { list-style: none; padding: 0; margin: 0.5rem 0 0; display: grid; gap: 0.5rem; }
 .club-mine li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.4rem 1rem; padding: 0.6rem 0.8rem; border: 1px solid var(--border); border-radius: 10px; background: var(--card-bg); }

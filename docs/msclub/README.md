@@ -27,8 +27,8 @@ club home).
   Schedule*. Its tentative items (marked ** on the flyer) carry a "Tentative" tag.
 - There is one QR code. It opens the club website; people choose **Sign up to bring
   food** from there (on an event card, the next-meeting card, or **Event sign-up** in the
-  club bar). Choose a category, type your name (first name and last initial is
-  enough) and what you're bringing, and add an allergy note if needed.
+  club bar). Type your name (first name and last initial is enough) and what you're
+  bringing, and add an allergy note if needed.
 - In class, **Show on the big screen** (next to the QR code on the club page) fills the
   screen with that QR code for students to scan.
   - Names and items are shown on the page so people can avoid duplicates.
@@ -54,10 +54,10 @@ club home).
    - **Add an event** creates a new one.
 4. **Sign-up:** tick "Members can sign up for this event", then choose what people sign
    up for:
-   - **Bring food** (club meetings and socials): categories such as Main dish, Side,
-     Snack, Dessert and Drinks, each with an optional "How many" (a guide only). People
-     give their name, a category, what they're bringing and an optional allergy note.
-     The November 19 meeting and the December 3 holiday party are set up this way.
+   - **Bring food** (club meetings and socials): no categories. People give their name,
+     what they're bringing and an optional allergy note; "Who's bringing what" is one
+     plain list (dish · name). The November 19 meeting and the December 3 holiday party
+     are set up this way.
    - **Work this event (volunteers)**: usually one "Volunteers" list (the default):
      people give their name and an optional note, and officers assign places later.
      STEAM Day Somerset 2027 (March 5, 2027) is set up this way, with the note "We'll
@@ -119,7 +119,8 @@ on white, where it would be too hard to read.
   `msclub/sql/001_club.sql`:
   - `club_events`, `club_signup`, `club_signup_update`, `club_signup_remove` — public;
   - `club_admin` — needs the officer code.
-- **What's stored:** name, item, category and optional allergy note per sign-up. There is
+- **What's stored:** name, item (food only), list or shift (volunteers and trips) and an
+  optional note per sign-up. There is
   no email, phone or account.
 - **Limits:** 60 sign-ups per event. Exact duplicates are refused, and sign-up closes
   once the event's date has passed.
@@ -173,6 +174,12 @@ to the real database.
 7. **Update 2026-11-09 (migration `club_v4`, `sql/004_club_social_postponed.sql`):**
    - the Competition type is retired; the Spades Competition is now a Social;
    - adds the Postponed status (pill on the card; sign-up closed while postponed).
+
+8. **Update 2026-11-09 (migration `club_v5`, `sql/005_club_food_no_categories.sql`):**
+   - food sign-ups have no categories: the form asks for name, dish and note, and the
+     list is one plain list; club_signup ignores any category sent for a food event;
+   - the category lists on food events were cleared (existing sign-ups keep their old
+     category value, which the pages no longer show).
 
 Rollback: the `drop …` statements at the end of the SQL file. Setting `enabled: false`
 returns the pages to the printed schedule.

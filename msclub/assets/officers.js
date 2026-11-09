@@ -10,10 +10,9 @@
   var root = document.body.getAttribute("data-club-root") || "../";
   var KEY = "club-officer-code";
   var shownKind = "food"; // the sign-up kind the editor shows now
-  var DEFAULT_SLOTS = ["Main dish", "Side", "Snack", "Dessert", "Drinks"];
   // the usual choices and editor wording for each kind of sign-up
   var KIND_SETUP = {
-    food: { slots: DEFAULT_SLOTS, title: "Categories", hint: "(what people can sign up to bring; \"How many\" is optional)", add: "Add a category", usual: "Use the usual categories" },
+    food: { slots: [], title: "", hint: "", add: "", usual: "" }, // no categories for food sign-ups
     work: { slots: ["Volunteers"], title: "Volunteer list", hint: "(one list is usual: you assign places later. Add shifts or roles only if volunteers should pick one; a \"How many\" closes that list when it's full)", add: "Add a shift or role", usual: "Use one volunteer list" },
     going: { slots: ["Going"], title: "Spots", hint: "(put the number of spots in \"How many\", or leave it empty for no limit)", add: "Add an option", usual: "Use one \"Going\" list" }
   };
@@ -23,6 +22,7 @@
     var k = KIND_SETUP[kind];
     $("of-slots-title").textContent = k.title; $("of-slots-hint").textContent = k.hint;
     $("of-slot-add").textContent = k.add; $("of-slot-default").textContent = k.usual;
+    $("of-slots-setup").hidden = kind === "food"; // food: name, item and note only
   }
   var code = null, data = null, editing = null, settings = null;
 
@@ -132,7 +132,7 @@
     var list = e && e.signups || [];
     $("of-signups-wrap").hidden = !e || !e.signup_enabled;
     $("of-signups").innerHTML = list.length ? list.map(function (s) {
-      return "<li><p>" + esc(s.name) + (s.item ? ": " + esc(s.item) : "") + " (" + esc(s.slot) + ")" + (s.note ? ' <span class="club-hint">' + esc(s.note) + "</span>" : "") + "</p>" +
+      return "<li><p>" + esc(s.name) + (s.item ? ": " + esc(s.item) : "") + (C.signupKind(e) === "food" ? "" : " (" + esc(s.slot) + ")") + (s.note ? ' <span class="club-hint">' + esc(s.note) + "</span>" : "") + "</p>" +
         '<button type="button" class="club-btn club-btn--danger club-btn--small" data-remove-signup="' + esc(s.id) + '">Remove<span class="visually-hidden"> ' + esc(s.name + "'s " + (s.item || s.slot)) + "</span></button></li>";
     }).join("") : "<li>No sign-ups yet.</li>";
   }
@@ -207,13 +207,13 @@
       kind: $("of-kind").value, location: $("of-location").value.trim(), details: $("of-details").value.trim(),
       tentative: $("of-tentative").checked, status: $("of-cancelled").checked ? "cancelled" : $("of-postponed").checked ? "postponed" : "scheduled",
       signup_enabled: $("of-signup").checked, signup_kind: $("of-signup-kind").value,
-      signup_note: $("of-signup-note").value.trim(), slots: readSlots()
+      signup_note: $("of-signup-note").value.trim(), slots: $("of-signup-kind").value === "food" ? [] : readSlots()
     };
     if (!p.starts_on) { msg("of-form-msg", "Choose a date.", "error"); $("of-date").focus(); return; }
     if (!p.title) { msg("of-form-msg", "Give the event a title.", "error"); $("of-title").focus(); return; }
     if (p.ends_on && p.ends_on < p.starts_on) { msg("of-form-msg", "The last day must be on or after the first day.", "error"); $("of-end-date").focus(); return; }
-    if (p.signup_enabled && !p.slots.length) { msg("of-form-msg", "Add at least one choice for people to sign up for, or turn sign-up off.", "error"); $("of-slot-add").focus(); return; }
-    if (editing && editing.signup_enabled && (editing.signups || []).length) {
+    if (p.signup_enabled && p.signup_kind !== "food" && !p.slots.length) { msg("of-form-msg", "Add at least one choice for people to sign up for, or turn sign-up off.", "error"); $("of-slot-add").focus(); return; }
+    if (editing && editing.signup_enabled && p.signup_kind !== "food" && (editing.signups || []).length) {
       var labels = p.slots.map(function (s) { return s.label; });
       var orphaned = editing.signups.filter(function (s) { return labels.indexOf(s.slot) === -1; }).length;
       if (orphaned && !window.confirm(orphaned + " existing sign-up(s) use a category you removed or renamed. They will be listed under \"Other\". Save anyway?")) return;

@@ -1,6 +1,6 @@
 {
   "source": "MSSE Scholars Proposed Activities, Fall 2026 Schedule (printed flyer), transcribed 2026-11-05",
-  "note": "Fallback copy of the seed in msclub/sql/001_club.sql as changed by 002_club_theme.sql, 003_club_signup_kinds.sql and 004_club_social_postponed.sql. When online sign-up is on, the page reads the live schedule instead.",
+  "note": "Fallback copy of the seed in msclub/sql/001_club.sql as changed by 002_club_theme.sql, 003_club_signup_kinds.sql, 004_club_social_postponed.sql and 005_club_food_no_categories.sql. When online sign-up is on, the page reads the live schedule instead.",
   "flyer_footnotes": [
     "** next to a date means it is highly tentative due to weather, needing finalization, or other factors.",
     "While attendance at all activities is encouraged, MSSE scholars must participate in a minimum of 4 each semester and meet with their mentor twice each semester.",
@@ -257,28 +257,7 @@
       "signup_enabled": true,
       "signup_kind": "food",
       "signup_note": null,
-      "slots": [
-        {
-          "label": "Main dish",
-          "needed": null
-        },
-        {
-          "label": "Side",
-          "needed": null
-        },
-        {
-          "label": "Snack",
-          "needed": null
-        },
-        {
-          "label": "Dessert",
-          "needed": null
-        },
-        {
-          "label": "Drinks",
-          "needed": null
-        }
-      ]
+      "slots": []
     },
     {
       "id": "2026-11-20-somerset-student-showcase",
@@ -314,28 +293,7 @@
       "signup_enabled": true,
       "signup_kind": "food",
       "signup_note": null,
-      "slots": [
-        {
-          "label": "Main dish",
-          "needed": null
-        },
-        {
-          "label": "Side",
-          "needed": null
-        },
-        {
-          "label": "Snack",
-          "needed": null
-        },
-        {
-          "label": "Dessert",
-          "needed": null
-        },
-        {
-          "label": "Drinks",
-          "needed": null
-        }
-      ]
+      "slots": []
     },
     {
       "id": "2026-12-10-fall-graduation",

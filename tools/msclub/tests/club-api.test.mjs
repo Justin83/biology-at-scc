@@ -1,4 +1,4 @@
-// Contract tests for the club API (msclub/sql/001_club.sql, 002, 003, 004).
+// Contract tests for the club API (msclub/sql/001_club.sql, 002, 003, 004, 005).
 // Run against the local stand-in (never production), with "today" fixed so the seeded
 // Fall 2026 schedule has upcoming events:
 //   CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
@@ -33,7 +33,7 @@ test("seeded schedule matches the static fallback (data/events.json)", async () 
   assert.deepEqual(seeded.map(strip), stat.map(strip));
 });
 
-test("November meeting is on the third Thursday and has food sign-up", async () => {
+test("November meeting is on the third Thursday and has food sign-up (no categories)", async () => {
   const nov = await find("2026-11-19", "Math and Science Club Meeting");
   assert.ok(nov);
   const d = new Date(Date.UTC(2026, 10, 19));
@@ -41,7 +41,7 @@ test("November meeting is on the third Thursday and has food sign-up", async () 
   assert.ok(d.getUTCDate() > 14 && d.getUTCDate() <= 21); // third one
   assert.equal(nov.start_time, "17:00");
   assert.equal(nov.signup_enabled, true);
-  assert.deepEqual(nov.slots.map((s) => s.label), ["Main dish", "Side", "Snack", "Dessert", "Drinks"]); // no paper goods (002)
+  assert.deepEqual(nov.slots, [], "005: no categories for food");
 });
 
 test("sign up, see it, change it, remove it (only with this device's token)", async () => {
@@ -49,13 +49,13 @@ test("sign up, see it, change it, remove it (only with this device's token)", as
   const r = await rpc("club_signup", { p_event_id: nov.id, p_entry: { name: "Test A.", slot: "Dessert", item: "Brownies", note: "contains nuts" } });
   assert.equal(r.ok, true); assert.ok(r.token);
   let s = (await find("2026-11-19", "Math and Science Club Meeting")).signups.find((x) => x.id === r.id);
-  assert.deepEqual([s.name, s.slot, s.item, s.note], ["Test A.", "Dessert", "Brownies", "contains nuts"]);
+  assert.deepEqual([s.name, s.slot, s.item, s.note], ["Test A.", "Food or drink", "Brownies", "contains nuts"], "a category sent for food is ignored");
   assert.equal("token" in s || "token_hash" in s, false, "token never public");
   assert.equal((await rpc("club_signup", { p_event_id: nov.id, p_entry: { name: "test a.", slot: "Dessert", item: "brownies" } })).error, "duplicate");
   assert.equal((await rpc("club_signup_update", { p_id: r.id, p_token: "wrong", p_entry: { item: "Cookies" } })).error, "not_yours");
   assert.equal((await rpc("club_signup_update", { p_id: r.id, p_token: r.token, p_entry: { item: "Cookies", slot: "Snack" } })).ok, true);
   s = (await find("2026-11-19", "Math and Science Club Meeting")).signups.find((x) => x.id === r.id);
-  assert.deepEqual([s.slot, s.item, s.note], ["Snack", "Cookies", "contains nuts"]);
+  assert.deepEqual([s.slot, s.item, s.note], ["Food or drink", "Cookies", "contains nuts"]);
   assert.equal((await rpc("club_signup_remove", { p_id: r.id, p_token: "wrong" })).error, "not_yours");
   assert.equal((await rpc("club_signup_remove", { p_id: r.id, p_token: r.token })).ok, true);
   assert.equal((await find("2026-11-19", "Math and Science Club Meeting")).signups.some((x) => x.id === r.id), false);
@@ -67,7 +67,9 @@ test("sign-up validation", async () => {
   const grad = await find("2026-12-10", "Fall Graduation");
   assert.equal((await rpc("club_signup", { p_event_id: nov.id, p_entry: { slot: "Side", item: "Chips" } })).error, "no_name");
   assert.equal((await rpc("club_signup", { p_event_id: nov.id, p_entry: { name: "X", slot: "Side" } })).error, "no_item");
-  assert.equal((await rpc("club_signup", { p_event_id: nov.id, p_entry: { name: "X", slot: "Lobster", item: "y" } })).error, "bad_slot");
+  const any = await rpc("club_signup", { p_event_id: nov.id, p_entry: { name: "X", slot: "Lobster", item: "y" } });
+  assert.equal(any.ok, true, "food has no categories, so any slot sent is ignored");
+  assert.equal((await rpc("club_signup_remove", { p_id: any.id, p_token: any.token })).ok, true);
   assert.equal((await rpc("club_signup", { p_event_id: grad.id, p_entry: { name: "X", slot: "Side", item: "y" } })).error, "no_signup");
   // October meeting is in the past (today fixed at 2026-11-05); enabling sign-up there must still refuse
   const saved = await admin("save_event", { ...oct, signup_enabled: true });
