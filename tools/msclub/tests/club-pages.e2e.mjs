@@ -75,30 +75,24 @@ try {
   assert.equal(await a.getAttribute("header .club-back", "href"), "../index.html");
   assert.equal(await a.$$eval("header nav", (n) => n.length), 0, "no main-site link row on club pages");
   // who's bringing what is on the next-meeting card, above the button on a phone
-  assert.match(await text(a, "#club-next-body .club-next-bring"), /Who's bringing what[\s\S]*Dessert nobody yet/i);
+  assert.match(await text(a, "#club-next-body .club-next-bring"), /Who's bringing what[\s\S]*Nobody has signed up yet/i);
   const [bringBox, actBox] = [await a.$eval(".club-next-bring", (e) => e.getBoundingClientRect().toJSON()), await a.$eval(".club-next-actions", (e) => e.getBoundingClientRect().toJSON())];
   assert.ok(bringBox.bottom <= actBox.top, "phone: list sits above the sign-up button");
   // officer tools: a button in the club bar at the top of the page
   assert.equal(await a.isVisible(".club-bar a.club-bar-officer"), true);
   assert.equal(await a.getAttribute(".club-bar a.club-bar-officer", "href"), "officers/");
-  // the landing-page QR and the big-screen view open the club website
-  assert.match(await a.getAttribute(".club-scan img", "src"), /qr-club\.svg$/);
-  // big-screen QR
-  await a.click("#club-bigqr-open");
-  assert.match(await a.getAttribute("#club-bigqr img", "src"), /qr-club\.svg$/);
-  assert.equal(await a.isVisible("#club-bigqr img"), true);
-  assert.match(await text(a, "#club-bigqr-event"), /Next meeting: Thursday, November 19 · 5:00 PM/);
-  await a.click("#club-bigqr [data-close]");
+  // on a phone there is no QR panel (it would only point back to this page)
+  assert.equal(await a.isVisible(".club-scan"), false, "no QR panel on a phone");
 
   // student A signs up in the pop-up from the next-meeting card
   await a.click("#club-next-body [data-signup]");
   await a.waitForSelector("#club-signup-dialog[open]");
   assert.match(await text(a, "#m-info"), /Thursday, November 19, 2026/);
-  assert.deepEqual(await a.$$eval('input[name="m-slot"]', (r) => r.map((x) => x.value)), ["Main dish", "Side", "Snack", "Dessert", "Drinks"]);
+  assert.equal(await a.isVisible("#m-slots-wrap"), false, "no categories for food");
+  assert.equal(await a.$$eval('input[name="m-slot"]', (r) => r.length), 0);
   await a.click("#m-submit");
   assert.match(await a.textContent("#m-msg"), /Enter your name/);
   await a.fill("#m-name", "E2E Student A");
-  await a.check('input[name="m-slot"][value="Dessert"]');
   await a.fill("#m-item", "Brownies");
   await a.fill("#m-note", "contains nuts");
   await a.click("#m-submit");
@@ -106,7 +100,9 @@ try {
   assert.match(await text(a, "#m-list"), /Brownies · E2E Student A \(contains nuts\) \(you\)/);
   await a.click("#club-signup-dialog [data-close]");
   assert.match(await text(a, "#club-next-body"), /1 person has signed up/);
-  assert.match(await text(a, "#club-next-body .club-next-bring"), /Dessert 1 signed up Brownies · E2E Student A \(contains nuts\) \(you\)/, "card list updates after signing up");
+  const cardList = await text(a, "#club-next-body .club-next-bring");
+  assert.match(cardList, /Brownies · E2E Student A \(contains nuts\) \(you\)/, "card list updates after signing up");
+  assert.doesNotMatch(cardList, /Main dish|Dessert|Drinks|signed up/, "one plain list, no category boxes");
 
   // student B on another phone, on the sign-up page: clickable cards (club meetings in
   // one group, other events and trips in another); nothing is preselected and the form
@@ -142,7 +138,6 @@ try {
   assert.doesNotMatch(await text(b, "#su-list"), /\(you\)/);
   assert.equal(await b.isHidden("#su-mine-wrap"), true);
   await b.fill("#su-name", "E2E Student B");
-  await b.check('input[name="su-slot"][value="Drinks"]');
   await b.fill("#su-item", "Lemonade");
   await b.click("#su-submit");
   await b.waitForFunction(() => /Lemonade/.test(document.getElementById("su-msg").textContent));
@@ -156,7 +151,6 @@ try {
   assert.match(await text(a, "#m-list"), /Lemonade · E2E Student B/, "pop-up shows sign-ups made after the page loaded");
   await a.click("#m-mine [data-edit]");
   await a.fill("#m-item", "Cookies");
-  await a.check('input[name="m-slot"][value="Snack"]');
   await a.click("#m-submit");
   await a.waitForFunction(() => /Saved/.test(document.getElementById("m-msg").textContent));
   assert.match(await text(a, "#m-list"), /Cookies · E2E Student A/);
@@ -169,6 +163,14 @@ try {
   const o = await desktop();
   await o.goto(SITE + Q);
   await o.waitForSelector("#club-next-body .club-next-bring");
+  // on a computer: the landing-page QR and the big-screen view open the club website
+  assert.equal(await o.isVisible(".club-scan"), true);
+  assert.match(await o.getAttribute(".club-scan img", "src"), /qr-club\.svg$/);
+  await o.click("#club-bigqr-open");
+  assert.match(await o.getAttribute("#club-bigqr img", "src"), /qr-club\.svg$/);
+  assert.equal(await o.isVisible("#club-bigqr img"), true);
+  assert.match(await text(o, "#club-bigqr-event"), /Next meeting: Thursday, November 19 · 5:00 PM/);
+  await o.click("#club-bigqr [data-close]");
   const [infoD, bringD] = [await o.$eval(".club-next-info", (e) => e.getBoundingClientRect().toJSON()), await o.$eval(".club-next-bring", (e) => e.getBoundingClientRect().toJSON())];
   assert.ok(bringD.left >= infoD.right && bringD.top < infoD.bottom, "desktop: list sits beside the meeting details");
   await o.click("#club-next-body [data-signup]");
@@ -185,10 +187,9 @@ try {
   await o.waitForSelector("#of-app:not([hidden]) #of-upcoming li");
   await o.click('#of-upcoming li:has-text("Nov 19") [data-edit]');
   await o.waitForSelector("#of-editor[open]");
-  assert.deepEqual(await o.$$eval("[data-slot-label]", (i) => i.map((x) => x.value)), ["Main dish", "Side", "Snack", "Dessert", "Drinks"]);
+  assert.equal(await o.isVisible("#of-slots-setup"), false, "no categories to set up for food");
   await o.fill("#of-theme", "Tacos");
   await o.fill("#of-location", "E2E Room 101");
-  await setNeeded(o, "Drinks", "3");
   assert.match(await text(o, "#of-signups"), /E2E Student B: Lemonade/);
   await o.click("#of-signups [data-remove-signup]");
   await o.waitForFunction(() => /Sign-up removed/.test(document.getElementById("of-form-msg").textContent));
@@ -230,7 +231,6 @@ try {
   await a.goto(SITE + "signup/" + Q + "&event=" + novId); // a card's link names its event
   await a.waitForSelector("#su-app:not([hidden]) #su-list");
   assert.equal(await a.isChecked("#su-ev-" + novId), true, "event from the link is preselected");
-  assert.match(await text(a, "#su-list"), /Drinks 0 of 3 needed/);
   assert.match(await text(a, "#su-info"), /Food theme: Tacos/);
   assert.match(await text(a, "#su-events"), /Events and trips[\s\S]*E2E Campus Trip/i, "trip listed under events and trips");
   assert.doesNotMatch(await text(a, "#su-meetings"), /E2E Campus Trip/);
@@ -319,7 +319,6 @@ try {
   await o.click('#of-upcoming li:has-text("Nov 19") [data-edit]');
   await o.fill("#of-theme", "");
   await o.fill("#of-location", "");
-  await setNeeded(o, "Drinks", "");
   await o.click("#of-save");
   await o.waitForFunction(() => /Saved/.test(document.getElementById("of-list-msg").textContent));
 

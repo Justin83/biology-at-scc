@@ -17,10 +17,12 @@
   // email addresses in an officer's note become mailto links (the text is escaped first)
   function linkEmails(html) { return html.replace(/[\w.+-]+@[\w-]+(\.[\w-]+)+/g, function (m) { return '<a href="mailto:' + m + '">' + m + "</a>"; }); }
   function slotsOf(e) { return e.slots && e.slots.length ? e.slots : [{ label: C.signupSpec(e).none, needed: null }]; }
+  // food sign-ups have no categories (Main dish, Side, ...): one plain list, no picker
+  function isFood(e) { return C.signupKind(e) === "food"; }
 
-  // "Who's bringing what" ("Who's working", "Who's going") for one event, grouped by
-  // category, shift or role. Used inside the sign-up form and on the club home page's
-  // next-meeting card. h = heading tag for the groups.
+  // "Who's bringing what" ("Who's working", "Who's going") for one event: one plain list
+  // for food; grouped by shift, role or trip list otherwise. Used inside the sign-up form
+  // and on the club home page's next-meeting card. h = heading tag for the groups.
   C.bringList = function (e, h) {
     var signups = e.signups || [], mine = tokens(), slots = slotsOf(e), spec = C.signupSpec(e);
     var known = slots.map(function (s) { return s.label; });
@@ -30,6 +32,10 @@
         (spec.item ? "<strong>" + esc(x.item) + '</strong> <span class="who">· ' + esc(x.name) + "</span>" : '<strong class="who">' + esc(x.name) + "</strong>") +
         (x.note ? ' <span class="note">(' + esc(x.note) + ")</span>" : "") + (mine[x.id] ? ' <span class="you">(you)</span>' : "") + "</li>";
     };
+    if (isFood(e)) {
+      return '<div class="club-bring-cat' + (signups.length ? "" : " is-empty") + '">' +
+        (signups.length ? "<ul>" + signups.map(line).join("") + "</ul>" : '<p class="club-bring-none">Nobody has signed up yet.</p>') + "</div>";
+    }
     var block = function (label, list, count) {
       return '<div class="club-bring-cat' + (list.length ? "" : " is-empty") + '"><' + h + ">" + esc(label) + " <span>" + esc(count) + "</span></" + h + ">" +
         (list.length ? "<ul>" + list.map(line).join("") + "</ul>" : "") + "</div>";
@@ -81,18 +87,18 @@
         (theme ? '<p class="club-theme">Food theme: <strong>' + esc(theme) + "</strong></p>" : "") +
         (e.signup_note ? "<p>" + linkEmails(esc(e.signup_note)) + "</p>" : "");
       // wording and fields for this kind of sign-up (bring food, work this event, who's going)
-      var spec = C.signupSpec(e), slots = slotsOf(e), only = !spec.item && slots.length === 1;
+      var spec = C.signupSpec(e), slots = slotsOf(e), food = isFood(e), only = !food && slots.length === 1;
       $("list-title").textContent = spec.list;
       if (!editing) $("form-title").textContent = spec.form;
       $("slots-legend").textContent = spec.slots;
-      $("slots-wrap").hidden = only; // one choice ("Going"): picked for you
+      $("slots-wrap").hidden = food || only; // food: no categories; one choice ("Going"): picked for you
       $("item-wrap").hidden = !spec.item;
       $("note-label").textContent = spec.note;
       $("note").placeholder = spec.notePh;
       $("name-hint").textContent = "First name and last initial is fine. " + (spec.item ? "Names and items show" : "Names show") + " on this page so people can plan.";
       $("list").innerHTML = C.bringList(e, "h" + ((opts.headingLevel || 3) + 1));
       var checked = editing ? editing.slot : (container.querySelector('input[name="' + P + 'slot"]:checked') || {}).value;
-      $("slots").innerHTML = slots.map(function (s, i) {
+      $("slots").innerHTML = food ? "" : slots.map(function (s, i) {
         return '<div class="club-choice"><input type="radio" name="' + P + 'slot" id="' + P + "slot-" + i + '" value="' + esc(s.label) + '"' + (checked === s.label || only ? " checked" : "") +
           '><label for="' + P + "slot-" + i + '">' + esc(s.label) + "</label></div>";
       }).join("");
@@ -100,7 +106,7 @@
       $("mine-wrap").hidden = !own.length;
       $("mine").innerHTML = own.map(function (x) {
         var what = spec.item ? x.item : x.slot;
-        return "<li><span><strong>" + esc(what) + "</strong>" + (spec.item ? " (" + esc(x.slot) + ")" : "") + " · " + esc(x.name) + '</span><span class="club-actions" style="margin:0">' +
+        return "<li><span><strong>" + esc(what) + "</strong> · " + esc(x.name) + '</span><span class="club-actions" style="margin:0">' +
           '<button type="button" class="club-btn club-btn--ghost club-btn--small" data-edit="' + esc(x.id) + '">Change<span class="visually-hidden"> ' + esc(what) + "</span></button>" +
           '<button type="button" class="club-btn club-btn--danger club-btn--small" data-remove="' + esc(x.id) + '">Remove<span class="visually-hidden"> ' + esc(what) + "</span></button></span></li>";
       }).join("");
@@ -127,8 +133,8 @@
       e.preventDefault();
       if (busy || !ev) return;
       if ($("website").value) return; // filled only by bots
-      var slot = (container.querySelector('input[name="' + P + 'slot"]:checked') || {}).value;
       var spec = C.signupSpec(ev);
+      var slot = isFood(ev) ? spec.none : (container.querySelector('input[name="' + P + 'slot"]:checked') || {}).value;
       var entry = { name: $("name").value.trim(), slot: slot, item: spec.item ? $("item").value.trim() : "", note: $("note").value.trim() };
       if (!entry.name) { msg("Enter your name.", "error"); $("name").focus(); return; }
       if (!slot) { msg("Choose a " + (spec.item ? "category" : "shift or role") + ".", "error"); container.querySelector('input[name="' + P + 'slot"]').focus(); return; }
