@@ -1,6 +1,6 @@
 -- Math & Natural Sciences Club — events and food sign-ups.
 --
--- STATUS: written and tested locally (tools/math-science-club/local-api.mjs + tests/).
+-- STATUS: written and tested locally (tools/msclub/local-api.mjs + tests/).
 -- Apply to the SyllaBased Supabase project only with Justin's approval, as migration
 -- "club_v1". Same isolation model as the BIO 151 live lab and the freshwater observations:
 --   * tables live in a private schema (club) that PostgREST does NOT expose;
@@ -305,7 +305,7 @@ grant execute on function public.club_admin(text, text, jsonb)         to anon, 
 
 -- ---------------------------------------------------------------- seed: Fall 2026 schedule
 -- Transcribed from the printed "MSSE Scholars Proposed Activities — Fall 2026 Schedule".
--- The same records are in math-science-club/data/events.json (the page's fallback); the
+-- The same records are in msclub/data/events.json (the page's fallback); the
 -- contract tests check that both match. ** on the flyer = tentative.
 insert into club.events (starts_on, ends_on, start_time, end_time, title, kind, tentative, signup_enabled, signup_note, slots, source) values
   ('2026-08-20', null, '17:00', null, 'Math and Science Club Social', 'social', false, false, null, '[]', 'MSSE Scholars Proposed Activities, Fall 2026'),

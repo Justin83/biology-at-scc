@@ -3,11 +3,11 @@
 // pages without touching the real database.
 //
 // It starts an in-memory PostgreSQL (PGlite, with pgcrypto), applies
-// every math-science-club/sql/NNN_*.sql file in order, exactly as written, and answers
+// every msclub/sql/NNN_*.sql file in order, exactly as written, and answers
 // POST /rest/v1/rpc/club_<function> the way PostgREST does (JSON body = named arguments).
 //
 //   npm install --no-save @electric-sql/pglite@0.5.8   (once; not a site dependency)
-//   node tools/math-science-club/local-api.mjs          (listens on http://127.0.0.1:8789)
+//   node tools/msclub/local-api.mjs          (listens on http://127.0.0.1:8789)
 //
 // Environment: PORT (default 8789), CLUB_OFFICER_CODE (default "local-officer-code"),
 // CLUB_TODAY (optional YYYY-MM-DD: pretend "today" is this date, e.g. 2026-11-05, so the
@@ -34,7 +34,7 @@ await db.exec(`
     if not exists (select 1 from pg_roles where rolname = 'authenticated') then create role authenticated; end if;
     if not exists (select 1 from pg_roles where rolname = 'service_role') then create role service_role; end if;
   end $$;`);
-const SQL = path.join(ROOT, "math-science-club/sql");
+const SQL = path.join(ROOT, "msclub/sql");
 for (const f of fs.readdirSync(SQL).filter((x) => /^\d+_.*\.sql$/.test(x)).sort()) await db.exec(fs.readFileSync(path.join(SQL, f), "utf8"));
 await db.query(`insert into club.settings values ('officer_code_hash', extensions.crypt($1, extensions.gen_salt('bf', 6)))
                 on conflict (key) do update set value = excluded.value`, [CODE]);

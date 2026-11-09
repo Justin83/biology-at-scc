@@ -2,7 +2,7 @@
 
 The portal lives at `research/freshwater/` and is published with the rest of the site by
 GitHub Pages. Public URL once merged to `main`:
-`https://justin83.github.io/biology-at-scc/research/freshwater/`.
+`https://biologyatscc.com/research/freshwater/`.
 
 | Document | Holds |
 |---|---|

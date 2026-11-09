@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Browser end-to-end test of the club pages against the local stand-in database.
-//   CLUB_TODAY=2026-11-05 node tools/math-science-club/local-api.mjs &
-//   NODE_PATH=$(npm root -g) node tools/math-science-club/tests/club-pages.e2e.mjs
+//   CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
+//   NODE_PATH=$(npm root -g) node tools/msclub/tests/club-pages.e2e.mjs
 // Needs Playwright with Chromium (not a site dependency). Serves the repository itself.
 // Covers:
 //   - home page: next meeting (food theme), event cards by month, the big-screen QR;
@@ -34,7 +34,7 @@ const server = http.createServer((req, res) => {
   fs.createReadStream(file).pipe(res);
 });
 await new Promise((r) => server.listen(0, "127.0.0.1", r));
-const SITE = `http://127.0.0.1:${server.address().port}/math-science-club/`;
+const SITE = `http://127.0.0.1:${server.address().port}/msclub/`;
 const Q = `?api=${encodeURIComponent(API)}`;
 const text = (page, sel) => page.innerText(sel).then((t) => t.replace(/\s+/g, " "));
 

@@ -1,8 +1,8 @@
-// Contract tests for the club API (math-science-club/sql/001_club.sql).
+// Contract tests for the club API (msclub/sql/001_club.sql).
 // Run against the local stand-in (never production), with "today" fixed so the seeded
 // Fall 2026 schedule has upcoming events:
-//   CLUB_TODAY=2026-11-05 node tools/math-science-club/local-api.mjs &
-//   node --test tools/math-science-club/tests/*.test.mjs
+//   CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
+//   node --test tools/msclub/tests/*.test.mjs
 // Environment: CLUB_API_URL (default http://127.0.0.1:8789), CLUB_OFFICER_CODE (default local-officer-code).
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -26,7 +26,7 @@ const find = async (date, title) => (await events()).find((e) => e.starts_on ===
 
 test("seeded schedule matches the static fallback (data/events.json)", async () => {
   const live = await events();
-  const stat = JSON.parse(fs.readFileSync(path.join(ROOT, "math-science-club/data/events.json"), "utf8")).events;
+  const stat = JSON.parse(fs.readFileSync(path.join(ROOT, "msclub/data/events.json"), "utf8")).events;
   const strip = (e) => [e.starts_on, e.ends_on, e.start_time, e.end_time, e.title, e.theme, e.kind, e.tentative, e.signup_enabled, JSON.stringify(e.slots)];
   const seeded = live.filter((e) => stat.some((s) => s.starts_on === e.starts_on && s.title === e.title));
   assert.equal(seeded.length, 17);

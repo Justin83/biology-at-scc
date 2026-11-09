@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// Writes the club's one QR code from homeUrl in math-science-club/assets/club.js:
-//   math-science-club/assets/qr-club.svg -> club website (people go to the food sign-up from there)
+// Writes the club's one QR code from homeUrl in msclub/assets/club.js:
+//   msclub/assets/qr-club.svg -> club website (people go to the food sign-up from there)
 // Uses the vendored qrcode-generator 1.4.4 (MIT) in research/freshwater/assets/vendor/.
-//   node tools/math-science-club/make-qr.mjs          (write)
-//   node tools/math-science-club/make-qr.mjs --check  (exit 1 if a file is out of date)
+//   node tools/msclub/make-qr.mjs          (write)
+//   node tools/msclub/make-qr.mjs --check  (exit 1 if a file is out of date)
 import fs from "node:fs";
 import path from "node:path";
 import { createRequire } from "node:module";
@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const require = createRequire(import.meta.url);
 const qrcode = require(path.join(ROOT, "research/freshwater/assets/vendor/qrcode-generator/qrcode.js"));
-const cfg = fs.readFileSync(path.join(ROOT, "math-science-club/assets/club.js"), "utf8");
+const cfg = fs.readFileSync(path.join(ROOT, "msclub/assets/club.js"), "utf8");
 const url = (k) => { const m = cfg.match(new RegExp(k + ':\\s*"([^"]+)"')); if (!m) throw new Error(k + " not found in club.js"); return m[1]; };
 
 function qrSvg(text, title) {
@@ -35,15 +35,15 @@ function qrSvg(text, title) {
 
 let stale = false;
 for (const [file, key] of [["qr-club.svg", "homeUrl"]]) {
-  const out = path.join(ROOT, "math-science-club/assets", file);
+  const out = path.join(ROOT, "msclub/assets", file);
   const svg = qrSvg(url(key), `QR code: ${url(key)}`);
   if (process.argv.includes("--check")) {
     const old = fs.existsSync(out) ? fs.readFileSync(out, "utf8") : "";
-    if (old !== svg) { console.error(`math-science-club/assets/${file} is out of date`); stale = true; }
+    if (old !== svg) { console.error(`msclub/assets/${file} is out of date`); stale = true; }
     else console.log(`${file} matches ${url(key)}`);
   } else {
     fs.writeFileSync(out, svg);
-    console.log(`wrote math-science-club/assets/${file} for ${url(key)}`);
+    console.log(`wrote msclub/assets/${file} for ${url(key)}`);
   }
 }
 if (stale) process.exit(1);
