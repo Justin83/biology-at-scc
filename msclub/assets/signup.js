@@ -1,7 +1,9 @@
 /* Event sign-up page: clickable cards, club meetings (food) in one group and other events
    and trips in another. Nothing is preselected unless the link names one
    (?event=<id>, used by the buttons on the club page cards). Choosing a card opens the
-   shared form in signup-form.js below the cards. */
+   shared form in signup-form.js below the cards, except for an event with an info page
+   (msclub/events/<page>/): its card is a link straight to that page, whose own buttons
+   open the form. */
 (function () {
   "use strict";
   var C = window.Club;
@@ -20,15 +22,18 @@
   function isMeeting(e) { return C.signupKind(e) === "food"; }
   function cardsHtml(list) {
     return list.map(function (e) {
-      var p = C.parts(e.starts_on), id = "su-ev-" + esc(e.id), theme = C.themeText(e);
-      return '<div class="club-pick-option"><input type="radio" name="su-event" id="' + id + '" value="' + esc(e.id) + '">' +
-        '<label for="' + id + '"><span class="club-date" aria-hidden="true"><span class="dow">' + C.DOW[new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay()].slice(0, 3) +
+      var p = C.parts(e.starts_on), id = "su-ev-" + esc(e.id), theme = C.themeText(e), page = C.pageUrl(root, e);
+      var inner = '<span class="club-date" aria-hidden="true"><span class="dow">' + C.DOW[new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay()].slice(0, 3) +
         '</span><span class="day">' + p.d + '</span><span class="mon">' + C.MON[p.m - 1].slice(0, 3) + "</span></span>" +
         '<span><span class="club-pick-title">' + esc(e.title) + "</span>" +
         '<span class="club-pick-meta">' + esc(C.longDate(e.starts_on) + " · " + C.timeLabel(e)) + "</span>" +
         (theme ? '<span class="club-pick-meta">Food theme: ' + esc(theme) + "</span>" : "") +
-        '<span class="club-pick-meta" data-count="' + esc(e.id) + '">' + esc(countText(e)) + "</span>" +
-        '<span class="club-pick-check">✓ Selected</span></span></label></div>';
+        '<span class="club-pick-meta" data-count="' + esc(e.id) + '">' + esc(countText(e)) + "</span>";
+      // an event with an info page: the card goes straight there (no form in between)
+      if (page) return '<div class="club-pick-option"><a class="club-pick-link" href="' + esc(page) + '">' + inner +
+        '<span class="club-pick-go">Details and sign-up <span aria-hidden="true">&rarr;</span></span></span></a></div>';
+      return '<div class="club-pick-option"><input type="radio" name="su-event" id="' + id + '" value="' + esc(e.id) + '">' +
+        '<label for="' + id + '">' + inner + '<span class="club-pick-check">✓ Selected</span></span></label></div>';
     }).join("");
   }
   function options(list) {
@@ -76,7 +81,10 @@
     $("su-pick").hidden = false;
     var want = new URLSearchParams(location.search).get("event");
     if (want && list.some(function (e) { return e.id === want; })) {
-      document.getElementById("su-ev-" + want).checked = true;
+      // a link card has no radio; its form still opens when a link names it (the info
+      // page's buttons fall back to this when the browser can't show the pop-up)
+      var radio = document.getElementById("su-ev-" + want);
+      if (radio) radio.checked = true;
       pick(want, false);
     }
   }, function () { status('<div class="club-banner club-banner--warn"><p>The sign-up list could not be loaded. Reload to try again.</p></div>'); });

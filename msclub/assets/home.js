@@ -30,7 +30,7 @@
   }
   function card(e, nextId) {
     var p = C.parts(e.starts_on), theme = C.themeText(e);
-    return '<article class="club-card' + (e.id === nextId ? " is-next" : "") + (e.status === "cancelled" ? " is-cancelled" : "") + '">' +
+    return '<article class="club-card' + (e.id === nextId ? " is-next" : "") + (e.status === "cancelled" ? " is-cancelled" : "") + (C.pageUrl(root, e) ? " has-page" : "") + '">' +
       '<div class="club-card-top"><div class="club-date" aria-hidden="true"><span class="dow">' + C.DOW[new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay()].slice(0, 3) +
       '</span><span class="day">' + p.d + '</span><span class="mon">' + C.MON[p.m - 1].slice(0, 3) + "</span></div>" +
       '<div><h4 class="club-card-title">' + (C.pageUrl(root, e) ? '<a href="' + esc(C.pageUrl(root, e)) + '">' + esc(e.title) + "</a>" : esc(e.title)) + '</h4><p class="club-card-chips">' + chips(e) + "</p></div></div>" +
