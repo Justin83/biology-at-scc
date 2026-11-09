@@ -12,7 +12,7 @@ project as migration `club_v1`, with Justin's approval. `enabled` in
 
 | URL (under `msclub/`) | For | What it does |
 |---|---|---|
-| `./` | everyone | Next meeting (food theme, **who's bringing what** beside the details on a computer and above the button on a phone, sign-up button), beside it on a computer the flyer for each upcoming event (see [Flyers](#flyers); no QR code on this page), and event cards by month; food events have a **Sign up to bring food** button that opens the sign-up in a pop-up; an event with an info page (below) has its sign-up button and title go to that page |
+| `./` | everyone | Next meeting (food theme, **who's bringing what** beside the details on a computer and above the button on a phone, sign-up button), beside it on a computer the flyer for each upcoming event (see [Flyers](#flyers); no QR code on this page), and event cards by month; food events have a **Sign up to bring food** button that opens the sign-up in a pop-up; an event with an info page (below): its whole card goes to that page |
 | `signup/` | everyone | Event sign-up (club-bar tab **Event sign-up**). Clickable cards in two groups: **Club meetings** (meetings and socials, where people bring food) and **Events and trips** (any other event an officer turns sign-up on for; the group is hidden while there are none). Nothing is preselected unless the link names one (the card buttons do). Choosing a card opens who's bringing what and the form below the cards; add, change or remove your own sign-up; no account |
 | `officers/` | club officers (`noindex`) | Edit dates, times, titles and food themes in a pop-up editor (two columns on a desktop); add, postpone, cancel or delete events; set up sign-up (bring food, volunteers or who's going); remove sign-ups; open or close sign-up; the **Flyer library**; change the officer code |
 | `events/<page>/` | everyone | An event's info page, for a call to action such as volunteering (see [Event info pages](#event-info-pages)). Now: `events/steam-day-2027/` |
@@ -133,8 +133,12 @@ An event can have a small info page at `msclub/events/<page>/`, for when the car
 isn't enough, such as a call for volunteers. The event's `page` field (migration `club_v6`)
 names it. When it's set:
 
-- the event card's sign-up button and title go to the info page instead of opening the
-  pop-up, and on the sign-up page choosing the event shows a **More about …** link;
+- its card goes straight to the info page, with no sign-up form in between: on the home
+  page and schedule the whole card (title, button or anywhere else on it), and on the
+  sign-up page its card is a link (**Details and sign-up →**) instead of a choice that
+  opens the form. A link that names the event (`signup/?event=<id>`, the info page's
+  fallback for browsers without pop-ups) still opens its form there, with a **More about
+  …** link;
 - the info page reads its event from the live schedule (date, time, place, how many have
   signed up), and its **Sign up** buttons (one at the top, one after the sign-up line)
   open the same sign-up form in a pop-up;

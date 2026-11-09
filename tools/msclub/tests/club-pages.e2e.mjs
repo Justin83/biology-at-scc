@@ -281,8 +281,11 @@ try {
   await a.click("#su-submit");
   await a.waitForFunction(() => /on the list/.test(document.getElementById("su-msg").textContent));
   assert.match(await text(a, "#su-list"), /Going 1 of 2 spots E2E Rider \(you\)/);
-  // work this event: STEAM Day volunteers pick a shift
-  await a.click('#su-events label:has-text("STEAM Day Somerset 2027")');
+  // work this event: STEAM Day volunteers pick a shift. STEAM Day's card links to its info
+  // page, so its form opens here from a link that names it (the info page's fallback)
+  assert.equal(await a.getAttribute('#su-events a.club-pick-link:has-text("STEAM Day Somerset 2027")', "href"), "../events/steam-day-2027/");
+  const steamId = await a.evaluate(async () => (await Club.load("../")).events.find((e) => e.page === "steam-day-2027").id);
+  await a.goto(SITE + "signup/" + Q + "&event=" + steamId);
   await a.waitForFunction(() => /working/i.test(document.getElementById("su-list-title").textContent));
   assert.match(await text(a, "#su-slots-legend"), /Shift or role/);
   assert.equal(await a.isVisible("#su-item"), false);
@@ -366,7 +369,10 @@ try {
   assert.equal(await steamInfoCard.locator(".club-card-actions a.club-btn").getAttribute("href"), "./events/steam-day-2027/");
   assert.equal(await steamInfoCard.locator(".club-card-title a").getAttribute("href"), "./events/steam-day-2027/", "the title links to the info page too");
   assert.equal(await steamInfoCard.locator("[data-signup]").count(), 0, "no pop-up from the card");
-  await steamInfoCard.locator(".club-card-actions a.club-btn").click();
+  // anywhere on the card goes there, not just the button: click on the date, as a person would
+  await steamInfoCard.scrollIntoViewIfNeeded();
+  const dateBox = await steamInfoCard.locator(".club-date").boundingBox();
+  await v.mouse.click(dateBox.x + dateBox.width / 2, dateBox.y + dateBox.height / 2);
   await v.waitForURL(/\/msclub\/events\/steam-day-2027\/$/);
   await v.waitForFunction(() => /to about/.test(document.getElementById("ev-when").textContent) && !document.querySelector("[data-ev-count]").hidden);
   assert.equal(await text(v, "#ev-when"), "Friday, March 5, 2027 · 8:00 AM to about 2:00 PM · North Campus");
@@ -398,11 +404,19 @@ try {
   await v.waitForFunction(() => /removed/.test(document.getElementById("m-msg").textContent));
   await v.click("#club-signup-dialog [data-close]");
   assert.match(await text(v, ".club-event-cta >> nth=1"), /Nobody has signed up yet\./);
-  // on the sign-up page, choosing STEAM Day links to its info page
+  // on the sign-up page, the STEAM Day card goes straight to its info page (no form in between)
+  const steamHref = await v.getAttribute("[data-ev-signup] >> nth=0", "href"); // ../../signup/?event=<id>, the pop-up's fallback
   await v.goto(SITE + "signup/" + Q);
-  await v.click('#su-pick-events label:has-text("STEAM Day")');
+  const steamPick = v.locator('#su-pick-events a.club-pick-link:has-text("STEAM Day")');
+  assert.equal(await steamPick.getAttribute("href"), "../events/steam-day-2027/");
+  assert.match(await steamPick.innerText(), /Details and sign-up/);
+  assert.equal(await v.locator('#su-pick-events input[type=radio]').evaluateAll((r) => r.filter((x) => x.closest(".club-pick-option").textContent.includes("STEAM")).length), 0, "no radio for STEAM Day");
+  await steamPick.click();
+  await v.waitForURL(/\/msclub\/events\/steam-day-2027\/$/);
+  // a link that names the event still opens its form there (for browsers without the pop-up)
+  await v.goto(SITE + "signup/" + steamHref.split("signup/")[1]);
   await v.waitForSelector('#su-info a:has-text("More about STEAM Day Somerset 2027")');
-  assert.equal(await v.getAttribute('#su-info a:has-text("More about")', "href"), "../events/steam-day-2027/");
+  assert.equal(await v.isVisible("#su-app"), true);
 
   // once a flyer's event date has passed it leaves the home page and moves to the archive
   // (here the Thanksgiving flyer's date is moved to November 1; the test database's today is November 5)
