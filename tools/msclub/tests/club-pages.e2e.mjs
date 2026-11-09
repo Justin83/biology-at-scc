@@ -99,10 +99,26 @@ try {
   await a.waitForFunction(() => /signed up to bring Brownies/.test(document.getElementById("m-msg").textContent));
   assert.match(await text(a, "#m-list"), /Brownies · E2E Student A \(contains nuts\) \(you\)/);
   await a.click("#club-signup-dialog [data-close]");
-  assert.match(await text(a, "#club-next-body"), /1 person has signed up/);
+  assert.match(await text(a, "#club-next-body"), /1 person is bringing 1 dish\./);
   const cardList = await text(a, "#club-next-body .club-next-bring");
   assert.match(cardList, /Brownies · E2E Student A \(contains nuts\) \(you\)/, "card list updates after signing up");
   assert.doesNotMatch(cardList, /Main dish|Dessert|Drinks|signed up/, "one plain list, no category boxes");
+  // the same person brings a second dish: counted once, with both dishes
+  await a.click("#club-next-body [data-signup]");
+  await a.waitForSelector("#club-signup-dialog[open]");
+  assert.equal(await a.inputValue("#m-name"), "E2E Student A", "name remembered for the next dish");
+  await a.fill("#m-item", "Lemon bars");
+  await a.click("#m-submit");
+  await a.waitForFunction(() => /Bringing something else too\?/.test(document.getElementById("m-msg").textContent));
+  await a.click("#club-signup-dialog [data-close]");
+  assert.match(await text(a, "#club-next-body"), /1 person is bringing 2 dishes\./);
+  // take the second dish back off so the rest of the test starts from one dish
+  await a.click("#club-next-body [data-signup]");
+  await a.waitForSelector('#club-signup-dialog[open] #m-mine li:has-text("Lemon bars")');
+  await a.click('#m-mine li:has-text("Lemon bars") [data-remove]');
+  await a.waitForFunction(() => /removed/.test(document.getElementById("m-msg").textContent));
+  await a.click("#club-signup-dialog [data-close]");
+  assert.match(await text(a, "#club-next-body"), /1 person is bringing 1 dish\./);
 
   // student B on another phone, on the sign-up page: clickable cards (club meetings in
   // one group, other events and trips in another); nothing is preselected and the form
@@ -141,7 +157,7 @@ try {
   await b.fill("#su-item", "Lemonade");
   await b.click("#su-submit");
   await b.waitForFunction(() => /Lemonade/.test(document.getElementById("su-msg").textContent));
-  assert.match(await text(b, '#su-pick-options label:has-text("November 19")'), /2 people signed up/, "step 1 card count updates after signing up");
+  assert.match(await text(b, '#su-pick-options label:has-text("November 19")'), /2 people are bringing 2 dishes/, "step 1 card count updates after signing up");
   assert.equal(await b.isChecked("#su-ev-" + novId), true, "selection kept after the counts update");
 
   // A changes and then removes their entry (pop-up again). A's page loaded before B signed
