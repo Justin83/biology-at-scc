@@ -123,10 +123,30 @@
   });
   $("club-bigqr").addEventListener("close", function () { $("club-bigqr-open").focus(); });
 
+  // ---------------------------------------------------------------- flyers
+  // In the QR panel, which is shown on computers only: each event flyer until its date
+  // passes. The picture and name open the PDF in the browser to view or print.
+  function showFlyers(today) {
+    C.loadFlyers(root).then(function (list) {
+      var now = list.filter(function (f) { return C.flyerOnHome(f, today); })
+        .sort(function (a, b) { return a.event_date < b.event_date ? -1 : a.event_date > b.event_date ? 1 : 0; });
+      var box = $("club-flyers");
+      box.innerHTML = now.length ? "<h3>" + (now.length > 1 ? "Flyers" : "Flyer") + "</h3>" + now.map(function (f) {
+        return '<a class="club-flyer" href="' + esc(root + "flyers/" + f.pdf) + '" target="_blank" rel="noopener">' +
+          '<img src="' + esc(root + "flyers/" + f.preview) + '" width="612" height="792" alt="" loading="lazy">' +
+          '<span class="club-flyer-name">' + esc(f.title) + "</span>" +
+          '<span class="club-flyer-hint">View or print (PDF)<span class="visually-hidden">, opens in a new tab</span></span></a>';
+      }).join("") : "";
+      box.hidden = !now.length;
+      box.setAttribute("data-shown", String(now.length));
+    });
+  }
+
   // ---------------------------------------------------------------- start
   C.load(root).then(function (d) {
     data = d;
     renderAll();
+    showFlyers(d.today);
     if (!data.live && C.config.enabled) {
       $("club-status").innerHTML = '<div class="club-banner club-banner--warn"><p>We couldn\'t load the live schedule, so this is the printed Fall 2026 schedule. Food sign-up needs a connection. Try again in a few minutes.</p></div>';
     } else if (C.isLocal()) {
@@ -134,5 +154,6 @@
     }
   }, function () {
     $("club-upcoming").innerHTML = "<p>The schedule could not be loaded. Reload the page to try again.</p>";
+    showFlyers(C.todayISO());
   });
 })();

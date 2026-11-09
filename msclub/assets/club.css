@@ -158,6 +158,14 @@
 .club-officer-list li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.3rem 1rem; padding: 0.55rem 0.8rem; border: 1px solid var(--border); border-radius: 10px; background: var(--card-bg); }
 .club-officer-list li.is-past { opacity: 0.8; }
 .club-officer-list p { margin: 0; }
+/* flyer library in Officer tools: a picture of each flyer with View or print and Download */
+.club-flyer-list { list-style: none; padding: 0; margin: 0.6rem 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 0.8rem; }
+.club-flyer-list > li { display: flex; gap: 1rem; align-items: flex-start; padding: 0.8rem; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); }
+.club-flyer-list h3 { margin: 0 0 0.25rem; font-size: 1.05rem; }
+.club-flyer-list p { margin: 0 0 0.3rem; }
+.club-flyer-list .club-actions { margin-top: 0.5rem; }
+.club-flyer-thumb { flex: none; width: 96px; }
+.club-flyer-thumb img { display: block; width: 100%; height: auto; background: #fff; border: 1px solid var(--border); border-radius: 4px; }
 .club-slot-row { display: grid; grid-template-columns: minmax(0, 1fr) 6.5rem auto; gap: 0.5rem; align-items: end; margin-bottom: 0.5rem; }
 .club-slot-row .club-field { margin: 0; }
 .club-editor { border: 2px solid var(--club-navy); }
@@ -183,10 +191,30 @@ main.club-wide { max-width: 1120px; }
 .club-top .club-next, .club-top .club-panel { margin: 0; }
 .club-scan { text-align: center; }
 .club-scan h2 { font-size: 1.05rem; margin: 0 0 0.6rem; }
-.club-scan img { display: block; width: 180px; height: 180px; margin: 0 auto 0.4rem; background: #fff; padding: 8px; border-radius: 10px; border: 1px solid var(--border); }
+.club-scan .club-scan-qr { display: block; width: 180px; height: 180px; margin: 0 auto 0.4rem; background: #fff; padding: 8px; border-radius: 10px; border: 1px solid var(--border); }
 .club-scan p { margin: 0.3rem 0; font-size: 0.95rem; }
 .club-scan .club-actions { justify-content: center; }
-@media (max-width: 819px) { .club-scan img { width: 140px; height: 140px; } }
+@media (max-width: 819px) { .club-scan .club-scan-qr { width: 140px; height: 140px; } }
+/* event flyers under the QR code: the picture and name open the PDF to view or print */
+.club-flyers { margin-top: 1rem; padding-top: 0.9rem; border-top: 1px solid var(--border); }
+.club-flyers h3 { font-size: 1.05rem; margin: 0 0 0.6rem; }
+.club-flyer { display: block; max-width: 150px; margin: 0 auto 0.9rem; color: inherit; text-decoration: none; border-radius: 8px; }
+.club-flyer:last-child { margin-bottom: 0; }
+.club-flyer img { display: block; width: 100%; height: auto; background: #fff; border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14); }
+.club-flyer-name { display: block; margin-top: 0.45rem; font-weight: 700; color: var(--accent); text-decoration: underline; text-underline-offset: 0.15em; }
+.club-flyer-hint { display: block; font-size: 0.9rem; color: var(--muted); }
+.club-flyer:hover .club-flyer-name { text-decoration-thickness: 2px; }
+.club-flyer:hover img { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22); }
+/* the picture links say "View or print (PDF)" instead of the new-tab arrow */
+a.club-flyer::after, a.club-flyer-thumb::after { content: none; }
+/* with a flyer the panel gets wider and puts it beside the QR code, so it stays about as
+   tall as the next-meeting card */
+@media (min-width: 700px) {
+  .club-scan:has(.club-flyers:not([hidden])) { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 1.1rem; align-content: start; }
+  .club-scan:has(.club-flyers:not([hidden])) > :not(.club-flyers) { grid-column: 1; }
+  .club-scan .club-flyers { grid-column: 2; grid-row: 1 / span 4; margin: 0; padding: 0 0 0 1.1rem; border-top: 0; border-left: 1px solid var(--border); width: 166px; }
+}
+@media (min-width: 820px) { .club-top:has(.club-flyers:not([hidden])) { grid-template-columns: minmax(0, 1fr) 470px; } }
 /* on a phone the QR panel only points back to the page you're on: computers only */
 @media (max-width: 699px) { .club-scan { display: none; } }
 
@@ -235,8 +263,10 @@ main.club-wide { max-width: 1120px; }
 #club-next-body.has-bring .club-next-info .club-next-meta { margin-bottom: 0.4rem; }
 #club-next-body.has-bring .club-next-bring { grid-area: bring; }
 #club-next-body.has-bring .club-next-actions { grid-area: actions; margin: 0; align-self: start; }
-@container (min-width: 600px) {
+@container (min-width: 500px) {
   #club-next-body.has-bring { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "info bring" "actions bring"; align-items: start; }
+  /* the date fits its half of the card */
+  #club-next-body.has-bring .club-next-date { font-size: clamp(1.45rem, 4.6cqi, 2rem); }
 }
 .club-su-page { padding-top: 1.2rem; }
 
