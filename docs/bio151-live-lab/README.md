@@ -15,7 +15,7 @@ spectrum).
 | [EXPERIMENT.md](EXPERIMENT.md) | Protocol, wavelengths, data fields, instrument limits, configurable parameters |
 | [DEPLOYMENT.md](DEPLOYMENT.md) | Hosting, URLs, database, env/config names, verification, rollback, key rotation |
 | [qr-latex-snippet.tex](qr-latex-snippet.tex) | Overleaf-ready QR block with a single `\LabFormURL` macro |
-| [qr-student-form.png](qr-student-form.png) | QR image (same URL) for non-LaTeX use |
+| [qr-student-form.png](qr-student-form.png) | QR image (same URL) for non-LaTeX use; regenerate with `node tools/bio151-live-lab/make-qr.mjs` |
 
 ## Architecture in one paragraph
 

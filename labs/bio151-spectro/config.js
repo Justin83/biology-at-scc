@@ -7,7 +7,7 @@ window.LAB_CONFIG = {
   // Default experiment. Override on either page with ?exp=<slug>.
   EXPERIMENT_SLUG: "bio151-chlorophyll",
   // Stable URL that the printed QR code points at.
-  STUDENT_FORM_URL: "https://justin83.github.io/biology-at-scc/labs/bio151-spectro/",
+  STUDENT_FORM_URL: "https://biologyatscc.com/labs/bio151-spectro/",
   // Dashboard auto-refresh interval (seconds). Student form re-syncs at the same cadence.
   REFRESH_SECONDS: 12
 };

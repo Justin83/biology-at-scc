@@ -10,8 +10,8 @@ DNS for `biologyatscc.com` is on Cloudflare (nameservers `brad` and `jule.ns.clo
 | `https://www.biologyatscc.com/` | GitHub redirects it to `biologyatscc.com` |
 | `https://justin83.github.io/biology-at-scc/…` | GitHub redirects old links to the same page on `biologyatscc.com` |
 
-The club used to be at `math-science-club/`. That folder is gone: links and QR codes that
-pointed there (including flyers printed before November 2026) no longer work.
+The club's old folder was removed in November 2026: links and QR codes for the old club
+address (including flyers printed before then) no longer work.
 
 ## Cloudflare DNS (zone `biologyatscc.com`)
 
@@ -43,20 +43,17 @@ pointed there (including flyers printed before November 2026) no longer work.
 
 ## QR codes
 
-The club QR code (`msclub/assets/qr-club.svg`, from `homeUrl` in `msclub/assets/club.js`
-via `node tools/msclub/make-qr.mjs`) and the printed club address are
-`https://biologyatscc.com/msclub/`.
+Every QR code on the site encodes a `biologyatscc.com` address. Each is generated from one
+setting; change the setting, run the generator, and `--check` confirms they match.
 
-The other QR codes still encode `justin83.github.io/biology-at-scc/…`. GitHub forwards
-those to `biologyatscc.com`, so they keep working; they change last, once the domain
-has been working for a while:
+| QR code | Opens | Setting | Generator |
+|---|---|---|---|
+| `msclub/assets/qr-club.svg` (club home, big-screen view, poster) | `https://biologyatscc.com/msclub/` | `homeUrl` in `msclub/assets/club.js` | `node tools/msclub/make-qr.mjs` |
+| `research/freshwater/assets/qr-submit.svg` (and the class QR codes on the review page) | `https://biologyatscc.com/research/freshwater/observations/submit/` | `submitUrl` in `research/freshwater/assets/fieldobs.js` | `node tools/freshwater-portal/make-qr.mjs` |
+| `labs/bio151-spectro/qr-student-form.svg`, `docs/bio151-live-lab/qr-student-form.png` | `https://biologyatscc.com/labs/bio151-spectro/` | `STUDENT_FORM_URL` in `labs/bio151-spectro/config.js` (and `\LabFormURL` in `docs/bio151-live-lab/qr-latex-snippet.tex`) | `node tools/bio151-live-lab/make-qr.mjs` |
 
-- `research/freshwater/assets/fieldobs.js` `submitUrl` →
-  `https://biologyatscc.com/research/freshwater/observations/submit/`, then
-  `node tools/freshwater-portal/make-qr.mjs`. The review page builds class QR codes from
-  the same setting.
-- `labs/bio151-spectro/config.js` `STUDENT_FORM_URL`, `labs/bio151-spectro/qr-student-form.svg`
-  and `docs/bio151-live-lab/qr-latex-snippet.tex`.
+QR codes printed before the move that encode `justin83.github.io/biology-at-scc/…` keep
+working (GitHub forwards them), except codes for the old club address.
 
 ## Checks
 
