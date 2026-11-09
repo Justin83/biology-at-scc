@@ -22,7 +22,7 @@ import { fileURLToPath } from "node:url";
 const require = createRequire(import.meta.url);
 const opentype = require("opentype.js");
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-const OUT = path.join(ROOT, "math-science-club/assets/logos");
+const OUT = path.join(ROOT, "msclub/assets/logos");
 const font = (pkg, file) => opentype.loadSync(require.resolve(`@fontsource/${pkg}/files/${file}`));
 const BEBAS = font("bebas-neue", "bebas-neue-latin-400-normal.woff");
 const JOSEFIN = font("josefin-sans", "josefin-sans-latin-400-normal.woff");
@@ -174,5 +174,5 @@ function combinedLogo() {
 fs.mkdirSync(OUT, { recursive: true });
 for (const [file, make] of [["shield-green.svg", shieldLogo], ["seal-green.svg", sealLogo], ["seal-combined.svg", combinedLogo]]) {
   fs.writeFileSync(path.join(OUT, file), make());
-  console.log("wrote math-science-club/assets/logos/" + file);
+  console.log("wrote msclub/assets/logos/" + file);
 }

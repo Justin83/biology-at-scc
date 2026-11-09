@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Officer Tools · Math &amp; Science Club · Biology at SCC</title>
+<meta name="description" content="For Math &amp; Science Club officers: change event dates, add or cancel events, set up the food sign-up and remove sign-ups. Requires the officer code.">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="stylesheet" href="../assets/club.css">
+</head>
+<body class="club" data-club-root="../">
+<a class="skip-link" href="#main">Skip to main content</a>
+<header>
+  <div class="wrap">
+    <a class="site-title" href="../../index.html">Biology <span>at SCC</span></a>
+    <nav aria-label="Biology at SCC">
+      <ul>
+        <li><a href="../../honors-symposium/">Honors Symposium</a></li>
+        <li><a href="../../posters-presentations/">Posters &amp; Presentations</a></li>
+        <li><a href="../../archive/">Archive</a></li>
+        <li><a href="../../labs/">Lab</a></li>
+        <li><a href="../../research/freshwater/">Research</a></li>
+        <li><a href="../" class="is-active">Club</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="club-bar">
+  <div class="wrap">
+    <a class="club-bar-name" href="../"><img src="../assets/logo.svg" alt="" width="28" height="28">Math &amp; Science Club</a>
+    <nav aria-label="Club">
+      <ul>
+        <li><a href="../">Club home</a></li>
+        <li><a href="../signup/">Food sign-up</a></li>
+        <li><a href="../#schedule">Schedule</a></li>
+        <li><a href="../qr/">QR poster</a></li>
+      </ul>
+    </nav>
+    <a class="club-bar-officer" href="./" aria-current="page"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z"/></svg>Officer tools</a>
+  </div>
+</div>
+
+<main id="main">
+  <p class="breadcrumb"><a href="../">&larr; Back to the club page</a></p>
+  <div class="club-banner club-banner--officer" role="note">
+    <strong>Officers only</strong>
+    <p>Changes made here appear on the public club page right away. If you just want to sign up to bring food, use the <a href="../signup/">food sign-up</a> instead.</p>
+  </div>
+  <h1>Officer Tools</h1>
+
+  <div id="of-status" role="status"></div>
+
+  <section class="club-panel" id="of-signin" aria-labelledby="of-signin-title" hidden>
+    <h2 id="of-signin-title">Unlock officer tools</h2>
+    <form id="of-signin-form" novalidate>
+      <div class="club-field">
+        <label for="of-code">Officer code</label>
+        <input id="of-code" type="password" autocomplete="current-password" aria-describedby="of-code-hint">
+        <p class="club-hint" id="of-code-hint">Ask the club adviser for the code. It is remembered only in this browser tab.</p>
+      </div>
+      <button type="submit" class="club-btn">Unlock</button>
+      <p id="of-signin-msg" class="club-msg" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <div id="of-app" hidden>
+    <section class="club-panel" aria-labelledby="of-state-title">
+      <h2 id="of-state-title">Food sign-up</h2>
+      <p id="of-open-text"></p>
+      <div class="club-actions">
+        <button type="button" class="club-btn club-btn--ghost" id="of-toggle-open">Close food sign-up</button>
+        <button type="button" class="club-btn club-btn--ghost" id="of-signout">Lock officer tools</button>
+      </div>
+    </section>
+
+    <section aria-labelledby="of-events-title">
+      <h2 id="of-events-title">Events</h2>
+      <p>Choose <strong>Edit</strong> to change a date, time or food theme, cancel an event, or set up its food sign-up.</p>
+      <div class="club-actions"><button type="button" class="club-btn" id="of-add">Add an event</button></div>
+      <p id="of-list-msg" class="club-msg" role="status" aria-live="polite"></p>
+      <h3>Coming up</h3>
+      <ul id="of-upcoming" class="club-officer-list" aria-label="Upcoming events"></ul>
+      <details class="club-past">
+        <summary>Past events</summary>
+        <ul id="of-past" class="club-officer-list" aria-label="Past events"></ul>
+      </details>
+    </section>
+
+
+    <details class="club-panel">
+      <summary><strong>Change the officer code</strong></summary>
+      <form id="of-newcode-form" novalidate>
+        <div class="club-field"><label for="of-newcode">New officer code (at least 8 characters)</label><input id="of-newcode" type="password" autocomplete="new-password"></div>
+        <button type="submit" class="club-btn club-btn--ghost">Change code</button>
+        <p id="of-newcode-msg" class="club-msg" role="status" aria-live="polite"></p>
+      </form>
+    </details>
+  </div>
+</main>
+
+<dialog class="club-modal club-modal--wide club-editor" id="of-editor" aria-labelledby="of-editor-title">
+  <div class="club-modal-head">
+    <h2 id="of-editor-title">Edit event</h2>
+    <button type="button" class="club-btn club-btn--ghost club-btn--small" id="of-close-x">Close</button>
+  </div>
+  <form id="of-form" novalidate>
+    <div class="club-editor-cols">
+      <div>
+        <div class="club-field"><label for="of-title">Title</label><input id="of-title" type="text" maxlength="120" required></div>
+        <div class="club-field"><label for="of-theme">Food theme <span class="club-hint">(optional)</span></label>
+          <input id="of-theme" type="text" maxlength="60" placeholder="e.g., Pasta, Tacos, Breakfast for dinner" aria-describedby="of-theme-hint">
+          <p class="club-hint" id="of-theme-hint">Shown on the event card and in the sign-up. Leave blank and it says "to be announced".</p></div>
+        <div class="club-row">
+          <div class="club-field"><label for="of-date">Date</label><input id="of-date" type="date" required></div>
+          <div class="club-field"><label for="of-end-date">Last day <span class="club-hint">(multi-day only)</span></label><input id="of-end-date" type="date"></div>
+        </div>
+        <div class="club-row">
+          <div class="club-field"><label for="of-start">Start time <span class="club-hint">(blank = all day)</span></label><input id="of-start" type="time"></div>
+          <div class="club-field"><label for="of-end">End time <span class="club-hint">(optional)</span></label><input id="of-end" type="time"></div>
+        </div>
+        <div class="club-row">
+          <div class="club-field"><label for="of-kind">Type</label><select id="of-kind"></select></div>
+          <div class="club-field"><label for="of-location">Location <span class="club-hint">(optional)</span></label><input id="of-location" type="text" maxlength="120"></div>
+        </div>
+        <div class="club-field"><label for="of-details">Details <span class="club-hint">(optional, shown on the card)</span></label><textarea id="of-details" maxlength="1000" rows="2"></textarea></div>
+        <fieldset class="club-field">
+          <legend>Status</legend>
+          <div class="club-choice"><input type="checkbox" id="of-tentative"><label for="of-tentative">Tentative (may change)</label></div>
+          <div class="club-choice"><input type="checkbox" id="of-cancelled"><label for="of-cancelled">Cancelled (stays on the page, crossed out)</label></div>
+        </fieldset>
+      </div>
+      <div>
+        <fieldset class="club-field">
+          <legend>Food sign-up</legend>
+          <div class="club-choice"><input type="checkbox" id="of-signup"><label for="of-signup">Members can sign up to bring food for this event</label></div>
+          <div id="of-signup-setup">
+            <div class="club-field"><label for="of-signup-note">Note for people signing up <span class="club-hint">(optional)</span></label>
+              <input id="of-signup-note" type="text" maxlength="300" placeholder="e.g., The club is providing pizza, so bring sides, desserts or drinks."></div>
+            <p><strong>Categories</strong> <span class="club-hint">(what people can sign up to bring; "How many" is optional)</span></p>
+            <div id="of-slots"></div>
+            <div class="club-actions">
+              <button type="button" class="club-btn club-btn--ghost club-btn--small" id="of-slot-add">Add a category</button>
+              <button type="button" class="club-btn club-btn--ghost club-btn--small" id="of-slot-default">Use the usual categories</button>
+            </div>
+          </div>
+        </fieldset>
+        <div id="of-signups-wrap">
+          <h3>Sign-ups for this event</h3>
+          <ul id="of-signups" class="club-officer-list"></ul>
+        </div>
+      </div>
+    </div>
+    <div class="club-actions club-editor-foot">
+      <button type="submit" class="club-btn" id="of-save">Save event</button>
+      <button type="button" class="club-btn club-btn--ghost" id="of-close">Close without saving</button>
+      <button type="button" class="club-btn club-btn--danger" id="of-delete">Delete event</button>
+    </div>
+    <p id="of-form-msg" class="club-msg" role="status" aria-live="polite"></p>
+  </form>
+</dialog>
+
+<footer>
+  <div class="wrap">
+    <p>Math &amp; Science Club &middot; Somerset Community College &middot; part of <a href="../../index.html">Biology at SCC</a></p>
+  </div>
+</footer>
+<script src="../assets/club.js" defer></script>
+<script src="../assets/officers.js" defer></script>
+</body>
+</html>

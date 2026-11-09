@@ -3,15 +3,13 @@
 The site is served by GitHub Pages from this repository at `https://biologyatscc.com`.
 DNS for `biologyatscc.com` is on Cloudflare (nameservers `brad` and `jule.ns.cloudflare.com`).
 
-| Address | What it does |
+| Address | What it is |
 |---|---|
 | `https://biologyatscc.com/` | The site (GitHub Pages) |
+| `https://biologyatscc.com/msclub/` | Math & Science Club |
 | `https://www.biologyatscc.com/` | GitHub redirects it to `biologyatscc.com` |
-| `https://club.biologyatscc.com/` | Cloudflare redirects it to `https://biologyatscc.com/math-science-club/` (paths carry over: `/signup/` goes to `/math-science-club/signup/`) |
-| `https://justin83.github.io/biology-at-scc/…` | GitHub redirects old links and printed QR codes to the same page on `biologyatscc.com` |
-
-A GitHub Pages site can have only one custom domain, so the club subdomain is a redirect
-rather than a second site.
+| `https://justin83.github.io/biology-at-scc/…` | GitHub redirects old links to the same page on `biologyatscc.com` |
+| `…/math-science-club/…` | Small redirect pages to the same page under `msclub/` (query string kept), for old links and printed QR codes |
 
 ## Cloudflare DNS (zone `biologyatscc.com`)
 
@@ -21,32 +19,17 @@ rather than a second site.
 | A | `@` | `185.199.109.153` | DNS only |
 | A | `@` | `185.199.110.153` | DNS only |
 | A | `@` | `185.199.111.153` | DNS only |
-| AAAA | `@` | `2606:50c0:8000::153` | DNS only |
-| AAAA | `@` | `2606:50c0:8001::153` | DNS only |
-| AAAA | `@` | `2606:50c0:8002::153` | DNS only |
-| AAAA | `@` | `2606:50c0:8003::153` | DNS only |
+| AAAA | `@` | `2606:50c0:8000::153` | DNS only (optional) |
+| AAAA | `@` | `2606:50c0:8001::153` | DNS only (optional) |
+| AAAA | `@` | `2606:50c0:8002::153` | DNS only (optional) |
+| AAAA | `@` | `2606:50c0:8003::153` | DNS only (optional) |
 | CNAME | `www` | `justin83.github.io` | DNS only |
-| A | `club` | `192.0.2.1` | Proxied |
 | TXT | `_github-pages-challenge-Justin83` | the value GitHub shows | DNS only |
 
-- The GitHub records are **DNS only** (grey cloud). GitHub issues the HTTPS certificate
-  itself and can't while Cloudflare proxies the traffic.
-- The `club` record is **Proxied** (orange cloud) and points at `192.0.2.1`, an address
-  reserved for documentation that is never contacted. Cloudflare answers the request and
-  redirects before anything reaches an origin.
+- All records are **DNS only** (grey cloud). GitHub issues the HTTPS certificate itself and
+  can't while Cloudflare proxies the traffic.
 - The TXT record verifies the domain to the GitHub account, so no one else can attach it
   to their own Pages site.
-
-## Cloudflare redirect rule
-
-Rules → Redirect Rules → Create rule:
-
-- Rule name: `club subdomain`
-- When incoming requests match: custom filter expression, **Hostname** equals
-  `club.biologyatscc.com`
-- Then: URL redirect, **Dynamic**, expression
-  `concat("https://biologyatscc.com/math-science-club", http.request.uri.path)`,
-  status code **301**, **Preserve query string** on
 
 ## GitHub
 
@@ -56,19 +39,29 @@ Rules → Redirect Rules → Create rule:
   `CNAME` file: the custom domain lives in the Pages settings.
 - Profile Settings → Pages → Add a domain: `biologyatscc.com` gives the TXT record above.
 
-## Addresses written into the site
+## Last step, after the domain has settled: QR codes
 
-- `math-science-club/assets/club.js` `homeUrl` (`https://club.biologyatscc.com/`): the
-  club QR code (`tools/math-science-club/make-qr.mjs`).
-- `research/freshwater/assets/fieldobs.js` `submitUrl`: the observation-form QR code
-  (`tools/freshwater-portal/make-qr.mjs`) and the class QR codes on the review page.
-- `labs/bio151-spectro/config.js` `STUDENT_FORM_URL`: the BIO 151 live-lab form address.
+The QR codes and the addresses they encode still point at
+`justin83.github.io/biology-at-scc/…`. Those keep working (GitHub and the redirect pages
+forward them), so they change last, in one pass, once `biologyatscc.com` has been
+working for a while:
+
+- `msclub/assets/club.js` `homeUrl` → `https://biologyatscc.com/msclub/`, then
+  `node tools/math-science-club/make-qr.mjs`; update the address printed beside the QR
+  code in `msclub/index.html` (big-screen view) and `msclub/qr/index.html` (poster).
+- `research/freshwater/assets/fieldobs.js` `submitUrl` →
+  `https://biologyatscc.com/research/freshwater/observations/submit/`, then
+  `node tools/freshwater-portal/make-qr.mjs`. The review page builds class QR codes from
+  the same setting.
+- `labs/bio151-spectro/config.js` `STUDENT_FORM_URL`, `labs/bio151-spectro/qr-student-form.svg`
+  and `docs/bio151-live-lab/qr-latex-snippet.tex`.
+- Printed flyers.
 
 ## Checks
 
 ```
-curl -sI https://biologyatscc.com/ | head -1                      # 200
-curl -sI https://www.biologyatscc.com/ | grep -i ^location        # https://biologyatscc.com/
-curl -sI https://club.biologyatscc.com/signup/ | grep -i ^location # https://biologyatscc.com/math-science-club/signup/
-curl -sI https://justin83.github.io/biology-at-scc/math-science-club/ | grep -i ^location
+curl -sI https://biologyatscc.com/ | head -1                       # 200
+curl -sI https://biologyatscc.com/msclub/ | head -1                # 200
+curl -sI https://www.biologyatscc.com/ | grep -i ^location         # https://biologyatscc.com/
+curl -sI https://justin83.github.io/biology-at-scc/msclub/ | grep -i ^location
 ```

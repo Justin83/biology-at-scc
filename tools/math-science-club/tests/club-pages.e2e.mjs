@@ -34,7 +34,7 @@ const server = http.createServer((req, res) => {
   fs.createReadStream(file).pipe(res);
 });
 await new Promise((r) => server.listen(0, "127.0.0.1", r));
-const SITE = `http://127.0.0.1:${server.address().port}/math-science-club/`;
+const SITE = `http://127.0.0.1:${server.address().port}/msclub/`;
 const Q = `?api=${encodeURIComponent(API)}`;
 const text = (page, sel) => page.innerText(sel).then((t) => t.replace(/\s+/g, " "));
 
@@ -187,6 +187,18 @@ try {
   assert.equal(await a.isChecked("#su-ev-" + novId), true, "event from the link is preselected");
   assert.match(await text(a, "#su-list"), /Drinks 0 of 3 needed/);
   assert.match(await text(a, "#su-info"), /Food theme: Tacos/);
+  // the old math-science-club/ addresses (old links, printed QR codes) forward to msclub/,
+  // keeping the query string
+  const OLD = SITE.replace(/msclub\/$/, "math-science-club/");
+  await a.goto(OLD + "signup/" + Q + "&event=" + novId);
+  await a.waitForURL(/\/msclub\/signup\/\?/);
+  assert.ok(a.url().includes("event=" + novId), "old sign-up link keeps its event");
+  await a.waitForSelector("#su-app:not([hidden]) #su-list");
+  assert.equal(await a.isChecked("#su-ev-" + novId), true, "event from the old link is preselected");
+  for (const sub of ["", "officers/", "qr/"]) {
+    await a.goto(OLD + sub);
+    await a.waitForURL(new RegExp("/msclub/" + sub.replace("/", "\\/") + "$"));
+  }
 
   // clean up: delete the test event, put the November meeting back the way it was
   await o.click('#of-upcoming li:has-text("E2E January Meeting") [data-edit]');

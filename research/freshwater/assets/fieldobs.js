@@ -18,7 +18,7 @@
     supabaseUrl: "https://efxymeviokaocosmpqwf.supabase.co",
     supabaseKey: "sb_publishable_xoPXCFR7FN5X6as1E1tYAg_bmSpYMHE",
     // Stable address that the printed and on-screen QR codes point at.
-    submitUrl: "https://biologyatscc.com/research/freshwater/observations/submit/"
+    submitUrl: "https://justin83.github.io/biology-at-scc/research/freshwater/observations/submit/"
   };
 
   // Local testing only: open any portal page with ?api=http://127.0.0.1:8788 to use

@@ -3,114 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Math &amp; Science Club · Biology at SCC</title>
-<meta name="description" content="Somerset Community College's Math &amp; Science Club: the next meeting, the food sign-up, and the Fall 2026 schedule of meetings, astronomy nights, campus tours and other events.">
-<link rel="stylesheet" href="../assets/style.css">
-<link rel="stylesheet" href="assets/club.css">
+<meta name="robots" content="noindex">
+<title>Math &amp; Science Club · Math &amp; Science Club (moved)</title>
+<link rel="canonical" href="../msclub/">
+<meta http-equiv="refresh" content="0; url=../msclub/">
+<script>location.replace("../msclub/" + location.search + location.hash);</script>
 </head>
-<body class="club" data-club-root="./">
-<a class="skip-link" href="#main">Skip to main content</a>
-<header>
-  <div class="wrap">
-    <a class="site-title" href="../index.html">Biology <span>at SCC</span></a>
-    <nav aria-label="Biology at SCC">
-      <ul>
-        <li><a href="../honors-symposium/">Honors Symposium</a></li>
-        <li><a href="../posters-presentations/">Posters &amp; Presentations</a></li>
-        <li><a href="../archive/">Archive</a></li>
-        <li><a href="../labs/">Lab</a></li>
-        <li><a href="../research/freshwater/">Research</a></li>
-        <li><a href="./" class="is-active">Club</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
-<div class="club-bar">
-  <div class="wrap">
-    <a class="club-bar-name" href="./"><img src="assets/logo.svg" alt="" width="28" height="28">Math &amp; Science Club</a>
-    <nav aria-label="Club">
-      <ul>
-        <li><a href="./" aria-current="page">Club home</a></li>
-        <li><a href="signup/">Food sign-up</a></li>
-        <li><a href="#schedule">Schedule</a></li>
-        <li><a href="qr/">QR poster</a></li>
-      </ul>
-    </nav>
-    <a class="club-bar-officer" href="officers/"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z"/></svg>Officer tools</a>
-  </div>
-</div>
-
-<main id="main" class="club-wide">
-  <section class="club-hero" aria-labelledby="club-title">
-    <img class="club-logo" src="assets/logo.svg" alt="Math &amp; Science Club, Somerset Community College logo" width="120" height="120">
-    <div>
-      <p class="club-kicker">Somerset Community College</p>
-      <h1 id="club-title">Math &amp; Science Club</h1>
-      <p class="lede">Meeting dates, upcoming events and the food sign-up for club members.</p>
-    </div>
-  </section>
-
-  <div class="club-top">
-    <section class="club-next" aria-labelledby="next-title" id="next">
-      <h2 id="next-title">Next meeting</h2>
-      <div id="club-next-body">
-        <p class="club-next-date">Thursday, November 19, 2026</p>
-        <p class="club-next-meta">5:00 PM · Math and Science Club Meeting</p>
-        <p class="club-actions"><a class="club-btn club-btn--big" href="signup/">Sign up to bring food</a></p>
-      </div>
-    </section>
-
-    <section class="club-panel club-scan" aria-labelledby="scan-title">
-      <h2 id="scan-title">Open on your phone</h2>
-      <img src="assets/qr-club.svg" width="180" height="180" alt="QR code for the Math &amp; Science Club website">
-      <p>Scan with your phone's camera to open the club website.</p>
-      <p class="club-actions"><button type="button" class="club-btn club-btn--ghost" id="club-bigqr-open">Show on the big screen</button></p>
-    </section>
-  </div>
-
-  <section aria-labelledby="schedule-title" id="schedule">
-    <h2 id="schedule-title">Coming up</h2>
-    <div id="club-status" role="status"></div>
-    <div id="club-upcoming"><noscript><p>Turn on JavaScript to see the schedule, or view the <a href="data/events.json">schedule data</a>.</p></noscript></div>
-    <details class="club-past" id="club-past-wrap" hidden>
-      <summary>Earlier this semester (<span id="club-past-count">0</span>)</summary>
-      <div id="club-past"></div>
-    </details>
-    <div class="club-fine">
-      <p>Dates come from the printed <em>MSSE Scholars Proposed Activities</em> schedule for Fall 2026. Events marked <span class="club-chip club-chip--tentative">Tentative</span> could change because of weather or other reasons.</p>
-      <p>Attendance at all activities is encouraged. MSSE scholars need to attend at least 4 each semester and meet with their mentor twice. Schedule changes are sent to your KCTCS student email.</p>
-      <p>Want a paper copy for the classroom door? Print the <a href="qr/">QR poster</a>.</p>
-    </div>
-  </section>
-
-</main>
-
-<dialog class="club-modal" id="club-signup-dialog" aria-labelledby="club-modal-title">
-  <div class="club-modal-head">
-    <h2 id="club-modal-title">Sign up to bring food</h2>
-    <button type="button" class="club-btn club-btn--ghost club-btn--small" data-close>Close</button>
-  </div>
-  <div id="club-signup-body"></div>
-</dialog>
-
-<dialog class="club-bigqr" id="club-bigqr" aria-labelledby="club-bigqr-title">
-  <div class="club-bigqr-inner">
-    <h2 id="club-bigqr-title">Scan to open the Math &amp; Science Club website</h2>
-    <p class="club-bigqr-event" id="club-bigqr-event"></p>
-    <img src="assets/qr-club.svg" alt="QR code for the Math &amp; Science Club website" width="600" height="600">
-    <p class="club-bigqr-url">club.biologyatscc.com</p>
-    <p class="club-actions"><button type="button" class="club-btn" data-close>Close</button></p>
-  </div>
-</dialog>
-
-<footer>
-  <div class="wrap">
-    <p>Math &amp; Science Club &middot; Somerset Community College &middot; part of <a href="../index.html">Biology at SCC</a></p>
-    <p>Questions about this site? Contact <a href="mailto:justin.howard@kctcs.edu">justin.howard@kctcs.edu</a>.</p>
-  </div>
-</footer>
-<script src="assets/club.js" defer></script>
-<script src="assets/signup-form.js" defer></script>
-<script src="assets/home.js" defer></script>
+<body>
+<p>The Math &amp; Science Club pages moved to <a href="../msclub/">biologyatscc.com/msclub</a>.</p>
 </body>
 </html>

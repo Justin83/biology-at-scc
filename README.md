@@ -65,9 +65,9 @@ The site deploys automatically to GitHub Pages via GitHub Actions
 (`.github/workflows/pages.yml`) on every push to `main`. There is no build
 step — the repository is plain static HTML/CSS.
 
-The domain `biologyatscc.com` is on Cloudflare DNS and points at GitHub Pages;
-`club.biologyatscc.com` redirects to the Math & Science Club section. The DNS
-records and the redirect rule are in `docs/DOMAIN.md`.
+The domain `biologyatscc.com` is on Cloudflare DNS and points at GitHub Pages.
+The Math & Science Club is at `biologyatscc.com/msclub`. The DNS records and the
+GitHub setting are in `docs/DOMAIN.md`.
 
 ## License
 

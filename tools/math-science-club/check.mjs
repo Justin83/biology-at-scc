@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Checks the club pages (math-science-club/**/index.html): one <h1>, <title>, meta
+// Checks the club pages (msclub/**/index.html): one <h1>, <title>, meta
 // description, <main id="main">, unique ids, alt text, local links and anchors that
 // resolve, external links that open in a new tab, the schedule data, and the QR code.
 //   node tools/math-science-club/check.mjs
@@ -9,7 +9,7 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-const CLUB = path.join(ROOT, "math-science-club");
+const CLUB = path.join(ROOT, "msclub");
 const problems = [];
 const warn = (m) => problems.push(m);
 const rel = (f) => path.relative(ROOT, f);
@@ -59,4 +59,4 @@ try { execFileSync(process.execPath, [path.join(ROOT, "tools/math-science-club/m
 catch (e) { warn(String(e.stderr || e.message).trim()); }
 
 if (problems.length) { console.error(problems.join("\n")); process.exit(1); }
-console.log(`math-science-club: ${pages.length} pages OK, ${ev.length} events, QR code current`);
+console.log(`msclub: ${pages.length} pages OK, ${ev.length} events, QR code current`);

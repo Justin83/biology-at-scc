@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Food Sign-Up · Math &amp; Science Club · Biology at SCC</title>
+<meta name="description" content="Sign up to bring food to the next Math &amp; Science Club meeting at Somerset Community College, and see who is already bringing what. Works on any phone or computer, no account needed.">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="stylesheet" href="../assets/club.css">
+</head>
+<body class="club" data-club-root="../">
+<a class="skip-link" href="#main">Skip to main content</a>
+<header>
+  <div class="wrap">
+    <a class="site-title" href="../../index.html">Biology <span>at SCC</span></a>
+    <nav aria-label="Biology at SCC">
+      <ul>
+        <li><a href="../../honors-symposium/">Honors Symposium</a></li>
+        <li><a href="../../posters-presentations/">Posters &amp; Presentations</a></li>
+        <li><a href="../../archive/">Archive</a></li>
+        <li><a href="../../labs/">Lab</a></li>
+        <li><a href="../../research/freshwater/">Research</a></li>
+        <li><a href="../" class="is-active">Club</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="club-bar">
+  <div class="wrap">
+    <a class="club-bar-name" href="../"><img src="../assets/logo.svg" alt="" width="28" height="28">Math &amp; Science Club</a>
+    <nav aria-label="Club">
+      <ul>
+        <li><a href="../">Club home</a></li>
+        <li><a href="./" aria-current="page">Food sign-up</a></li>
+        <li><a href="../#schedule">Schedule</a></li>
+        <li><a href="../qr/">QR poster</a></li>
+      </ul>
+    </nav>
+    <a class="club-bar-officer" href="../officers/"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z"/></svg>Officer tools</a>
+  </div>
+</div>
+
+<main id="main">
+  <h1>Food Sign-Up</h1>
+  <p class="lede">See what's already covered, then add what you're bringing. It works on any phone or computer, and you don't need an account.</p>
+
+  <div id="su-status" role="status">
+    <noscript><div class="club-banner club-banner--warn"><p>This page needs JavaScript to load the sign-up list.</p></div></noscript>
+  </div>
+
+  <fieldset class="club-pick" id="su-pick" hidden>
+    <legend><span class="club-step" aria-hidden="true">1</span> Choose the get-together <span class="club-req">(required)</span></legend>
+    <div class="club-pick-options" id="su-pick-options"></div>
+  </fieldset>
+
+  <div class="club-banner club-choose-first" id="su-choose-first" hidden>
+    <p><span class="club-step" aria-hidden="true">2</span> <strong>Choose a get-together above</strong> to see what's covered and add what you're bringing.</p>
+  </div>
+
+  <section class="club-panel club-su-page" id="su-app" aria-label="Food sign-up" hidden></section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Math &amp; Science Club &middot; Somerset Community College &middot; part of <a href="../../index.html">Biology at SCC</a></p>
+    <p>Club officers: <a href="../officers/">officer tools</a> (code required).</p>
+  </div>
+</footer>
+<script src="../assets/club.js" defer></script>
+<script src="../assets/signup-form.js" defer></script>
+<script src="../assets/signup.js" defer></script>
+</body>
+</html>

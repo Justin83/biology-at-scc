@@ -2,7 +2,7 @@
    Shared by the club home page, the food sign-up page and the officer tools.
 
    The Supabase URL and "publishable" key are public by design: the key only reaches the
-   public.club_* functions in math-science-club/sql/001_club.sql. Officer actions check the
+   public.club_* functions in msclub/sql/001_club.sql. Officer actions check the
    officer code inside the database. No secrets here. */
 (function () {
   "use strict";
@@ -14,7 +14,7 @@
     enabled: true,
     supabaseUrl: "https://efxymeviokaocosmpqwf.supabase.co",
     supabaseKey: "sb_publishable_xoPXCFR7FN5X6as1E1tYAg_bmSpYMHE",
-    homeUrl: "https://club.biologyatscc.com/"
+    homeUrl: "https://justin83.github.io/biology-at-scc/math-science-club/"
   };
 
   // Local testing only: ?api=http://127.0.0.1:8789 (loopback addresses only) points the
