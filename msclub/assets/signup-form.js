@@ -85,7 +85,8 @@
         '<p class="club-su-meta">' + esc(C.timeLabel(e)) + " · " + esc(e.title) + (e.location ? " · " + esc(e.location) : "") +
         (C.relDays(data.today, e.starts_on) ? " · " + esc(C.relDays(data.today, e.starts_on)) : "") + "</p>" +
         (theme ? '<p class="club-theme">Food theme: <strong>' + esc(theme) + "</strong></p>" : "") +
-        (e.signup_note ? "<p>" + linkEmails(esc(e.signup_note)) + "</p>" : "");
+        (e.signup_note ? "<p>" + linkEmails(esc(e.signup_note)) + "</p>" : "") +
+        (C.pageUrl(root, e) && !opts.onEventPage ? '<p><a href="' + esc(C.pageUrl(root, e)) + '">More about ' + esc(e.title) + "</a></p>" : "");
       // wording and fields for this kind of sign-up (bring food, work this event, who's going)
       var spec = C.signupSpec(e), slots = slotsOf(e), food = isFood(e), only = !food && slots.length === 1;
       $("list-title").textContent = spec.list;

@@ -1,4 +1,4 @@
-// Contract tests for the club API (msclub/sql/001_club.sql, 002, 003, 004, 005).
+// Contract tests for the club API (msclub/sql/001_club.sql, 002, 003, 004, 005, 006).
 // Run against the local stand-in (never production), with "today" fixed so the seeded
 // Fall 2026 schedule has upcoming events:
 //   CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
@@ -27,7 +27,7 @@ const find = async (date, title) => (await events()).find((e) => e.starts_on ===
 test("seeded schedule matches the static fallback (data/events.json)", async () => {
   const live = await events();
   const stat = JSON.parse(fs.readFileSync(path.join(ROOT, "msclub/data/events.json"), "utf8")).events;
-  const strip = (e) => [e.starts_on, e.ends_on, e.start_time, e.end_time, e.title, e.theme, e.kind, e.tentative, e.signup_enabled, e.signup_kind, e.signup_note, JSON.stringify(e.slots)];
+  const strip = (e) => [e.starts_on, e.ends_on, e.start_time, e.end_time, e.title, e.theme, e.kind, e.tentative, e.page || null, e.signup_enabled, e.signup_kind, e.signup_note, JSON.stringify(e.slots)];
   const seeded = live.filter((e) => stat.some((s) => s.starts_on === e.starts_on && s.title === e.title));
   assert.equal(seeded.length, 18);
   assert.deepEqual(seeded.map(strip), stat.map(strip));
@@ -137,6 +137,24 @@ test("no Competition type (Spades is a Social); Postponed closes sign-up", async
   assert.equal((await admin("save_event", { ...dec, status: "maybe" })).error, "bad_value");
   assert.equal((await admin("save_event", { ...dec, status: "scheduled" })).ok, true);
   assert.equal((await find("2026-12-03", "Math and Science Club Holiday Party")).status, "scheduled");
+});
+
+test("event info pages: STEAM Day has one; officers' edits keep it", async () => {
+  const all = await events();
+  assert.ok(all.every((e) => "page" in e), "every event says whether it has an info page");
+  assert.deepEqual(all.filter((e) => e.page).map((e) => [e.title, e.page]), [["STEAM Day Somerset 2027", "steam-day-2027"]]);
+  let steam = all.find((e) => e.page === "steam-day-2027");
+  assert.deepEqual([steam.start_time, steam.end_time], ["08:00", "14:00"], "volunteers: 8:00 a.m. to about 2:00 p.m.");
+  // an officer renames it and moves it a day: the page stays with the event
+  assert.equal((await admin("save_event", { ...steam, title: "STEAM Day 2027 (renamed)", starts_on: "2027-03-04" })).ok, true);
+  steam = (await events()).find((e) => e.id === steam.id);
+  assert.equal(steam.page, "steam-day-2027");
+  assert.equal((await admin("save_event", { ...steam, title: "STEAM Day Somerset 2027", starts_on: "2027-03-05" })).ok, true);
+  // a new event has no page
+  const added = await admin("save_event", { starts_on: "2027-04-01", title: "E2E No Page", kind: "event" });
+  assert.equal(added.ok, true);
+  assert.equal((await events()).find((e) => e.id === added.id).page, null);
+  assert.equal((await admin("delete_event", { id: added.id })).ok, true);
 });
 
 test("officer code required; wrong code rejected", async () => {
