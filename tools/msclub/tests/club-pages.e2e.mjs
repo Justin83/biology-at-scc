@@ -59,9 +59,13 @@ try {
   assert.match(next, /Thursday, November 19, 2026/);
   assert.doesNotMatch(next, /third Thursday/i);
   assert.match(next, /Food theme: to be announced/);
-  assert.deepEqual(await a.$$eval("#club-upcoming .club-month", (h) => h.map((x) => x.textContent)), ["November 2026", "December 2026"]);
-  assert.equal(await a.$$eval("#club-upcoming .club-card", (c) => c.length), 4);
-  assert.equal(await a.$$eval("#club-upcoming .club-card [data-signup]", (c) => c.length), 2, "sign-up buttons on the two food events");
+  assert.deepEqual(await a.$$eval("#club-upcoming .club-month", (h) => h.map((x) => x.textContent)), ["November 2026", "December 2026", "March 2027"]);
+  assert.equal(await a.$$eval("#club-upcoming .club-card", (c) => c.length), 5);
+  assert.equal(await a.$$eval("#club-upcoming .club-card [data-signup]", (c) => c.length), 3, "sign-up buttons on the two food events and STEAM Day");
+  // STEAM Day (added by 003): a volunteer sign-up, no food theme
+  const steamCard = await text(a, '.club-card:has-text("Somerset STEAM Day")');
+  assert.match(steamCard, /Sign up to work this event/);
+  assert.doesNotMatch(steamCard, /Food theme/);
   assert.equal(await a.textContent("#club-past-count"), "13");
   // club bar tab
   assert.equal((await a.textContent('.club-bar nav a[href="signup/"]')).trim(), "Event sign-up");
@@ -111,11 +115,11 @@ try {
   const b = await phone();
   await b.goto(SITE + "signup/" + Q);
   await b.waitForSelector("#su-pick:not([hidden])");
-  assert.equal(await b.$$eval('input[name="su-event"]', (r) => r.length), 2, "both food events offered");
+  assert.equal(await b.$$eval('#su-meetings input[name="su-event"]', (r) => r.length), 2, "both food events under club meetings");
   assert.equal(await b.$$eval('input[name="su-event"]:checked', (r) => r.length), 0, "nothing preselected");
   assert.equal(await b.isHidden("#su-app"), true, "form hidden until a get-together is chosen");
   assert.match(await text(b, "#su-meetings"), /Club meetings[\s\S]*Math and Science Club Meeting[\s\S]*Holiday Party/i);
-  assert.equal(await b.isVisible("#su-events"), false, "no events-and-trips group until an event has sign-up");
+  assert.match(await text(b, "#su-events"), /Events and trips[\s\S]*Somerset STEAM Day/i, "STEAM Day under events and trips");
   assert.equal(await b.$$eval("main .lede", (x) => x.length), 0, "no intro line");
   assert.equal(await b.getAttribute("main h1", "class"), "visually-hidden", "page heading is for screen readers only");
   assert.equal((await b.textContent("main h1")).trim(), "Event sign-up");
@@ -207,6 +211,9 @@ try {
   await o.fill("#of-title", "E2E Campus Trip");
   await o.selectOption("#of-kind", "campus-tour");
   await o.check("#of-signup");
+  await o.selectOption("#of-signup-kind", "going");
+  assert.deepEqual(await o.$$eval("[data-slot-label]", (i) => i.map((x) => x.value)), ["Going"], "who's going: one list");
+  await setNeeded(o, "Going", "2");
   await o.click("#of-save");
   await o.waitForFunction(() => /E2E Campus Trip/.test(document.getElementById("of-list-msg").textContent));
   await o.click('#of-upcoming li:has-text("E2E January Meeting") [data-edit]');
@@ -227,6 +234,33 @@ try {
   assert.match(await text(a, "#su-info"), /Food theme: Tacos/);
   assert.match(await text(a, "#su-events"), /Events and trips[\s\S]*E2E Campus Trip/i, "trip listed under events and trips");
   assert.doesNotMatch(await text(a, "#su-meetings"), /E2E Campus Trip/);
+  // who's going: name only, no category to pick, spots shown
+  await a.click('#su-events label:has-text("E2E Campus Trip")');
+  await a.waitForSelector("#su-app:not([hidden]) #su-list");
+  assert.match(await text(a, "#su-list-title"), /Who's going/i);
+  assert.equal(await a.isVisible("#su-slots-wrap"), false, "nothing to choose for a trip");
+  assert.equal(await a.isVisible("#su-item"), false);
+  assert.match(await text(a, "#su-list"), /Going 0 of 2 spots/);
+  await a.fill("#su-name", "E2E Rider");
+  await a.click("#su-submit");
+  await a.waitForFunction(() => /on the list/.test(document.getElementById("su-msg").textContent));
+  assert.match(await text(a, "#su-list"), /Going 1 of 2 spots E2E Rider \(you\)/);
+  // work this event: STEAM Day volunteers pick a shift
+  await a.click('#su-events label:has-text("Somerset STEAM Day")');
+  await a.waitForFunction(() => /working/i.test(document.getElementById("su-list-title").textContent));
+  assert.match(await text(a, "#su-slots-legend"), /Shift or role/);
+  assert.equal(await a.isVisible("#su-item"), false);
+  assert.match(await text(a, "#su-info"), /S-STEM scholars/);
+  await a.fill("#su-name", "E2E Volunteer");
+  await a.click("#su-submit");
+  assert.match(await a.textContent("#su-msg"), /Choose a shift or role/);
+  await a.check('input[name="su-slot"][value="Setup"]');
+  await a.click("#su-submit");
+  await a.waitForFunction(() => /signed up for Setup/.test(document.getElementById("su-msg").textContent));
+  assert.match(await text(a, "#su-list"), /Setup 1 signed up E2E Volunteer \(you\)/);
+  assert.match(await text(a, "#su-mine"), /Setup · E2E Volunteer/);
+  await a.click("#su-mine [data-remove]");
+  await a.waitForFunction(() => /removed/.test(document.getElementById("su-msg").textContent));
 
   // clean up: delete the test event, put the November meeting back the way it was
   await o.click('#of-upcoming li:has-text("E2E January Meeting") [data-edit]');

@@ -121,12 +121,18 @@
       </div>
       <div>
         <fieldset class="club-field">
-          <legend>Food sign-up</legend>
-          <div class="club-choice"><input type="checkbox" id="of-signup"><label for="of-signup">Members can sign up to bring food for this event</label></div>
+          <legend>Sign-up</legend>
+          <div class="club-choice"><input type="checkbox" id="of-signup"><label for="of-signup">Members can sign up for this event</label></div>
           <div id="of-signup-setup">
+            <div class="club-field"><label for="of-signup-kind">What do people sign up for?</label>
+              <select id="of-signup-kind">
+                <option value="food">Bring food</option>
+                <option value="work">Work this event (volunteers)</option>
+                <option value="going">Who's going (trips)</option>
+              </select></div>
             <div class="club-field"><label for="of-signup-note">Note for people signing up <span class="club-hint">(optional)</span></label>
               <input id="of-signup-note" type="text" maxlength="300" placeholder="e.g., The club is providing pizza, so bring sides, desserts or drinks."></div>
-            <p><strong>Categories</strong> <span class="club-hint">(what people can sign up to bring; "How many" is optional)</span></p>
+            <p><strong id="of-slots-title">Categories</strong> <span class="club-hint" id="of-slots-hint">(what people can sign up to bring; "How many" is optional)</span></p>
             <div id="of-slots"></div>
             <div class="club-actions">
               <button type="button" class="club-btn club-btn--ghost club-btn--small" id="of-slot-add">Add a category</button>

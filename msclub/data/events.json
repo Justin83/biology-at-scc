@@ -1,6 +1,6 @@
 {
   "source": "MSSE Scholars Proposed Activities, Fall 2026 Schedule (printed flyer), transcribed 2026-11-05",
-  "note": "Fallback copy of the seed in msclub/sql/001_club.sql as changed by 002_club_theme.sql. When online sign-up is on, the page reads the live schedule instead.",
+  "note": "Fallback copy of the seed in msclub/sql/001_club.sql as changed by 002_club_theme.sql and 003_club_signup_kinds.sql. When online sign-up is on, the page reads the live schedule instead.",
   "flyer_footnotes": [
     "** next to a date means it is highly tentative due to weather, needing finalization, or other factors.",
     "While attendance at all activities is encouraged, MSSE scholars must participate in a minimum of 4 each semester and meet with their mentor twice each semester.",
@@ -21,6 +21,7 @@
       "tentative": false,
       "status": "scheduled",
       "signup_enabled": false,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": []
     },
@@ -38,6 +39,7 @@
       "tentative": true,
       "status": "scheduled",
       "signup_enabled": false,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": []
     },
@@ -55,6 +57,7 @@
       "tentative": true,
       "status": "scheduled",
       "signup_enabled": false,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": []
     },
@@ -72,6 +75,7 @@
       "tentative": false,
       "status": "scheduled",
       "signup_enabled": false,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": []
     },
@@ -89,6 +93,7 @@
       "tentative": false,
       "status": "scheduled",
       "signup_enabled": false,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": []
     },
@@ -106,6 +111,7 @@
       "tentative": false,
       "status": "scheduled",
       "signup_enabled": false,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": []
     },
@@ -123,6 +129,7 @@
       "tentative": false,
       "status": "scheduled",
       "signup_enabled": false,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": []
     },
@@ -140,6 +147,7 @@
       "tentative": false,
       "status": "scheduled",
       "signup_enabled": false,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": []
     },
@@ -157,6 +165,7 @@
       "tentative": false,
       "status": "scheduled",
       "signup_enabled": false,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": []
     },
@@ -174,6 +183,7 @@
       "tentative": false,
       "status": "scheduled",
       "signup_enabled": false,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": []
     },
@@ -191,6 +201,7 @@
       "tentative": true,
       "status": "scheduled",
       "signup_enabled": false,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": []
     },
@@ -208,6 +219,7 @@
       "tentative": false,
       "status": "scheduled",
       "signup_enabled": false,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": []
     },
@@ -225,6 +237,7 @@
       "tentative": false,
       "status": "scheduled",
       "signup_enabled": false,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": []
     },
@@ -242,6 +255,7 @@
       "tentative": false,
       "status": "scheduled",
       "signup_enabled": true,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": [
         {
@@ -280,6 +294,7 @@
       "tentative": false,
       "status": "scheduled",
       "signup_enabled": false,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": []
     },
@@ -297,6 +312,7 @@
       "tentative": false,
       "status": "scheduled",
       "signup_enabled": true,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": [
         {
@@ -335,8 +351,40 @@
       "tentative": false,
       "status": "scheduled",
       "signup_enabled": false,
+      "signup_kind": "food",
       "signup_note": null,
       "slots": []
+    },
+    {
+      "id": "2027-03-05-somerset-steam-day",
+      "starts_on": "2027-03-05",
+      "ends_on": null,
+      "start_time": null,
+      "end_time": null,
+      "title": "Somerset STEAM Day",
+      "theme": null,
+      "kind": "event",
+      "location": null,
+      "details": null,
+      "tentative": false,
+      "status": "scheduled",
+      "signup_enabled": true,
+      "signup_kind": "work",
+      "signup_note": "S-STEM scholars: working STEAM Day counts as one of your scholar activities for the semester. Ask your mentor if you have questions.",
+      "slots": [
+        {
+          "label": "Setup",
+          "needed": null
+        },
+        {
+          "label": "Activity tables",
+          "needed": null
+        },
+        {
+          "label": "Cleanup",
+          "needed": null
+        }
+      ]
     }
   ]
 }

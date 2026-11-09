@@ -14,16 +14,18 @@
   function store(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch (e) { return fallback; } }
   function save(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) { /* storage blocked */ } }
   function tokens() { return store(TOKENS, {}); }
-  function slotsOf(e) { return e.slots && e.slots.length ? e.slots : [{ label: "Food or drink", needed: null }]; }
+  function slotsOf(e) { return e.slots && e.slots.length ? e.slots : [{ label: C.signupSpec(e).none, needed: null }]; }
 
-  // "Who's bringing what" for one event, grouped by category. Used inside the sign-up
-  // form and on the club home page's next-meeting card. h = heading tag for categories.
+  // "Who's bringing what" ("Who's working", "Who's going") for one event, grouped by
+  // category, shift or role. Used inside the sign-up form and on the club home page's
+  // next-meeting card. h = heading tag for the groups.
   C.bringList = function (e, h) {
-    var signups = e.signups || [], mine = tokens(), slots = slotsOf(e);
+    var signups = e.signups || [], mine = tokens(), slots = slotsOf(e), spec = C.signupSpec(e);
     var known = slots.map(function (s) { return s.label; });
     var other = signups.filter(function (x) { return known.indexOf(x.slot) === -1; });
     var line = function (x) {
-      return "<li" + (mine[x.id] ? ' class="is-mine"' : "") + "><strong>" + esc(x.item) + '</strong> <span class="who">· ' + esc(x.name) + "</span>" +
+      return "<li" + (mine[x.id] ? ' class="is-mine"' : "") + ">" +
+        (spec.item ? "<strong>" + esc(x.item) + '</strong> <span class="who">· ' + esc(x.name) + "</span>" : '<strong class="who">' + esc(x.name) + "</strong>") +
         (x.note ? ' <span class="note">(' + esc(x.note) + ")</span>" : "") + (mine[x.id] ? ' <span class="you">(you)</span>' : "") + "</li>";
     };
     var block = function (label, list, count) {
@@ -32,13 +34,13 @@
     };
     return slots.map(function (s) {
       var list = signups.filter(function (x) { return x.slot === s.label; });
-      return block(s.label, list, s.needed ? list.length + " of " + s.needed + " needed" : list.length ? list.length + " signed up" : "nobody yet");
+      return block(s.label, list, s.needed ? list.length + " of " + s.needed + " " + spec.unit : list.length ? list.length + " signed up" : "nobody yet");
     }).join("") + (other.length ? block("Other", other, other.length + " signed up") : "");
   };
 
   C.themeText = function (e) {
     if (e.theme) return e.theme;
-    return e.signup_enabled ? "to be announced" : "";
+    return e.signup_enabled && C.signupKind(e) === "food" ? "to be announced" : "";
   };
 
   C.signupForm = function (container, opts) {
@@ -56,9 +58,9 @@
       '<form id="' + P + 'form" novalidate>' +
       '<div class="club-field"><label for="' + P + 'name">Your name</label><input id="' + P + 'name" type="text" maxlength="60" autocomplete="name" aria-describedby="' + P + 'name-hint">' +
       '<p class="club-hint" id="' + P + 'name-hint">First name and last initial is fine. Names and items show on this page so people can plan.</p></div>' +
-      '<fieldset class="club-field"><legend>Category</legend><div class="club-choices" id="' + P + 'slots"></div></fieldset>' +
-      '<div class="club-field"><label for="' + P + 'item">What are you bringing?</label><input id="' + P + 'item" type="text" maxlength="120" autocomplete="off" placeholder="e.g., chocolate chip cookies"></div>' +
-      '<div class="club-field"><label for="' + P + 'note">Allergy or diet note <span class="club-hint">(optional)</span></label><input id="' + P + 'note" type="text" maxlength="200" autocomplete="off" placeholder="e.g., contains peanuts, vegetarian"></div>' +
+      '<fieldset class="club-field" id="' + P + 'slots-wrap"><legend id="' + P + 'slots-legend">Category</legend><div class="club-choices" id="' + P + 'slots"></div></fieldset>' +
+      '<div class="club-field" id="' + P + 'item-wrap"><label for="' + P + 'item">What are you bringing?</label><input id="' + P + 'item" type="text" maxlength="120" autocomplete="off" placeholder="e.g., chocolate chip cookies"></div>' +
+      '<div class="club-field"><label for="' + P + 'note"><span id="' + P + 'note-label">Allergy or diet note</span> <span class="club-hint">(optional)</span></label><input id="' + P + 'note" type="text" maxlength="200" autocomplete="off" placeholder="e.g., contains peanuts, vegetarian"></div>' +
       '<div class="club-hp" aria-hidden="true"><label for="' + P + 'website">Leave this empty</label><input id="' + P + 'website" type="text" tabindex="-1" autocomplete="off"></div>' +
       '<div class="club-actions"><button type="submit" class="club-btn" id="' + P + 'submit">Sign me up</button>' +
       '<button type="button" class="club-btn club-btn--ghost" id="' + P + 'cancel" hidden>Cancel change</button></div>' +
@@ -76,25 +78,36 @@
         (C.relDays(data.today, e.starts_on) ? " · " + esc(C.relDays(data.today, e.starts_on)) : "") + "</p>" +
         (theme ? '<p class="club-theme">Food theme: <strong>' + esc(theme) + "</strong></p>" : "") +
         (e.signup_note ? "<p>" + esc(e.signup_note) + "</p>" : "");
+      // wording and fields for this kind of sign-up (bring food, work this event, who's going)
+      var spec = C.signupSpec(e), slots = slotsOf(e), only = !spec.item && slots.length === 1;
+      $("list-title").textContent = spec.list;
+      if (!editing) $("form-title").textContent = spec.form;
+      $("slots-legend").textContent = spec.slots;
+      $("slots-wrap").hidden = only; // one choice ("Going"): picked for you
+      $("item-wrap").hidden = !spec.item;
+      $("note-label").textContent = spec.note;
+      $("note").placeholder = spec.notePh;
+      $("name-hint").textContent = "First name and last initial is fine. " + (spec.item ? "Names and items show" : "Names show") + " on this page so people can plan.";
       $("list").innerHTML = C.bringList(e, "h" + ((opts.headingLevel || 3) + 1));
       var checked = editing ? editing.slot : (container.querySelector('input[name="' + P + 'slot"]:checked') || {}).value;
-      $("slots").innerHTML = slotsOf(e).map(function (s, i) {
-        return '<div class="club-choice"><input type="radio" name="' + P + 'slot" id="' + P + "slot-" + i + '" value="' + esc(s.label) + '"' + (checked === s.label ? " checked" : "") +
+      $("slots").innerHTML = slots.map(function (s, i) {
+        return '<div class="club-choice"><input type="radio" name="' + P + 'slot" id="' + P + "slot-" + i + '" value="' + esc(s.label) + '"' + (checked === s.label || only ? " checked" : "") +
           '><label for="' + P + "slot-" + i + '">' + esc(s.label) + "</label></div>";
       }).join("");
       var own = signups.filter(function (x) { return mine[x.id]; });
       $("mine-wrap").hidden = !own.length;
       $("mine").innerHTML = own.map(function (x) {
-        return "<li><span><strong>" + esc(x.item) + "</strong> (" + esc(x.slot) + ") · " + esc(x.name) + '</span><span class="club-actions" style="margin:0">' +
-          '<button type="button" class="club-btn club-btn--ghost club-btn--small" data-edit="' + esc(x.id) + '">Change<span class="visually-hidden"> ' + esc(x.item) + "</span></button>" +
-          '<button type="button" class="club-btn club-btn--danger club-btn--small" data-remove="' + esc(x.id) + '">Remove<span class="visually-hidden"> ' + esc(x.item) + "</span></button></span></li>";
+        var what = spec.item ? x.item : x.slot;
+        return "<li><span><strong>" + esc(what) + "</strong>" + (spec.item ? " (" + esc(x.slot) + ")" : "") + " · " + esc(x.name) + '</span><span class="club-actions" style="margin:0">' +
+          '<button type="button" class="club-btn club-btn--ghost club-btn--small" data-edit="' + esc(x.id) + '">Change<span class="visually-hidden"> ' + esc(what) + "</span></button>" +
+          '<button type="button" class="club-btn club-btn--danger club-btn--small" data-remove="' + esc(x.id) + '">Remove<span class="visually-hidden"> ' + esc(what) + "</span></button></span></li>";
       }).join("");
       $("submit").disabled = !data.signups_open;
-      if (!data.signups_open) msg("Food sign-up is closed right now. Ask a club officer.", "error");
+      if (!data.signups_open) msg("Sign-up is closed right now. Ask a club officer.", "error");
     }
     function cancelEdit() {
       editing = null;
-      $("form-title").textContent = "Add what you're bringing";
+      $("form-title").textContent = C.signupSpec(ev).form;
       $("submit").textContent = "Sign me up";
       $("cancel").hidden = true;
     }
@@ -113,10 +126,11 @@
       if (busy || !ev) return;
       if ($("website").value) return; // filled only by bots
       var slot = (container.querySelector('input[name="' + P + 'slot"]:checked') || {}).value;
-      var entry = { name: $("name").value.trim(), slot: slot, item: $("item").value.trim(), note: $("note").value.trim() };
+      var spec = C.signupSpec(ev);
+      var entry = { name: $("name").value.trim(), slot: slot, item: spec.item ? $("item").value.trim() : "", note: $("note").value.trim() };
       if (!entry.name) { msg("Enter your name.", "error"); $("name").focus(); return; }
-      if (!slot) { msg("Choose a category.", "error"); container.querySelector('input[name="' + P + 'slot"]').focus(); return; }
-      if (!entry.item) { msg("Say what you're bringing.", "error"); $("item").focus(); return; }
+      if (!slot) { msg("Choose a " + (spec.item ? "category" : "shift or role") + ".", "error"); container.querySelector('input[name="' + P + 'slot"]').focus(); return; }
+      if (spec.item && !entry.item) { msg("Say what you're bringing.", "error"); $("item").focus(); return; }
       busy = true; $("submit").disabled = true;
       msg(editing ? "Saving…" : "Signing you up…");
       var call = editing
@@ -130,7 +144,7 @@
         var was = editing;
         cancelEdit();
         $("item").value = ""; $("note").value = "";
-        reload(function () { msg(was ? "Saved. Thanks!" : "You're signed up to bring " + entry.item + ". Thanks!", "ok"); });
+        reload(function () { msg(was ? "Saved. Thanks!" : spec.done.replace("{item}", entry.item).replace("{slot}", entry.slot), "ok"); });
       });
     });
     $("cancel").addEventListener("click", function () { cancelEdit(); $("item").value = ""; $("note").value = ""; msg(""); });
@@ -147,7 +161,7 @@
         $("submit").textContent = "Save change";
         $("cancel").hidden = false;
         msg("");
-        $("item").focus();
+        (C.signupSpec(ev).item ? $("item") : $("name")).focus();
         return;
       }
       var id = b.getAttribute("data-remove");
@@ -168,7 +182,10 @@
         $("item").value = ""; $("note").value = "";
         render();
       },
-      focusFirst: function () { ($("name").value ? container.querySelector('input[name="' + P + 'slot"]') : $("name")).focus(); }
+      focusFirst: function () {
+        var r = container.querySelector('input[name="' + P + 'slot"]');
+        ($("name").value && r && !$("slots-wrap").hidden ? r : $("name")).focus();
+      }
     };
   };
 })();

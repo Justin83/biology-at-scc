@@ -37,14 +37,29 @@
     meeting: "Club meeting", social: "Social", astronomy: "Astronomy", "campus-tour": "Campus tour",
     conference: "Conference", competition: "Competition", event: "Event", graduation: "Graduation"
   };
+  // What people sign up for at an event (events.signup_kind). New kinds go here.
+  var SIGNUP = {
+    food: { button: "Sign up to bring food", list: "Who's bringing what", form: "Add what you're bringing", slots: "Category",
+            item: true, unit: "needed", none: "Food or drink", done: "You're signed up to bring {item}. Thanks!", label: "Bring food", short: "bring food",
+            note: "Allergy or diet note", notePh: "e.g., contains peanuts, vegetarian", slot: "Category" },
+    work: { button: "Sign up to work this event", list: "Who's working", form: "Sign up to work", slots: "Shift or role",
+            item: false, unit: "needed", none: "Volunteer", done: "You're signed up for {slot}. Thanks!", label: "Work this event (volunteers)", short: "work this event",
+            note: "Note", notePh: "e.g., I can stay late", slot: "Shift or role" },
+    going: { button: "Sign up to go", list: "Who's going", form: "Sign up to go", slots: "Choose one",
+             item: false, unit: "spots", none: "Going", done: "You're on the list. Thanks!", label: "Who's going (trips)", short: "who's going",
+             note: "Note", notePh: "e.g., I need a ride", slot: "List" }
+  };
+  function signupKind(e) { return e && SIGNUP[e.signup_kind] ? e.signup_kind : "food"; }
+  function signupSpec(e) { return SIGNUP[signupKind(e)]; }
   var ERRORS = {
-    signups_closed: "Food sign-up is closed right now. Ask a club officer.",
-    no_signup: "Food sign-up is not set up for this event.",
+    signups_closed: "Sign-up is closed right now. Ask a club officer.",
+    no_signup: "Sign-up is not set up for this event.",
     event_past: "This event has already happened, so sign-up is closed.",
     no_name: "Enter your name.",
     no_item: "Say what you're bringing.",
-    bad_slot: "Choose one of the categories.",
+    bad_slot: "Choose one of the options.",
     full: "This sign-up list is full. Ask a club officer.",
+    slot_full: "That one is full. Choose another, or ask a club officer.",
     duplicate: "That exact sign-up is already on the list.",
     not_yours: "This sign-up can only be changed from the device that made it. Ask a club officer.",
     unauthorized: "Officer code not accepted.",
@@ -143,7 +158,7 @@
 
   window.Club = {
     config: CONFIG, live: live, isLocal: function () { return !!localApi; }, rpc: rpc, errorText: errorText,
-    KINDS: KINDS, todayISO: todayISO, parts: parts, longDate: longDate, shortDate: shortDate, monthKey: monthKey,
+    KINDS: KINDS, SIGNUP: SIGNUP, signupKind: signupKind, signupSpec: signupSpec, todayISO: todayISO, parts: parts, longDate: longDate, shortDate: shortDate, monthKey: monthKey,
     monthLabel: monthLabel, timeLabel: timeLabel, dateLabel: dateLabel, clock: clock,
     relDays: relDays, isPast: isPast, esc: esc, load: load, upcoming: upcoming, nextGathering: nextGathering, MON: MON, DOW: DOW
   };
