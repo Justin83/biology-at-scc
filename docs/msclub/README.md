@@ -58,7 +58,7 @@ club home).
    - **Work this event (volunteers)**: shifts or roles, for example Setup, Activity
      tables and Cleanup. People give their name, pick a shift and can add a note. A
      shift with a "How many" closes when it's full; the same person can take more than
-     one shift. Somerset STEAM Day (March 5, 2027) is set up this way.
+     one shift. STEAM Day Somerset 2027 (March 5, 2027) is set up this way.
    - **Who's going (trips)**: one "Going" list; put the number of spots in "How many"
      (or leave it empty for no limit). People give their name and an optional note.
    - Add a note for people signing up if useful (shown above the sign-up), for example
@@ -148,7 +148,8 @@ to the real database.
    - sign-up types per event: bring food (as before), work this event (volunteer
      shifts), who's going (trips with spots); shifts and trips close when full;
    - the item is only asked for food sign-ups;
-   - adds Somerset STEAM Day (Friday, March 5, 2027) with a volunteer sign-up (Setup,
+   - turns on a volunteer sign-up for STEAM Day Somerset 2027 (Friday, March 5, 2027, the
+     event an officer added: 8:00 AM to 4:30 PM, North Campus) with shifts (Setup,
      Activity tables, Cleanup) and a draft S-STEM scholar note that officers can edit.
 
 Rollback: the `drop …` statements at the end of the SQL file. Setting `enabled: false`

@@ -77,7 +77,7 @@ test("sign-up validation", async () => {
 });
 
 test("work this event: STEAM Day volunteers (no item; shifts; a shift closes when full)", async () => {
-  let steam = await find("2027-03-05", "Somerset STEAM Day");
+  let steam = await find("2027-03-05", "STEAM Day Somerset 2027");
   assert.ok(steam, "STEAM Day seeded by 003");
   assert.deepEqual([steam.kind, steam.signup_enabled, steam.signup_kind], ["event", true, "work"]);
   assert.deepEqual(steam.slots.map((s) => s.label), ["Setup", "Activity tables", "Cleanup"]);
@@ -88,7 +88,7 @@ test("work this event: STEAM Day volunteers (no item; shifts; a shift closes whe
   assert.equal((await rpc("club_signup", { p_event_id: steam.id, p_entry: { name: "vol a.", slot: "Setup" } })).error, "duplicate");
   const a2 = await rpc("club_signup", { p_event_id: steam.id, p_entry: { name: "Vol A.", slot: "Cleanup" } });
   assert.equal(a2.ok, true, "same person, another shift");
-  steam = await find("2027-03-05", "Somerset STEAM Day");
+  steam = await find("2027-03-05", "STEAM Day Somerset 2027");
   assert.equal(steam.signups.find((x) => x.id === a.id).item, "", "item not stored for work sign-ups");
   // officer sets Setup to need 1 person: it is full now; moving into a full shift is refused too
   assert.equal((await admin("save_event", { ...steam, slots: [{ label: "Setup", needed: 1 }, { label: "Activity tables" }, { label: "Cleanup" }] })).ok, true);
@@ -99,7 +99,7 @@ test("work this event: STEAM Day volunteers (no item; shifts; a shift closes whe
   assert.equal((await rpc("club_signup_update", { p_id: a.id, p_token: a.token, p_entry: { name: "Vol A. Smith" } })).ok, true, "editing within a full shift is fine");
   // an old page that doesn't send signup_kind keeps the kind
   assert.equal((await admin("save_event", { ...steam, signup_kind: undefined })).ok, true);
-  steam = await find("2027-03-05", "Somerset STEAM Day");
+  steam = await find("2027-03-05", "STEAM Day Somerset 2027");
   assert.equal(steam.signup_kind, "work");
   for (const x of [a, a2, b]) assert.equal((await rpc("club_signup_remove", { p_id: x.id, p_token: x.token })).ok, true);
   assert.equal((await admin("save_event", { ...steam, slots: [{ label: "Setup" }, { label: "Activity tables" }, { label: "Cleanup" }] })).ok, true);

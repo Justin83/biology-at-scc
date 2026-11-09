@@ -6,8 +6,10 @@
 --     roles) or 'going' (who's going, for trips). Existing events stay 'food'.
 --   * For 'work' and 'going' there is no item: people give their name, pick a shift or
 --     role (or just "Going"), and can add a note. When a shift or role has a number
---     needed (or a trip a number of spots), it closes when full.
---   * Adds Somerset STEAM Day (Friday, March 5, 2027) with a volunteer sign-up.
+--     needed (or a trip a number of spots), it closes when full. Sign-ups and changes
+--     lock the event row first, so the last spot can't be taken twice at once.
+--   * Turns on a volunteer sign-up for STEAM Day Somerset (Friday, March 5, 2027), the
+--     event an officer added; adds that event first where it doesn't exist (local tests).
 
 alter table club.events add column if not exists signup_kind text not null default 'food'
   check (signup_kind in ('food', 'work', 'going'));
@@ -52,7 +54,9 @@ begin
   if club.setting('signups_open') is distinct from 'true' then
     return jsonb_build_object('ok', false, 'error', 'signups_closed');
   end if;
-  select * into e from club.events where id = p_event_id;
+  -- lock the event row so sign-ups for one event go one at a time: two people asking for
+  -- the last spot at once can't both get it (the counts below are read under this lock)
+  select * into e from club.events where id = p_event_id for update;
   if not found or not e.signup_enabled or e.status <> 'scheduled' then
     return jsonb_build_object('ok', false, 'error', 'no_signup');
   end if;
@@ -97,7 +101,7 @@ begin
   if not found or s.token_hash <> encode(extensions.digest(coalesce(p_token, ''), 'sha256'), 'hex') then
     return jsonb_build_object('ok', false, 'error', 'not_yours');
   end if;
-  select * into e from club.events where id = s.event_id;
+  select * into e from club.events where id = s.event_id for update; -- same lock as club_signup
   if coalesce(e.ends_on, e.starts_on) < club.today() then
     return jsonb_build_object('ok', false, 'error', 'event_past');
   end if;
@@ -212,16 +216,23 @@ grant execute on function public.club_signup(uuid, jsonb) to anon, authenticated
 grant execute on function public.club_signup_update(uuid, text, jsonb) to anon, authenticated, service_role;
 grant execute on function public.club_admin(text, text, jsonb) to anon, authenticated, service_role;
 
--- Somerset STEAM Day, Friday, March 5, 2027: volunteer sign-up. Officers can change the
--- shifts, how many are needed, the note and the time in Officer tools.
-insert into club.events (starts_on, title, kind, signup_enabled, signup_kind, signup_note, slots, source)
-values ('2027-03-05', 'Somerset STEAM Day', 'event', true, 'work',
-        'S-STEM scholars: working STEAM Day counts as one of your scholar activities for the semester. Ask your mentor if you have questions.',
-        '[{"label":"Setup","needed":null},{"label":"Activity tables","needed":null},{"label":"Cleanup","needed":null}]'::jsonb,
-        'Added for Justin, 2026-11-09')
-on conflict (starts_on, title) do nothing;
+-- STEAM Day Somerset, Friday, March 5, 2027: volunteer sign-up. An officer added the event
+-- (8:00 AM to 4:30 PM, North Campus) before this migration ran; turn its sign-up on as
+-- "work this event" without touching its title, time or place. Where no STEAM Day event
+-- exists yet (a fresh database, e.g. the local tests), add it with the same details.
+-- Officers can change the shifts, how many are needed and the note in Officer tools.
+update club.events e
+   set signup_enabled = true, signup_kind = 'work',
+       signup_note = coalesce(e.signup_note, 'S-STEM scholars: working STEAM Day counts as one of your scholar activities for the semester. Ask your mentor if you have questions.'),
+       slots = '[{"label":"Setup","needed":null},{"label":"Activity tables","needed":null},{"label":"Cleanup","needed":null}]'::jsonb, updated_at = now()
+ where e.starts_on = '2027-03-05' and e.title ilike '%steam%' and e.signup_kind = 'food'
+   and not exists (select 1 from club.signups s where s.event_id = e.id);
+insert into club.events (starts_on, start_time, end_time, title, kind, location, signup_enabled, signup_kind, signup_note, slots, source)
+select '2027-03-05', '08:00', '16:30', 'STEAM Day Somerset 2027', 'event', 'North Campus', true, 'work',
+       'S-STEM scholars: working STEAM Day counts as one of your scholar activities for the semester. Ask your mentor if you have questions.', '[{"label":"Setup","needed":null},{"label":"Activity tables","needed":null},{"label":"Cleanup","needed":null}]'::jsonb, 'Added by a club officer'
+ where not exists (select 1 from club.events where starts_on = '2027-03-05' and title ilike '%steam%');
 
--- Rollback: delete the STEAM Day row if unwanted; drop function club.slot_full; re-run the
+-- Rollback: turn STEAM Day's sign-up off in Officer tools if unwanted; drop function club.slot_full; re-run the
 -- event_json, club_signup, club_signup_update and club_admin definitions from 001/002;
 -- alter table club.signups drop constraint signups_item_check, add check (char_length(item)
 -- between 1 and 120) (only once no sign-up has an empty item); alter table club.events drop

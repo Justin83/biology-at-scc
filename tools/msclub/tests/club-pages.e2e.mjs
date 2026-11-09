@@ -63,7 +63,7 @@ try {
   assert.equal(await a.$$eval("#club-upcoming .club-card", (c) => c.length), 5);
   assert.equal(await a.$$eval("#club-upcoming .club-card [data-signup]", (c) => c.length), 3, "sign-up buttons on the two food events and STEAM Day");
   // STEAM Day (added by 003): a volunteer sign-up, no food theme
-  const steamCard = await text(a, '.club-card:has-text("Somerset STEAM Day")');
+  const steamCard = await text(a, '.club-card:has-text("STEAM Day Somerset 2027")');
   assert.match(steamCard, /Sign up to work this event/);
   assert.doesNotMatch(steamCard, /Food theme/);
   assert.equal(await a.textContent("#club-past-count"), "13");
@@ -119,7 +119,7 @@ try {
   assert.equal(await b.$$eval('input[name="su-event"]:checked', (r) => r.length), 0, "nothing preselected");
   assert.equal(await b.isHidden("#su-app"), true, "form hidden until a get-together is chosen");
   assert.match(await text(b, "#su-meetings"), /Club meetings[\s\S]*Math and Science Club Meeting[\s\S]*Holiday Party/i);
-  assert.match(await text(b, "#su-events"), /Events and trips[\s\S]*Somerset STEAM Day/i, "STEAM Day under events and trips");
+  assert.match(await text(b, "#su-events"), /Events and trips[\s\S]*STEAM Day Somerset 2027/i, "STEAM Day under events and trips");
   assert.equal(await b.$$eval("main .lede", (x) => x.length), 0, "no intro line");
   assert.equal(await b.getAttribute("main h1", "class"), "visually-hidden", "page heading is for screen readers only");
   assert.equal((await b.textContent("main h1")).trim(), "Event sign-up");
@@ -246,7 +246,7 @@ try {
   await a.waitForFunction(() => /on the list/.test(document.getElementById("su-msg").textContent));
   assert.match(await text(a, "#su-list"), /Going 1 of 2 spots E2E Rider \(you\)/);
   // work this event: STEAM Day volunteers pick a shift
-  await a.click('#su-events label:has-text("Somerset STEAM Day")');
+  await a.click('#su-events label:has-text("STEAM Day Somerset 2027")');
   await a.waitForFunction(() => /working/i.test(document.getElementById("su-list-title").textContent));
   assert.match(await text(a, "#su-slots-legend"), /Shift or role/);
   assert.equal(await a.isVisible("#su-item"), false);
