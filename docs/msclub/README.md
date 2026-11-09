@@ -12,19 +12,21 @@ project as migration `club_v1`, with Justin's approval. `enabled` in
 
 | URL (under `msclub/`) | For | What it does |
 |---|---|---|
-| `./` | everyone | Next meeting (food theme, sign-up button), the club's QR code with a **Show on the big screen** button for class, and event cards by month; food events have a **Sign up to bring food** button that opens the sign-up in a pop-up |
+| `./` | everyone | Next meeting (food theme, **who's bringing what** beside the details on a computer and above the button on a phone, sign-up button), the club's QR code with a **Show on the big screen** button for class, and event cards by month; food events have a **Sign up to bring food** button that opens the sign-up in a pop-up |
 | `signup/` | everyone | The same sign-up as the pop-up, as its own page for phones. **Step 1 (required):** choose the get-together from large cards; nothing is preselected unless the link names one (the card buttons do). **Step 2:** who is bringing what, by category; add, change or remove your own sign-up; no account |
 | `officers/` | club officers (`noindex`) | Edit dates, times, titles and food themes in a pop-up editor (two columns on a desktop); add, cancel or delete events; set up food categories; remove sign-ups; open or close sign-up; change the officer code |
 | `qr/` | print | Poster with the club's QR code |
 
-The site home page links to the club.
+The site home page links to the club. Club pages carry a **Back to Biology at SCC** link at
+the top instead of the main site's menu; the green club bar's first link is **Home** (the
+club home).
 
 ## For members
 
 - The schedule comes from the printed *MSSE Scholars Proposed Activities — Fall 2026
   Schedule*. Its tentative items (marked ** on the flyer) carry a "Tentative" tag.
 - There is one QR code. It opens the club website; people choose **Sign up to bring
-  food** from there (on an event card, the next-meeting card, or **Food sign-up** in the
+  food** from there (on an event card, the next-meeting card, or **Event sign-up** in the
   club bar). Choose a category, type your name (first name and last initial is
   enough) and what you're bringing, and add an allergy note if needed.
 - In class, **Show on the big screen** (next to the QR code on the club page) fills the
