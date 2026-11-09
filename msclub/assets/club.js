@@ -43,7 +43,7 @@
             item: true, unit: "needed", none: "Food or drink", done: "You're signed up to bring {item}. Thanks!", label: "Bring food", short: "bring food",
             note: "Allergy or diet note", notePh: "e.g., contains peanuts, vegetarian", slot: "Category" },
     work: { button: "Sign up to work this event", list: "Who's working", form: "Sign up to work", slots: "Shift or role",
-            item: false, unit: "needed", none: "Volunteer", done: "You're signed up for {slot}. Thanks!", label: "Work this event (volunteers)", short: "work this event",
+            item: false, unit: "needed", none: "Volunteers", done: "You're signed up to work this event. Thanks!", label: "Work this event (volunteers)", short: "work this event",
             note: "Note", notePh: "e.g., I can stay late", slot: "Shift or role" },
     going: { button: "Sign up to go", list: "Who's going", form: "Sign up to go", slots: "Choose one",
              item: false, unit: "spots", none: "Going", done: "You're on the list. Thanks!", label: "Who's going (trips)", short: "who's going",

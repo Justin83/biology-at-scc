@@ -58,10 +58,14 @@ club home).
      Snack, Dessert and Drinks, each with an optional "How many" (a guide only). People
      give their name, a category, what they're bringing and an optional allergy note.
      The November 19 meeting and the December 3 holiday party are set up this way.
-   - **Work this event (volunteers)**: shifts or roles, for example Setup, Activity
-     tables and Cleanup. People give their name, pick a shift and can add a note. A
-     shift with a "How many" closes when it's full; the same person can take more than
-     one shift. STEAM Day Somerset 2027 (March 5, 2027) is set up this way.
+   - **Work this event (volunteers)**: usually one "Volunteers" list (the default):
+     people give their name and an optional note, and officers assign places later.
+     STEAM Day Somerset 2027 (March 5, 2027) is set up this way, with the note "We'll
+     assign your place near or on the date of the event. Questions? Contact
+     justin.howard@kctcs.edu." Add shifts or roles (for example Setup, Activity tables,
+     Cleanup) only if volunteers should pick one; a "How many" closes that list when
+     it's full, and the same person can take more than one.
+   - Email addresses in a note become links.
    - **Who's going (trips)**: one "Going" list; put the number of spots in "How many"
      (or leave it empty for no limit). People give their name and an optional note.
    - Add a note for people signing up if useful (shown above the sign-up), for example

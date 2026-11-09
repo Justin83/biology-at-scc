@@ -14,7 +14,7 @@
   // the usual choices and editor wording for each kind of sign-up
   var KIND_SETUP = {
     food: { slots: DEFAULT_SLOTS, title: "Categories", hint: "(what people can sign up to bring; \"How many\" is optional)", add: "Add a category", usual: "Use the usual categories" },
-    work: { slots: ["Setup", "Activity tables", "Cleanup"], title: "Shifts or roles", hint: "(what people can sign up to do; \"How many\" is optional, and a shift closes when it's full)", add: "Add a shift or role", usual: "Use the usual shifts" },
+    work: { slots: ["Volunteers"], title: "Volunteer list", hint: "(one list is usual: you assign places later. Add shifts or roles only if volunteers should pick one; a \"How many\" closes that list when it's full)", add: "Add a shift or role", usual: "Use one volunteer list" },
     going: { slots: ["Going"], title: "Spots", hint: "(put the number of spots in \"How many\", or leave it empty for no limit)", add: "Add an option", usual: "Use one \"Going\" list" }
   };
   function defaultSlots(kind) { return KIND_SETUP[kind].slots.map(function (l) { return { label: l, needed: null }; }); }
