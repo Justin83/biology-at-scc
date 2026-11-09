@@ -14,6 +14,8 @@
   function store(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch (e) { return fallback; } }
   function save(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) { /* storage blocked */ } }
   function tokens() { return store(TOKENS, {}); }
+  // email addresses in an officer's note become mailto links (the text is escaped first)
+  function linkEmails(html) { return html.replace(/[\w.+-]+@[\w-]+(\.[\w-]+)+/g, function (m) { return '<a href="mailto:' + m + '">' + m + "</a>"; }); }
   function slotsOf(e) { return e.slots && e.slots.length ? e.slots : [{ label: C.signupSpec(e).none, needed: null }]; }
 
   // "Who's bringing what" ("Who's working", "Who's going") for one event, grouped by
@@ -77,7 +79,7 @@
         '<p class="club-su-meta">' + esc(C.timeLabel(e)) + " · " + esc(e.title) + (e.location ? " · " + esc(e.location) : "") +
         (C.relDays(data.today, e.starts_on) ? " · " + esc(C.relDays(data.today, e.starts_on)) : "") + "</p>" +
         (theme ? '<p class="club-theme">Food theme: <strong>' + esc(theme) + "</strong></p>" : "") +
-        (e.signup_note ? "<p>" + esc(e.signup_note) + "</p>" : "");
+        (e.signup_note ? "<p>" + linkEmails(esc(e.signup_note)) + "</p>" : "");
       // wording and fields for this kind of sign-up (bring food, work this event, who's going)
       var spec = C.signupSpec(e), slots = slotsOf(e), only = !spec.item && slots.length === 1;
       $("list-title").textContent = spec.list;

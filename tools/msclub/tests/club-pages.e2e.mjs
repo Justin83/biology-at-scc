@@ -256,7 +256,7 @@ try {
   assert.match(await a.textContent("#su-msg"), /Choose a shift or role/);
   await a.check('input[name="su-slot"][value="Setup"]');
   await a.click("#su-submit");
-  await a.waitForFunction(() => /signed up for Setup/.test(document.getElementById("su-msg").textContent));
+  await a.waitForFunction(() => /signed up to work this event/.test(document.getElementById("su-msg").textContent));
   assert.match(await text(a, "#su-list"), /Setup 1 signed up E2E Volunteer \(you\)/);
   assert.match(await text(a, "#su-mine"), /Setup · E2E Volunteer/);
   await a.click("#su-mine [data-remove]");
@@ -282,6 +282,28 @@ try {
   assert.doesNotMatch(await text(a, "#su-pick"), /E2E Campus Trip/, "no sign-up for a postponed event");
   // no Competition type any more
   assert.equal(await o.$$eval('#of-kind option[value="competition"]', (x) => x.length), 0);
+
+  // one volunteer list (places assigned later): the officer switches STEAM Day to the
+  // usual single list and adds a note with an email; volunteers give only their name,
+  // and the email in the note is a link
+  await o.click('#of-upcoming li:has-text("STEAM Day Somerset 2027") [data-edit]');
+  await o.waitForSelector("#of-editor[open]");
+  await o.click("#of-slot-default");
+  assert.deepEqual(await o.$$eval("[data-slot-label]", (i) => i.map((x) => x.value)), ["Volunteers"]);
+  await o.fill("#of-signup-note", "We'll assign your place near or on the date of the event. Questions? Contact justin.howard@kctcs.edu.");
+  await o.click("#of-save");
+  await o.waitForFunction(() => /Saved: STEAM Day Somerset 2027/.test(document.getElementById("of-list-msg").textContent));
+  await a.goto(SITE + "signup/" + Q);
+  await a.click('#su-events label:has-text("STEAM Day Somerset 2027")');
+  await a.waitForSelector("#su-app:not([hidden]) #su-list");
+  assert.equal(await a.isVisible("#su-slots-wrap"), false, "no shift or role to pick");
+  assert.equal(await a.getAttribute('#su-info a[href^="mailto:"]', "href"), "mailto:justin.howard@kctcs.edu");
+  await a.fill("#su-name", "E2E Helper");
+  await a.click("#su-submit");
+  await a.waitForFunction(() => /signed up to work this event/.test(document.getElementById("su-msg").textContent));
+  assert.match(await text(a, "#su-list"), /Volunteers 1 signed up E2E Helper \(you\)/);
+  await a.click("#su-mine [data-remove]");
+  await a.waitForFunction(() => /removed/.test(document.getElementById("su-msg").textContent));
 
   // clean up: delete the test event, put the November meeting back the way it was
   await o.click('#of-upcoming li:has-text("E2E January Meeting") [data-edit]');
