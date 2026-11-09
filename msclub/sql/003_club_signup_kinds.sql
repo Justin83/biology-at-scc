@@ -6,7 +6,8 @@
 --     roles) or 'going' (who's going, for trips). Existing events stay 'food'.
 --   * For 'work' and 'going' there is no item: people give their name, pick a shift or
 --     role (or just "Going"), and can add a note. When a shift or role has a number
---     needed (or a trip a number of spots), it closes when full.
+--     needed (or a trip a number of spots), it closes when full. Sign-ups and changes
+--     lock the event row first, so the last spot can't be taken twice at once.
 --   * Adds Somerset STEAM Day (Friday, March 5, 2027) with a volunteer sign-up.
 
 alter table club.events add column if not exists signup_kind text not null default 'food'
@@ -52,7 +53,9 @@ begin
   if club.setting('signups_open') is distinct from 'true' then
     return jsonb_build_object('ok', false, 'error', 'signups_closed');
   end if;
-  select * into e from club.events where id = p_event_id;
+  -- lock the event row so sign-ups for one event go one at a time: two people asking for
+  -- the last spot at once can't both get it (the counts below are read under this lock)
+  select * into e from club.events where id = p_event_id for update;
   if not found or not e.signup_enabled or e.status <> 'scheduled' then
     return jsonb_build_object('ok', false, 'error', 'no_signup');
   end if;
@@ -97,7 +100,7 @@ begin
   if not found or s.token_hash <> encode(extensions.digest(coalesce(p_token, ''), 'sha256'), 'hex') then
     return jsonb_build_object('ok', false, 'error', 'not_yours');
   end if;
-  select * into e from club.events where id = s.event_id;
+  select * into e from club.events where id = s.event_id for update; -- same lock as club_signup
   if coalesce(e.ends_on, e.starts_on) < club.today() then
     return jsonb_build_object('ok', false, 'error', 'event_past');
   end if;
