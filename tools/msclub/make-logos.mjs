@@ -176,3 +176,8 @@ for (const [file, make] of [["shield-green.svg", shieldLogo], ["seal-green.svg",
   fs.writeFileSync(path.join(OUT, file), make());
   console.log("wrote msclub/assets/logos/" + file);
 }
+// 4. the combined seal on the club's original navy (#002c52): the club pages use SCC blue
+//    and gold, so this is msclub/assets/logo.svg
+const NAVY = "#002c52";
+fs.writeFileSync(path.join(OUT, "seal-combined-navy.svg"), combinedLogo().split(C.bg).join(NAVY));
+console.log("wrote msclub/assets/logos/seal-combined-navy.svg");
