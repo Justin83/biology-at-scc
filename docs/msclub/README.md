@@ -94,12 +94,23 @@ images by `tools/msclub/make-logos.mjs`:
 |---|---|
 | `assets/logos/shield-green.svg` | The shield logo on green |
 | `assets/logos/seal-green.svg` | The circular seal on green |
-| `assets/logos/seal-combined.svg` | A variation combining both: the shield and its six colored icons inside the seal, with right-side-up text on the lower arc. **Used on the site** (copied to `assets/logo.svg`), chosen by Justin on 2026-11-05 |
+| `assets/logos/seal-combined.svg` | A variation combining both: the shield and its six colored icons inside the seal, with right-side-up text on the lower arc. Chosen by Justin on 2026-11-05; used on the site until the pages moved to SCC blue and gold |
+| `assets/logos/seal-combined-navy.svg` | The same combined seal on the club's original navy (`#002c52`). **Used on the site** (copied to `assets/logo.svg`) since 2026-11-09 |
 
 To switch logos, copy the chosen file over `msclub/assets/logo.svg`. Every
 club page uses that file. Because these are redraws, small details (letter shapes, icon
 lines) differ from the originals. With the original image files, an exact recolor can
 replace them.
+
+## Colors
+
+The club pages use SCC's blue and gold, taken from somerset.kctcs.edu (blue `#00467f`,
+dark blue `#013057`, gold `#e7a614`), so they read as their own section rather than part
+of the green biology site. `assets/club.css` redefines the site's color tokens on
+`body.club`: links, buttons, headings and borders are blue (a lighter blue in dark mode),
+and gold is used for the stripe under the club bar, the top of the next-meeting card, the
+"Club meeting" pill (navy text on gold) and focus outlines. Gold is never used for text
+on white, where it would be too hard to read.
 
 ## Data and privacy
 

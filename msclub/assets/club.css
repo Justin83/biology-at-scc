@@ -1,9 +1,13 @@
 /* Math & Science Club. Loaded after ../assets/style.css (site tokens: --bg, --fg,
-   --muted, --accent, --border, --card-bg; light and dark follow the system setting). */
+   --muted, --accent, --border, --card-bg; light and dark follow the system setting).
+   The club pages use SCC's blue and gold (from somerset.kctcs.edu: blue #00467f,
+   dark blue #013057, gold #e7a614) instead of the biology site's green, so the site
+   tokens are redefined on body.club below. Gold is for stripes, fills and focus rings,
+   never for text on white (too little contrast). */
 :root {
-  --club-navy: #1d3b66;
-  --club-gold: #f2a900;
-  --club-soft: #eef5ef;
+  --club-navy: #013057;
+  --club-gold: #e7a614;
+  --club-soft: #e8f0f8;
   --club-warn-bg: #fff3d6; --club-warn-fg: #744800; --club-warn-bd: #e7c477;
   --club-red-bg: #fde8e6;  --club-red-fg: #8f1d14;  --club-red-bd: #efb1aa;
   --club-blue-bg: #e5eefb; --club-blue-fg: #1b4a8a;
@@ -13,13 +17,19 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --club-navy: #a9c8f5;
-    --club-soft: #1b2a1d;
+    --club-soft: #13233a;
     --club-warn-bg: #3a2b0c; --club-warn-fg: #ffd58a; --club-warn-bd: #6b5220;
     --club-red-bg: #3b1714;  --club-red-fg: #ffb4ab; --club-red-bd: #6e2a24;
     --club-blue-bg: #14294a; --club-blue-fg: #a9c8f5;
     --club-purple-bg: #2d1f3d; --club-purple-fg: #dcc0ff;
     --club-on-accent: #10140c;
   }
+}
+
+/* SCC blue in place of the biology green: links, buttons, headings and borders */
+.club { --accent: #00467f; --fg: #14202e; --muted: #4c5a6b; --border: #d7dfe8; --card-bg: #f3f6fa; }
+@media (prefers-color-scheme: dark) {
+  .club { --accent: #8cc4f2; --bg: #0e1520; --fg: #e8eef6; --muted: #a2b0c2; --border: #263447; --card-bg: #152131; }
 }
 
 /* the hidden attribute always wins over component display rules (buttons, rows) */
@@ -36,7 +46,7 @@
 .club-back-bar .wrap { padding-top: 0.45rem; padding-bottom: 0.45rem; }
 .club-back { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2.25rem; font-weight: 600; color: var(--accent); text-decoration: none; }
 .club-back:hover, .club-back:focus-visible { text-decoration: underline; }
-.club-bar { background: var(--club-soft); border-bottom: 1px solid var(--border); }
+.club-bar { background: var(--club-soft); border-bottom: 3px solid var(--club-gold); }
 .club-bar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1.2rem; padding-top: 0.7rem; padding-bottom: 0.7rem; }
 .club-bar-name { font-weight: 700; color: var(--fg); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
 .club-bar-name img { width: 28px; height: 28px; border-radius: 6px; }
@@ -56,7 +66,7 @@
 /* cards and panels */
 .club-panel { border: 1px solid var(--border); background: var(--card-bg); border-radius: 12px; padding: 1.1rem 1.25rem; margin: 1.25rem 0; }
 .club-panel > h2:first-child { margin-top: 0; }
-.club-next { border: 2px solid var(--accent); background: var(--bg); border-radius: 14px; padding: 1.2rem 1.35rem; margin: 1.5rem 0; }
+.club-next { border: 2px solid var(--accent); border-top: 6px solid var(--club-gold); background: var(--bg); border-radius: 14px; padding: 1.2rem 1.35rem; margin: 1.5rem 0; }
 .club-next h2 { margin: 0 0 0.2rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); }
 .club-next-date { font-size: clamp(1.45rem, 1.1rem + 1.6vw, 2rem); font-weight: 800; margin: 0.1rem 0; line-height: 1.2; }
 .club-next-meta { margin: 0.2rem 0 0.8rem; color: var(--muted); }
@@ -108,7 +118,7 @@
 .club-event-meta { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.95rem; }
 .club-event-more { margin: 0.35rem 0 0; font-size: 0.95rem; }
 .club-chip { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 0.05rem 0.5rem; border-radius: 999px; background: var(--club-blue-bg); color: var(--club-blue-fg); vertical-align: 0.1em; margin-left: 0.25rem; }
-.club-chip--meeting { background: var(--accent); color: var(--club-on-accent); }
+.club-chip--meeting { background: var(--club-gold); color: #013057; }
 .club-chip--tentative { background: var(--club-warn-bg); color: var(--club-warn-fg); }
 .club-chip--cancelled { background: var(--club-red-bg); color: var(--club-red-fg); }
 .club-chip--postponed { background: var(--club-purple-bg); color: var(--club-purple-fg); }
@@ -227,14 +237,14 @@ main.club-wide { max-width: 1120px; }
 .club-su-page { padding-top: 1.2rem; }
 
 /* big-screen QR */
-.club-bigqr { width: 100vw; height: 100vh; max-width: 100vw; max-height: 100vh; margin: 0; padding: 0; border: 0; background: #ffffff; color: #10140c; }
+.club-bigqr { width: 100vw; height: 100vh; max-width: 100vw; max-height: 100vh; margin: 0; padding: 0; border: 0; background: #ffffff; color: #14202e; }
 .club-bigqr::backdrop { background: #ffffff; }
 .club-bigqr-inner { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem; text-align: center; }
-.club-bigqr h2 { margin: 0; font-size: clamp(1.6rem, 1rem + 3vw, 3.2rem); color: #1a3d27; }
+.club-bigqr h2 { margin: 0; font-size: clamp(1.6rem, 1rem + 3vw, 3.2rem); color: #013057; }
 .club-bigqr-event { margin: 0; font-size: clamp(1.1rem, 0.8rem + 1.6vw, 2rem); font-weight: 700; }
 .club-bigqr img { width: min(62vh, 86vw); height: min(62vh, 86vw); }
-.club-bigqr-url { margin: 0; font-size: clamp(0.9rem, 0.7rem + 0.8vw, 1.3rem); color: #3c4a3a; word-break: break-all; }
-.club-bigqr .club-btn { background: #2e6b3e; border-color: #2e6b3e; color: #fff !important; }
+.club-bigqr-url { margin: 0; font-size: clamp(0.9rem, 0.7rem + 0.8vw, 1.3rem); color: #3d4a5c; word-break: break-all; }
+.club-bigqr .club-btn { background: #00467f; border-color: #00467f; color: #fff !important; }
 
 /* officer editor */
 .club-editor-cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 1.5rem; }
