@@ -1,6 +1,6 @@
 {
   "source": "MSSE Scholars Proposed Activities, Fall 2026 Schedule (printed flyer), transcribed 2026-11-05",
-  "note": "Fallback copy of the seed in msclub/sql/001_club.sql as changed by 002_club_theme.sql and 003_club_signup_kinds.sql. When online sign-up is on, the page reads the live schedule instead.",
+  "note": "Fallback copy of the seed in msclub/sql/001_club.sql as changed by 002_club_theme.sql, 003_club_signup_kinds.sql and 004_club_social_postponed.sql. When online sign-up is on, the page reads the live schedule instead.",
   "flyer_footnotes": [
     "** next to a date means it is highly tentative due to weather, needing finalization, or other factors.",
     "While attendance at all activities is encouraged, MSSE scholars must participate in a minimum of 4 each semester and meet with their mentor twice each semester.",
@@ -105,7 +105,7 @@
       "end_time": "15:00",
       "title": "Spades Competition",
       "theme": null,
-      "kind": "competition",
+      "kind": "social",
       "location": null,
       "details": null,
       "tentative": false,

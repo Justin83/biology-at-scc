@@ -7,6 +7,7 @@
   --club-warn-bg: #fff3d6; --club-warn-fg: #744800; --club-warn-bd: #e7c477;
   --club-red-bg: #fde8e6;  --club-red-fg: #8f1d14;  --club-red-bd: #efb1aa;
   --club-blue-bg: #e5eefb; --club-blue-fg: #1b4a8a;
+  --club-purple-bg: #f1e8fb; --club-purple-fg: #5b2a86;
   --club-on-accent: #ffffff;
 }
 @media (prefers-color-scheme: dark) {
@@ -16,6 +17,7 @@
     --club-warn-bg: #3a2b0c; --club-warn-fg: #ffd58a; --club-warn-bd: #6b5220;
     --club-red-bg: #3b1714;  --club-red-fg: #ffb4ab; --club-red-bd: #6e2a24;
     --club-blue-bg: #14294a; --club-blue-fg: #a9c8f5;
+    --club-purple-bg: #2d1f3d; --club-purple-fg: #dcc0ff;
     --club-on-accent: #10140c;
   }
 }
@@ -109,6 +111,7 @@
 .club-chip--meeting { background: var(--accent); color: var(--club-on-accent); }
 .club-chip--tentative { background: var(--club-warn-bg); color: var(--club-warn-fg); }
 .club-chip--cancelled { background: var(--club-red-bg); color: var(--club-red-fg); }
+.club-chip--postponed { background: var(--club-purple-bg); color: var(--club-purple-fg); }
 .club-past summary { cursor: pointer; font-weight: 700; color: var(--accent); margin-top: 1.4rem; min-height: 2rem; }
 .club-fine { font-size: 0.88rem; color: var(--muted); margin-top: 1.5rem; }
 .club-fine p { margin: 0.25rem 0; }

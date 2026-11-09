@@ -86,7 +86,7 @@
   function row(e) {
     var n = (e.signups || []).length;
     return '<li class="' + (C.isPast(e, data.today) ? "is-past" : "") + '"><div><p><strong>' + esc(C.shortDate(e.starts_on)) + "</strong> · " + esc(C.timeLabel(e)) + " · " + esc(e.title) +
-      (e.tentative ? ' <span class="club-chip club-chip--tentative">Tentative</span>' : "") + (e.status === "cancelled" ? ' <span class="club-chip club-chip--cancelled">Cancelled</span>' : "") + "</p>" +
+      (e.tentative ? ' <span class="club-chip club-chip--tentative">Tentative</span>' : "") + (e.status === "postponed" ? ' <span class="club-chip club-chip--postponed">Postponed</span>' : "") + (e.status === "cancelled" ? ' <span class="club-chip club-chip--cancelled">Cancelled</span>' : "") + "</p>" +
       (e.signup_enabled || e.theme ? '<p class="club-hint">' + [e.theme ? "Food theme: " + esc(e.theme) : "", e.signup_enabled ? "Sign-up on: " + C.signupSpec(e).short + " · " + n + (n === 1 ? " sign-up" : " sign-ups") : ""].filter(Boolean).join(" · ") + "</p>" : "") +
       '</div><button type="button" class="club-btn club-btn--ghost club-btn--small" data-edit="' + esc(e.id) + '">Edit<span class="visually-hidden"> ' + esc(e.title + ", " + C.shortDate(e.starts_on)) + "</span></button></li>";
   }
@@ -151,6 +151,7 @@
     $("of-details").value = e && e.details || "";
     $("of-tentative").checked = !!(e && e.tentative);
     $("of-cancelled").checked = !!(e && e.status === "cancelled");
+    $("of-postponed").checked = !!(e && e.status === "postponed");
     $("of-signup").checked = !!(e && e.signup_enabled);
     $("of-signup-note").value = e && e.signup_note || "";
     $("of-signup-kind").value = C.signupKind(e);
@@ -174,6 +175,9 @@
   $("of-close").addEventListener("click", closeEditor);
   $("of-close-x").addEventListener("click", closeEditor);
   $("of-signup").addEventListener("change", toggleSignupSetup);
+  // postponed and cancelled can't both be on
+  $("of-postponed").addEventListener("change", function () { if (this.checked) $("of-cancelled").checked = false; });
+  $("of-cancelled").addEventListener("change", function () { if (this.checked) $("of-postponed").checked = false; });
   $("of-slot-add").addEventListener("click", function () {
     $("of-slots").insertAdjacentHTML("beforeend", slotRow("", null, slotCounter++));
     var inputs = document.querySelectorAll("[data-slot-label]");
@@ -201,7 +205,7 @@
       id: editing ? editing.id : null, starts_on: $("of-date").value, ends_on: $("of-end-date").value,
       start_time: $("of-start").value, end_time: $("of-end").value, title: $("of-title").value.trim(), theme: $("of-theme").value.trim(),
       kind: $("of-kind").value, location: $("of-location").value.trim(), details: $("of-details").value.trim(),
-      tentative: $("of-tentative").checked, status: $("of-cancelled").checked ? "cancelled" : "scheduled",
+      tentative: $("of-tentative").checked, status: $("of-cancelled").checked ? "cancelled" : $("of-postponed").checked ? "postponed" : "scheduled",
       signup_enabled: $("of-signup").checked, signup_kind: $("of-signup-kind").value,
       signup_note: $("of-signup-note").value.trim(), slots: readSlots()
     };

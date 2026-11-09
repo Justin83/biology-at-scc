@@ -35,7 +35,7 @@
 
   var KINDS = {
     meeting: "Club meeting", social: "Social", astronomy: "Astronomy", "campus-tour": "Campus tour",
-    conference: "Conference", competition: "Competition", event: "Event", graduation: "Graduation"
+    conference: "Conference", event: "Event", graduation: "Graduation"
   };
   // What people sign up for at an event (events.signup_kind). New kinds go here.
   var SIGNUP = {
@@ -152,7 +152,7 @@
   }
   function nextGathering(data) {
     // the next scheduled club meeting, or failing that the next event with food sign-up
-    var up = upcoming(data).filter(function (e) { return e.status !== "cancelled"; });
+    var up = upcoming(data).filter(function (e) { return e.status === "scheduled"; }); // not postponed or cancelled
     return up.filter(function (e) { return e.kind === "meeting"; })[0] || up.filter(function (e) { return e.signup_enabled; })[0] || null;
   }
 

@@ -46,7 +46,7 @@ for (const file of pages) {
 }
 
 // schedule data
-const KINDS = ["meeting", "social", "astronomy", "campus-tour", "conference", "competition", "event", "graduation"];
+const KINDS = ["meeting", "social", "astronomy", "campus-tour", "conference", "event", "graduation"];
 const ev = JSON.parse(fs.readFileSync(path.join(CLUB, "data/events.json"), "utf8")).events;
 for (const e of ev) {
   if (!/^\d{4}-\d\d-\d\d$/.test(e.starts_on)) warn(`events.json: ${e.id} bad starts_on`);

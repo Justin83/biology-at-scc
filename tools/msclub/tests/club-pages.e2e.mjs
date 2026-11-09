@@ -262,6 +262,27 @@ try {
   await a.click("#su-mine [data-remove]");
   await a.waitForFunction(() => /removed/.test(document.getElementById("su-msg").textContent));
 
+  // postponed: officer postpones the trip (postponed and cancelled can't both be on);
+  // the card shows a Postponed pill, no sign-up button, and the sign-up page drops it
+  await o.click('#of-upcoming li:has-text("E2E Campus Trip") [data-edit]');
+  await o.check("#of-cancelled");
+  await o.check("#of-postponed");
+  assert.equal(await o.isChecked("#of-cancelled"), false, "postponed turns cancelled off");
+  await o.click("#of-save");
+  await o.waitForFunction(() => /Saved: E2E Campus Trip/.test(document.getElementById("of-list-msg").textContent));
+  assert.match(await text(o, '#of-upcoming li:has-text("E2E Campus Trip")'), /Postponed/);
+  await a.goto(SITE + Q);
+  await a.waitForSelector('.club-card:has-text("E2E Campus Trip")');
+  const trip = await text(a, '.club-card:has-text("E2E Campus Trip")');
+  assert.match(trip, /Campus tour Postponed/);
+  assert.doesNotMatch(trip, /Sign up/);
+  assert.equal(await a.$$eval('.club-card:has-text("E2E Campus Trip").is-cancelled', (x) => x.length), 0, "postponed is not crossed out");
+  await a.goto(SITE + "signup/" + Q);
+  await a.waitForSelector("#su-pick:not([hidden])");
+  assert.doesNotMatch(await text(a, "#su-pick"), /E2E Campus Trip/, "no sign-up for a postponed event");
+  // no Competition type any more
+  assert.equal(await o.$$eval('#of-kind option[value="competition"]', (x) => x.length), 0);
+
   // clean up: delete the test event, put the November meeting back the way it was
   await o.click('#of-upcoming li:has-text("E2E January Meeting") [data-edit]');
   await o.click("#of-delete");

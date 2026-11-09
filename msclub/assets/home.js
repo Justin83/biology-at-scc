@@ -11,7 +11,7 @@
   var canModal = typeof HTMLDialogElement === "function" && !!document.createElement("dialog").showModal;
 
   // ---------------------------------------------------------------- pieces
-  function canSignUp(e) { return data.live && e.signup_enabled && e.status !== "cancelled" && !C.isPast(e, data.today); }
+  function canSignUp(e) { return data.live && e.signup_enabled && e.status === "scheduled" && !C.isPast(e, data.today); }
   function countText(e) {
     var n = (e.signups || []).length;
     return n === 0 ? "Nobody has signed up yet." : n === 1 ? "1 person has signed up." : n + " people have signed up.";
@@ -24,6 +24,7 @@
   function chips(e) {
     return '<span class="club-chip' + (e.kind === "meeting" ? " club-chip--meeting" : "") + '">' + esc(C.KINDS[e.kind] || "Event") + "</span>" +
       (e.tentative ? ' <span class="club-chip club-chip--tentative">Tentative</span>' : "") +
+      (e.status === "postponed" ? ' <span class="club-chip club-chip--postponed">Postponed</span>' : "") +
       (e.status === "cancelled" ? ' <span class="club-chip club-chip--cancelled">Cancelled</span>' : "");
   }
   function card(e, nextId) {
@@ -60,7 +61,7 @@
     var theme = C.themeText(e);
     // who's bringing what, right on the card (beside the details on a wide screen,
     // between the details and the button on a phone)
-    var bring = data.live && e.signup_enabled && e.status !== "cancelled";
+    var bring = data.live && e.signup_enabled && e.status === "scheduled";
     $("next-title").textContent = e.kind === "meeting" ? "Next meeting" : "Next get-together";
     $("club-next-body").classList.toggle("has-bring", bring);
     $("club-next-body").innerHTML =
