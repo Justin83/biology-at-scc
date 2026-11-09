@@ -9,7 +9,21 @@
   var esc = C.esc;
   var root = document.body.getAttribute("data-club-root") || "../";
   var KEY = "club-officer-code";
+  var shownKind = "food"; // the sign-up kind the editor shows now
   var DEFAULT_SLOTS = ["Main dish", "Side", "Snack", "Dessert", "Drinks"];
+  // the usual choices and editor wording for each kind of sign-up
+  var KIND_SETUP = {
+    food: { slots: DEFAULT_SLOTS, title: "Categories", hint: "(what people can sign up to bring; \"How many\" is optional)", add: "Add a category", usual: "Use the usual categories" },
+    work: { slots: ["Setup", "Activity tables", "Cleanup"], title: "Shifts or roles", hint: "(what people can sign up to do; \"How many\" is optional, and a shift closes when it's full)", add: "Add a shift or role", usual: "Use the usual shifts" },
+    going: { slots: ["Going"], title: "Spots", hint: "(put the number of spots in \"How many\", or leave it empty for no limit)", add: "Add an option", usual: "Use one \"Going\" list" }
+  };
+  function defaultSlots(kind) { return KIND_SETUP[kind].slots.map(function (l) { return { label: l, needed: null }; }); }
+  function sameLabels(a, b) { return a.length === b.length && a.every(function (s, i) { return s.label === b[i]; }); }
+  function showKind(kind) {
+    var k = KIND_SETUP[kind];
+    $("of-slots-title").textContent = k.title; $("of-slots-hint").textContent = k.hint;
+    $("of-slot-add").textContent = k.add; $("of-slot-default").textContent = k.usual;
+  }
   var code = null, data = null, editing = null, settings = null;
 
   function msg(id, text, kind) { var el = $(id); el.textContent = text || ""; el.className = "club-msg" + (kind ? " is-" + kind : ""); }
@@ -73,7 +87,7 @@
     var n = (e.signups || []).length;
     return '<li class="' + (C.isPast(e, data.today) ? "is-past" : "") + '"><div><p><strong>' + esc(C.shortDate(e.starts_on)) + "</strong> · " + esc(C.timeLabel(e)) + " · " + esc(e.title) +
       (e.tentative ? ' <span class="club-chip club-chip--tentative">Tentative</span>' : "") + (e.status === "cancelled" ? ' <span class="club-chip club-chip--cancelled">Cancelled</span>' : "") + "</p>" +
-      (e.signup_enabled || e.theme ? '<p class="club-hint">' + [e.theme ? "Food theme: " + esc(e.theme) : "", e.signup_enabled ? "Food sign-up on · " + n + (n === 1 ? " sign-up" : " sign-ups") : ""].filter(Boolean).join(" · ") + "</p>" : "") +
+      (e.signup_enabled || e.theme ? '<p class="club-hint">' + [e.theme ? "Food theme: " + esc(e.theme) : "", e.signup_enabled ? "Sign-up on: " + C.signupSpec(e).short + " · " + n + (n === 1 ? " sign-up" : " sign-ups") : ""].filter(Boolean).join(" · ") + "</p>" : "") +
       '</div><button type="button" class="club-btn club-btn--ghost club-btn--small" data-edit="' + esc(e.id) + '">Edit<span class="visually-hidden"> ' + esc(e.title + ", " + C.shortDate(e.starts_on)) + "</span></button></li>";
   }
   function load(keepId) {
@@ -100,9 +114,9 @@
   var opener = null;
   function slotRow(label, needed, i) {
     return '<div class="club-slot-row" data-slot-row>' +
-      '<div class="club-field"><label for="of-slot-' + i + '">Category</label><input id="of-slot-' + i + '" type="text" maxlength="60" value="' + esc(label || "") + '" data-slot-label></div>' +
+      '<div class="club-field"><label for="of-slot-' + i + '">' + esc(C.SIGNUP[shownKind].slot) + '</label><input id="of-slot-' + i + '" type="text" maxlength="60" value="' + esc(label || "") + '" data-slot-label></div>' +
       '<div class="club-field"><label for="of-slot-n-' + i + '">How many</label><input id="of-slot-n-' + i + '" type="number" min="1" max="999" inputmode="numeric" value="' + (needed || "") + '" data-slot-needed></div>' +
-      '<button type="button" class="club-btn club-btn--ghost club-btn--small" data-slot-remove>Remove<span class="visually-hidden"> category ' + esc(label || "") + "</span></button></div>";
+      '<button type="button" class="club-btn club-btn--ghost club-btn--small" data-slot-remove>Remove<span class="visually-hidden"> ' + esc(C.SIGNUP[shownKind].slot.toLowerCase() + " " + (label || "")) + "</span></button></div>";
   }
   var slotCounter = 0;
   function setSlots(slots) {
@@ -118,8 +132,8 @@
     var list = e && e.signups || [];
     $("of-signups-wrap").hidden = !e || !e.signup_enabled;
     $("of-signups").innerHTML = list.length ? list.map(function (s) {
-      return "<li><p>" + esc(s.name) + ": " + esc(s.item) + " (" + esc(s.slot) + ")" + (s.note ? ' <span class="club-hint">' + esc(s.note) + "</span>" : "") + "</p>" +
-        '<button type="button" class="club-btn club-btn--danger club-btn--small" data-remove-signup="' + esc(s.id) + '">Remove<span class="visually-hidden"> ' + esc(s.name + "'s " + s.item) + "</span></button></li>";
+      return "<li><p>" + esc(s.name) + (s.item ? ": " + esc(s.item) : "") + " (" + esc(s.slot) + ")" + (s.note ? ' <span class="club-hint">' + esc(s.note) + "</span>" : "") + "</p>" +
+        '<button type="button" class="club-btn club-btn--danger club-btn--small" data-remove-signup="' + esc(s.id) + '">Remove<span class="visually-hidden"> ' + esc(s.name + "'s " + (s.item || s.slot)) + "</span></button></li>";
     }).join("") : "<li>No sign-ups yet.</li>";
   }
   function openEditor(e, from) {
@@ -139,7 +153,10 @@
     $("of-cancelled").checked = !!(e && e.status === "cancelled");
     $("of-signup").checked = !!(e && e.signup_enabled);
     $("of-signup-note").value = e && e.signup_note || "";
-    setSlots(e && e.slots && e.slots.length ? e.slots : DEFAULT_SLOTS.map(function (l) { return { label: l, needed: null }; }));
+    $("of-signup-kind").value = C.signupKind(e);
+    showKind($("of-signup-kind").value);
+    shownKind = $("of-signup-kind").value;
+    setSlots(e && e.slots && e.slots.length ? e.slots : defaultSlots($("of-signup-kind").value));
     toggleSignupSetup();
     $("of-delete").hidden = !e;
     fillSignups(e);
@@ -162,7 +179,15 @@
     var inputs = document.querySelectorAll("[data-slot-label]");
     inputs[inputs.length - 1].focus();
   });
-  $("of-slot-default").addEventListener("click", function () { setSlots(DEFAULT_SLOTS.map(function (l) { return { label: l, needed: null }; })); });
+  $("of-slot-default").addEventListener("click", function () { setSlots(defaultSlots($("of-signup-kind").value)); });
+  // switching the kind swaps in its usual choices, unless the officer already changed them
+  $("of-signup-kind").addEventListener("change", function () {
+    var kind = this.value, current = readSlots();
+    var swap = !current.length || sameLabels(current, KIND_SETUP[shownKind].slots);
+    shownKind = kind;
+    setSlots(swap ? defaultSlots(kind) : current);
+    showKind(kind);
+  });
   $("of-slots").addEventListener("click", function (ev) {
     var b = ev.target.closest("[data-slot-remove]");
     if (!b) return;
@@ -177,12 +202,13 @@
       start_time: $("of-start").value, end_time: $("of-end").value, title: $("of-title").value.trim(), theme: $("of-theme").value.trim(),
       kind: $("of-kind").value, location: $("of-location").value.trim(), details: $("of-details").value.trim(),
       tentative: $("of-tentative").checked, status: $("of-cancelled").checked ? "cancelled" : "scheduled",
-      signup_enabled: $("of-signup").checked, signup_note: $("of-signup-note").value.trim(), slots: readSlots()
+      signup_enabled: $("of-signup").checked, signup_kind: $("of-signup-kind").value,
+      signup_note: $("of-signup-note").value.trim(), slots: readSlots()
     };
     if (!p.starts_on) { msg("of-form-msg", "Choose a date.", "error"); $("of-date").focus(); return; }
     if (!p.title) { msg("of-form-msg", "Give the event a title.", "error"); $("of-title").focus(); return; }
     if (p.ends_on && p.ends_on < p.starts_on) { msg("of-form-msg", "The last day must be on or after the first day.", "error"); $("of-end-date").focus(); return; }
-    if (p.signup_enabled && !p.slots.length) { msg("of-form-msg", "Add at least one food category, or turn food sign-up off.", "error"); $("of-slot-add").focus(); return; }
+    if (p.signup_enabled && !p.slots.length) { msg("of-form-msg", "Add at least one choice for people to sign up for, or turn sign-up off.", "error"); $("of-slot-add").focus(); return; }
     if (editing && editing.signup_enabled && (editing.signups || []).length) {
       var labels = p.slots.map(function (s) { return s.label; });
       var orphaned = editing.signups.filter(function (s) { return labels.indexOf(s.slot) === -1; }).length;

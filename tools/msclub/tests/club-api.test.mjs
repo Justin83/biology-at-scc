@@ -1,4 +1,4 @@
-// Contract tests for the club API (msclub/sql/001_club.sql).
+// Contract tests for the club API (msclub/sql/001_club.sql, 002, 003).
 // Run against the local stand-in (never production), with "today" fixed so the seeded
 // Fall 2026 schedule has upcoming events:
 //   CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
@@ -27,9 +27,9 @@ const find = async (date, title) => (await events()).find((e) => e.starts_on ===
 test("seeded schedule matches the static fallback (data/events.json)", async () => {
   const live = await events();
   const stat = JSON.parse(fs.readFileSync(path.join(ROOT, "msclub/data/events.json"), "utf8")).events;
-  const strip = (e) => [e.starts_on, e.ends_on, e.start_time, e.end_time, e.title, e.theme, e.kind, e.tentative, e.signup_enabled, JSON.stringify(e.slots)];
+  const strip = (e) => [e.starts_on, e.ends_on, e.start_time, e.end_time, e.title, e.theme, e.kind, e.tentative, e.signup_enabled, e.signup_kind, e.signup_note, JSON.stringify(e.slots)];
   const seeded = live.filter((e) => stat.some((s) => s.starts_on === e.starts_on && s.title === e.title));
-  assert.equal(seeded.length, 17);
+  assert.equal(seeded.length, 18);
   assert.deepEqual(seeded.map(strip), stat.map(strip));
 });
 
@@ -74,6 +74,53 @@ test("sign-up validation", async () => {
   assert.equal(saved.ok, true);
   assert.equal((await rpc("club_signup", { p_event_id: oct.id, p_entry: { name: "X", slot: "Food or drink", item: "y" } })).error, "event_past");
   await admin("save_event", { ...oct, signup_enabled: false });
+});
+
+test("work this event: STEAM Day volunteers (no item; shifts; a shift closes when full)", async () => {
+  let steam = await find("2027-03-05", "Somerset STEAM Day");
+  assert.ok(steam, "STEAM Day seeded by 003");
+  assert.deepEqual([steam.kind, steam.signup_enabled, steam.signup_kind], ["event", true, "work"]);
+  assert.deepEqual(steam.slots.map((s) => s.label), ["Setup", "Activity tables", "Cleanup"]);
+  assert.match(steam.signup_note, /S-STEM scholars/);
+  assert.equal((await rpc("club_signup", { p_event_id: steam.id, p_entry: { name: "Vol A." } })).error, "bad_slot", "a shift is required");
+  const a = await rpc("club_signup", { p_event_id: steam.id, p_entry: { name: "Vol A.", slot: "Setup", item: "ignored" } });
+  assert.equal(a.ok, true, "no item needed");
+  assert.equal((await rpc("club_signup", { p_event_id: steam.id, p_entry: { name: "vol a.", slot: "Setup" } })).error, "duplicate");
+  const a2 = await rpc("club_signup", { p_event_id: steam.id, p_entry: { name: "Vol A.", slot: "Cleanup" } });
+  assert.equal(a2.ok, true, "same person, another shift");
+  steam = await find("2027-03-05", "Somerset STEAM Day");
+  assert.equal(steam.signups.find((x) => x.id === a.id).item, "", "item not stored for work sign-ups");
+  // officer sets Setup to need 1 person: it is full now; moving into a full shift is refused too
+  assert.equal((await admin("save_event", { ...steam, slots: [{ label: "Setup", needed: 1 }, { label: "Activity tables" }, { label: "Cleanup" }] })).ok, true);
+  assert.equal((await rpc("club_signup", { p_event_id: steam.id, p_entry: { name: "Vol B.", slot: "Setup" } })).error, "slot_full");
+  const b = await rpc("club_signup", { p_event_id: steam.id, p_entry: { name: "Vol B.", slot: "Activity tables", note: "can stay late" } });
+  assert.equal(b.ok, true);
+  assert.equal((await rpc("club_signup_update", { p_id: b.id, p_token: b.token, p_entry: { slot: "Setup" } })).error, "slot_full");
+  assert.equal((await rpc("club_signup_update", { p_id: a.id, p_token: a.token, p_entry: { name: "Vol A. Smith" } })).ok, true, "editing within a full shift is fine");
+  // an old page that doesn't send signup_kind keeps the kind
+  assert.equal((await admin("save_event", { ...steam, signup_kind: undefined })).ok, true);
+  steam = await find("2027-03-05", "Somerset STEAM Day");
+  assert.equal(steam.signup_kind, "work");
+  for (const x of [a, a2, b]) assert.equal((await rpc("club_signup_remove", { p_id: x.id, p_token: x.token })).ok, true);
+  assert.equal((await admin("save_event", { ...steam, slots: [{ label: "Setup" }, { label: "Activity tables" }, { label: "Cleanup" }] })).ok, true);
+});
+
+test("who's going: a trip with a number of spots", async () => {
+  const add = await admin("save_event", { starts_on: "2027-04-09", title: "Test Campus Trip", kind: "campus-tour", signup_enabled: true,
+    signup_kind: "going", slots: [{ label: "Going", needed: 2 }] });
+  assert.equal(add.ok, true);
+  const ev = (await events()).find((e) => e.id === add.id);
+  assert.equal(ev.signup_kind, "going");
+  const one = await rpc("club_signup", { p_event_id: ev.id, p_entry: { name: "Trip A.", slot: "Going" } });
+  const two = await rpc("club_signup", { p_event_id: ev.id, p_entry: { name: "Trip B.", slot: "Going" } });
+  assert.deepEqual([one.ok, two.ok], [true, true]);
+  assert.equal((await rpc("club_signup", { p_event_id: ev.id, p_entry: { name: "Trip C.", slot: "Going" } })).error, "slot_full");
+  assert.equal((await rpc("club_signup", { p_event_id: ev.id, p_entry: { name: "Trip A.", slot: "Going" } })).error, "slot_full");
+  assert.equal((await rpc("club_signup_remove", { p_id: two.id, p_token: two.token })).ok, true);
+  assert.equal((await rpc("club_signup", { p_event_id: ev.id, p_entry: { name: "trip a.", slot: "Going" } })).error, "duplicate");
+  assert.equal((await rpc("club_signup", { p_event_id: ev.id, p_entry: { name: "Trip C.", slot: "Going" } })).ok, true, "a spot opened up");
+  assert.equal((await admin("save_event", { starts_on: "2027-04-10", title: "Bad kind of sign-up", signup_kind: "potluck" })).error, "bad_value");
+  assert.equal((await admin("delete_event", { id: ev.id })).ok, true);
 });
 
 test("officer code required; wrong code rejected", async () => {

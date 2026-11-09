@@ -15,8 +15,9 @@
   function eligible(d) { return C.upcoming(d).filter(function (e) { return e.signup_enabled && e.status !== "cancelled"; }); }
   function countText(e) { var n = (e.signups || []).length; return n === 0 ? "nobody signed up yet" : n === 1 ? "1 person signed up" : n + " people signed up"; }
 
-  // club get-togethers (meetings and socials, where people bring food) vs. everything else
-  function isMeeting(e) { return e.kind === "meeting" || e.kind === "social"; }
+  // club get-togethers where people bring food vs. events and trips (work this event,
+  // who's going)
+  function isMeeting(e) { return C.signupKind(e) === "food"; }
   function cardsHtml(list) {
     return list.map(function (e) {
       var p = C.parts(e.starts_on), id = "su-ev-" + esc(e.id), theme = C.themeText(e);

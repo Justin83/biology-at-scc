@@ -19,7 +19,7 @@
   function signupButton(e, big) {
     if (!canSignUp(e)) return "";
     return '<a class="club-btn' + (big ? " club-btn--big" : "") + '" href="' + root + "signup/?event=" + encodeURIComponent(e.id) + '" data-signup="' + esc(e.id) + '">' +
-      "Sign up to bring food" + (big ? "" : '<span class="visually-hidden"> for ' + esc(e.title + ", " + C.shortDate(e.starts_on)) + "</span>") + "</a>";
+      esc(C.signupSpec(e).button) + (big ? "" : '<span class="visually-hidden"> for ' + esc(e.title + ", " + C.shortDate(e.starts_on)) + "</span>") + "</a>";
   }
   function chips(e) {
     return '<span class="club-chip' + (e.kind === "meeting" ? " club-chip--meeting" : "") + '">' + esc(C.KINDS[e.kind] || "Event") + "</span>" +
@@ -68,7 +68,7 @@
       '<p class="club-next-meta">' + esc(C.timeLabel(e)) + " · " + esc(e.title) + (e.location ? " · " + esc(e.location) : "") +
       (C.relDays(data.today, e.starts_on) ? " · " + esc(C.relDays(data.today, e.starts_on)) : "") + "</p>" +
       (theme ? '<p class="club-theme club-theme--big">Food theme: <strong>' + esc(theme) + "</strong></p>" : "") + "</div>" +
-      (bring ? '<section class="club-next-bring club-bring-panel" aria-labelledby="next-bring-title"><h3 id="next-bring-title">Who\'s bringing what</h3>' +
+      (bring ? '<section class="club-next-bring club-bring-panel" aria-labelledby="next-bring-title"><h3 id="next-bring-title">' + esc(C.signupSpec(e).list) + "</h3>" +
         '<div class="club-bring">' + C.bringList(e, "h4") + "</div></section>" : "") +
       (canSignUp(e) ? '<p class="club-actions club-next-actions">' + signupButton(e, true) + '<span class="club-hint" style="align-self:center">' + esc(countText(e)) + "</span></p>" : "");
     return e;
@@ -100,7 +100,7 @@
       }
       if (!form) form = C.signupForm($("club-signup-body"), { idPrefix: "m", headingLevel: 3, onChange: function (d) { data = d; renderAll(); } });
       form.show(data, e);
-      $("club-modal-title").textContent = "Sign up to bring food";
+      $("club-modal-title").textContent = C.signupSpec(e).button;
       $("club-signup-dialog").showModal();
       form.focusFirst();
     });

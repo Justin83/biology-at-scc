@@ -49,11 +49,22 @@ club home).
    - **Tentative** marks it as may change. **Cancelled** keeps it on the page, crossed
      out. **Delete** removes it and its sign-ups.
    - **Add an event** creates a new one.
-4. **Food sign-up:** tick "Members can sign up to bring food" on an event, then:
-   - add a note if useful (for example, "The club is providing pizza");
-   - set the categories and, optionally, how many of each are needed. "Use the usual
-     categories" fills in Main dish, Side, Snack, Dessert and Drinks;
-   - the November 19 meeting and the December 3 holiday party come set up this way.
+4. **Sign-up:** tick "Members can sign up for this event", then choose what people sign
+   up for:
+   - **Bring food** (club meetings and socials): categories such as Main dish, Side,
+     Snack, Dessert and Drinks, each with an optional "How many" (a guide only). People
+     give their name, a category, what they're bringing and an optional allergy note.
+     The November 19 meeting and the December 3 holiday party are set up this way.
+   - **Work this event (volunteers)**: shifts or roles, for example Setup, Activity
+     tables and Cleanup. People give their name, pick a shift and can add a note. A
+     shift with a "How many" closes when it's full; the same person can take more than
+     one shift. Somerset STEAM Day (March 5, 2027) is set up this way.
+   - **Who's going (trips)**: one "Going" list; put the number of spots in "How many"
+     (or leave it empty for no limit). People give their name and an optional note.
+   - Add a note for people signing up if useful (shown above the sign-up), for example
+     "The club is providing pizza" or the S-STEM scholar note on STEAM Day.
+   - Food sign-ups appear under **Club meetings** on the sign-up page; the other two
+     under **Events and trips**.
 5. **Remove a sign-up:** open the event in the editor; its sign-ups are listed with
    Remove buttons.
 6. **Close food sign-up** stops all new sign-ups and changes until it is reopened.
@@ -132,6 +143,13 @@ to the real database.
 
    The page moved to event cards with a sign-up pop-up, a big-screen QR code, and a
    pop-up officer editor.
+
+6. **Update 2026-11-09 (migration `club_v3`, `sql/003_club_signup_kinds.sql`):**
+   - sign-up types per event: bring food (as before), work this event (volunteer
+     shifts), who's going (trips with spots); shifts and trips close when full;
+   - the item is only asked for food sign-ups;
+   - adds Somerset STEAM Day (Friday, March 5, 2027) with a volunteer sign-up (Setup,
+     Activity tables, Cleanup) and a draft S-STEM scholar note that officers can edit.
 
 Rollback: the `drop …` statements at the end of the SQL file. Setting `enabled: false`
 returns the pages to the printed schedule.
