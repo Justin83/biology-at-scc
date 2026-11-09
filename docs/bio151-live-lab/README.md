@@ -40,8 +40,8 @@ TV     ──HTTPS──▶ GitHub Pages: labs/bio151-spectro/dashboard/  (instr
 
 | URL | Purpose | Who |
 |---|---|---|
-| `https://justin83.github.io/biology-at-scc/labs/bio151-spectro/` | Data-entry form (QR target) | students |
-| `https://justin83.github.io/biology-at-scc/labs/bio151-spectro/dashboard/` | Chart, status cards, table, instructor tools | instructor / TV |
+| `https://biologyatscc.com/labs/bio151-spectro/` | Data-entry form (QR target) | students |
+| `https://biologyatscc.com/labs/bio151-spectro/dashboard/` | Chart, status cards, table, instructor tools | instructor / TV |
 | either page + `?exp=<slug>` | Same pages for another experiment | — |
 
 ## Repository layout for this feature

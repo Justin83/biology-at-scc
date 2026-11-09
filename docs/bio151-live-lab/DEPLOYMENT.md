@@ -9,8 +9,8 @@
 
 ### Live URLs
 
-- Student form: `https://justin83.github.io/biology-at-scc/labs/bio151-spectro/`
-- Dashboard: `https://justin83.github.io/biology-at-scc/labs/bio151-spectro/dashboard/`
+- Student form: `https://biologyatscc.com/labs/bio151-spectro/`
+- Dashboard: `https://biologyatscc.com/labs/bio151-spectro/dashboard/`
 - API base: `https://efxymeviokaocosmpqwf.supabase.co/rest/v1/rpc/`
 
 Reachability from outside the development computer: the Supabase API **is**
@@ -64,8 +64,8 @@ update livelab.settings
    (≈20 s historically).
 3. Verify (from any network):
    ```
-   curl -sI https://justin83.github.io/biology-at-scc/labs/bio151-spectro/ | head -1        # 200
-   curl -sI https://justin83.github.io/biology-at-scc/labs/bio151-spectro/dashboard/ | head -1
+   curl -sI https://biologyatscc.com/labs/bio151-spectro/ | head -1        # 200
+   curl -sI https://biologyatscc.com/labs/bio151-spectro/dashboard/ | head -1
    ```
 4. Open the dashboard on the TV browser; open the form on a phone via the QR;
    join a group with a test PIN, save one reading, press **Refresh now** on the

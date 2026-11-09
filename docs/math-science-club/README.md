@@ -1,6 +1,7 @@
 # Math & Science Club section
 
-Live at `https://justin83.github.io/biology-at-scc/math-science-club/`. It is the landing
+Live at `https://club.biologyatscc.com/` (redirects to
+`https://biologyatscc.com/math-science-club/`). It is the landing
 page for anyone in Somerset Community College's Math & Science Club (KCTCS Somerset).
 
 **Status (2026-11-05): live.** The club database was applied to the SyllaBased Supabase

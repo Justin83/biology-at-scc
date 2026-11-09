@@ -23,7 +23,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const FILE = path.join(ROOT, "research/freshwater/data/resources.json");
 const DRY = process.argv.includes("--dry-run");
-const UA = "biology-at-scc-linkcheck/1.0 (+https://justin83.github.io/biology-at-scc/research/freshwater/resources/)";
+const UA = "biology-at-scc-linkcheck/1.0 (+https://biologyatscc.com/research/freshwater/resources/)";
 const today = new Date().toISOString().slice(0, 10);
 
 function check(url) {

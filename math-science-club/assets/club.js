@@ -14,7 +14,7 @@
     enabled: true,
     supabaseUrl: "https://efxymeviokaocosmpqwf.supabase.co",
     supabaseKey: "sb_publishable_xoPXCFR7FN5X6as1E1tYAg_bmSpYMHE",
-    homeUrl: "https://justin83.github.io/biology-at-scc/math-science-club/"
+    homeUrl: "https://club.biologyatscc.com/"
   };
 
   // Local testing only: ?api=http://127.0.0.1:8789 (loopback addresses only) points the

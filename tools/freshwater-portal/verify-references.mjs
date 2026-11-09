@@ -16,7 +16,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const refs = JSON.parse(fs.readFileSync(path.join(ROOT, "research/freshwater/data/references.json"), "utf8")).records;
-const UA = "biology-at-scc-refcheck/1.0 (+https://justin83.github.io/biology-at-scc/research/freshwater/standards/)";
+const UA = "biology-at-scc-refcheck/1.0 (+https://biologyatscc.com/research/freshwater/standards/)";
 const norm = (s) => String(s || "").toLowerCase().replace(/<[^>]+>/g, "").replace(/&(amp;)+/g, "&").replace(/[^a-z0-9]+/g, " ").trim();
 const sleep = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
 

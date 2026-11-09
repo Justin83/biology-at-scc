@@ -3,8 +3,8 @@
 **Biology at SCC** is the public-facing home for undergraduate research and
 scholarly work at Somerset Community College (SCC).
 
-The site is published with [GitHub Pages](https://pages.github.com/) and is
-built to grow over time. It is not tied to a single course, semester or
+The site is published with [GitHub Pages](https://pages.github.com/) at
+<https://biologyatscc.com> and is built to grow over time. It is not tied to a single course, semester or
 research project.
 
 ## Structure
@@ -64,6 +64,10 @@ static HTML; shared navigation and data-driven lists are regenerated in place wi
 The site deploys automatically to GitHub Pages via GitHub Actions
 (`.github/workflows/pages.yml`) on every push to `main`. There is no build
 step — the repository is plain static HTML/CSS.
+
+The domain `biologyatscc.com` is on Cloudflare DNS and points at GitHub Pages;
+`club.biologyatscc.com` redirects to the Math & Science Club section. The DNS
+records and the redirect rule are in `docs/DOMAIN.md`.
 
 ## License
 
