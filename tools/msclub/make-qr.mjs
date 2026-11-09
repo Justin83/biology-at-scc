@@ -2,8 +2,8 @@
 // Writes the club's one QR code from homeUrl in msclub/assets/club.js:
 //   msclub/assets/qr-club.svg -> club website (people go to the food sign-up from there)
 // Uses the vendored qrcode-generator 1.4.4 (MIT) in research/freshwater/assets/vendor/.
-//   node tools/math-science-club/make-qr.mjs          (write)
-//   node tools/math-science-club/make-qr.mjs --check  (exit 1 if a file is out of date)
+//   node tools/msclub/make-qr.mjs          (write)
+//   node tools/msclub/make-qr.mjs --check  (exit 1 if a file is out of date)
 import fs from "node:fs";
 import path from "node:path";
 import { createRequire } from "node:module";

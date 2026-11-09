@@ -245,7 +245,7 @@
     status("Officer tools work once the club database is switched on.", true);
     return;
   }
-  if (C.isLocal()) status("Local test database (tools/math-science-club/local-api.mjs).");
+  if (C.isLocal()) status("Local test database (tools/msclub/local-api.mjs).");
   $("of-signin").hidden = false;
   var saved = null;
   try { saved = sessionStorage.getItem(KEY); } catch (e) { /* ignore */ }

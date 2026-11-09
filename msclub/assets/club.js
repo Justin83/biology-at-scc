@@ -14,11 +14,11 @@
     enabled: true,
     supabaseUrl: "https://efxymeviokaocosmpqwf.supabase.co",
     supabaseKey: "sb_publishable_xoPXCFR7FN5X6as1E1tYAg_bmSpYMHE",
-    homeUrl: "https://justin83.github.io/biology-at-scc/math-science-club/"
+    homeUrl: "https://biologyatscc.com/msclub/"
   };
 
   // Local testing only: ?api=http://127.0.0.1:8789 (loopback addresses only) points the
-  // pages at tools/math-science-club/local-api.mjs. ?api=off clears it.
+  // pages at tools/msclub/local-api.mjs. ?api=off clears it.
   var localApi = null;
   try {
     var q = new URLSearchParams(location.search).get("api");

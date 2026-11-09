@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Browser end-to-end test of the club pages against the local stand-in database.
-//   CLUB_TODAY=2026-11-05 node tools/math-science-club/local-api.mjs &
-//   NODE_PATH=$(npm root -g) node tools/math-science-club/tests/club-pages.e2e.mjs
+//   CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
+//   NODE_PATH=$(npm root -g) node tools/msclub/tests/club-pages.e2e.mjs
 // Needs Playwright with Chromium (not a site dependency). Serves the repository itself.
 // Covers:
 //   - home page: next meeting (food theme), event cards by month, the big-screen QR;
@@ -187,18 +187,6 @@ try {
   assert.equal(await a.isChecked("#su-ev-" + novId), true, "event from the link is preselected");
   assert.match(await text(a, "#su-list"), /Drinks 0 of 3 needed/);
   assert.match(await text(a, "#su-info"), /Food theme: Tacos/);
-  // the old math-science-club/ addresses (old links, printed QR codes) forward to msclub/,
-  // keeping the query string
-  const OLD = SITE.replace(/msclub\/$/, "math-science-club/");
-  await a.goto(OLD + "signup/" + Q + "&event=" + novId);
-  await a.waitForURL(/\/msclub\/signup\/\?/);
-  assert.ok(a.url().includes("event=" + novId), "old sign-up link keeps its event");
-  await a.waitForSelector("#su-app:not([hidden]) #su-list");
-  assert.equal(await a.isChecked("#su-ev-" + novId), true, "event from the old link is preselected");
-  for (const sub of ["", "officers/", "qr/"]) {
-    await a.goto(OLD + sub);
-    await a.waitForURL(new RegExp("/msclub/" + sub.replace("/", "\\/") + "$"));
-  }
 
   // clean up: delete the test event, put the November meeting back the way it was
   await o.click('#of-upcoming li:has-text("E2E January Meeting") [data-edit]');

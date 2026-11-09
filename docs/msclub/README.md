@@ -17,8 +17,7 @@ project as migration `club_v1`, with Justin's approval. `enabled` in
 | `officers/` | club officers (`noindex`) | Edit dates, times, titles and food themes in a pop-up editor (two columns on a desktop); add, cancel or delete events; set up food categories; remove sign-ups; open or close sign-up; change the officer code |
 | `qr/` | print | Poster with the club's QR code |
 
-The site home page links to the club. The old `math-science-club/` pages are redirects to
-the same page under `msclub/` (query string kept), so old links and printed QR codes work.
+The site home page links to the club.
 
 ## For members
 
@@ -65,7 +64,7 @@ not in this repository.
 ## Logo
 
 The club's shield and seal logos were provided as screenshots. They were redrawn as vector
-images by `tools/math-science-club/make-logos.mjs`:
+images by `tools/msclub/make-logos.mjs`:
 - the background changed from navy to the site's deep green (`#1a3d27`);
 - the gold shield, gold ring and icon colors were kept;
 - the lettering uses outlines of the open-licensed fonts Bebas Neue, Josefin Sans and
@@ -100,11 +99,11 @@ replace them.
 
 ```bash
 npm install --no-save @electric-sql/pglite@0.5.8      # once
-CLUB_TODAY=2026-11-05 node tools/math-science-club/local-api.mjs &
-node --test tools/math-science-club/tests/*.test.mjs   # 7 database contract tests
-NODE_PATH=$(npm root -g) node tools/math-science-club/tests/club-pages.e2e.mjs   # browser test (Playwright)
-node tools/math-science-club/check.mjs                 # page checks, schedule data, QR code
-node tools/math-science-club/make-qr.mjs               # regenerate the QR code
+CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
+node --test tools/msclub/tests/*.test.mjs   # 7 database contract tests
+NODE_PATH=$(npm root -g) node tools/msclub/tests/club-pages.e2e.mjs   # browser test (Playwright)
+node tools/msclub/check.mjs                 # page checks, schedule data, QR code
+node tools/msclub/make-qr.mjs               # regenerate the QR code
 ```
 
 To try the pages against the local database, open any club page with

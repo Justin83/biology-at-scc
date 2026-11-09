@@ -9,7 +9,9 @@ DNS for `biologyatscc.com` is on Cloudflare (nameservers `brad` and `jule.ns.clo
 | `https://biologyatscc.com/msclub/` | Math & Science Club |
 | `https://www.biologyatscc.com/` | GitHub redirects it to `biologyatscc.com` |
 | `https://justin83.github.io/biology-at-scc/…` | GitHub redirects old links to the same page on `biologyatscc.com` |
-| `…/math-science-club/…` | Small redirect pages to the same page under `msclub/` (query string kept), for old links and printed QR codes |
+
+The club used to be at `math-science-club/`. That folder is gone: links and QR codes that
+pointed there (including flyers printed before November 2026) no longer work.
 
 ## Cloudflare DNS (zone `biologyatscc.com`)
 
@@ -39,23 +41,22 @@ DNS for `biologyatscc.com` is on Cloudflare (nameservers `brad` and `jule.ns.clo
   `CNAME` file: the custom domain lives in the Pages settings.
 - Profile Settings → Pages → Add a domain: `biologyatscc.com` gives the TXT record above.
 
-## Last step, after the domain has settled: QR codes
+## QR codes
 
-The QR codes and the addresses they encode still point at
-`justin83.github.io/biology-at-scc/…`. Those keep working (GitHub and the redirect pages
-forward them), so they change last, in one pass, once `biologyatscc.com` has been
-working for a while:
+The club QR code (`msclub/assets/qr-club.svg`, from `homeUrl` in `msclub/assets/club.js`
+via `node tools/msclub/make-qr.mjs`) and the printed club address are
+`https://biologyatscc.com/msclub/`.
 
-- `msclub/assets/club.js` `homeUrl` → `https://biologyatscc.com/msclub/`, then
-  `node tools/math-science-club/make-qr.mjs`; update the address printed beside the QR
-  code in `msclub/index.html` (big-screen view) and `msclub/qr/index.html` (poster).
+The other QR codes still encode `justin83.github.io/biology-at-scc/…`. GitHub forwards
+those to `biologyatscc.com`, so they keep working; they change last, once the domain
+has been working for a while:
+
 - `research/freshwater/assets/fieldobs.js` `submitUrl` →
   `https://biologyatscc.com/research/freshwater/observations/submit/`, then
   `node tools/freshwater-portal/make-qr.mjs`. The review page builds class QR codes from
   the same setting.
 - `labs/bio151-spectro/config.js` `STUDENT_FORM_URL`, `labs/bio151-spectro/qr-student-form.svg`
   and `docs/bio151-live-lab/qr-latex-snippet.tex`.
-- Printed flyers.
 
 ## Checks
 

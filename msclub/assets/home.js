@@ -126,7 +126,7 @@
     if (!data.live && C.config.enabled) {
       $("club-status").innerHTML = '<div class="club-banner club-banner--warn"><p>We couldn\'t load the live schedule, so this is the printed Fall 2026 schedule. Food sign-up needs a connection. Try again in a few minutes.</p></div>';
     } else if (C.isLocal()) {
-      $("club-status").innerHTML = '<div class="club-banner"><p>Local test database (tools/math-science-club/local-api.mjs).</p></div>';
+      $("club-status").innerHTML = '<div class="club-banner"><p>Local test database (tools/msclub/local-api.mjs).</p></div>';
     }
   }, function () {
     $("club-upcoming").innerHTML = "<p>The schedule could not be loaded. Reload the page to try again.</p>";

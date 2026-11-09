@@ -7,7 +7,7 @@
 // POST /rest/v1/rpc/club_<function> the way PostgREST does (JSON body = named arguments).
 //
 //   npm install --no-save @electric-sql/pglite@0.5.8   (once; not a site dependency)
-//   node tools/math-science-club/local-api.mjs          (listens on http://127.0.0.1:8789)
+//   node tools/msclub/local-api.mjs          (listens on http://127.0.0.1:8789)
 //
 // Environment: PORT (default 8789), CLUB_OFFICER_CODE (default "local-officer-code"),
 // CLUB_TODAY (optional YYYY-MM-DD: pretend "today" is this date, e.g. 2026-11-05, so the

@@ -1,8 +1,8 @@
 // Contract tests for the club API (msclub/sql/001_club.sql).
 // Run against the local stand-in (never production), with "today" fixed so the seeded
 // Fall 2026 schedule has upcoming events:
-//   CLUB_TODAY=2026-11-05 node tools/math-science-club/local-api.mjs &
-//   node --test tools/math-science-club/tests/*.test.mjs
+//   CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
+//   node --test tools/msclub/tests/*.test.mjs
 // Environment: CLUB_API_URL (default http://127.0.0.1:8789), CLUB_OFFICER_CODE (default local-officer-code).
 import { test } from "node:test";
 import assert from "node:assert/strict";

@@ -13,7 +13,7 @@
 //
 //   npm install --no-save opentype.js@1.3.4 @fontsource/bebas-neue@5.1.0 \
 //     @fontsource/josefin-sans@5.1.0 @fontsource/cinzel@5.1.0     (once; not site dependencies)
-//   node tools/math-science-club/make-logos.mjs
+//   node tools/msclub/make-logos.mjs
 import fs from "node:fs";
 import path from "node:path";
 import { createRequire } from "node:module";
