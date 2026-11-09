@@ -184,6 +184,8 @@
   }
   function flyerCurrent(f, today) { return !f.archived && (!f.event_date || f.event_date >= today); }
   function flyerOnHome(f, today) { return !!f.event_date && flyerCurrent(f, today); }
+  // an event's info page (msclub/events/<page>/; see sql/006_club_event_pages.sql), or null
+  function pageUrl(root, e) { return e && /^[a-z0-9]+(-[a-z0-9]+)*$/.test(e.page || "") ? (root || "./") + "events/" + e.page + "/" : null; }
   function plainDate(iso) { var p = parts(iso); return MON[p.m - 1] + " " + p.d + ", " + p.y; }
 
   window.Club = {
@@ -191,6 +193,6 @@
     KINDS: KINDS, SIGNUP: SIGNUP, signupKind: signupKind, signupSpec: signupSpec, peopleCount: peopleCount, signupCount: signupCount, todayISO: todayISO, parts: parts, longDate: longDate, shortDate: shortDate, monthKey: monthKey,
     monthLabel: monthLabel, timeLabel: timeLabel, dateLabel: dateLabel, clock: clock,
     relDays: relDays, isPast: isPast, esc: esc, load: load, upcoming: upcoming, nextGathering: nextGathering, MON: MON, DOW: DOW,
-    loadFlyers: loadFlyers, flyerCurrent: flyerCurrent, flyerOnHome: flyerOnHome, plainDate: plainDate
+    loadFlyers: loadFlyers, flyerCurrent: flyerCurrent, flyerOnHome: flyerOnHome, plainDate: plainDate, pageUrl: pageUrl
   };
 })();

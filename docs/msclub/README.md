@@ -12,25 +12,28 @@ project as migration `club_v1`, with Justin's approval. `enabled` in
 
 | URL (under `msclub/`) | For | What it does |
 |---|---|---|
-| `./` | everyone | Next meeting (food theme, **who's bringing what** beside the details on a computer and above the button on a phone, sign-up button), the club's QR code (computers only; a phone is already on the page) with a **Show on the big screen** button for class and, beside it, the flyer for each upcoming event (see [Flyers](#flyers)), and event cards by month; food events have a **Sign up to bring food** button that opens the sign-up in a pop-up |
+| `./` | everyone | Next meeting (food theme, **who's bringing what** beside the details on a computer and above the button on a phone, sign-up button), beside it on a computer the flyer for each upcoming event (see [Flyers](#flyers); no QR code on this page), and event cards by month; food events have a **Sign up to bring food** button that opens the sign-up in a pop-up; an event with an info page (below) has its sign-up button and title go to that page |
 | `signup/` | everyone | Event sign-up (club-bar tab **Event sign-up**). Clickable cards in two groups: **Club meetings** (meetings and socials, where people bring food) and **Events and trips** (any other event an officer turns sign-up on for; the group is hidden while there are none). Nothing is preselected unless the link names one (the card buttons do). Choosing a card opens who's bringing what and the form below the cards; add, change or remove your own sign-up; no account |
 | `officers/` | club officers (`noindex`) | Edit dates, times, titles and food themes in a pop-up editor (two columns on a desktop); add, postpone, cancel or delete events; set up sign-up (bring food, volunteers or who's going); remove sign-ups; open or close sign-up; the **Flyer library**; change the officer code |
-| `qr/` | print | Poster with the club's QR code (linked from every club page's footer) |
+| `events/<page>/` | everyone | An event's info page, for a call to action such as volunteering (see [Event info pages](#event-info-pages)). Now: `events/steam-day-2027/` |
+| `qr/` | print | Poster with the club's QR code, to print or show in class (**Display Website Invite Poster** in every club page's footer) |
 
 The site home page links to the club. Club pages carry a **Back to Biology at SCC** link at
-the top instead of the main site's menu; the green club bar's first link is **Home** (the
-club home).
+the top instead of the main site's menu; the club bar's first link is **Home** (the club
+home). Every club page ends with the same bold SCC-blue footer: the club's name and **Part
+of Biology at SCC**; club links (Home, Event sign-up, Schedule, **Display Website Invite
+Poster**, Officer tools); contact (justin.howard@kctcs.edu); and **Not an official KCTCS
+website.** New links go in its Club column (or a new column) on all five pages.
 
 ## For members
 
 - The schedule comes from the printed *MSSE Scholars Proposed Activities — Fall 2026
   Schedule*. Its tentative items (marked ** on the flyer) carry a "Tentative" tag.
-- There is one QR code. It opens the club website; people choose **Sign up to bring
-  food** from there (on an event card, the next-meeting card, or **Event sign-up** in the
-  club bar). Type your name (first name and last initial is enough) and what you're
-  bringing, and add an allergy note if needed.
-- In class, **Show on the big screen** (next to the QR code on the club page) fills the
-  screen with that QR code for students to scan.
+- There is one QR code, on the invite poster (**Display Website Invite Poster** in the
+  footer; print it or show it in class). It opens the club website; people choose **Sign
+  up to bring food** from there (on an event card, the next-meeting card, or **Event
+  sign-up** in the club bar). Type your name (first name and last initial is enough) and
+  what you're bringing, and add an allergy note if needed.
   - Names and items are shown on the page so people can avoid duplicates.
   - Only the phone or computer that made a sign-up can change or remove it; it keeps a
     private token for that sign-up.
@@ -92,10 +95,10 @@ listed oldest first in `msclub/flyers/flyers.json`. They are made by
 flyer can be remade or used as the starting point for a new one (for example next year's
 Thanksgiving dinner).
 
-- **Club home page (computers only):** a flyer for an event is shown beside the QR code
-  through the day of the event. Its picture and name open the PDF in the browser to view
-  or print. The next day it leaves the home page; the club's QR code stays. Phones show no
-  flyers (the QR panel is hidden on phones).
+- **Club home page (computers only):** a flyer for an event is shown beside the
+  next-meeting card through the day of the event. Its picture and name open the PDF in the
+  browser to view or print. The next day it leaves the home page; with no current flyer
+  the next-meeting card takes the full width. Phones show no flyers.
 - **Flyer library (Officer tools):** every flyer, oldest first, with **View or print** and
   **Download**. A flyer whose event has passed moves to **Archive**, where it can still be
   viewed and downloaded, as a record of what the club did.
@@ -123,6 +126,35 @@ node tools/msclub/check.mjs                                              # check
 
 To take a flyer off the home page early (or retire the website flyer when a new one
 replaces it), add `archived: true` to its entry and run the script.
+
+## Event info pages
+
+An event can have a small info page at `msclub/events/<page>/`, for when the card alone
+isn't enough, such as a call for volunteers. The event's `page` field (migration `club_v6`)
+names it. When it's set:
+
+- the event card's sign-up button and title go to the info page instead of opening the
+  pop-up, and on the sign-up page choosing the event shows a **More about …** link;
+- the info page reads its event from the live schedule (date, time, place, how many have
+  signed up), and its **Sign up** buttons (one at the top, one after the sign-up line)
+  open the same sign-up form in a pop-up;
+- it finds the event by `page`, so officers can still change the title, date or time;
+- if sign-up is closed, postponed, cancelled, past or the database can't be reached, the
+  buttons are replaced by a short note saying why.
+
+**STEAM Day 2027** (`events/steam-day-2027/`) is the first. Its text was drafted for Justin
+(with the MSSE scholar line and the ESTEM footnote he asked for) and checked against
+[SCC's 2026 STEAM Day news post](https://somerset.kctcs.edu/news/2026/03162026-steam-day.aspx)
+(81 eighth graders; sessions led by SCC instructors and students), the
+[AAMC premed competencies](https://students-residents.aamc.org/real-stories-demonstrating-premed-competencies/premed-competencies-entering-medical-students)
+(Service Orientation) and the
+[ABET engineering criteria](https://www.abet.org/accreditation/accreditation-criteria/criteria-for-accrediting-engineering-programs-2025-2026/)
+(teamwork; communicating with a range of audiences). Volunteers work 8:00 a.m. to about
+2:00 p.m.; the page words the event's end time as "to about".
+
+**To add one:** copy `events/steam-day-2027/index.html` to `events/<new-page>/`, change
+`data-event-page` and the text, and set the event's `page` (in SQL, for example
+`update club.events set page = '<new-page>' where id = '…';`).
 
 ## Logo
 
@@ -175,7 +207,7 @@ on white, where it would be too hard to read.
 ```bash
 npm install --no-save @electric-sql/pglite@0.5.8      # once
 CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
-node --test tools/msclub/tests/*.test.mjs   # 10 database contract tests
+node --test tools/msclub/tests/*.test.mjs   # 11 database contract tests
 NODE_PATH=$(npm root -g) node tools/msclub/tests/club-pages.e2e.mjs   # browser test (Playwright)
 node tools/msclub/check.mjs                 # page checks, schedule data, QR code, flyer library
 node tools/msclub/make-qr.mjs               # regenerate the QR code
@@ -223,6 +255,11 @@ to the real database.
      list is one plain list; club_signup ignores any category sent for a food event;
    - the category lists on food events were cleared (existing sign-ups keep their old
      category value, which the pages no longer show).
+
+9. **Update 2026-11-09 (migration `club_v6`, `sql/006_club_event_pages.sql`):**
+   - events get an optional `page` (an info page in the site), returned by club_events;
+   - STEAM Day Somerset 2027 gets `steam-day-2027` and ends at 2:00 PM (volunteers work
+     8:00 a.m. to about 2:00 p.m., Justin's call).
 
 Rollback: the `drop …` statements at the end of the SQL file. Setting `enabled: false`
 returns the pages to the printed schedule.

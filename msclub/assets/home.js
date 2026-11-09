@@ -15,6 +15,10 @@
   function countText(e) { return C.signupCount(e, true); }
   function signupButton(e, big) {
     if (!canSignUp(e)) return "";
+    // an event with an info page: the button goes there (its own button opens the form)
+    var page = C.pageUrl(root, e);
+    if (page) return '<a class="club-btn' + (big ? " club-btn--big" : "") + '" href="' + esc(page) + '">' +
+      esc(C.signupSpec(e).button) + (big ? "" : '<span class="visually-hidden"> for ' + esc(e.title + ", " + C.shortDate(e.starts_on)) + "</span>") + "</a>";
     return '<a class="club-btn' + (big ? " club-btn--big" : "") + '" href="' + root + "signup/?event=" + encodeURIComponent(e.id) + '" data-signup="' + esc(e.id) + '">' +
       esc(C.signupSpec(e).button) + (big ? "" : '<span class="visually-hidden"> for ' + esc(e.title + ", " + C.shortDate(e.starts_on)) + "</span>") + "</a>";
   }
@@ -29,7 +33,7 @@
     return '<article class="club-card' + (e.id === nextId ? " is-next" : "") + (e.status === "cancelled" ? " is-cancelled" : "") + '">' +
       '<div class="club-card-top"><div class="club-date" aria-hidden="true"><span class="dow">' + C.DOW[new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay()].slice(0, 3) +
       '</span><span class="day">' + p.d + '</span><span class="mon">' + C.MON[p.m - 1].slice(0, 3) + "</span></div>" +
-      '<div><h4 class="club-card-title">' + esc(e.title) + '</h4><p class="club-card-chips">' + chips(e) + "</p></div></div>" +
+      '<div><h4 class="club-card-title">' + (C.pageUrl(root, e) ? '<a href="' + esc(C.pageUrl(root, e)) + '">' + esc(e.title) + "</a>" : esc(e.title)) + '</h4><p class="club-card-chips">' + chips(e) + "</p></div></div>" +
       '<p class="club-card-meta">' + esc(C.dateLabel(e)) + " · " + esc(C.timeLabel(e)) + (e.location ? " · " + esc(e.location) : "") + "</p>" +
       (theme ? '<p class="club-theme">Food theme: <strong>' + esc(theme) + "</strong></p>" : "") +
       (e.details ? '<p class="club-card-details">' + esc(e.details) + "</p>" : "") +
@@ -80,7 +84,6 @@
       $("club-past-count").textContent = past.length;
       $("club-past").innerHTML = cards(past, null);
     }
-    $("club-bigqr-event").textContent = next ? "Next meeting: " + C.dateLabel(next) + " · " + C.timeLabel(next) + (next.theme ? " · Food theme: " + next.theme : "") : "";
   }
 
   // ---------------------------------------------------------------- sign-up pop-up
@@ -116,28 +119,23 @@
     if (target) target.focus();
   });
 
-  // ---------------------------------------------------------------- big-screen QR
-  $("club-bigqr-open").addEventListener("click", function () {
-    if (!canModal) { location.href = root + "qr/"; return; }
-    $("club-bigqr").showModal();
-  });
-  $("club-bigqr").addEventListener("close", function () { $("club-bigqr-open").focus(); });
-
   // ---------------------------------------------------------------- flyers
-  // In the QR panel, which is shown on computers only: each event flyer until its date
-  // passes. The picture and name open the PDF in the browser to view or print.
+  // Beside the next-meeting card, on computers only: each event flyer until its date
+  // passes. The picture and name open the PDF in the browser to view or print. With no
+  // current flyer the panel is hidden and the card takes the full width.
   function showFlyers(today) {
     C.loadFlyers(root).then(function (list) {
       var now = list.filter(function (f) { return C.flyerOnHome(f, today); })
         .sort(function (a, b) { return a.event_date < b.event_date ? -1 : a.event_date > b.event_date ? 1 : 0; });
       var box = $("club-flyers");
-      box.innerHTML = now.length ? "<h3>" + (now.length > 1 ? "Flyers" : "Flyer") + "</h3>" + now.map(function (f) {
+      $("flyer-title").textContent = now.length > 1 ? "Flyers" : "Flyer";
+      box.innerHTML = now.map(function (f) {
         return '<a class="club-flyer" href="' + esc(root + "flyers/" + f.pdf) + '" target="_blank" rel="noopener">' +
           '<img src="' + esc(root + "flyers/" + f.preview) + '" width="612" height="792" alt="" loading="lazy">' +
           '<span class="club-flyer-name">' + esc(f.title) + "</span>" +
           '<span class="club-flyer-hint">View or print (PDF)<span class="visually-hidden">, opens in a new tab</span></span></a>';
-      }).join("") : "";
-      box.hidden = !now.length;
+      }).join("");
+      $("club-flyer-panel").hidden = !now.length;
       box.setAttribute("data-shown", String(now.length));
     });
   }

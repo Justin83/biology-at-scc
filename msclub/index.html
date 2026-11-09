@@ -49,12 +49,9 @@
       </div>
     </section>
 
-    <section class="club-panel club-scan" aria-labelledby="scan-title">
-      <h2 id="scan-title">Open on your phone</h2>
-      <img class="club-scan-qr" src="assets/qr-club.svg" width="180" height="180" alt="QR code for the Math &amp; Science Club website">
-      <p>Scan with your phone's camera to open the club website.</p>
-      <p class="club-actions"><button type="button" class="club-btn club-btn--ghost" id="club-bigqr-open">Show on the big screen</button></p>
-      <div class="club-flyers" id="club-flyers" hidden></div>
+    <section class="club-panel club-flyer-panel" id="club-flyer-panel" aria-labelledby="flyer-title" hidden>
+      <h2 id="flyer-title">Flyer</h2>
+      <div class="club-flyers" id="club-flyers"></div>
     </section>
   </div>
 
@@ -69,7 +66,6 @@
     <div class="club-fine">
       <p>Dates come from the printed <em>MSSE Scholars Proposed Activities</em> schedule for Fall 2026. Events marked <span class="club-chip club-chip--tentative">Tentative</span> could change because of weather or other reasons.</p>
       <p>Attendance at all activities is encouraged. MSSE scholars need to attend at least 4 each semester and meet with their mentor twice. Schedule changes are sent to your KCTCS student email.</p>
-      <p>Want a paper copy for the classroom door? Print the <a href="qr/">QR poster</a>.</p>
     </div>
   </section>
 
@@ -83,20 +79,31 @@
   <div id="club-signup-body"></div>
 </dialog>
 
-<dialog class="club-bigqr" id="club-bigqr" aria-labelledby="club-bigqr-title">
-  <div class="club-bigqr-inner">
-    <h2 id="club-bigqr-title">Scan to open the Math &amp; Science Club website</h2>
-    <p class="club-bigqr-event" id="club-bigqr-event"></p>
-    <img src="assets/qr-club.svg" alt="QR code for the Math &amp; Science Club website" width="600" height="600">
-    <p class="club-bigqr-url">biologyatscc.com/msclub</p>
-    <p class="club-actions"><button type="button" class="club-btn" data-close>Close</button></p>
+<footer class="club-footer">
+  <div class="wrap club-footer-grid">
+    <div class="club-footer-about">
+      <p class="club-footer-name"><img src="assets/logo.svg" alt="" width="44" height="44">Math &amp; Science Club</p>
+      <p>Somerset Community College</p>
+      <p>Part of <a href="../index.html">Biology at SCC</a></p>
+    </div>
+    <nav class="club-footer-col" aria-label="Club pages">
+      <h2 class="club-footer-title">Club</h2>
+      <ul>
+        <li><a href="./">Home</a></li>
+        <li><a href="signup/">Event sign-up</a></li>
+        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="qr/">Display Website Invite Poster</a></li>
+        <li><a href="officers/">Officer tools</a></li>
+      </ul>
+    </nav>
+    <div class="club-footer-col">
+      <h2 class="club-footer-title">Contact</h2>
+      <p>Questions about the club or this site?</p>
+      <p><a href="mailto:justin.howard@kctcs.edu">justin.howard@kctcs.edu</a></p>
+    </div>
   </div>
-</dialog>
-
-<footer>
-  <div class="wrap">
-    <p>Math &amp; Science Club &middot; Somerset Community College &middot; part of <a href="../index.html">Biology at SCC</a> &middot; <a href="qr/">QR poster</a></p>
-    <p>Questions about this site? Contact <a href="mailto:justin.howard@kctcs.edu">justin.howard@kctcs.edu</a>.</p>
+  <div class="club-footer-base">
+    <div class="wrap"><p><strong>Not an official KCTCS website.</strong> Run by the Math &amp; Science Club at Somerset Community College.</p></div>
   </div>
 </footer>
 <script src="assets/club.js" defer></script>

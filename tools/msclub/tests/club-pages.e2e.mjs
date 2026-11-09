@@ -61,7 +61,8 @@ try {
   assert.match(next, /Food theme: to be announced/);
   assert.deepEqual(await a.$$eval("#club-upcoming .club-month", (h) => h.map((x) => x.textContent)), ["November 2026", "December 2026", "March 2027"]);
   assert.equal(await a.$$eval("#club-upcoming .club-card", (c) => c.length), 5);
-  assert.equal(await a.$$eval("#club-upcoming .club-card [data-signup]", (c) => c.length), 3, "sign-up buttons on the two food events and STEAM Day");
+  assert.equal(await a.$$eval("#club-upcoming .club-card .club-card-actions a.club-btn", (c) => c.length), 3, "sign-up buttons on the two food events and STEAM Day");
+  assert.equal(await a.$$eval("#club-upcoming .club-card [data-signup]", (c) => c.length), 2, "the food events open the pop-up; STEAM Day's button goes to its info page");
   // STEAM Day (added by 003): a volunteer sign-up, no food theme
   const steamCard = await text(a, '.club-card:has-text("STEAM Day Somerset 2027")');
   assert.match(steamCard, /Sign up to work this event/);
@@ -81,10 +82,11 @@ try {
   // officer tools: a button in the club bar at the top of the page
   assert.equal(await a.isVisible(".club-bar a.club-bar-officer"), true);
   assert.equal(await a.getAttribute(".club-bar a.club-bar-officer", "href"), "officers/");
-  // on a phone there is no QR panel (it would only point back to this page)
-  assert.equal(await a.isVisible(".club-scan"), false, "no QR panel on a phone");
+  // the home page has no QR code (the QR poster is linked from the footer), and no flyer on a phone
+  assert.equal(await a.$$eval('img[src$="qr-club.svg"]', (l) => l.length), 0, "no QR code on the home page");
+  assert.equal(await a.getAttribute('footer a[href="qr/"]', "href"), "qr/", "QR poster linked from the footer");
   await a.waitForSelector("#club-flyers[data-shown]", { state: "attached" });
-  assert.equal(await a.isVisible("#club-flyers .club-flyer"), false, "no flyer on a phone");
+  assert.equal(await a.isVisible("#club-flyer-panel"), false, "no flyer on a phone");
 
   // student A signs up in the pop-up from the next-meeting card
   await a.click("#club-next-body [data-signup]");
@@ -181,18 +183,14 @@ try {
   const o = await desktop();
   await o.goto(SITE + Q);
   await o.waitForSelector("#club-next-body .club-next-bring");
-  // on a computer: the landing-page QR and the big-screen view open the club website
-  assert.equal(await o.isVisible(".club-scan"), true);
-  assert.match(await o.getAttribute(".club-scan-qr", "src"), /qr-club\.svg$/);
-  await o.click("#club-bigqr-open");
-  assert.match(await o.getAttribute("#club-bigqr img", "src"), /qr-club\.svg$/);
-  assert.equal(await o.isVisible("#club-bigqr img"), true);
-  assert.match(await text(o, "#club-bigqr-event"), /Next meeting: Thursday, November 19 · 5:00 PM/);
-  await o.click("#club-bigqr [data-close]");
-  // the Thanksgiving flyer is under the QR code until November 19; it opens the PDF to view or print
-  await o.waitForSelector("#club-flyers:not([hidden]) .club-flyer");
+  // on a computer: no QR code; the Thanksgiving flyer is beside the next-meeting card until
+  // November 19, and it opens the PDF to view or print
+  assert.equal(await o.$$eval('img[src$="qr-club.svg"]', (l) => l.length), 0, "no QR code on the home page");
+  await o.waitForSelector("#club-flyer-panel:not([hidden]) .club-flyer");
   assert.equal(await o.$$eval("#club-flyers .club-flyer", (l) => l.length), 1, "one event flyer (the website flyer isn't tied to an event)");
-  assert.match(await text(o, "#club-flyers"), /Flyer Thanksgiving Dinner View or print \(PDF\)/);
+  assert.match(await text(o, "#club-flyer-panel"), /^Flyer Thanksgiving Dinner View or print \(PDF\)/);
+  const [nextBox, flyerBox] = [await o.$eval(".club-next", (e) => e.getBoundingClientRect().toJSON()), await o.$eval("#club-flyer-panel", (e) => e.getBoundingClientRect().toJSON())];
+  assert.ok(flyerBox.left >= nextBox.right && Math.abs(flyerBox.top - nextBox.top) < 2, "desktop: the flyer sits beside the next-meeting card");
   const flyerLink = await o.$eval("#club-flyers .club-flyer", (x) => ({ href: x.href, target: x.target }));
   assert.match(flyerLink.href, /\/msclub\/flyers\/2026-11-19-thanksgiving-dinner\.pdf$/);
   assert.equal(flyerLink.target, "_blank");
@@ -360,6 +358,52 @@ try {
   await o.click("#of-save");
   await o.waitForFunction(() => /Saved/.test(document.getElementById("of-list-msg").textContent));
 
+  // STEAM Day: the card's sign-up button goes to its info page, whose own button opens the form
+  const v = await desktop();
+  await v.goto(SITE + Q);
+  await v.waitForSelector(".club-card");
+  const steamInfoCard = v.locator('.club-card:has-text("STEAM Day Somerset 2027")');
+  assert.equal(await steamInfoCard.locator(".club-card-actions a.club-btn").getAttribute("href"), "./events/steam-day-2027/");
+  assert.equal(await steamInfoCard.locator(".club-card-title a").getAttribute("href"), "./events/steam-day-2027/", "the title links to the info page too");
+  assert.equal(await steamInfoCard.locator("[data-signup]").count(), 0, "no pop-up from the card");
+  await steamInfoCard.locator(".club-card-actions a.club-btn").click();
+  await v.waitForURL(/\/msclub\/events\/steam-day-2027\/$/);
+  await v.waitForFunction(() => /to about/.test(document.getElementById("ev-when").textContent) && !document.querySelector("[data-ev-count]").hidden);
+  assert.equal(await text(v, "#ev-when"), "Friday, March 5, 2027 · 8:00 AM to about 2:00 PM · North Campus");
+  assert.equal(await v.textContent("h1"), "STEAM Day 2027: Volunteer with the Math & Science Club");
+  const evButtons = v.locator("[data-ev-signup]");
+  assert.deepEqual(await evButtons.allInnerTexts(), ["Sign up to work this event", "Sign up to work this event"], "a button at the top and after \"Sign up below\"");
+  assert.match(await text(v, ".club-event-cta >> nth=0"), /Nobody has signed up yet\./);
+  assert.match(await text(v, ".club-event-scholars"), /MSSE scholars: working STEAM Day counts as one of the 4 activities you need each semester\./);
+  assert.ok(await v.evaluate(() => {
+    const last = [...document.querySelectorAll("[data-ev-signup]")].pop(), f = document.querySelector(".club-footnote");
+    return !!(last.compareDocumentPosition(f) & Node.DOCUMENT_POSITION_FOLLOWING) && f.textContent === "ESTEM paid eligibility may be available. Ask your mentor or event sponsor for details.";
+  }), "the ESTEM footnote follows the sign-up line");
+  assert.deepEqual(await v.$$eval('main a[href^="http"]', (l) => l.map((x) => [new URL(x.href).hostname, x.target])),
+    [["somerset.kctcs.edu", "_blank"], ["students-residents.aamc.org", "_blank"], ["www.abet.org", "_blank"]]);
+  // the top button opens the sign-up form; sign up, see the count, then take it back off
+  await evButtons.first().click();
+  await v.waitForSelector("#club-signup-dialog[open] #m-name");
+  assert.equal(await v.textContent("#club-modal-title"), "Sign up to work this event");
+  assert.doesNotMatch(await text(v, "#m-info"), /More about/, "no link to the page you're already on");
+  await v.fill("#m-name", "E2E Volunteer");
+  if (await v.isVisible('input[name="m-slot"]')) await v.check('input[name="m-slot"] >> nth=0'); // the test database still has shifts
+  await v.click("#m-submit");
+  await v.waitForFunction(() => /You're signed up to work this event/.test(document.getElementById("m-msg").textContent));
+  await v.click("#club-signup-dialog [data-close]");
+  assert.match(await text(v, ".club-event-cta >> nth=0"), /1 person has signed up\./);
+  await evButtons.last().click();
+  await v.waitForSelector('#club-signup-dialog[open] #m-mine li:has-text("E2E Volunteer")');
+  await v.click('#m-mine li:has-text("E2E Volunteer") [data-remove]');
+  await v.waitForFunction(() => /removed/.test(document.getElementById("m-msg").textContent));
+  await v.click("#club-signup-dialog [data-close]");
+  assert.match(await text(v, ".club-event-cta >> nth=1"), /Nobody has signed up yet\./);
+  // on the sign-up page, choosing STEAM Day links to its info page
+  await v.goto(SITE + "signup/" + Q);
+  await v.click('#su-pick-events label:has-text("STEAM Day")');
+  await v.waitForSelector('#su-info a:has-text("More about STEAM Day Somerset 2027")');
+  assert.equal(await v.getAttribute('#su-info a:has-text("More about")', "href"), "../events/steam-day-2027/");
+
   // once a flyer's event date has passed it leaves the home page and moves to the archive
   // (here the Thanksgiving flyer's date is moved to November 1; the test database's today is November 5)
   const r = await desktop();
@@ -371,8 +415,9 @@ try {
   await r.goto(SITE + Q);
   await r.waitForSelector("#club-flyers[data-shown]", { state: "attached" });
   assert.equal(await r.getAttribute("#club-flyers", "data-shown"), "0");
-  assert.equal(await r.isVisible("#club-flyers"), false, "past flyer is off the home page");
-  assert.equal(await r.isVisible(".club-scan-qr"), true, "the website QR code stays");
+  assert.equal(await r.isVisible("#club-flyer-panel"), false, "past flyer is off the home page");
+  const [topBox, cardBox] = [await r.$eval(".club-top", (e) => e.getBoundingClientRect().toJSON()), await r.$eval(".club-next", (e) => e.getBoundingClientRect().toJSON())];
+  assert.ok(Math.abs(topBox.width - cardBox.width) < 2, "with no flyer the next-meeting card takes the full width");
   await r.goto(SITE + "officers/" + Q);
   await r.fill("#of-code", CODE);
   await r.click("#of-signin-form button[type=submit]");
@@ -392,6 +437,11 @@ try {
   await s.goto(SITE + "signup/?api=off");
   await s.waitForFunction(() => /isn't working|opens soon|couldn't be reached/.test(document.getElementById("su-status").textContent));
   assert.equal(await s.isHidden("#su-app"), true, "no sign-up form without the database");
+  await s.goto(SITE + "events/steam-day-2027/?api=off");
+  await s.waitForFunction(() => !document.querySelector("[data-ev-closed]").hidden);
+  assert.match(await text(s, "[data-ev-closed] >> nth=0"), /Sign-up isn't available right now/);
+  assert.equal(await s.isVisible("[data-ev-signup] >> nth=0"), false, "no sign-up button without the database");
+  assert.equal(await text(s, "#ev-when"), "Friday, March 5, 2027 · 8:00 AM to about 2:00 PM · North Campus", "date and time from the printed schedule");
 
   assert.deepEqual(errors, [], "no page errors");
   console.log("PASS club pages end-to-end");
