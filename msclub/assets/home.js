@@ -12,10 +12,7 @@
 
   // ---------------------------------------------------------------- pieces
   function canSignUp(e) { return data.live && e.signup_enabled && e.status === "scheduled" && !C.isPast(e, data.today); }
-  function countText(e) {
-    var n = (e.signups || []).length;
-    return n === 0 ? "Nobody has signed up yet." : n === 1 ? "1 person has signed up." : n + " people have signed up.";
-  }
+  function countText(e) { return C.signupCount(e, true); }
   function signupButton(e, big) {
     if (!canSignUp(e)) return "";
     return '<a class="club-btn' + (big ? " club-btn--big" : "") + '" href="' + root + "signup/?event=" + encodeURIComponent(e.id) + '" data-signup="' + esc(e.id) + '">' +

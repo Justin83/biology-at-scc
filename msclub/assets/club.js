@@ -40,7 +40,7 @@
   // What people sign up for at an event (events.signup_kind). New kinds go here.
   var SIGNUP = {
     food: { button: "Sign up to bring food", list: "Who's bringing what", form: "Add what you're bringing", slots: "Category",
-            item: true, unit: "needed", none: "Food or drink", done: "You're signed up to bring {item}. Thanks!", label: "Bring food", short: "bring food",
+            item: true, unit: "needed", none: "Food or drink", done: "You're signed up to bring {item}. Thanks! Bringing something else too? Add it the same way.", label: "Bring food", short: "bring food",
             note: "Allergy or diet note", notePh: "e.g., contains peanuts, vegetarian", slot: "Category" },
     work: { button: "Sign up to work this event", list: "Who's working", form: "Sign up to work", slots: "Shift or role",
             item: false, unit: "needed", none: "Volunteers", done: "You're signed up to work this event. Thanks!", label: "Work this event (volunteers)", short: "work this event",
@@ -49,6 +49,22 @@
              item: false, unit: "spots", none: "Going", done: "You're on the list. Thanks!", label: "Who's going (trips)", short: "who's going",
              note: "Note", notePh: "e.g., I need a ride", slot: "List" }
   };
+  // How many people have signed up: one person who brings two dishes (or takes two
+  // shifts) counts once. Names are compared ignoring case, punctuation and spacing.
+  function personKey(name) { return String(name || "").toLowerCase().replace(/[^\p{L}\p{N} ]/gu, "").replace(/\s+/g, " ").trim(); }
+  function peopleCount(e) {
+    var seen = {};
+    (e.signups || []).forEach(function (x) { seen[personKey(x.name)] = true; });
+    return Object.keys(seen).length;
+  }
+  // "2 people are bringing 3 dishes." / "1 person has signed up." (sentence = with period)
+  function signupCount(e, sentence) {
+    var n = peopleCount(e), d = (e.signups || []).length, end = sentence ? "." : "";
+    if (!d) return (sentence ? "Nobody has" : "nobody has") + " signed up yet" + end;
+    var who = n === 1 ? "1 person" : n + " people";
+    if (signupKind(e) === "food") return who + (n === 1 ? " is" : " are") + " bringing " + (d === 1 ? "1 dish" : d + " dishes") + end;
+    return who + (n === 1 ? " has" : " have") + " signed up" + end;
+  }
   function signupKind(e) { return e && SIGNUP[e.signup_kind] ? e.signup_kind : "food"; }
   function signupSpec(e) { return SIGNUP[signupKind(e)]; }
   var ERRORS = {
@@ -158,7 +174,7 @@
 
   window.Club = {
     config: CONFIG, live: live, isLocal: function () { return !!localApi; }, rpc: rpc, errorText: errorText,
-    KINDS: KINDS, SIGNUP: SIGNUP, signupKind: signupKind, signupSpec: signupSpec, todayISO: todayISO, parts: parts, longDate: longDate, shortDate: shortDate, monthKey: monthKey,
+    KINDS: KINDS, SIGNUP: SIGNUP, signupKind: signupKind, signupSpec: signupSpec, peopleCount: peopleCount, signupCount: signupCount, todayISO: todayISO, parts: parts, longDate: longDate, shortDate: shortDate, monthKey: monthKey,
     monthLabel: monthLabel, timeLabel: timeLabel, dateLabel: dateLabel, clock: clock,
     relDays: relDays, isPast: isPast, esc: esc, load: load, upcoming: upcoming, nextGathering: nextGathering, MON: MON, DOW: DOW
   };
