@@ -16,6 +16,26 @@
   function tokens() { return store(TOKENS, {}); }
   function slotsOf(e) { return e.slots && e.slots.length ? e.slots : [{ label: "Food or drink", needed: null }]; }
 
+  // "Who's bringing what" for one event, grouped by category. Used inside the sign-up
+  // form and on the club home page's next-meeting card. h = heading tag for categories.
+  C.bringList = function (e, h) {
+    var signups = e.signups || [], mine = tokens(), slots = slotsOf(e);
+    var known = slots.map(function (s) { return s.label; });
+    var other = signups.filter(function (x) { return known.indexOf(x.slot) === -1; });
+    var line = function (x) {
+      return "<li" + (mine[x.id] ? ' class="is-mine"' : "") + "><strong>" + esc(x.item) + '</strong> <span class="who">· ' + esc(x.name) + "</span>" +
+        (x.note ? ' <span class="note">(' + esc(x.note) + ")</span>" : "") + (mine[x.id] ? ' <span class="you">(you)</span>' : "") + "</li>";
+    };
+    var block = function (label, list, count) {
+      return '<div class="club-bring-cat' + (list.length ? "" : " is-empty") + '"><' + h + ">" + esc(label) + " <span>" + esc(count) + "</span></" + h + ">" +
+        (list.length ? "<ul>" + list.map(line).join("") + "</ul>" : "") + "</div>";
+    };
+    return slots.map(function (s) {
+      var list = signups.filter(function (x) { return x.slot === s.label; });
+      return block(s.label, list, s.needed ? list.length + " of " + s.needed + " needed" : list.length ? list.length + " signed up" : "nobody yet");
+    }).join("") + (other.length ? block("Other", other, other.length + " signed up") : "");
+  };
+
   C.themeText = function (e) {
     if (e.theme) return e.theme;
     return e.signup_enabled ? "to be announced" : "";
@@ -31,7 +51,7 @@
     container.innerHTML =
       '<div class="club-su-event" id="' + P + 'info"></div>' +
       '<div class="club-su-grid">' +
-      '<section class="club-su-list" aria-labelledby="' + P + 'list-title"><' + h + ' id="' + P + 'list-title">Who\'s bringing what</' + h + '><div id="' + P + 'list" class="club-bring"></div></section>' +
+      '<section class="club-su-list club-bring-panel" aria-labelledby="' + P + 'list-title"><' + h + ' id="' + P + 'list-title">Who\'s bringing what</' + h + '><div id="' + P + 'list" class="club-bring"></div></section>' +
       '<section class="club-su-form" aria-labelledby="' + P + 'form-title"><' + h + ' id="' + P + 'form-title" tabindex="-1">Add what you\'re bringing</' + h + '>' +
       '<form id="' + P + 'form" novalidate>' +
       '<div class="club-field"><label for="' + P + 'name">Your name</label><input id="' + P + 'name" type="text" maxlength="60" autocomplete="name" aria-describedby="' + P + 'name-hint">' +
@@ -56,17 +76,7 @@
         (C.relDays(data.today, e.starts_on) ? " · " + esc(C.relDays(data.today, e.starts_on)) : "") + "</p>" +
         (theme ? '<p class="club-theme">Food theme: <strong>' + esc(theme) + "</strong></p>" : "") +
         (e.signup_note ? "<p>" + esc(e.signup_note) + "</p>" : "");
-      var known = slotsOf(e).map(function (s) { return s.label; });
-      var other = signups.filter(function (x) { return known.indexOf(x.slot) === -1; });
-      var line = function (x) {
-        return "<li" + (mine[x.id] ? ' class="is-mine"' : "") + ">" + esc(x.name) + ": " + esc(x.item) +
-          (x.note ? ' <span class="note">(' + esc(x.note) + ")</span>" : "") + (mine[x.id] ? ' <span class="note">(you)</span>' : "") + "</li>";
-      };
-      $("list").innerHTML = slotsOf(e).map(function (s) {
-        var list = signups.filter(function (x) { return x.slot === s.label; });
-        var count = s.needed ? list.length + " of " + s.needed + " needed" : list.length ? list.length + " signed up" : "nobody yet";
-        return "<div><" + h + ">" + esc(s.label) + " <span>" + esc(count) + "</span></" + h + ">" + (list.length ? "<ul>" + list.map(line).join("") + "</ul>" : "") + "</div>";
-      }).join("") + (other.length ? "<div><" + h + ">Other</" + h + "><ul>" + other.map(line).join("") + "</ul></div>" : "");
+      $("list").innerHTML = C.bringList(e, "h" + ((opts.headingLevel || 3) + 1));
       var checked = editing ? editing.slot : (container.querySelector('input[name="' + P + 'slot"]:checked') || {}).value;
       $("slots").innerHTML = slotsOf(e).map(function (s, i) {
         return '<div class="club-choice"><input type="radio" name="' + P + 'slot" id="' + P + "slot-" + i + '" value="' + esc(s.label) + '"' + (checked === s.label ? " checked" : "") +

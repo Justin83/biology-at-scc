@@ -63,6 +63,12 @@ try {
   assert.equal(await a.$$eval("#club-upcoming .club-card", (c) => c.length), 4);
   assert.equal(await a.$$eval("#club-upcoming .club-card [data-signup]", (c) => c.length), 2, "sign-up buttons on the two food events");
   assert.equal(await a.textContent("#club-past-count"), "13");
+  // club bar tab
+  assert.equal((await a.textContent('.club-bar nav a[href="signup/"]')).trim(), "Event sign-up");
+  // who's bringing what is on the next-meeting card, above the button on a phone
+  assert.match(await text(a, "#club-next-body .club-next-bring"), /Who's bringing what[\s\S]*Dessert nobody yet/i);
+  const [bringBox, actBox] = [await a.$eval(".club-next-bring", (e) => e.getBoundingClientRect().toJSON()), await a.$eval(".club-next-actions", (e) => e.getBoundingClientRect().toJSON())];
+  assert.ok(bringBox.bottom <= actBox.top, "phone: list sits above the sign-up button");
   // officer tools: a button in the club bar at the top of the page
   assert.equal(await a.isVisible(".club-bar a.club-bar-officer"), true);
   assert.equal(await a.getAttribute(".club-bar a.club-bar-officer", "href"), "officers/");
@@ -88,9 +94,10 @@ try {
   await a.fill("#m-note", "contains nuts");
   await a.click("#m-submit");
   await a.waitForFunction(() => /signed up to bring Brownies/.test(document.getElementById("m-msg").textContent));
-  assert.match(await text(a, "#m-list"), /E2E Student A: Brownies \(contains nuts\) \(you\)/);
+  assert.match(await text(a, "#m-list"), /Brownies · E2E Student A \(contains nuts\) \(you\)/);
   await a.click("#club-signup-dialog [data-close]");
   assert.match(await text(a, "#club-next-body"), /1 person has signed up/);
+  assert.match(await text(a, "#club-next-body .club-next-bring"), /Dessert 1 signed up Brownies · E2E Student A \(contains nuts\) \(you\)/, "card list updates after signing up");
 
   // student B on another phone, on the sign-up page. Choosing the get-together is a
   // required first step: nothing is preselected and the form stays hidden until then.
@@ -114,7 +121,7 @@ try {
   await b.waitForSelector("#su-app:not([hidden]) #su-list li");
   assert.ok(b.url().includes("event=" + novId), "choice kept in the address");
   // sees A's entry, cannot change it
-  assert.match(await text(b, "#su-list"), /E2E Student A: Brownies/);
+  assert.match(await text(b, "#su-list"), /Brownies · E2E Student A/);
   assert.doesNotMatch(await text(b, "#su-list"), /\(you\)/);
   assert.equal(await b.isHidden("#su-mine-wrap"), true);
   await b.fill("#su-name", "E2E Student B");
@@ -129,13 +136,13 @@ try {
   // up, so the pop-up must fetch fresh data to show B's lemonade.
   await a.click("#club-next-body [data-signup]");
   await a.waitForSelector("#club-signup-dialog[open]");
-  assert.match(await text(a, "#m-list"), /E2E Student B: Lemonade/, "pop-up shows sign-ups made after the page loaded");
+  assert.match(await text(a, "#m-list"), /Lemonade · E2E Student B/, "pop-up shows sign-ups made after the page loaded");
   await a.click("#m-mine [data-edit]");
   await a.fill("#m-item", "Cookies");
   await a.check('input[name="m-slot"][value="Snack"]');
   await a.click("#m-submit");
   await a.waitForFunction(() => /Saved/.test(document.getElementById("m-msg").textContent));
-  assert.match(await text(a, "#m-list"), /E2E Student A: Cookies/);
+  assert.match(await text(a, "#m-list"), /Cookies · E2E Student A/);
   await a.click("#m-mine [data-remove]");
   await a.waitForFunction(() => /removed/.test(document.getElementById("m-msg").textContent));
   assert.doesNotMatch(await text(a, "#m-list"), /E2E Student A/);
@@ -143,6 +150,15 @@ try {
 
   // officer tools on a desktop browser
   const o = await desktop();
+  await o.goto(SITE + Q);
+  await o.waitForSelector("#club-next-body .club-next-bring");
+  const [infoD, bringD] = [await o.$eval(".club-next-info", (e) => e.getBoundingClientRect().toJSON()), await o.$eval(".club-next-bring", (e) => e.getBoundingClientRect().toJSON())];
+  assert.ok(bringD.left >= infoD.right && bringD.top < infoD.bottom, "desktop: list sits beside the meeting details");
+  await o.click("#club-next-body [data-signup]");
+  await o.waitForSelector("#club-signup-dialog[open] #m-list li");
+  const [listD, formD] = [await o.$eval(".club-su-list", (e) => e.getBoundingClientRect().toJSON()), await o.$eval(".club-su-form", (e) => e.getBoundingClientRect().toJSON())];
+  assert.ok(formD.left >= listD.right && Math.abs(formD.top - listD.top) < 5, "desktop pop-up: list beside the form");
+  await o.click("#club-signup-dialog [data-close]");
   await o.goto(SITE + "officers/" + Q);
   await o.fill("#of-code", "wrong-code");
   await o.click("#of-signin-form button[type=submit]");

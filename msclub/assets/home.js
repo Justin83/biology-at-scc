@@ -58,13 +58,19 @@
       return null;
     }
     var theme = C.themeText(e);
+    // who's bringing what, right on the card (beside the details on a wide screen,
+    // between the details and the button on a phone)
+    var bring = data.live && e.signup_enabled && e.status !== "cancelled";
     $("next-title").textContent = e.kind === "meeting" ? "Next meeting" : "Next get-together";
+    $("club-next-body").classList.toggle("has-bring", bring);
     $("club-next-body").innerHTML =
-      '<p class="club-next-date">' + esc(C.dateLabel(e, true)) + "</p>" +
+      '<div class="club-next-info"><p class="club-next-date">' + esc(C.dateLabel(e, true)) + "</p>" +
       '<p class="club-next-meta">' + esc(C.timeLabel(e)) + " · " + esc(e.title) + (e.location ? " · " + esc(e.location) : "") +
       (C.relDays(data.today, e.starts_on) ? " · " + esc(C.relDays(data.today, e.starts_on)) : "") + "</p>" +
-      (theme ? '<p class="club-theme club-theme--big">Food theme: <strong>' + esc(theme) + "</strong></p>" : "") +
-      (canSignUp(e) ? '<p class="club-actions">' + signupButton(e, true) + '<span class="club-hint" style="align-self:center">' + esc(countText(e)) + "</span></p>" : "");
+      (theme ? '<p class="club-theme club-theme--big">Food theme: <strong>' + esc(theme) + "</strong></p>" : "") + "</div>" +
+      (bring ? '<section class="club-next-bring club-bring-panel" aria-labelledby="next-bring-title"><h3 id="next-bring-title">Who\'s bringing what</h3>' +
+        '<div class="club-bring">' + C.bringList(e, "h4") + "</div></section>" : "") +
+      (canSignUp(e) ? '<p class="club-actions club-next-actions">' + signupButton(e, true) + '<span class="club-hint" style="align-self:center">' + esc(countText(e)) + "</span></p>" : "");
     return e;
   }
   function renderAll() {
