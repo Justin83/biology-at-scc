@@ -359,6 +359,9 @@ begin
   end if;
 
   if p_action = 'update_experiment' then
+    -- the same row lock as mitosis_save, taken before checking for submissions: a first
+    -- save still in flight finishes (and is seen) before the layout can change
+    select * into e from mitosislab.experiments where id = e.id for update;
     if (p_payload ? 'regions' or p_payload ? 'stages' or p_payload ? 'cells_per_region') then
       if exists (select 1 from mitosislab.submissions where experiment_id = e.id) then
         return jsonb_build_object('ok', false, 'error', 'has_submissions');

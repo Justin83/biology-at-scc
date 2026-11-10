@@ -7,11 +7,11 @@
   const A = window.MitosisAPI;
   const $ = (id) => document.getElementById(id);
   const slug = A.slug;
-  let exp = null, tables = null, own = A.loadOwn(slug), dirty = false, busy = false;
+  let exp = null, tables = null, own = A.loadOwn(slug), dirty = false, busy = false, booting = true;
 
   function msg(text, kind) { const el = $("boot-msg"); el.textContent = text || ""; el.className = "msg " + (kind || "warn") + (text ? "" : " hidden"); }
   function state(text, kind) { const el = $("save-state"); el.textContent = text; el.className = "state" + (kind ? " " + kind : ""); }
-  function refreshButton() { $("save-btn").disabled = busy || !exp || !exp.is_open || !tables || !tables.valid(); }
+  function refreshButton() { $("save-btn").disabled = booting || busy || !exp || !exp.is_open || !tables || !tables.valid(); }
   function markDirty() { dirty = true; if (!busy) state("Unsaved changes", "warn"); refreshButton(); }
   const snapshot = () => JSON.stringify([$("first").value.trim(), $("last").value.trim(), tables.get()]);
 
@@ -48,8 +48,6 @@
     $("course").textContent = [exp.course, exp.term, `count ${exp.cells_per_region} cells in each region`].filter(Boolean).join(" · ");
     document.title = `${exp.title} · Enter Counts`;
     tables = A.countTables($("tables"), exp, "c", markDirty);
-    $("form").classList.remove("hidden");
-    $("savebar").classList.remove("hidden");
     if (A.isLocal) msg("Local test database (tools/bio151-mitosis/local-api.mjs).", "ok");
     if (rec && rec.error) msg(rec.error, "err");
     if (rec && rec.ok) {
@@ -64,6 +62,10 @@
         msg("This device can no longer edit your earlier submission (it may have moved to another device). Saving now starts a new one; ask your instructor if you need the earlier one.", "warn");
       } else msg(A.errorText(g), "err");
     }
+    // only now: nothing typed or saved before this point could be overwritten by the restore
+    booting = false;
+    $("form").classList.remove("hidden");
+    $("savebar").classList.remove("hidden");
     if (!exp.is_open) {
       tables.disable(true);
       $("first").disabled = $("last").disabled = true;
@@ -77,7 +79,7 @@
   $("form").addEventListener("input", (ev) => { if (ev.target.id === "first" || ev.target.id === "last") markDirty(); });
   $("form").addEventListener("submit", async (ev) => {
     ev.preventDefault();
-    if (busy || !exp || !exp.is_open) return;
+    if (booting || busy || !exp || !exp.is_open) return;
     const first = $("first").value.trim(), last = $("last").value.trim();
     if (!first || !last) { state("Enter your first and last name.", "err"); (first ? $("last") : $("first")).focus(); return; }
     if (!tables.valid()) { state(`A region adds up to more than ${exp.cells_per_region}.`, "err"); return; }

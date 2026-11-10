@@ -75,9 +75,15 @@ try {
   const own = await a.evaluate(() => JSON.parse(localStorage.getItem("mitosis-own:bio151-mitosis-2026fa")));
   assert.match(own.token, /^[0-9a-f]{64}$/, "the editing token stays on the device");
   assert.equal(new URL(a.url()).hash, "", "the token is never in the address");
-  // come back later: the saved counts load
+  // come back later: the saved counts load, and the form stays closed until they have, so
+  // nothing typed or saved in the meantime can be overwritten
+  await a.route("**/rest/v1/rpc/mitosis_get_own", async (route) => { await new Promise((r) => setTimeout(r, 900)); await route.continue(); });
   await a.reload();
+  await a.waitForFunction(() => document.getElementById("title").textContent !== "Loading…");
+  assert.equal(await a.isVisible("#form"), false, "the form waits for the saved counts");
+  assert.equal(await a.isVisible("#save-btn"), false, "no Save until the saved counts are back");
   await a.waitForFunction(() => /^Saved/.test(document.getElementById("save-state").textContent));
+  await a.unroute("**/rest/v1/rpc/mitosis_get_own");
   assert.equal(await a.inputValue("#first"), FIRST);
   assert.equal(await a.inputValue("#c-r1-interphase"), "20");
   // finish both regions: complete
