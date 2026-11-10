@@ -126,8 +126,10 @@
       });
       inputs().forEach((el) => el.classList.toggle("bad", Number.isNaN(num(el))));
     }
-    container.addEventListener("input", () => { paint(); if (onChange) onChange(); });
-    container.addEventListener("click", (ev) => {
+    // assigned (not added) so rebuilding the tables in the same container, as the
+    // instructor's edit dialog does, replaces the handlers instead of stacking them
+    container.oninput = () => { paint(); if (onChange) onChange(); };
+    container.onclick = (ev) => {
       const b = ev.target.closest("button.step");
       if (!b || b.disabled) return;
       const el = document.getElementById(b.dataset.for), v = num(el), step = +b.dataset.step;
@@ -137,7 +139,7 @@
       el.value = Math.max(0, v + step);
       paint();
       if (onChange) onChange();
-    });
+    };
     paint();
     return {
       get() {

@@ -89,6 +89,17 @@ try {
   assert.match(await text(a, "#save-state"), /Unsaved changes/);
   await a.click("#save-btn");
   await a.waitForFunction(() => /Saved .* complete/.test(document.getElementById("save-state").textContent));
+  // typing while a save is still in flight is kept, not overwritten when the save returns
+  await a.route("**/rest/v1/rpc/mitosis_update", async (route) => { await new Promise((r) => setTimeout(r, 900)); await route.continue(); });
+  await a.click("#save-btn");
+  await a.waitForFunction(() => /Saving/.test(document.getElementById("save-state").textContent));
+  await setCount(a, "r1", "interphase", 19);
+  await a.waitForFunction(() => /newer changes not saved yet/.test(document.getElementById("save-state").textContent));
+  assert.equal(await a.inputValue("#c-r1-interphase"), "19", "the newer edit survives the slow save");
+  await a.unroute("**/rest/v1/rpc/mitosis_update");
+  await setCount(a, "r1", "interphase", 20);
+  await a.click("#save-btn");
+  await a.waitForFunction(() => /Saved .* complete/.test(document.getElementById("save-state").textContent));
 
   // ---------------------------------------------------------------- another student with the same name
   const b = await phone();
@@ -118,6 +129,12 @@ try {
   for (const s of [RUN, own.id, ownB.id]) assert.equal(pageText.includes(s), false, `dashboard page contains ${s}`);
   assert.ok(bodies.length >= 1);
   for (const body of bodies) for (const s of [RUN, own.id, ownB.id, "first_name", "last_name"]) assert.equal(body.includes(s), false, `public API response contains ${s}`);
+  // the QR on a dashboard showing another semester sends students to that semester
+  const d2 = await desktop();
+  await d2.goto(SITE + "dashboard/" + Q + "&exp=bio151-mitosis-2099sp");
+  await d2.click("#qr-btn");
+  assert.match(await text(d2, "#qr-url"), /labs\/bio151-mitosis\/\?exp=bio151-mitosis-2099sp$/);
+  assert.equal(await text(d, "#qr-url"), "biologyatscc.com/labs/bio151-mitosis/", "the default semester's QR has no ?exp=");
 
   // ---------------------------------------------------------------- instructor
   const t = await desktop({ acceptDownloads: true });
@@ -134,9 +151,17 @@ try {
   assert.equal(await t.locator(`#roster tr:has-text("${NAME}")`).count(), 2, "both students with the same name are listed");
   assert.match(await text(t, `#roster tr:has(.short-id:text-is("#${own.id.slice(0, 6)}"))`), /Complete 20\.0% 4\.0%/);
   assert.match(await text(t, `#roster tr:has(.short-id:text-is("#${ownB.id.slice(0, 6)}"))`), /Partial 10\/25 · 0\/25/);
+  // the editor can be opened again and again: − still takes away exactly one
+  for (let i = 0; i < 3; i++) {
+    await mine.locator("[data-edit]").click();
+    await t.waitForSelector("#edit-dialog[open]");
+    await t.click("#ed-cancel");
+  }
   // a correction
   await mine.locator("[data-edit]").click();
   await t.waitForSelector("#edit-dialog[open]");
+  await t.click('#edit-tables button[data-for="ed-r1-interphase"][data-step="-1"]');
+  assert.equal(await t.inputValue("#ed-r1-interphase"), "19", "one click of − takes one away, however often the editor was opened");
   await t.fill("#ed-r1-prophase", "3");
   await t.fill("#ed-r1-interphase", "18");     // r1 MI now 28%
   await t.fill("#ed-note", "recounted slide 2");

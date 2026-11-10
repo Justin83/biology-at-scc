@@ -84,7 +84,9 @@
   $("qr-btn").addEventListener("click", () => {
     const panel = $("qr-panel"), show = panel.classList.contains("hidden");
     if (show && !$("qr").innerHTML && window.qrcode) {
-      const url = A.config.STUDENT_FORM_URL;
+      const u = new URL(A.config.STUDENT_FORM_URL);
+      if (slug !== A.config.EXPERIMENT_SLUG) u.searchParams.set("exp", slug); // the semester shown here
+      const url = u.toString();
       const q = qrcode(0, "M"); q.addData(url); q.make();
       $("qr").innerHTML = q.createSvgTag({ cellSize: 8, margin: 4, scalable: true, alt: "QR code linking to the student form", title: "QR code: " + url });
       $("qr-url").textContent = url.replace(/^https:\/\//, "");

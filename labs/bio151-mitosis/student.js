@@ -12,7 +12,8 @@
   function msg(text, kind) { const el = $("boot-msg"); el.textContent = text || ""; el.className = "msg " + (kind || "warn") + (text ? "" : " hidden"); }
   function state(text, kind) { const el = $("save-state"); el.textContent = text; el.className = "state" + (kind ? " " + kind : ""); }
   function refreshButton() { $("save-btn").disabled = busy || !exp || !exp.is_open || !tables || !tables.valid(); }
-  function markDirty() { dirty = true; state("Unsaved changes", "warn"); refreshButton(); }
+  function markDirty() { dirty = true; if (!busy) state("Unsaved changes", "warn"); refreshButton(); }
+  const snapshot = () => JSON.stringify([$("first").value.trim(), $("last").value.trim(), tables.get()]);
 
   // A recovery link from the instructor: #recover=<submission id>.<token>. The part after #
   // never reaches a server; the page reads it once and removes it from the address bar.
@@ -84,6 +85,7 @@
     refreshButton();
     state("Saving…", "");
     const counts = tables.get();
+    const sent = snapshot();
     const r = own ? await A.update(own.id, own.token, first, last, counts) : await A.save(slug, first, last, counts);
     busy = false;
     if (!r.ok) {
@@ -96,7 +98,13 @@
       own = { id: r.submission_id, token: r.token };
       if (!A.storeOwn(slug, own)) msg("This browser won't let the page remember you, so you can't come back to edit on this device. Your counts are saved.", "warn");
     }
-    fill(r.submission);
+    if (snapshot() === sent) fill(r.submission);
+    else { // typed something while saving: keep it, and say it still needs saving
+      $("new-btn").classList.remove("hidden");
+      dirty = true;
+      state(`Saved ${A.fmtTime(r.submission.last_saved_at)} · newer changes not saved yet`, "warn");
+      refreshButton();
+    }
   });
   $("new-btn").addEventListener("click", () => {
     if (!confirm("Start a new submission on this device? Your saved counts stay with your instructor, but this device won't be able to edit them anymore.")) return;
