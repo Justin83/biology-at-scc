@@ -27,6 +27,7 @@
     not_found: "This lab isn't set up yet. Ask your instructor.",
     closed: "Data entry for this lab is closed.",
     bad_name: "Enter your first and last name (letters; up to 40 characters each).",
+    bad_token: "This device's editing key isn't valid. Reload the page and try again.",
     bad_counts: "Counts must be whole numbers of 0 or more.",
     over_total: "A region adds up to more than its cell count. Check your numbers.",
     full: "This lab has reached its limit of submissions. Ask your instructor.",
@@ -86,6 +87,27 @@
   }
   function storeOwn(slug, own) {
     try { own ? localStorage.setItem(ownKey(slug), JSON.stringify({ id: own.id, token: own.token })) : localStorage.removeItem(ownKey(slug)); return true; } catch (_) { return false; }
+  }
+
+  // The editing token for a first save is made here, on the device (256 random bits), and
+  // kept until the save is confirmed. If the answer to a first save is lost, saving again
+  // sends the same token, and the database continues that submission instead of adding a
+  // second one. Kept in localStorage so a reload still retries it; in memory if storage is
+  // blocked.
+  const firstKey = (slug) => `mitosis-first:${slug}`;
+  const firstMem = {};
+  const hexToken = () => Array.from(crypto.getRandomValues(new Uint8Array(32)), (b) => b.toString(16).padStart(2, "0")).join("");
+  function firstToken(slug) {
+    let t = firstMem[slug];
+    if (!t) { try { t = localStorage.getItem(firstKey(slug)); } catch (_) { /* memory only */ } }
+    if (!t || !/^[0-9a-f]{64}$/.test(t)) t = hexToken();
+    firstMem[slug] = t;
+    try { localStorage.setItem(firstKey(slug), t); } catch (_) { /* memory only */ }
+    return t;
+  }
+  function clearFirstToken(slug) {
+    delete firstMem[slug];
+    try { localStorage.removeItem(firstKey(slug)); } catch (_) { /* nothing stored */ }
   }
 
   // ---------------------------------------------------------------- counting tables
@@ -161,10 +183,10 @@
 
   window.MitosisAPI = {
     config: CFG, isLocal, slug: slugFromPage(), errorText, esc, fmtTime, fmtWhen, pct,
-    loadOwn, storeOwn, countTables,
+    loadOwn, storeOwn, firstToken, clearFirstToken, countTables,
     getExperiment: (slug) => rpc("mitosis_get_experiment", { p_slug: slug }),
     dashboard: (slug) => rpc("mitosis_dashboard", { p_slug: slug }),
-    save: (slug, first, last, counts) => rpc("mitosis_save", { p_slug: slug, p_first_name: first, p_last_name: last, p_counts: counts }),
+    save: (slug, first, last, counts, token) => rpc("mitosis_save", { p_slug: slug, p_first_name: first, p_last_name: last, p_counts: counts, p_token: token }),
     update: (id, token, first, last, counts) => rpc("mitosis_update", { p_submission_id: id, p_token: token, p_first_name: first, p_last_name: last, p_counts: counts }),
     getOwn: (id, token) => rpc("mitosis_get_own", { p_submission_id: id, p_token: token }),
     instructor: (key, action, slug, payload) => rpc("mitosis_instructor", { p_key: key, p_action: action, p_slug: slug || null, p_payload: payload || {} })

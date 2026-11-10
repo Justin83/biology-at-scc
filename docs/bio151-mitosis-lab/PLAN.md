@@ -27,7 +27,7 @@ It is a **separate feature**, with its own schema, tables, functions and pages.
 |---|---|
 | D1 | **New dedicated tables** for mitosis experiments, student submissions and region-specific stage counts, in their own private schema `mitosislab`. Do not reuse the spectrophotometer tables (`livelab.*`), and do not change or touch the historical chlorophyll records. |
 | D2 | **No PINs and no group selection.** Students work individually. Each submission carries the student's **First Name** and **Last Name** (both required), stored in the submissions table. *(Amended 2026-11-10: this replaces the earlier proposal of first and last initials.)* |
-| D3 | On the **first save**, the server generates a **random editing token**, stores **only its hash**, and returns the token once; the student's device keeps it. Every later edit requires the token. **A name never authorizes editing**, and no function looks a submission up by name. |
+| D3 | On the **first save**, the submission gets a **random editing token**; the database stores **only its hash**, and the student's device keeps the token. (The device makes the token, 256 random bits, and sends it with the first save, so a first save whose answer was lost can be sent again without making a second submission.) Every later edit requires the token. **A name never authorizes editing**, and no function looks a submission up by name. |
 | D4 | **Duplicate names are allowed.** Each submission gets its own anonymous submission ID (a UUID) and its own token, so two students with the same name never collide. |
 | D5 | **Minimal student screen:** First Name, Last Name, two region-specific counting tables, a live total "n / 25" under each table, and **Save**. |
 | D6 | **Instructor-only:** names (identifying information), the CSV export, corrections to submissions, and opening/closing data entry. |
@@ -105,7 +105,7 @@ All are `SECURITY DEFINER`, `set search_path = ''`, revoked from `public`, and g
 |---|---|---|---|---|
 | `mitosis_get_experiment(slug)` | anyone | none | title, term, regions, stages, cells per region, open/closed | any submission data |
 | `mitosis_dashboard(slug)` | anyone (classroom TV) | none | submissions count; complete count; totals per region × stage; pooled mitotic index per region; the **list of individual mitotic indices per region, unordered and without IDs** (for a dot plot or histogram) | names, submission IDs, per-student timestamps |
-| `mitosis_save(slug, first, last, counts)` | student, first save | experiment open; validation below | `{ok, submission_id, token}` (the token appears **once**) | — |
+| `mitosis_save(slug, first, last, counts, token)` | student, first save | experiment open; validation below; `token` is 64 hex characters made on the device | `{ok, submission_id, token}` | — |
 | `mitosis_update(submission_id, token, first, last, counts)` | student, later saves | token hash matches; experiment open; validation | `{ok, last_saved_at}` | — |
 | `mitosis_get_own(submission_id, token)` | student, return visit | token hash matches | that submission's names and counts | anyone else's data |
 | `mitosis_instructor(key, action, slug, payload)` | instructor | instructor key (bcrypt) | see actions | tokens or token hashes |
@@ -135,11 +135,17 @@ submission is **complete** when every region totals exactly `cells_per_region`.
 
 ## Editing token lifecycle
 
-1. **First save:** `mitosis_save` creates the submission. It generates a 256-bit random
-   token (`extensions.gen_random_bytes(32)`) and stores `sha256(token)`. It returns the
-   ID and token once. The page keeps `{submission_id, token}` in `localStorage`, keyed by
-   the experiment slug. The token is never put in a URL query string or the database in
+1. **First save:** the page makes a 256-bit random token (`crypto.getRandomValues`) and
+   keeps it until the save is confirmed. `mitosis_save` creates the submission and stores
+   `sha256(token)`. The page then keeps `{submission_id, token}` in `localStorage`, keyed
+   by the experiment slug. The token is never put in a URL query string or the database in
    plain form.
+   - **A lost answer:** if the first save reached the database but its answer didn't come
+     back, saving again sends the same token. The database finds that submission and
+     continues it, instead of adding a second one that would be counted twice. A
+     different name with the same token (another student on a shared device) gets a new
+     submission with a token made by the database, so one student's retry can't
+     overwrite another's counts.
 2. **Return visit (same device):** the page finds the stored pair, calls
    `mitosis_get_own` and shows the saved counts. Save calls `mitosis_update` with the token.
 3. **Wrong or missing token:** the request is refused ("This device can't edit that
@@ -222,8 +228,8 @@ submission is **complete** when every region totals exactly `cells_per_region`.
   the only way in.
 - [ ] Every function is `SECURITY DEFINER` with `search_path = ''`, revoked from
   `public`, and granted only as listed.
-- [ ] Tokens: 256-bit random, sha256 stored, compared by hash, returned only at creation
-  or recovery, never logged or audited.
+- [ ] Tokens: 256-bit random (made on the device for a first save, by the database for
+  recovery), sha256 stored, compared by hash, never logged or audited.
 - [ ] The instructor key is a bcrypt hash in `mitosislab.settings`. It is separate from
   the spectrophotometer key, though the instructor may choose the same phrase.
 - [ ] Public functions never select `first_name` or `last_name`. A contract test checks

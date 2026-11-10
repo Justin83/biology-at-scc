@@ -1,6 +1,7 @@
 /* BIO 151 Mitosis Lab: student form. First and last name, a counting table per region with
-   a live "n / 25" total, and Save. The first save creates the submission and keeps its
-   editing token on this device (localStorage); later saves send the token. A name never
+   a live "n / 25" total, and Save. The device makes the editing token for the first save
+   (so a first save whose answer was lost can be sent again without making a second
+   submission) and keeps it in localStorage; later saves send the token. A name never
    unlocks a submission. */
 (function () {
   "use strict";
@@ -114,7 +115,7 @@
     state("Saving…", "");
     const counts = tables.get();
     const sent = snapshot();
-    const r = own ? await A.update(own.id, own.token, first, last, counts) : await A.save(slug, first, last, counts);
+    const r = own ? await A.update(own.id, own.token, first, last, counts) : await A.save(slug, first, last, counts, A.firstToken(slug));
     busy = false;
     if (!r.ok) {
       if (r.error === "not_yours") { A.storeOwn(slug, null); own = null; $("new-btn").classList.add("hidden"); }
@@ -124,6 +125,7 @@
     }
     if (r.token) {
       own = { id: r.submission_id, token: r.token };
+      A.clearFirstToken(slug);
       if (!A.storeOwn(slug, own)) msg("This browser won't let the page remember you, so you can't come back to edit on this device. Your counts are saved.", "warn");
     }
     if (snapshot() === sent) fill(r.submission);
@@ -139,6 +141,7 @@
     if (busy) return; // not while a save is on its way
     if (!confirm("Start a new submission on this device? Your saved counts stay with your instructor, but this device won't be able to edit them anymore.")) return;
     A.storeOwn(slug, null);
+    A.clearFirstToken(slug);
     own = null;
     $("first").value = "";
     $("last").value = "";

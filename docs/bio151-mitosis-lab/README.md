@@ -69,8 +69,10 @@ them before the lab), with stages Interphase, Prophase, Metaphase, Anaphase and 
 - Tables are private (RLS with no policies, no grants). Pages call six
   `SECURITY DEFINER` functions: `mitosis_get_experiment`, `mitosis_dashboard`,
   `mitosis_save`, `mitosis_update`, `mitosis_get_own` and `mitosis_instructor`.
-- A student's first save returns a random 256-bit editing token once. The database keeps
-  only its sha256, and the device keeps the token in `localStorage`. Later saves need it.
+- A student's device makes a random 256-bit editing token for the first save. The
+  database keeps only its sha256, and the device keeps the token in `localStorage`.
+  Later saves need it. A first save sent again after its answer was lost continues the
+  same submission rather than adding a second one.
   Names never unlock anything, and duplicate names are separate submissions.
 - The public functions never return names, submission IDs or per-student times. The
   contract tests check this.

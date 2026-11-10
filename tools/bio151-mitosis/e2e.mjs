@@ -72,9 +72,21 @@ try {
   assert.match(await text(a, "#save-state"), /Enter your first and last name/);
   await a.fill("#first", FIRST);
   await a.fill("#last", LAST);
+  // the first save reaches the database, but its answer is lost on the way back; saving
+  // again continues that submission instead of adding a second one
+  await a.route("**/rest/v1/rpc/mitosis_save", async (route) => { await route.fetch(); await route.abort("failed"); }, { times: 1 });
+  await a.click("#save-btn");
+  await a.waitForFunction(() => /Could not reach the server/.test(document.getElementById("save-state").textContent));
+  const firstTok = await a.evaluate(() => localStorage.getItem("mitosis-first:bio151-mitosis-2026fa"));
+  assert.match(firstTok, /^[0-9a-f]{64}$/, "the first save's token is kept for the retry");
   await a.click("#save-btn");
   await a.waitForFunction(() => /^Saved/.test(document.getElementById("save-state").textContent));
   const own = await a.evaluate(() => JSON.parse(localStorage.getItem("mitosis-own:bio151-mitosis-2026fa")));
+  assert.equal(own.token, firstTok, "the retry continued the first save");
+  assert.equal(await a.evaluate(() => localStorage.getItem("mitosis-first:bio151-mitosis-2026fa")), null, "cleared once the save is confirmed");
+  const named = (await rpc("mitosis_instructor", { p_key: KEY, p_action: "list", p_slug: "bio151-mitosis-2026fa", p_payload: {} }))
+    .submissions.filter((x) => x.first_name === FIRST && x.last_name === LAST);
+  assert.equal(named.length, 1, "a retried first save doesn't add a second submission");
   assert.match(own.token, /^[0-9a-f]{64}$/, "the editing token stays on the device");
   assert.equal(new URL(a.url()).hash, "", "the token is never in the address");
   // come back later: the saved counts load, and the form stays closed until they have, so

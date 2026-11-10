@@ -71,6 +71,38 @@ test("first save returns a token once; every later edit needs it; a name never d
   assert.equal((await update(b.submission_id, b.token, null, `Anna${RUN}`)).submission.first_name, `Anna${RUN}`);
 });
 
+test("a first save sent again (its answer was lost) continues that submission, never a second", async () => {
+  const saveWith = (first, last, counts, token) => rpc("mitosis_save", { p_slug: FALL, p_first_name: first, p_last_name: last, p_counts: counts, p_token: token });
+  const mine = async () => (await admin("list")).submissions.filter((x) => x.last_name.toLowerCase() === `retry${RUN}`);
+  const tok = crypto.randomBytes(32).toString("hex");
+  const a = await saveWith(`Rae${RUN}`, `Retry${RUN}`, { r1: { interphase: 4 } }, tok);
+  assert.equal(a.ok, true);
+  assert.equal(a.token, tok, "the device's token is the editing token");
+  // the same save again, with newer counts and the name in other capitals: the same submission
+  const a2 = await saveWith(`rae${RUN}`, `RETRY${RUN}`, { r1: { interphase: 6 } }, tok);
+  assert.equal(a2.ok, true);
+  assert.equal(a2.submission_id, a.submission_id, "a retried first save doesn't add a submission");
+  assert.equal(a2.token, tok);
+  assert.equal((await mine()).length, 1);
+  assert.equal((await own(a.submission_id, tok)).submission.counts.r1.interphase, 6, "the retry's counts are kept");
+  assert.equal((await update(a.submission_id, tok, { r1: { interphase: 7 } })).ok, true, "and the token edits it afterwards");
+  // the same token with other names (another student on a shared device): a separate
+  // submission with its own new token; the first one is untouched
+  const b = await saveWith(`Bo${RUN}`, `Retry${RUN}`, { r1: { interphase: 9 } }, tok);
+  assert.equal(b.ok, true);
+  assert.notEqual(b.submission_id, a.submission_id);
+  assert.match(b.token, /^[0-9a-f]{64}$/);
+  assert.notEqual(b.token, tok, "the second student gets a token of their own");
+  assert.equal((await own(a.submission_id, tok)).submission.counts.r1.interphase, 7, "one student's retry never overwrites another's counts");
+  assert.equal((await own(a.submission_id, b.token)).error, "not_yours");
+  assert.equal((await mine()).length, 2);
+  // a token that isn't 64 lowercase hex characters is refused
+  for (const bad of ["", "abc", "Z".repeat(64), tok.toUpperCase()]) {
+    assert.equal((await saveWith(`Cy${RUN}`, `Retry${RUN}`, { r1: { interphase: 1 } }, bad)).error, "bad_token");
+  }
+  for (const x of await mine()) assert.equal((await admin("delete_submission", { id: x.id, confirm: "DELETE" })).ok, true);
+});
+
 test("validation: names, counts, the 25-cell limit", async () => {
   for (const [first, last] of [["", "Lee"], ["   ", "Lee"], ["Ana", "x".repeat(41)], ["123", "Lee"], ["Ana\u0007", "Lee"], ["<b>", "Lee"]]) {
     assert.equal((await save(first, last, {})).error, "bad_name", JSON.stringify([first, last]));

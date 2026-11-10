@@ -4,9 +4,11 @@
 --   * A private schema, mitosislab, with its own tables. Nothing in livelab (the
 --     spectrophotometry lab and its Fall 2026 chlorophyll records) is read or changed.
 --   * Students work alone, with no PINs or groups. A submission carries a required first and
---     last name. Its first save returns a random editing token once; only the token's
---     sha256 is stored, and every later edit needs the token. A name never authorizes an
---     edit, and duplicate names are separate submissions.
+--     last name. The student's device makes a random 256-bit editing token and sends it
+--     with the first save (so a first save whose answer was lost can be sent again without
+--     making a second submission); only the token's sha256 is stored, and every later edit
+--     needs the token. A name never authorizes an edit, and duplicate names are separate
+--     submissions.
 --   * Public functions (experiment settings, classroom dashboard) never return names or
 --     submission IDs. Names, corrections, recovery, CSV and open/close need the
 --     instructor key (bcrypt hash in mitosislab.settings), a credential separate from the
@@ -50,6 +52,7 @@ create table if not exists mitosislab.submissions (
   last_saved_by   text not null default 'student' check (last_saved_by in ('student', 'instructor'))
 );
 create index if not exists submissions_experiment_idx on mitosislab.submissions (experiment_id);
+create unique index if not exists submissions_token_idx on mitosislab.submissions (experiment_id, token_hash);
 comment on table mitosislab.submissions is
   'One student''s counts. Names are shown only to the instructor. token_hash is sha256 of the editing token; the token itself is never stored. No unique constraint on names: duplicates are separate submissions.';
 
@@ -245,23 +248,41 @@ begin
 end $$;
 
 -- ---------------------------------------------------------------- public API: students
--- First save: creates a submission and returns its ID and editing token (once).
-create or replace function public.mitosis_save(p_slug text, p_first_name text, p_last_name text, p_counts jsonb)
+-- First save: creates a submission and returns its ID and editing token.
+-- p_token is the editing token the device made for this submission (64 hex characters).
+-- Sending the same first save again with the same token and the same names (its answer was
+-- lost on the way back) updates that submission instead of adding a second one. With other
+-- names it is a different student on a shared device: a new submission with a new token
+-- made here, so one student's retry can never overwrite another's counts. Without p_token
+-- the token is made here.
+create or replace function public.mitosis_save(p_slug text, p_first_name text, p_last_name text, p_counts jsonb, p_token text default null)
 returns jsonb language plpgsql volatile security definer set search_path = '' as $$
 declare e mitosislab.experiments; v_first text; v_last text; v_err text; v_token text; sub mitosislab.submissions;
 begin
   select * into e from mitosislab.experiments where slug = p_slug for update;  -- one save at a time per experiment
   if not found then return jsonb_build_object('ok', false, 'error', 'not_found'); end if;
   if not e.is_open then return jsonb_build_object('ok', false, 'error', 'closed'); end if;
+  if p_token is not null and p_token !~ '^[0-9a-f]{64}$' then return jsonb_build_object('ok', false, 'error', 'bad_token'); end if;
   v_first := mitosislab.clean_name(p_first_name);
   v_last := mitosislab.clean_name(p_last_name);
   if v_first is null or v_last is null then return jsonb_build_object('ok', false, 'error', 'bad_name'); end if;
   v_err := mitosislab.counts_error(e, p_counts);
   if v_err is not null then return jsonb_build_object('ok', false, 'error', v_err); end if;
+  if p_token is not null then
+    select * into sub from mitosislab.submissions where experiment_id = e.id and token_hash = mitosislab.token_hash(p_token);
+    if found and lower(sub.first_name) = lower(v_first) and lower(sub.last_name) = lower(v_last) then
+      update mitosislab.submissions set first_name = v_first, last_name = v_last, last_saved_at = now(), last_saved_by = 'student'
+       where id = sub.id returning * into sub;
+      perform mitosislab.write_counts(sub.id, e, p_counts);
+      return jsonb_build_object('ok', true, 'submission_id', sub.id, 'token', p_token,
+                                'submission', mitosislab.submission_json(sub, e, true));
+    end if;
+    if not found then v_token := p_token; end if;
+  end if;
   if (select count(*) from mitosislab.submissions where experiment_id = e.id) >= 300 then
     return jsonb_build_object('ok', false, 'error', 'full');
   end if;
-  v_token := mitosislab.new_token();
+  v_token := coalesce(v_token, mitosislab.new_token());
   insert into mitosislab.submissions (experiment_id, first_name, last_name, token_hash)
   values (e.id, v_first, v_last, mitosislab.token_hash(v_token)) returning * into sub;
   perform mitosislab.write_counts(sub.id, e, p_counts);
@@ -429,13 +450,13 @@ end $$;
 -- ---------------------------------------------------------------- grants
 revoke all on function public.mitosis_get_experiment(text) from public;
 revoke all on function public.mitosis_dashboard(text) from public;
-revoke all on function public.mitosis_save(text, text, text, jsonb) from public;
+revoke all on function public.mitosis_save(text, text, text, jsonb, text) from public;
 revoke all on function public.mitosis_update(text, text, text, text, jsonb) from public;
 revoke all on function public.mitosis_get_own(text, text) from public;
 revoke all on function public.mitosis_instructor(text, text, text, jsonb) from public;
 grant execute on function public.mitosis_get_experiment(text) to anon, authenticated, service_role;
 grant execute on function public.mitosis_dashboard(text) to anon, authenticated, service_role;
-grant execute on function public.mitosis_save(text, text, text, jsonb) to anon, authenticated, service_role;
+grant execute on function public.mitosis_save(text, text, text, jsonb, text) to anon, authenticated, service_role;
 grant execute on function public.mitosis_update(text, text, text, text, jsonb) to anon, authenticated, service_role;
 grant execute on function public.mitosis_get_own(text, text) to anon, authenticated, service_role;
 grant execute on function public.mitosis_instructor(text, text, text, jsonb) to anon, authenticated, service_role;
