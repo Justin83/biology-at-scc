@@ -207,8 +207,21 @@ try {
   assert.equal(await t.inputValue("#recover-link"), "", "the link is shown only once");
   const c = await phone();
   await c.goto(SITE + Q);  // sets the local database for this tab
+  // the server can't be reached when the link is opened: the form stays closed (no second
+  // submission by mistake), and Try again or a reload finishes the recovery later
+  await c.route("**/rest/v1/rpc/mitosis_get_own", (route) => route.fulfill({ status: 503, contentType: "application/json", body: "{}" }));
   await c.goto(link.replace(/^https?:\/\/[^/]+\/labs\/bio151-mitosis\//, SITE));
+  await c.waitForFunction(() => /recovery link couldn't be opened/.test(document.getElementById("boot-msg").textContent));
+  assert.equal(new URL(c.url()).hash, "", "the token is out of the address bar even when recovery fails");
+  assert.equal(await c.isVisible("#form"), false, "no form while the recovery is unfinished");
+  assert.equal(await c.isVisible("#save-btn"), false);
+  await c.click("#retry-btn");   // still failing: still closed
+  await c.waitForFunction(() => /recovery link couldn't be opened/.test(document.getElementById("boot-msg").textContent) && !document.getElementById("retry").classList.contains("hidden"));
+  assert.equal(await c.isVisible("#form"), false);
+  await c.unroute("**/rest/v1/rpc/mitosis_get_own");
+  await c.reload();             // the link is gone from the address bar; the tab still remembers it
   await c.waitForFunction(() => /on this device now/.test(document.getElementById("boot-msg").textContent));
+  assert.equal(await c.evaluate(() => sessionStorage.getItem("mitosis-recovering:bio151-mitosis-2026fa")), null, "the pending recovery is cleared once it worked");
   assert.equal(new URL(c.url()).hash, "", "the token is removed from the address bar");
   assert.equal(await c.inputValue("#last"), LAST);
   assert.equal(await c.inputValue("#c-r1-prophase"), "3", "the instructor's correction is there");

@@ -17,14 +17,33 @@
 
   // A recovery link from the instructor: #recover=<submission id>.<token>. The part after #
   // never reaches a server; the page reads it once and removes it from the address bar.
+  // If the server can't be reached, the link's credentials are kept for this tab only (in
+  // memory and sessionStorage, never the address bar), so Try again or a reload can finish
+  // the recovery instead of the student starting a second submission by mistake.
+  const PENDING = `mitosis-recovering:${slug}`;
+  let pendingCred = null;
+  function setPending(cred) {
+    pendingCred = cred;
+    try { cred ? sessionStorage.setItem(PENDING, JSON.stringify(cred)) : sessionStorage.removeItem(PENDING); } catch (_) { /* memory only */ }
+  }
+  function getPending() {
+    if (pendingCred) return pendingCred;
+    try { const s = JSON.parse(sessionStorage.getItem(PENDING)); return s && s.id && s.token ? s : null; } catch (_) { return null; }
+  }
   async function takeRecoveryLink() {
     const m = /^#recover=([0-9a-f-]{36})\.([0-9a-f]{64})$/.exec(location.hash);
-    if (!m) return null;
-    try { history.replaceState(null, "", location.pathname + location.search); } catch (_) { location.hash = ""; }
-    const r = await A.getOwn(m[1], m[2]);
-    if (!r.ok) return { error: r.error === "not_yours" ? "That recovery link is no longer valid. Ask your instructor for a new one." : A.errorText(r) };
+    const cred = m ? { id: m[1], token: m[2] } : getPending();
+    if (!cred) return null;
+    if (m) { try { history.replaceState(null, "", location.pathname + location.search); } catch (_) { location.hash = ""; } }
+    const r = await A.getOwn(cred.id, cred.token);
+    if (!r.ok && r.error !== "not_yours") {
+      setPending(cred);
+      return { retry: true, error: `${A.errorText(r)} Your recovery link couldn't be opened yet.` };
+    }
+    setPending(null);
+    if (!r.ok) return { error: "That recovery link is no longer valid. Ask your instructor for a new one." };
     if (r.experiment.slug !== slug) return { error: `That link is for a different lab (${r.experiment.title}, ${r.experiment.term}).` };
-    own = { id: m[1], token: m[2] };
+    own = cred;
     A.storeOwn(slug, own);
     return { ok: true, sub: r.submission };
   }
@@ -42,13 +61,14 @@
   async function boot() {
     const rec = await takeRecoveryLink();
     const r = await A.getExperiment(slug);
-    if (!r.ok) { $("title").textContent = "Mitosis Lab"; msg(A.errorText(r), "err"); return; }
+    if (!r.ok) { $("title").textContent = "Mitosis Lab"; msg(A.errorText(r), "err"); $("retry").classList.remove("hidden"); return; }
     exp = r.experiment;
     $("title").textContent = exp.title;
     $("course").textContent = [exp.course, exp.term, `count ${exp.cells_per_region} cells in each region`].filter(Boolean).join(" · ");
     document.title = `${exp.title} · Enter Counts`;
     tables = A.countTables($("tables"), exp, "c", markDirty);
     if (A.isLocal) msg("Local test database (tools/bio151-mitosis/local-api.mjs).", "ok");
+    if (rec && rec.retry) { msg(rec.error, "err"); $("retry").classList.remove("hidden"); return; } // form stays closed
     if (rec && rec.error) msg(rec.error, "err");
     if (rec && rec.ok) {
       fill(rec.sub);
@@ -114,7 +134,7 @@
       refreshButton();
     }
   });
-  $("retry-btn").addEventListener("click", () => location.reload());
+  $("retry-btn").addEventListener("click", () => { $("retry").classList.add("hidden"); msg("Trying again…", "warn"); boot(); });
   $("new-btn").addEventListener("click", () => {
     if (busy) return; // not while a save is on its way
     if (!confirm("Start a new submission on this device? Your saved counts stay with your instructor, but this device won't be able to edit them anymore.")) return;
