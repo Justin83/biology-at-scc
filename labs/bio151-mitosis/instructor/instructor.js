@@ -138,8 +138,13 @@
     if (rc) openRecover(findRow(rc.dataset.recover), rc);
   });
   let opener = null;
+  // Each opening of a dialog is its own session (editSeq / recoverSeq). A reply that comes
+  // back after its dialog was closed, or reopened for another student, never touches the
+  // dialog now on screen. While a request is on its way, Esc can't close the dialog.
+  let editSeq = 0, editPending = 0, recoverSeq = 0, recoverPending = 0;
   function openEdit(r, from) {
     if (!r) return;
+    editSeq++;
     editing = r;
     opener = from;
     $("edit-title").textContent = `Edit: ${nameOf(r)}`;
@@ -159,38 +164,53 @@
     $("edit-form").querySelectorAll("input, textarea, button").forEach((el) => { el.disabled = on; });
     if (!on && editTables) $("ed-save").disabled = !editTables.valid();
   }
+  const editCurrent = (seq) => seq === editSeq && $("edit-dialog").open;
   $("edit-form").addEventListener("submit", async (ev) => {
     ev.preventDefault();
-    if ($("ed-save").disabled) return;
+    if ($("ed-save").disabled || editPending === editSeq) return;
+    const seq = editSeq, who = editing;
+    editPending = seq;
     lockEditor(true);
     msg("edit-msg", "Saving…", "warn");
-    const r = await admin("update_submission", { id: editing.id, first_name: $("ed-first").value, last_name: $("ed-last").value,
+    const r = await admin("update_submission", { id: who.id, first_name: $("ed-first").value, last_name: $("ed-last").value,
       counts: editTables.get(), instructor_note: $("ed-note").value });
-    lockEditor(false);
-    if (!r.ok) return msg("edit-msg", A.errorText(r), "err");
-    $("edit-dialog").close();
+    if (editPending === seq) editPending = 0;
+    if (editCurrent(seq)) {
+      lockEditor(false);
+      if (!r.ok) return msg("edit-msg", A.errorText(r), "err");
+      $("edit-dialog").close();
+    }
     await load();
-    msg("msg", `Saved changes for ${nameOf(r.submission)}.`, "ok");
+    msg("msg", r.ok ? `Saved changes for ${nameOf(r.submission)}.` : `Changes for ${nameOf(who)} weren't saved: ${A.errorText(r)}`, r.ok ? "ok" : "err");
   });
   $("ed-cancel").addEventListener("click", () => $("edit-dialog").close());
   $("ed-delete").addEventListener("click", async () => {
-    if (!confirm(`Delete ${nameOf(editing)}'s submission? This can't be undone.`)) return;
+    if (editPending === editSeq) return;
+    const seq = editSeq, who = editing;
+    if (!confirm(`Delete ${nameOf(who)}'s submission? This can't be undone.`)) return;
+    editPending = seq;
     lockEditor(true);
-    const r = await admin("delete_submission", { id: editing.id, confirm: "DELETE" });
-    lockEditor(false);
-    if (!r.ok) return msg("edit-msg", A.errorText(r), "err");
-    const gone = nameOf(editing);
-    $("edit-dialog").close();
+    const r = await admin("delete_submission", { id: who.id, confirm: "DELETE" });
+    if (editPending === seq) editPending = 0;
+    if (editCurrent(seq)) {
+      lockEditor(false);
+      if (!r.ok) return msg("edit-msg", A.errorText(r), "err");
+      $("edit-dialog").close();
+    }
     await load();
-    msg("msg", `Deleted ${gone}'s submission.`, "ok");
+    msg("msg", r.ok ? `Deleted ${nameOf(who)}'s submission.` : `${nameOf(who)}'s submission wasn't deleted: ${A.errorText(r)}`, r.ok ? "ok" : "err");
   });
+  $("edit-dialog").addEventListener("cancel", (ev) => { if (editPending === editSeq) ev.preventDefault(); });
   $("edit-dialog").addEventListener("close", () => { if (opener && document.body.contains(opener)) opener.focus(); });
 
   // ---------------------------------------------------------------- recover access
+  function lockRecover(on) { $("recover-dialog").querySelectorAll("button").forEach((b) => { b.disabled = on; }); }
   function openRecover(r, from) {
     if (!r) return;
+    recoverSeq++;
     recovering = r;
     opener = from;
+    lockRecover(false);
     $("recover-title").textContent = `Recover access: ${nameOf(r)}`;
     $("recover-text").textContent = `This makes a new link for ${nameOf(r)} (#${shortId(r.id)}) to keep editing on another device. The device they used before will stop working for this submission.`;
     $("recover-step1").classList.remove("hidden");
@@ -202,13 +222,25 @@
     $("recover-go").focus();
   }
   $("recover-go").addEventListener("click", async () => {
-    if ($("recover-go").disabled) return;
-    $("recover-go").disabled = true; // one recovery per click: a second would replace this link
-    const r = await admin("recover_access", { id: recovering.id });
-    $("recover-go").disabled = false;
+    if (recoverPending === recoverSeq) return; // one recovery per click: a second would replace this link
+    const seq = recoverSeq, who = recovering, e = exp;
+    recoverPending = seq;
+    lockRecover(true);
+    msg("recover-msg", "Creating the link…", "warn");
+    const r = await admin("recover_access", { id: who.id });
+    if (recoverPending === seq) recoverPending = 0;
+    if (!(seq === recoverSeq && $("recover-dialog").open)) {
+      // its dialog was closed, or reopened for someone else, while this was on its way: this
+      // link is never shown in another student's dialog
+      load();
+      if (r.ok) msg("msg", `A recovery link for ${nameOf(who)} was made after its window closed, so it isn't shown. Their old device no longer edits it; use Recover access again for a new link.`, "warn");
+      return;
+    }
+    lockRecover(false);
     if (!r.ok) return msg("recover-msg", A.errorText(r), "err");
+    msg("recover-msg", "");
     const form = new URL("../", location.href);
-    if (exp.slug !== A.config.EXPERIMENT_SLUG) form.searchParams.set("exp", exp.slug);
+    if (e.slug !== A.config.EXPERIMENT_SLUG) form.searchParams.set("exp", e.slug);
     form.hash = `recover=${r.submission_id}.${r.token}`; // after #: never sent to a server
     const link = form.toString();
     $("recover-link").value = link;
@@ -216,7 +248,7 @@
       const q = qrcode(0, "M");
       q.addData(link);
       q.make();
-      $("recover-qr").innerHTML = q.createSvgTag({ cellSize: 4, margin: 4, scalable: true, alt: `Recovery QR code for ${nameOf(recovering)}`, title: "Recovery QR code" });
+      $("recover-qr").innerHTML = q.createSvgTag({ cellSize: 4, margin: 4, scalable: true, alt: `Recovery QR code for ${nameOf(who)}`, title: "Recovery QR code" });
     }
     $("recover-step1").classList.add("hidden");
     $("recover-result").classList.remove("hidden");
@@ -227,7 +259,8 @@
     catch (_) { $("recover-link").select(); msg("recover-msg", "Select the link and copy it.", "warn"); }
   });
   function forgetRecoveryLink() { $("recover-qr").innerHTML = ""; $("recover-link").value = ""; } // shown only once
-  $("recover-dialog").addEventListener("click", (ev) => { if (ev.target.closest("[data-close]")) { forgetRecoveryLink(); $("recover-dialog").close(); } });
+  $("recover-dialog").addEventListener("click", (ev) => { if (ev.target.closest("[data-close]") && recoverPending !== recoverSeq) { forgetRecoveryLink(); $("recover-dialog").close(); } });
+  $("recover-dialog").addEventListener("cancel", (ev) => { if (recoverPending === recoverSeq) ev.preventDefault(); });
   $("recover-dialog").addEventListener("close", () => {
     forgetRecoveryLink(); // also when closed with Esc
     if (opener && document.body.contains(opener)) opener.focus();

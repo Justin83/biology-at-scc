@@ -32,6 +32,8 @@ await new Promise((r) => server.listen(0, "127.0.0.1", r));
 const SITE = `http://127.0.0.1:${server.address().port}/labs/bio151-mitosis/`;
 const Q = `?api=${encodeURIComponent(API)}`;
 const text = (page, sel) => page.innerText(sel).then((t) => t.replace(/\s+/g, " ").trim());
+// delays a request; tolerates the route being unrouted (and so already continued) meanwhile
+const slow = (ms) => async (route) => { await new Promise((r) => setTimeout(r, ms)); await route.continue().catch(() => {}); };
 const rpc = async (fn, args) => (await fetch(`${API}/rest/v1/rpc/${fn}`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(args) })).json();
 
 let browser;
@@ -77,7 +79,7 @@ try {
   assert.equal(new URL(a.url()).hash, "", "the token is never in the address");
   // come back later: the saved counts load, and the form stays closed until they have, so
   // nothing typed or saved in the meantime can be overwritten
-  await a.route("**/rest/v1/rpc/mitosis_get_own", async (route) => { await new Promise((r) => setTimeout(r, 900)); await route.continue(); });
+  await a.route("**/rest/v1/rpc/mitosis_get_own", slow(900));
   await a.reload();
   await a.waitForFunction(() => document.getElementById("title").textContent !== "Loading…");
   assert.equal(await a.isVisible("#form"), false, "the form waits for the saved counts");
@@ -110,7 +112,7 @@ try {
   await a.click("#save-btn");
   await a.waitForFunction(() => /Saved .* complete/.test(document.getElementById("save-state").textContent));
   // typing while a save is still in flight is kept, not overwritten when the save returns
-  await a.route("**/rest/v1/rpc/mitosis_update", async (route) => { await new Promise((r) => setTimeout(r, 900)); await route.continue(); });
+  await a.route("**/rest/v1/rpc/mitosis_update", slow(900));
   await a.click("#save-btn");
   await a.waitForFunction(() => /Saving/.test(document.getElementById("save-state").textContent));
   await setCount(a, "r1", "interphase", 19);
@@ -187,7 +189,7 @@ try {
   await t.fill("#ed-note", "recounted slide 2");
   // while the correction is on its way, the editor is locked, so nothing typed after Save
   // can be thrown away when the dialog closes
-  await t.route("**/rest/v1/rpc/mitosis_instructor", async (route) => { await new Promise((r) => setTimeout(r, 900)); await route.continue(); });
+  await t.route("**/rest/v1/rpc/mitosis_instructor", slow(900));
   await t.click("#ed-save");
   await t.waitForFunction(() => /Saving/.test(document.getElementById("edit-msg").textContent));
   for (const sel of ["#ed-first", "#ed-note", "#ed-r1-interphase", "#ed-save", "#ed-delete", '#edit-tables button[data-step="1"]']) {
@@ -196,6 +198,40 @@ try {
   await t.waitForFunction(() => /Saved changes/.test(document.getElementById("msg").textContent));
   await t.unroute("**/rest/v1/rpc/mitosis_instructor");
   assert.match(await text(t, `#roster tr:has(.short-id:text-is("#${own.id.slice(0, 6)}"))`), /recounted slide 2 .*28\.0% 4\.0% .*by you/);
+  // a reply that comes back after its dialog was closed, or reopened for another student,
+  // never lands in the dialog now on screen (and Esc can't close a dialog mid-request)
+  const isOpen = (sel) => t.locator(sel).evaluate((d) => d.open);
+  await t.route("**/rest/v1/rpc/mitosis_instructor", slow(1200));
+  await t.evaluate(() => { document.getElementById("msg").textContent = ""; });
+  await mine.locator("[data-edit]").click();
+  await t.waitForSelector("#edit-dialog[open]");
+  await t.click("#ed-save");
+  await t.waitForFunction(() => /Saving/.test(document.getElementById("edit-msg").textContent));
+  await t.keyboard.press("Escape");
+  assert.equal(await isOpen("#edit-dialog"), true, "Esc can't close the editor while it saves");
+  await t.evaluate(() => document.getElementById("edit-dialog").close()); // closed anyway
+  await theirs.locator("[data-edit]").click();
+  await t.waitForSelector("#edit-dialog[open]");
+  await t.waitForFunction(() => /Saved changes/.test(document.getElementById("msg").textContent));
+  assert.equal(await isOpen("#edit-dialog"), true, "the first save doesn't close the second student's editor");
+  assert.equal(await t.inputValue("#ed-r1-interphase"), "10", "which still shows the second student's counts");
+  assert.equal(await t.isDisabled("#ed-r1-interphase"), false);
+  await t.click("#ed-cancel");
+  await mine.locator("[data-recover]").click();
+  await t.waitForSelector("#recover-dialog[open]");
+  await t.click("#recover-go");
+  await t.waitForFunction(() => /Creating the link/.test(document.getElementById("recover-msg").textContent));
+  await t.keyboard.press("Escape");
+  assert.equal(await isOpen("#recover-dialog"), true, "Esc can't close recovery while the link is made");
+  await t.evaluate(() => document.getElementById("recover-dialog").close()); // closed anyway
+  await theirs.locator("[data-recover]").click();
+  await t.waitForSelector("#recover-dialog[open]");
+  await t.waitForFunction(() => /made after its window closed/.test(document.getElementById("msg").textContent));
+  assert.equal(await t.inputValue("#recover-link"), "", "one student's link never shows in another student's dialog");
+  assert.equal(await t.isVisible("#recover-result"), false);
+  assert.equal(await t.isDisabled("#recover-go"), false);
+  await t.click("#recover-step1 [data-close]");
+  await t.unroute("**/rest/v1/rpc/mitosis_instructor");
   // recover access: a one-time link moves editing to a new device
   await mine.locator("[data-recover]").click();
   await t.waitForSelector("#recover-dialog[open]");
