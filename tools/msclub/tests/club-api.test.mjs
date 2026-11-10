@@ -1,4 +1,4 @@
-// Contract tests for the club API (msclub/sql/001_club.sql, 002, 003, 004, 005, 006).
+// Contract tests for the club API (msclub/sql/001_club.sql, 002, 003, 004, 005, 006, 007).
 // Run against the local stand-in (never production), with "today" fixed so the seeded
 // Fall 2026 schedule has upcoming events:
 //   CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
@@ -7,6 +7,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import crypto from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -193,4 +194,46 @@ test("changing the officer code", async () => {
   assert.equal((await admin("check")).error, "unauthorized");
   assert.equal((await admin("set_code", { new_code: CODE }, "temporary-code-1")).ok, true);
   assert.equal((await admin("check")).ok, true);
+});
+
+test("visit counter: anonymous, once per device, day and page; officers left out; totals only", async () => {
+  const visit = (v, p) => rpc("club_visit", { p_visitor: v, p_page: p });
+  const stats = (v = null, code = CODE) => rpc("club_stats", { p_code: code, p_visitor: v });
+  assert.equal((await stats(null, "wrong-code")).error, "unauthorized");
+  const before = await stats();
+  const a = crypto.randomUUID(), b = crypto.randomUUID(), off = crypto.randomUUID();
+  // only a browser ID and a page name of the expected shapes are accepted
+  for (const [v, p] of [["not-an-id", "home"], [null, "home"], [a, "Home"], [a, "../x"], [a, ""], [a, null], [a, "a/b/c"], [a, "x".repeat(61)]]) {
+    assert.equal((await visit(v, p)).error, "bad_value", `${v} ${p}`);
+  }
+  assert.deepEqual(await visit(a, "home"), { ok: true, counted: true });
+  await visit(a, "home");
+  await visit(a.toUpperCase(), "signup"); // the same browser, whatever the case
+  await visit(b, "events/steam-day-2027");
+  let s = await stats();
+  assert.equal(s.visitors - before.visitors, 2, "two browsers");
+  assert.equal(s.visitors_today - before.visitors_today, 2);
+  assert.equal(s.visitors_7d - before.visitors_7d, 2);
+  assert.equal(s.views - before.views, 4, "every page view adds up");
+  const page = (st, p) => st.pages.find((x) => x.page === p) || { visitors: 0, views: 0 };
+  assert.equal(page(s, "home").visitors - page(before, "home").visitors, 1);
+  assert.equal(page(s, "home").views - page(before, "home").views, 2);
+  assert.equal(page(s, "events/steam-day-2027").visitors - page(before, "events/steam-day-2027").visitors, 1);
+  // an officer's device: once it opens Officer tools, its visits (earlier and later) are left out
+  await visit(off, "home");
+  assert.equal((await stats()).visitors - before.visitors, 3);
+  s = await stats(off);
+  assert.equal(s.visitors - before.visitors, 2, "officer device left out");
+  await visit(off, "signup");
+  assert.equal((await stats()).visitors - before.visitors, 2, "and stays out");
+  // the shape officers see
+  assert.equal(s.daily.length, 30);
+  assert.equal(s.daily[29].day, s.today, "the last 30 days, ending today");
+  assert.ok(s.since <= s.today);
+  assert.ok(Number.isInteger(s.signup_people) && s.signup_people <= s.signups);
+  assert.ok(s.returning <= s.visitors);
+  // never a browser ID or a hash in the answer
+  const txt = JSON.stringify(s);
+  for (const v of [a, b, off]) assert.equal(txt.toLowerCase().includes(v.toLowerCase()), false);
+  assert.doesNotMatch(txt, /[0-9a-f]{64}/);
 });

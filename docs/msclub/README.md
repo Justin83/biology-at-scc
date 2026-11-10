@@ -87,6 +87,34 @@ website.** New links go in its Club column (or a new column) on all five pages.
 The officer code is stored only as a bcrypt hash. It was given to Justin directly and is
 not in this repository.
 
+## Site engagement (Officer tools)
+
+The top of Officer tools shows how much the site is used, so the officers can see whether
+it's keeping the MSSE cohort engaged, and track it over the semesters:
+
+- **"N people have visited the club website"**, counting since the first counted visit;
+- visitors **today**, in the **last 7 days** and the **last 30 days**;
+- how many **came back on another day** (visited on two or more days): a sign the site is
+  part of the routine, not a one-off scan of the QR code;
+- how many **people signed up for something** (food, volunteering or trips; names
+  compared ignoring case and punctuation) and the total **page views**;
+- a bar chart of visitors each day for the last 30 days, and **visitors by page** (home,
+  sign-up, each event page).
+
+**How it's counted** (`msclub/sql/007_club_visits.sql`, migration `club_v7`):
+- Each public page (home, sign-up, event pages) counts one view when it opens. Officer
+  tools and the QR poster don't count.
+- A "visitor" is a **phone or computer (browser)**, not a person. The same student on a
+  phone and a laptop counts twice, and private browsing or clearing the browser counts
+  again. So treat the number as a close estimate, best for comparing over time.
+- The browser keeps a random ID in `localStorage` (`club-visitor`). The database stores
+  only its sha256, the day and a view count. **No cookies, IP addresses, names or
+  locations** are stored.
+- A browser that opens Officer tools is remembered as an officer device, and its visits
+  are left out of every count (earlier and later ones), so officers checking the site
+  don't inflate it.
+- At most 3,000 new visitor-page rows a day are counted, so a script can't fill the table.
+
 ## Flyers
 
 The club's flyers are letter-size PDFs in `msclub/flyers/`, each with a preview picture,
@@ -197,10 +225,14 @@ on white, where it would be too hard to read.
   it only through the SECURITY DEFINER functions in
   `msclub/sql/001_club.sql`:
   - `club_events`, `club_signup`, `club_signup_update`, `club_signup_remove` — public;
-  - `club_admin` — needs the officer code.
+  - `club_admin` — needs the officer code;
+  - `club_visit` (public, counts a page view) and `club_stats` (needs the officer code)
+    in `msclub/sql/007_club_visits.sql`.
 - **What's stored:** name, item (food only), list or shift (volunteers and trips) and an
   optional note per sign-up. There is
   no email, phone or account.
+- **Visit counts:** the sha256 of a random per-browser ID, the day, the page and a view
+  count. No cookies, IP addresses or names. See *Site engagement* above.
 - **Limits:** 60 sign-ups per event. Exact duplicates are refused, and sign-up closes
   once the event's date has passed.
 - **When the database is off or unreachable:** the page shows the printed schedule from
@@ -211,7 +243,7 @@ on white, where it would be too hard to read.
 ```bash
 npm install --no-save @electric-sql/pglite@0.5.8      # once
 CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
-node --test tools/msclub/tests/*.test.mjs   # 11 database contract tests
+node --test tools/msclub/tests/*.test.mjs   # 12 database contract tests
 NODE_PATH=$(npm root -g) node tools/msclub/tests/club-pages.e2e.mjs   # browser test (Playwright)
 node tools/msclub/check.mjs                 # page checks, schedule data, QR code, flyer library
 node tools/msclub/make-qr.mjs               # regenerate the QR code

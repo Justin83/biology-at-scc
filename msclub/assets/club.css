@@ -328,3 +328,22 @@ main.club-event-page { max-width: 48rem; }
 .club-footer-base .wrap { padding-top: 0.95rem; padding-bottom: 0.95rem; }
 .club-footer-base p { margin: 0; }
 .club-footer-base strong { color: #ffffff; }
+
+/* Officer tools: site engagement (sql/007_club_visits.sql) */
+.club-stat-big { font-size: 1.2rem; margin: 0.3rem 0 0.2rem; }
+.club-stat-big strong { font-size: 2.6rem; line-height: 1; color: var(--accent); margin-right: 0.15rem; }
+.club-stat-tiles { list-style: none; padding: 0; margin: 1rem 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(max(9.5rem, 30%), 1fr)); gap: 0.6rem; }
+.club-stat-tiles li { border: 1px solid var(--border); background: var(--bg); border-radius: 10px; padding: 0.6rem 0.8rem; }
+.club-stat-n { display: block; font-size: 1.6rem; font-weight: 800; line-height: 1.1; }
+.club-stat-l { font-size: 0.86rem; color: var(--muted); }
+.club-stat-chart { margin: 0.4rem 0 0.8rem; }
+.club-stat-chart figcaption { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.35rem; }
+.club-stat-bars { display: flex; align-items: flex-end; gap: 2px; height: 4.5rem; border-bottom: 1px solid var(--border); }
+.club-stat-bars span { flex: 1 1 0; min-width: 2px; background: var(--accent); border-radius: 2px 2px 0 0; }
+.club-stat-bars span.is-zero { background: var(--border); }
+.club-stat-axis { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+.club-stat-more { margin: 0.5rem 0; }
+.club-stat-more summary { cursor: pointer; font-weight: 700; color: var(--accent); }
+.club-stat-table { border-collapse: collapse; width: 100%; margin-top: 0.5rem; font-size: 0.95rem; }
+.club-stat-table th, .club-stat-table td { text-align: left; padding: 0.35rem 0.5rem; border-bottom: 1px solid var(--border); }
+.club-stat-table td:not(:first-child), .club-stat-table th:not(:first-child) { text-align: right; width: 6rem; }
