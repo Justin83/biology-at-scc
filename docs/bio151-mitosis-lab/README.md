@@ -32,9 +32,9 @@ calculation as before.
   the instructor `update_experiment` action, and recorded in `mitosislab.audit`. The
   region keys (`r1`, `r2`), the 25 cells per sample, and the five stages and their
   mitotic flags are unchanged. So are the form URL and its QR code.
-- **Student form:** shows the six counting steps and the stage clues above the counting
-  tables (`labs/bio151-mitosis/index.html`). That text is written for this activity; for
-  a different specimen in a later semester, edit it there.
+- **Student form:** just names, the two sample tables and Save. The counting steps and
+  stage clues above are for the handout; they were on the form briefly on 2026-11-10 and
+  were removed at Justin's request.
 - **Seed data:** the local test database still seeds "Region 1" / "Region 2" from
   `sql/001_mitosis.sql`. The migration wasn't rerun or changed; the labels are data.
 
