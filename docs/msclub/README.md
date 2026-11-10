@@ -297,5 +297,28 @@ to the real database.
    - STEAM Day Somerset 2027 gets `steam-day-2027` and ends at 2:00 PM (volunteers work
      8:00 a.m. to about 2:00 p.m., Justin's call).
 
+10. **Update 2026-11-10 (migration `club_v7`, `sql/007_club_visits.sql`; PR #42):**
+    - **Site engagement** in Officer tools: anonymous visit counts (see *Site
+      engagement* above);
+    - Justin applied the reviewed file in the Supabase SQL Editor, because the
+      connector's confirmation prompt didn't reach him. So `schema_migrations` has no
+      row for it;
+    - **post-apply checks:** RLS on both new tables; the two public functions are
+      SECURITY DEFINER and callable by anon; the helper and the tables are closed to
+      anon; the daily cap and the day index are present;
+    - **existing club data untouched:** the events (18), sign-ups (7) and settings
+      checksums are the same before and after;
+    - **production smoke test**, inside a block that was rolled back (nothing left
+      behind): bad input refused; 2 browsers and 4 views counted; an officer device left
+      out before and after; a 30-day series ending today; sign-up totals matching; no ID
+      or hash in the answer;
+    - **live check after the merge:**
+      - the home page sent a visit and it was counted; Officer tools sent none, and a
+        wrong officer code was refused;
+      - that one test browser was then added to `club.officer_devices`, so real
+        counting starts at 0;
+    - **security advisors:** only the expected notices for the new objects (RLS without
+      policies; SECURITY DEFINER functions callable by anon/authenticated).
+
 Rollback: the `drop …` statements at the end of the SQL file. Setting `enabled: false`
 returns the pages to the printed schedule.
