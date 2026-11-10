@@ -204,6 +204,10 @@ test("each semester is its own experiment; a new one can't touch Fall 2026", asy
 test("changing the instructor key", async () => {
   const next = `local-instructor-key-${RUN}`;
   assert.equal((await admin("set_key", { new_key: "short" })).error, "key_too_short");
+  // longer than bcrypt's 72 bytes: refused, and the working key is untouched
+  assert.equal((await admin("set_key", { new_key: "k".repeat(73) })).error, "key_too_long");
+  assert.equal((await admin("set_key", { new_key: "é".repeat(37) })).error, "key_too_long", "72 bytes, not 72 characters");
+  assert.equal((await admin("check")).ok, true, "a refused key leaves the old one working");
   assert.equal((await admin("set_key", { new_key: next })).ok, true);
   try {
     assert.equal((await admin("check")).error, "unauthorized");

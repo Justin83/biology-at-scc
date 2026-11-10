@@ -73,8 +73,8 @@
     <details class="panel">
       <summary>Change the instructor key</summary>
       <form id="key-form" novalidate>
-        <label for="new-key">New instructor key (at least 8 characters)</label>
-        <input id="new-key" type="password" autocomplete="new-password">
+        <label for="new-key">New instructor key (8 to 72 characters)</label>
+        <input id="new-key" type="password" autocomplete="new-password" minlength="8" maxlength="72">
         <div id="key-msg" class="msg hidden" role="status"></div>
         <button type="submit">Change key</button>
       </form>

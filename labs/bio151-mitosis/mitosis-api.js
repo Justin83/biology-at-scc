@@ -40,6 +40,7 @@
     bad_slug: "Use lowercase letters, numbers and hyphens (for example bio151-mitosis-2027sp).",
     exists: "An experiment with that name already exists.",
     key_too_short: "Use at least 8 characters.",
+    key_too_long: "Use at most 72 characters (fewer if it has accented letters or symbols).",
     unknown_action: "Unknown instructor action.",
     network: "Could not reach the server. Check your connection and try again."
   };

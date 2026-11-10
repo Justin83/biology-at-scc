@@ -344,6 +344,9 @@ begin
 
   if p_action = 'set_key' then
     if char_length(coalesce(p_payload->>'new_key', '')) < 8 then return jsonb_build_object('ok', false, 'error', 'key_too_short'); end if;
+    -- bcrypt uses only the first 72 bytes, and sign-in (is_instructor) accepts at most 200
+    -- characters: a longer key would have an ignored tail, or lock the instructor out
+    if octet_length(p_payload->>'new_key') > 72 then return jsonb_build_object('ok', false, 'error', 'key_too_long'); end if;
     update mitosislab.settings set value = extensions.crypt(p_payload->>'new_key', extensions.gen_salt('bf', 8)) where key = 'instructor_key_hash';
     insert into mitosislab.audit (action) values ('set_key');
     return jsonb_build_object('ok', true);
