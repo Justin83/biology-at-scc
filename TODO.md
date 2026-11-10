@@ -39,6 +39,18 @@ closed on 2026-11-10: 25 readings, 3 groups with PINs and names, kept as the Fal
   anyone who has the link.
 - [ ] **Tidy: "Clear group data" doesn't clear the leaf type** (noted 2026-10-27 in
   `docs/bio151-live-lab/HANDOFF.md`).
+- [ ] **"All years" view, so the data adds up over the years.** Every semester's run is
+  kept (nothing is deleted), but the dashboard shows one run at a time. Build before
+  spring, together with the fresh-experiment step above:
+  - tag each run with its semester and a shared series (for example
+    `bio151-chlorophyll`), in a small migration; Fall 2026 gets tagged "Fall 2026";
+  - a public read function that returns every run in a series, without student names;
+  - an "All years" page (or a dashboard tab): one line per semester (the class average
+    at each wavelength), how many groups each semester, and one CSV of all semesters'
+    readings (names stay behind the instructor key);
+  - keep the wavelengths the same each semester so the years compare directly.
+  Decided 2026-11-10: one run per semester (clean groups and PINs, and the classroom
+  graph shows only that class) rather than adding new groups to Fall's run.
 
 ## Done
 
