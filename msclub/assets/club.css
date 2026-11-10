@@ -329,8 +329,10 @@ main.club-event-page { max-width: 48rem; }
 .club-footer-base p { margin: 0; }
 .club-footer-base strong { color: #ffffff; }
 
-/* Officer tools: site engagement (sql/007_club_visits.sql) */
-.club-stat-big { font-size: 1.2rem; margin: 0.3rem 0 0.2rem; }
+/* Officer tools: site engagement (sql/007_club_visits.sql); collapsed at the bottom */
+.club-stats > summary { cursor: pointer; }
+.club-stat-count { color: var(--muted); font-weight: 400; }
+.club-stat-big { font-size: 1.2rem; margin: 1rem 0 0.2rem; }
 .club-stat-big strong { font-size: 2.6rem; line-height: 1; color: var(--accent); margin-right: 0.15rem; }
 .club-stat-tiles { list-style: none; padding: 0; margin: 1rem 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(max(9.5rem, 30%), 1fr)); gap: 0.6rem; }
 .club-stat-tiles li { border: 1px solid var(--border); background: var(--bg); border-radius: 10px; padding: 0.6rem 0.8rem; }

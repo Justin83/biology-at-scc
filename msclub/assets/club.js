@@ -189,10 +189,10 @@
   function plainDate(iso) { var p = parts(iso); return MON[p.m - 1] + " " + p.d + ", " + p.y; }
 
   // ---------------------------------------------------------------- visit counter
-  // Each browser keeps a random ID (localStorage "club-visitor"); public pages send it once
-  // per page load with the page's name, and the database keeps only its sha256, the day and
-  // a view count (sql/007_club_visits.sql). No cookies, IP addresses or names. Officer
-  // tools send it too, so officers' own devices are left out of the counts.
+  // Each browser keeps a random ID (localStorage "club-visitor"); every club page that loads
+  // this script sends it once per page load with the page's name, and the database keeps
+  // only its sha256, the day and a view count (sql/007_club_visits.sql, 008). No cookies, IP
+  // addresses or names. All traffic counts, Officer tools included (Justin's call).
   var VISITOR_KEY = "club-visitor";
   function newId() {
     if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
@@ -210,13 +210,13 @@
       return v;
     } catch (e) { return null; } // storage blocked: this browser isn't counted
   }
-  // "home", "signup" or "events/<page>"; null for Officer tools, the QR poster and anything else
+  // "home", "signup", "officers" or "events/<page>"; null for the QR poster and anything else
   function pageKey() {
     var m = /\/msclub\/(.*)$/.exec(location.pathname);
     if (!m) return null;
     var p = m[1].replace(/index\.html$/, "").replace(/\/$/, "");
     if (p === "") return "home";
-    if (/^(officers|qr)(\/|$)/.test(p)) return null;
+    if (/^qr(\/|$)/.test(p)) return null;
     return /^[a-z0-9]+(-[a-z0-9]+)*(\/[a-z0-9]+(-[a-z0-9]+)*)?$/.test(p) && p.length <= 60 ? p : null;
   }
   function countVisit() {
@@ -226,7 +226,7 @@
   countVisit();
 
   window.Club = {
-    config: CONFIG, live: live, isLocal: function () { return !!localApi; }, rpc: rpc, errorText: errorText, visitorId: visitorId,
+    config: CONFIG, live: live, isLocal: function () { return !!localApi; }, rpc: rpc, errorText: errorText,
     KINDS: KINDS, SIGNUP: SIGNUP, signupKind: signupKind, signupSpec: signupSpec, peopleCount: peopleCount, signupCount: signupCount, todayISO: todayISO, parts: parts, longDate: longDate, shortDate: shortDate, monthKey: monthKey,
     monthLabel: monthLabel, timeLabel: timeLabel, dateLabel: dateLabel, clock: clock,
     relDays: relDays, isPast: isPast, esc: esc, load: load, upcoming: upcoming, nextGathering: nextGathering, MON: MON, DOW: DOW,

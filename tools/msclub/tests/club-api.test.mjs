@@ -1,4 +1,4 @@
-// Contract tests for the club API (msclub/sql/001_club.sql, 002, 003, 004, 005, 006, 007).
+// Contract tests for the club API (msclub/sql/001_club.sql, 002, 003, 004, 005, 006, 007, 008).
 // Run against the local stand-in (never production), with "today" fixed so the seeded
 // Fall 2026 schedule has upcoming events:
 //   CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
@@ -196,7 +196,7 @@ test("changing the officer code", async () => {
   assert.equal((await admin("check")).ok, true);
 });
 
-test("visit counter: anonymous, once per device, day and page; officers left out; totals only", async () => {
+test("visit counter: anonymous, once per device, day and page; all traffic, officers included; totals only", async () => {
   const visit = (v, p) => rpc("club_visit", { p_visitor: v, p_page: p });
   const stats = (v = null, code = CODE) => rpc("club_stats", { p_code: code, p_visitor: v });
   assert.equal((await stats(null, "wrong-code")).error, "unauthorized");
@@ -219,13 +219,15 @@ test("visit counter: anonymous, once per device, day and page; officers left out
   assert.equal(page(s, "home").visitors - page(before, "home").visitors, 1);
   assert.equal(page(s, "home").views - page(before, "home").views, 2);
   assert.equal(page(s, "events/steam-day-2027").visitors - page(before, "events/steam-day-2027").visitors, 1);
-  // an officer's device: once it opens Officer tools, its visits (earlier and later) are left out
+  // all traffic counts (club_v8): an officer's browser and Officer tools itself are counted,
+  // and sending a browser ID to club_stats changes nothing (it's ignored)
   await visit(off, "home");
-  assert.equal((await stats()).visitors - before.visitors, 3);
+  await visit(off, "officers");
   s = await stats(off);
-  assert.equal(s.visitors - before.visitors, 2, "officer device left out");
-  await visit(off, "signup");
-  assert.equal((await stats()).visitors - before.visitors, 2, "and stays out");
+  assert.equal(s.visitors - before.visitors, 3, "officers' browsers count too");
+  assert.equal(page(s, "officers").visitors - page(before, "officers").visitors, 1, "Officer tools is a page");
+  assert.equal((await stats()).visitors - before.visitors, 3);
+  assert.equal("officer_devices" in s, false);
   // the shape officers see
   assert.equal(s.daily.length, 30);
   assert.equal(s.daily[29].day, s.today, "the last 30 days, ending today");

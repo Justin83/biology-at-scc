@@ -89,8 +89,9 @@ not in this repository.
 
 ## Site engagement (Officer tools)
 
-The top of Officer tools shows how much the site is used, so the officers can see whether
-it's keeping the MSSE cohort engaged, and track it over the semesters:
+At the bottom of Officer tools, **Site engagement** (collapsed, like *Change the officer
+code*; its title shows the visitor count) shows how much the site is used, so the officers
+can see whether it's keeping the MSSE cohort engaged, and track it over the semesters:
 
 - **"N people have visited the club website"**, counting since the first counted visit;
 - visitors **today**, in the **last 7 days** and the **last 30 days**;
@@ -99,20 +100,18 @@ it's keeping the MSSE cohort engaged, and track it over the semesters:
 - how many **people signed up for something** (food, volunteering or trips; names
   compared ignoring case and punctuation) and the total **page views**;
 - a bar chart of visitors each day for the last 30 days, and **visitors by page** (home,
-  sign-up, each event page).
+  sign-up, each event page, Officer tools).
 
-**How it's counted** (`msclub/sql/007_club_visits.sql`, migration `club_v7`):
-- Each public page (home, sign-up, event pages) counts one view when it opens. Officer
-  tools and the QR poster don't count.
+**How it's counted** (`msclub/sql/007_club_visits.sql` and `008_club_visits_all_traffic.sql`,
+migrations `club_v7` and `club_v8`). These notes are here, not on the card (Justin's call):
+- **All traffic counts**, officers included: each club page (home, sign-up, event pages,
+  Officer tools) counts one view when it opens. Only the QR poster doesn't count.
 - A "visitor" is a **phone or computer (browser)**, not a person. The same student on a
   phone and a laptop counts twice, and private browsing or clearing the browser counts
   again. So treat the number as a close estimate, best for comparing over time.
 - The browser keeps a random ID in `localStorage` (`club-visitor`). The database stores
   only its sha256, the day and a view count. **No cookies, IP addresses, names or
   locations** are stored.
-- A browser that opens Officer tools is remembered as an officer device, and its visits
-  are left out of every count (earlier and later ones), so officers checking the site
-  don't inflate it.
 - At most 3,000 new visitor-page rows a day are counted, so a script can't fill the table.
 
 ## Flyers
@@ -227,7 +226,7 @@ on white, where it would be too hard to read.
   - `club_events`, `club_signup`, `club_signup_update`, `club_signup_remove` — public;
   - `club_admin` — needs the officer code;
   - `club_visit` (public, counts a page view) and `club_stats` (needs the officer code)
-    in `msclub/sql/007_club_visits.sql`.
+    in `msclub/sql/007_club_visits.sql` (`club_stats` redefined in `008`).
 - **What's stored:** name, item (food only), list or shift (volunteers and trips) and an
   optional note per sign-up. There is
   no email, phone or account.
@@ -319,6 +318,15 @@ to the real database.
         counting starts at 0;
     - **security advisors:** only the expected notices for the new objects (RLS without
       policies; SECURITY DEFINER functions callable by anon/authenticated).
+
+11. **Update 2026-11-10 (migration `club_v8`, `sql/008_club_visits_all_traffic.sql`):**
+    - Justin's call: the numbers are **overall traffic**. Officers' browsers are no longer
+      left out, and Officer tools counts as a page. `club.officer_devices` is dropped, and
+      `club_stats` ignores `p_visitor`;
+    - the go-live check's single test visit is deleted, so the count is real traffic only;
+    - in Officer tools, Site engagement moved to the bottom, collapsed like *Change the
+      officer code* with the visitor count on its title, and the explanation came off the
+      card.
 
 Rollback: the `drop …` statements at the end of the SQL file. Setting `enabled: false`
 returns the pages to the printed schedule.
