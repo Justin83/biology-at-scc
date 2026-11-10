@@ -60,7 +60,13 @@
         A.storeOwn(slug, null);
         own = null;
         msg("This device can no longer edit your earlier submission (it may have moved to another device). Saving now starts a new one; ask your instructor if you need the earlier one.", "warn");
-      } else msg(A.errorText(g), "err");
+      } else {
+        // couldn't load the saved counts (network or server): keep the form closed, so a
+        // blank form can never be saved over the real submission
+        msg(`${A.errorText(g)} Your saved counts couldn't be loaded.`, "err");
+        $("retry").classList.remove("hidden");
+        return;
+      }
     }
     // only now: nothing typed or saved before this point could be overwritten by the restore
     booting = false;
@@ -108,7 +114,9 @@
       refreshButton();
     }
   });
+  $("retry-btn").addEventListener("click", () => location.reload());
   $("new-btn").addEventListener("click", () => {
+    if (busy) return; // not while a save is on its way
     if (!confirm("Start a new submission on this device? Your saved counts stay with your instructor, but this device won't be able to edit them anymore.")) return;
     A.storeOwn(slug, null);
     own = null;

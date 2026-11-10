@@ -148,15 +148,25 @@
     $("ed-note").value = r.instructor_note || "";
     editTables = A.countTables($("edit-tables"), exp, "ed", () => { $("ed-save").disabled = !editTables.valid(); });
     editTables.set(r.counts);
-    $("ed-save").disabled = false;
+    lockEditor(false);
     msg("edit-msg", "");
     $("edit-dialog").showModal();
     $("ed-first").focus();
   }
+  // while a save or delete is on its way, nothing in the editor can change (so nothing typed
+  // after Save can be lost when the dialog closes)
+  function lockEditor(on) {
+    $("edit-form").querySelectorAll("input, textarea, button").forEach((el) => { el.disabled = on; });
+    if (!on && editTables) $("ed-save").disabled = !editTables.valid();
+  }
   $("edit-form").addEventListener("submit", async (ev) => {
     ev.preventDefault();
+    if ($("ed-save").disabled) return;
+    lockEditor(true);
+    msg("edit-msg", "Saving…", "warn");
     const r = await admin("update_submission", { id: editing.id, first_name: $("ed-first").value, last_name: $("ed-last").value,
       counts: editTables.get(), instructor_note: $("ed-note").value });
+    lockEditor(false);
     if (!r.ok) return msg("edit-msg", A.errorText(r), "err");
     $("edit-dialog").close();
     await load();
@@ -165,7 +175,9 @@
   $("ed-cancel").addEventListener("click", () => $("edit-dialog").close());
   $("ed-delete").addEventListener("click", async () => {
     if (!confirm(`Delete ${nameOf(editing)}'s submission? This can't be undone.`)) return;
+    lockEditor(true);
     const r = await admin("delete_submission", { id: editing.id, confirm: "DELETE" });
+    lockEditor(false);
     if (!r.ok) return msg("edit-msg", A.errorText(r), "err");
     const gone = nameOf(editing);
     $("edit-dialog").close();
@@ -190,7 +202,10 @@
     $("recover-go").focus();
   }
   $("recover-go").addEventListener("click", async () => {
+    if ($("recover-go").disabled) return;
+    $("recover-go").disabled = true; // one recovery per click: a second would replace this link
     const r = await admin("recover_access", { id: recovering.id });
+    $("recover-go").disabled = false;
     if (!r.ok) return msg("recover-msg", A.errorText(r), "err");
     const form = new URL("../", location.href);
     if (exp.slug !== A.config.EXPERIMENT_SLUG) form.searchParams.set("exp", exp.slug);

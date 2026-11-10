@@ -86,6 +86,20 @@ try {
   await a.unroute("**/rest/v1/rpc/mitosis_get_own");
   assert.equal(await a.inputValue("#first"), FIRST);
   assert.equal(await a.inputValue("#c-r1-interphase"), "20");
+  // if the saved counts can't be loaded (server or network trouble), the form stays closed:
+  // a blank form must never be saveable over the real submission. Try again recovers.
+  await a.route("**/rest/v1/rpc/mitosis_get_own", (route) => route.fulfill({ status: 503, contentType: "application/json", body: "{}" }));
+  await a.reload();
+  await a.waitForFunction(() => /couldn't be loaded/.test(document.getElementById("boot-msg").textContent));
+  assert.equal(await a.isVisible("#form"), false, "no form when the restore failed");
+  assert.equal(await a.isVisible("#save-btn"), false, "no Save when the restore failed");
+  assert.equal(await a.isVisible("#retry-btn"), true, "a way to try again");
+  assert.ok(await a.evaluate((k) => localStorage.getItem(k), "mitosis-own:bio151-mitosis-2026fa"), "the device keeps its token");
+  await a.unroute("**/rest/v1/rpc/mitosis_get_own");
+  await a.click("#retry-btn");
+  await a.waitForFunction(() => /^Saved/.test(document.getElementById("save-state").textContent));
+  assert.equal(await a.isVisible("#retry-btn"), false);
+  assert.equal(await a.inputValue("#c-r1-interphase"), "20", "the saved counts are back after trying again");
   // finish both regions: complete
   await setCount(a, "r1", "anaphase", 1);
   await setCount(a, "r1", "telophase", 1);       // r1: 20 + 1 + 2 + 1 + 1 = 25 (MI 20%)
@@ -171,8 +185,16 @@ try {
   await t.fill("#ed-r1-prophase", "3");
   await t.fill("#ed-r1-interphase", "18");     // r1 MI now 28%
   await t.fill("#ed-note", "recounted slide 2");
+  // while the correction is on its way, the editor is locked, so nothing typed after Save
+  // can be thrown away when the dialog closes
+  await t.route("**/rest/v1/rpc/mitosis_instructor", async (route) => { await new Promise((r) => setTimeout(r, 900)); await route.continue(); });
   await t.click("#ed-save");
+  await t.waitForFunction(() => /Saving/.test(document.getElementById("edit-msg").textContent));
+  for (const sel of ["#ed-first", "#ed-note", "#ed-r1-interphase", "#ed-save", "#ed-delete", '#edit-tables button[data-step="1"]']) {
+    assert.equal(await t.locator(sel).first().isDisabled(), true, `${sel} is locked while saving`);
+  }
   await t.waitForFunction(() => /Saved changes/.test(document.getElementById("msg").textContent));
+  await t.unroute("**/rest/v1/rpc/mitosis_instructor");
   assert.match(await text(t, `#roster tr:has(.short-id:text-is("#${own.id.slice(0, 6)}"))`), /recounted slide 2 .*28\.0% 4\.0% .*by you/);
   // recover access: a one-time link moves editing to a new device
   await mine.locator("[data-recover]").click();
