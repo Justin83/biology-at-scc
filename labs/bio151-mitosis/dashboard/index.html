@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BIO 151 Mitosis Lab · Classroom Dashboard</title>
+<meta name="description" content="Classroom dashboard for the BIO 151 mitosis lab: class totals per cell-cycle stage and the mitotic index in each region. No student names are shown.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../../bio151-spectro/lab.css">
+<link rel="stylesheet" href="../mitosis.css">
+<link rel="icon" href="data:,">
+</head>
+<body class="tv">
+<header class="lab">
+  <div class="wrap wide">
+    <a class="brand" href="../../../index.html">Biology <span>at SCC</span></a>
+    <span class="sub">Mitosis Lab · classroom dashboard</span>
+  </div>
+</header>
+
+<main class="wrap wide" id="main">
+  <h1 id="title">Loading…</h1>
+  <p class="lede" id="course"></p>
+  <div id="msg" class="msg warn hidden" role="status"></div>
+  <div class="toolbar">
+    <div class="grow" id="status" aria-live="polite"></div>
+    <button id="refresh-btn" type="button">Refresh now</button>
+    <button id="qr-btn" type="button" aria-expanded="false" aria-controls="qr-panel">Show QR for students</button>
+  </div>
+  <div id="qr-panel" class="card qr-box hidden" style="margin-bottom:1rem">
+    <div id="qr"></div>
+    <div class="url" id="qr-url"></div>
+  </div>
+
+  <div class="mi-grid" id="mi-cards"></div>
+
+  <div class="charts">
+    <section aria-labelledby="totals-h">
+      <h2 id="totals-h">Class totals by stage</h2>
+      <div class="chart-box"><canvas id="totals-chart" role="img" aria-label="Bar chart: class total cells in each stage, one bar per region. The same numbers are in the table below."></canvas></div>
+    </section>
+    <section aria-labelledby="mi-h">
+      <h2 id="mi-h">Mitotic index</h2>
+      <div class="chart-box"><canvas id="mi-chart" role="img" aria-label="Dot plot: each dot is one student's mitotic index in that region; the bar is the class mitotic index."></canvas></div>
+    </section>
+  </div>
+
+  <details class="panel" open>
+    <summary>Class totals table</summary>
+    <div class="table-scroll"><table class="grid" id="totals-table"></table></div>
+  </details>
+  <p class="muted small" style="margin-top:1rem">Mitotic index = cells in prophase, metaphase, anaphase or telophase ÷ cells counted. The class index and the dots use complete submissions (25 cells in each region). No student names are shown on this page.</p>
+</main>
+
+<script src="../../vendor/chart.umd.min.js"></script>
+<script src="../../../research/freshwater/assets/vendor/qrcode-generator/qrcode.js"></script>
+<script src="../config.js"></script>
+<script src="../mitosis-api.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>

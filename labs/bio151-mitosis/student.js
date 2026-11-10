@@ -1,0 +1,117 @@
+/* BIO 151 Mitosis Lab: student form. First and last name, a counting table per region with
+   a live "n / 25" total, and Save. The first save creates the submission and keeps its
+   editing token on this device (localStorage); later saves send the token. A name never
+   unlocks a submission. */
+(function () {
+  "use strict";
+  const A = window.MitosisAPI;
+  const $ = (id) => document.getElementById(id);
+  const slug = A.slug;
+  let exp = null, tables = null, own = A.loadOwn(slug), dirty = false, busy = false;
+
+  function msg(text, kind) { const el = $("boot-msg"); el.textContent = text || ""; el.className = "msg " + (kind || "warn") + (text ? "" : " hidden"); }
+  function state(text, kind) { const el = $("save-state"); el.textContent = text; el.className = "state" + (kind ? " " + kind : ""); }
+  function refreshButton() { $("save-btn").disabled = busy || !exp || !exp.is_open || !tables || !tables.valid(); }
+  function markDirty() { dirty = true; state("Unsaved changes", "warn"); refreshButton(); }
+
+  // A recovery link from the instructor: #recover=<submission id>.<token>. The part after #
+  // never reaches a server; the page reads it once and removes it from the address bar.
+  async function takeRecoveryLink() {
+    const m = /^#recover=([0-9a-f-]{36})\.([0-9a-f]{64})$/.exec(location.hash);
+    if (!m) return null;
+    try { history.replaceState(null, "", location.pathname + location.search); } catch (_) { location.hash = ""; }
+    const r = await A.getOwn(m[1], m[2]);
+    if (!r.ok) return { error: r.error === "not_yours" ? "That recovery link is no longer valid. Ask your instructor for a new one." : A.errorText(r) };
+    if (r.experiment.slug !== slug) return { error: `That link is for a different lab (${r.experiment.title}, ${r.experiment.term}).` };
+    own = { id: m[1], token: m[2] };
+    A.storeOwn(slug, own);
+    return { ok: true, sub: r.submission };
+  }
+
+  function fill(sub) {
+    $("first").value = sub.first_name;
+    $("last").value = sub.last_name;
+    tables.set(sub.counts);
+    dirty = false;
+    state(`Saved ${A.fmtTime(sub.last_saved_at)}` + (sub.complete ? " · complete" : ""), "ok");
+    $("new-btn").classList.remove("hidden");
+    refreshButton();
+  }
+
+  async function boot() {
+    const rec = await takeRecoveryLink();
+    const r = await A.getExperiment(slug);
+    if (!r.ok) { $("title").textContent = "Mitosis Lab"; msg(A.errorText(r), "err"); return; }
+    exp = r.experiment;
+    $("title").textContent = exp.title;
+    $("course").textContent = [exp.course, exp.term, `count ${exp.cells_per_region} cells in each region`].filter(Boolean).join(" · ");
+    document.title = `${exp.title} · Enter Counts`;
+    tables = A.countTables($("tables"), exp, "c", markDirty);
+    $("form").classList.remove("hidden");
+    $("savebar").classList.remove("hidden");
+    if (A.isLocal) msg("Local test database (tools/bio151-mitosis/local-api.mjs).", "ok");
+    if (rec && rec.error) msg(rec.error, "err");
+    if (rec && rec.ok) {
+      fill(rec.sub);
+      msg("Your submission is on this device now. Keep editing it here.", "ok");
+    } else if (own) {
+      const g = await A.getOwn(own.id, own.token);
+      if (g.ok) fill(g.submission);
+      else if (g.error === "not_yours") {
+        A.storeOwn(slug, null);
+        own = null;
+        msg("This device can no longer edit your earlier submission (it may have moved to another device). Saving now starts a new one; ask your instructor if you need the earlier one.", "warn");
+      } else msg(A.errorText(g), "err");
+    }
+    if (!exp.is_open) {
+      tables.disable(true);
+      $("first").disabled = $("last").disabled = true;
+      $("new-btn").classList.add("hidden");
+      msg("Data entry for this lab is closed." + (own ? " Your saved counts are shown below." : ""), "warn");
+      state("Closed", "");
+    }
+    refreshButton();
+  }
+
+  $("form").addEventListener("input", (ev) => { if (ev.target.id === "first" || ev.target.id === "last") markDirty(); });
+  $("form").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    if (busy || !exp || !exp.is_open) return;
+    const first = $("first").value.trim(), last = $("last").value.trim();
+    if (!first || !last) { state("Enter your first and last name.", "err"); (first ? $("last") : $("first")).focus(); return; }
+    if (!tables.valid()) { state(`A region adds up to more than ${exp.cells_per_region}.`, "err"); return; }
+    busy = true;
+    refreshButton();
+    state("Saving…", "");
+    const counts = tables.get();
+    const r = own ? await A.update(own.id, own.token, first, last, counts) : await A.save(slug, first, last, counts);
+    busy = false;
+    if (!r.ok) {
+      if (r.error === "not_yours") { A.storeOwn(slug, null); own = null; $("new-btn").classList.add("hidden"); }
+      state(A.errorText(r), "err");
+      refreshButton();
+      return;
+    }
+    if (r.token) {
+      own = { id: r.submission_id, token: r.token };
+      if (!A.storeOwn(slug, own)) msg("This browser won't let the page remember you, so you can't come back to edit on this device. Your counts are saved.", "warn");
+    }
+    fill(r.submission);
+  });
+  $("new-btn").addEventListener("click", () => {
+    if (!confirm("Start a new submission on this device? Your saved counts stay with your instructor, but this device won't be able to edit them anymore.")) return;
+    A.storeOwn(slug, null);
+    own = null;
+    $("first").value = "";
+    $("last").value = "";
+    tables.set({});
+    dirty = false;
+    $("new-btn").classList.add("hidden");
+    state("Not saved yet", "");
+    msg("", "");
+    refreshButton();
+    $("first").focus();
+  });
+  window.addEventListener("beforeunload", (e) => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+  boot();
+})();

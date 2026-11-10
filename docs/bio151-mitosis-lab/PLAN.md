@@ -1,9 +1,8 @@
 # BIO 151 Mitosis Lab — implementation plan
 
-**Status:** plan of record, 2026-11-10. Not built yet. No database objects or pages exist
-for it. This plan records Justin's decisions of 2026-11-10 (D1–D11 below), including the
-change from initials to first and last names. No earlier written plan was found in
-this repository, so this file is the starting point.
+**Status:** built 2026-11-10 (see [README.md](README.md) for how to use and test it).
+This plan records Justin's decisions of 2026-11-10 (D1–D11 below), including the change
+from initials to first and last names, and is kept as the design record.
 
 ## Summary
 
@@ -273,13 +272,16 @@ submission is **complete** when every region totals exactly `cells_per_region`.
    - make the QR code;
    - run a live smoke test with throw-away names, then remove them.
 
-## Open questions for Justin
+## Open questions for Justin (built with the defaults shown)
 
-1. **Stages:** Interphase, Prophase, Metaphase, Anaphase, Telophase. Is Cytokinesis
-   counted separately, or with Telophase?
-2. **The two regions:** what should each table be called?
-3. **25 cells per region** for every student: confirm.
-4. **Date and sections** of the Fall 2026 mitosis lab (the deadline for steps 1–4).
-5. **After grading:** keep names in the database, or blank them after the semester (the
-   counts stay)?
-6. **Instructor key:** a new phrase, or the same one as the spectrophotometer lab?
+1. **Stages:** built as Interphase, Prophase, Metaphase, Anaphase, Telophase (Cytokinesis
+   counted with Telophase). They can change only before the first student saves.
+2. **The two regions:** built as "Region 1" and "Region 2". Rename them on the instructor
+   page (*Experiment settings*) before the lab.
+3. **25 cells per region:** built that way.
+4. **Date and sections** of the Fall 2026 lab: the experiment is open now; close it after
+   the lab.
+5. **After grading:** names are kept for now. Blanking them after the semester (keeping
+   the counts) can be added.
+6. **Instructor key:** the spectrophotometry lab's key hash was copied, so the same key
+   works. Change it on the instructor page if you prefer a separate one.

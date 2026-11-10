@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BIO 151 Mitosis Lab · Instructor</title>
+<meta name="description" content="Instructor dashboard for the BIO 151 mitosis lab: student names, counts, completion, mitotic indices, corrections, access recovery and the named CSV. Requires the instructor key.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../../bio151-spectro/lab.css">
+<link rel="stylesheet" href="../mitosis.css">
+<link rel="icon" href="data:,">
+</head>
+<body>
+<header class="lab">
+  <div class="wrap wide">
+    <a class="brand" href="../../../index.html">Biology <span>at SCC</span></a>
+    <span class="sub">Mitosis Lab · instructor</span>
+  </div>
+</header>
+
+<main class="wrap wide" id="main">
+  <h1 id="title">Mitosis Lab · Instructor</h1>
+  <p class="lede" id="course"></p>
+  <div id="msg" class="msg warn hidden" role="status"></div>
+
+  <section id="signin" class="card hidden" style="max-width:480px">
+    <form id="signin-form" novalidate>
+      <label for="key" style="margin-top:0">Instructor key</label>
+      <input id="key" type="password" autocomplete="current-password">
+      <p class="muted small">Remembered only in this browser tab. Students never need it.</p>
+      <div id="signin-msg" class="msg err hidden" role="status"></div>
+      <button class="primary" type="submit">Unlock</button>
+    </form>
+  </section>
+
+  <div id="app" class="hidden">
+    <div class="toolbar">
+      <div class="grow" id="summary" aria-live="polite"></div>
+      <button id="refresh-btn" type="button">Refresh</button>
+      <button id="toggle-open" type="button"></button>
+      <button id="csv-btn" type="button">Download CSV (named)</button>
+      <button id="lock-btn" type="button" class="link">Lock</button>
+    </div>
+    <div class="table-scroll"><table class="roster" id="roster"></table></div>
+
+    <details class="panel">
+      <summary>Experiment settings</summary>
+      <form id="exp-form" novalidate>
+        <div class="two-col">
+          <div><label for="exp-title">Title</label><input id="exp-title" type="text" maxlength="120"></div>
+          <div><label for="exp-term">Term</label><input id="exp-term" type="text" maxlength="40" placeholder="Fall 2026"></div>
+        </div>
+        <div id="exp-regions" class="two-col"></div>
+        <p class="muted small" id="exp-regions-note"></p>
+        <div id="exp-msg" class="msg hidden" role="status"></div>
+        <button type="submit">Save settings</button>
+      </form>
+    </details>
+
+    <details class="panel">
+      <summary>Start a new semester</summary>
+      <form id="new-form" novalidate>
+        <p class="small">Creates a separate experiment with the same regions and stages, so this semester's data stays as it is. Students reach it once <code>EXPERIMENT_SLUG</code> in <code>labs/bio151-mitosis/config.js</code> names it (until then, add <code>?exp=&lt;name&gt;</code> to the form's address).</p>
+        <div class="two-col">
+          <div><label for="new-slug">Name</label><input id="new-slug" type="text" maxlength="60" placeholder="bio151-mitosis-2027sp" autocapitalize="off" spellcheck="false"></div>
+          <div><label for="new-term">Term</label><input id="new-term" type="text" maxlength="40" placeholder="Spring 2027"></div>
+        </div>
+        <div id="new-msg" class="msg hidden" role="status"></div>
+        <button type="submit">Create experiment</button>
+      </form>
+    </details>
+
+    <details class="panel">
+      <summary>Change the instructor key</summary>
+      <form id="key-form" novalidate>
+        <label for="new-key">New instructor key (at least 8 characters)</label>
+        <input id="new-key" type="password" autocomplete="new-password">
+        <div id="key-msg" class="msg hidden" role="status"></div>
+        <button type="submit">Change key</button>
+      </form>
+    </details>
+  </div>
+</main>
+
+<dialog id="edit-dialog" class="mitosis-dialog" aria-labelledby="edit-title">
+  <form id="edit-form" method="dialog" novalidate>
+    <h2 id="edit-title">Edit submission</h2>
+    <div class="names">
+      <div><label for="ed-first">First name</label><input id="ed-first" type="text" maxlength="40"></div>
+      <div><label for="ed-last">Last name</label><input id="ed-last" type="text" maxlength="40"></div>
+    </div>
+    <div id="edit-tables" class="two-col"></div>
+    <label for="ed-note">Instructor note <span class="muted small">(only you see this)</span></label>
+    <textarea id="ed-note" maxlength="300"></textarea>
+    <div id="edit-msg" class="msg hidden" role="status"></div>
+    <div class="dialog-actions">
+      <button type="button" id="ed-delete" class="danger">Delete</button>
+      <span class="spacer"></span>
+      <button type="button" id="ed-cancel">Cancel</button>
+      <button type="submit" id="ed-save" class="primary">Save changes</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="recover-dialog" class="mitosis-dialog" aria-labelledby="recover-title">
+  <h2 id="recover-title">Recover access</h2>
+  <p id="recover-text"></p>
+  <div id="recover-step1" class="dialog-actions" style="justify-content:flex-start">
+    <button type="button" id="recover-go" class="primary">Create recovery link</button>
+    <button type="button" data-close>Cancel</button>
+  </div>
+  <div id="recover-result" class="hidden">
+    <p class="small">Have the student scan this QR code or open the link on their new device. It is shown <strong>only once</strong>. Their old device can no longer edit.</p>
+    <div class="recover-qr" id="recover-qr"></div>
+    <label for="recover-link">Recovery link</label>
+    <input id="recover-link" class="recover-link" type="text" readonly>
+    <div class="dialog-actions">
+      <button type="button" id="recover-copy">Copy link</button>
+      <button type="button" data-close class="primary">Done</button>
+    </div>
+  </div>
+  <div id="recover-msg" class="msg hidden" role="status"></div>
+</dialog>
+
+<script src="../../../research/freshwater/assets/vendor/qrcode-generator/qrcode.js"></script>
+<script src="../config.js"></script>
+<script src="../mitosis-api.js"></script>
+<script src="instructor.js"></script>
+</body>
+</html>

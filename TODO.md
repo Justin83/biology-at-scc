@@ -54,11 +54,13 @@ closed on 2026-11-10: 25 readings, 3 groups with PINs and names, kept as the Fal
 
 ## BIO 151 Mitosis Lab (new)
 
-- [ ] **Build the Mitosis Lab** per `docs/bio151-mitosis-lab/PLAN.md` (decided 2026-11-10):
-  its own tables, First and Last Name, a device editing token, a public dashboard
-  without names, and a named instructor dashboard with recovery and CSV. First, answer
-  the plan's open questions (stages, region labels, 25 per region, lab date, name
-  retention, instructor key).
+- [ ] **Before the Fall 2026 lab:** rename "Region 1" and "Region 2" on the instructor page
+  (*Experiment settings*; they can change only until the first student saves), and check
+  the stages (Cytokinesis is counted with Telophase). See
+  `docs/bio151-mitosis-lab/README.md`.
+- [ ] **After the lab:** close data entry and download the named CSV.
+- [ ] **Decide name retention** after grading: keep the names, or blank them and keep the
+  counts.
 
 ## Done
 
