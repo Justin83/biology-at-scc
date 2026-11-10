@@ -3,6 +3,15 @@
 **Deadline:** Tuesday, October 27, 2026, 11:00 AM ET lab.
 **Last updated:** 2026-10-27 ~02:45 ET (deploy verified) by the Claude Code build session.
 
+## Update 2026-11-10 (Fall 2026 lab finished)
+
+- Data entry for `bio151-chlorophyll` is **closed** (`is_open = false`, set directly in the
+  database at Justin's request; reopen from the dashboard if needed). It holds the Fall
+  record: 25 readings, 3 groups with PINs and names; group 4 was never used.
+- `labs/index.html` says the lab is finished for Fall 2026.
+- Next semester: start a fresh experiment and point `config.js` at it; see the BIO 151
+  section of `/TODO.md` for the steps and why reopening Fall's isn't enough.
+
 ## Update 2026-10-27 11:20 ET (leaf type + Group 1 unblock)
 
 Shipped during the lab as `main@2952178` (PR #9); Pages run `completed success`.
