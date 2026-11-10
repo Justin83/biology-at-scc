@@ -1,10 +1,42 @@
 # BIO 151 Mitosis Lab
 
-Students count cells in each stage of the cell cycle in **two regions, 25 cells per region**,
-on their phones. The classroom screen shows the class totals and the mitotic index, with
+Students count cells in each stage of the cell cycle in **two regions (samples), 25 cells
+each**, on their phones. In Fall 2026 the specimen is whitefish blastula (below). The classroom screen shows the class totals and the mitotic index, with
 no names. The instructor sees each student's name, counts, completion, mitotic indices
 and last-saved time, can correct a record or recover a student's access, and downloads
 a named CSV. Design and decisions: [PLAN.md](PLAN.md).
+
+## Fall 2026 activity: observing mitosis in whitefish blastula
+
+Students examine prepared **whitefish blastula** slides under a compound microscope and
+count **50 classifiable cells**: 25 in **Blastula Sample A** and 25 in **Blastula Sample
+B**, in two nonoverlapping areas of the preparation. They count systematically, not just
+the dividing cells. If an area has fewer than 25 identifiable cells, they continue into an
+adjacent nonoverlapping area, and they count each cell once. A cell that can't be
+classified reliably is skipped.
+
+| Stage | Clue |
+|---|---|
+| Interphase | Nucleus visible; chromatin fairly diffuse; no clearly condensed chromosomes. |
+| Prophase | Chromosomes condense and become visible as darker structures. |
+| Metaphase | Condensed chromosomes lined up near the cell's equator. |
+| Anaphase | Sister chromatids separate into two groups moving toward opposite poles. |
+| Telophase | Chromosomes reach opposite poles and new nuclei begin forming; cells visibly undergoing cytokinesis count here. |
+
+Mitotic index = (P + M + A + T) ÷ (I + P + M + A + T) × 100, per sample. That's the same
+calculation as before.
+
+- **Production experiment:** `bio151-mitosis-2026fa`. Before any student saved, it was
+  retitled *Whitefish Blastula: Observing Mitosis* and its regions relabelled *Blastula
+  Sample A* / *Blastula Sample B*. This was done on 2026-11-10 with the same checks as
+  the instructor `update_experiment` action, and recorded in `mitosislab.audit`. The
+  region keys (`r1`, `r2`), the 25 cells per sample, and the five stages and their
+  mitotic flags are unchanged. So are the form URL and its QR code.
+- **Student form:** shows the six counting steps and the stage clues above the counting
+  tables (`labs/bio151-mitosis/index.html`). That text is written for this activity; for
+  a different specimen in a later semester, edit it there.
+- **Seed data:** the local test database still seeds "Region 1" / "Region 2" from
+  `sql/001_mitosis.sql`. The migration wasn't rerun or changed; the labels are data.
 
 ## Pages
 
