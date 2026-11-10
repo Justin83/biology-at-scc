@@ -52,6 +52,14 @@ closed on 2026-11-10: 25 readings, 3 groups with PINs and names, kept as the Fal
   Decided 2026-11-10: one run per semester (clean groups and PINs, and the classroom
   graph shows only that class) rather than adding new groups to Fall's run.
 
+## BIO 151 Mitosis Lab (new)
+
+- [ ] **Build the Mitosis Lab** per `docs/bio151-mitosis-lab/PLAN.md` (decided 2026-11-10):
+  its own tables, First and Last Name, a device editing token, a public dashboard
+  without names, and a named instructor dashboard with recovery and CSV. First, answer
+  the plan's open questions (stages, region labels, 25 per region, lab date, name
+  retention, instructor key).
+
 ## Done
 
 - 2026-11-10: BIO 151 Fall 2026 chlorophyll lab closed; Labs page says so.
