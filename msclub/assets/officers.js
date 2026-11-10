@@ -114,13 +114,13 @@
   }
 
   // ------------------------------------------------------------ site engagement
-  // public.club_stats (sql/007_club_visits.sql): totals only. Sending this browser's ID
-  // marks it as an officer device, so officers' own visits stay out of the counts.
+  // public.club_stats (sql/007_club_visits.sql, 008): totals only, all traffic.
   var stats = null;
   function people(n, one, many) { return n === 1 ? "1 " + one : n + " " + many; }
   function pageName(p) {
     if (p === "home") return "Home page";
     if (p === "signup") return "Sign-up page";
+    if (p === "officers") return "Officer tools";
     var m = /^events\/(.+)$/.exec(p);
     if (m) {
       var e = data && data.events.filter(function (x) { return x.page === m[1]; })[0];
@@ -131,6 +131,7 @@
   function showStats() {
     var s = stats;
     if (!s) return;
+    $("of-stat-count").textContent = "(" + people(s.visitors, "visitor", "visitors") + ")"; // shows while collapsed
     $("of-stat-headline").innerHTML = s.visitors
       ? "<strong>" + s.visitors + "</strong> " + (s.visitors === 1 ? "person has" : "people have") + " visited the club website"
       : "Nobody has visited the club website yet";
@@ -162,7 +163,7 @@
   }
   function loadStats() {
     msg("of-stat-msg", "");
-    return C.rpc("club_stats", { p_code: code, p_visitor: C.visitorId() }).then(function (r) {
+    return C.rpc("club_stats", { p_code: code }).then(function (r) {
       if (!r.ok) { $("of-stat-headline").textContent = "Site engagement isn't available right now."; msg("of-stat-msg", C.errorText(r), "error"); return; }
       stats = r;
       showStats();

@@ -10,9 +10,9 @@
 //     separate phones (only the device that signed up can change or remove its entry);
 //   - officer tools in a desktop browser: wrong code refused; set a food theme and a
 //     "how many" in the editor pop-up; remove a sign-up; add, cancel and delete an event;
-//   - site engagement: public pages count a visit (anonymous browser ID), Officer tools and
-//     the QR poster don't, and Officer tools shows the count with the officer's own device
-//     left out;
+//   - site engagement: every club page counts a visit (anonymous browser ID), Officer tools
+//     included, the QR poster not; Officer tools shows the count in a collapsed section at
+//     the bottom;
 //   - the printed-schedule fallback when the database cannot be reached.
 // Environment: CLUB_API_URL (default http://127.0.0.1:8789), CLUB_OFFICER_CODE (default local-officer-code).
 import http from "node:http";
@@ -222,8 +222,13 @@ try {
   await o.fill("#of-code", CODE);
   await o.click("#of-signin-form button[type=submit]");
   await o.waitForSelector("#of-app:not([hidden]) #of-upcoming li");
-  // site engagement: the count of visitors, with this officer's own browser left out
+  // site engagement: the count of all visitors
   await o.waitForFunction(() => /visited the club website/.test(document.getElementById("of-stat-headline").textContent));
+  // collapsed at the bottom of Officer tools, with the count on its title
+  assert.equal(await o.$eval("#of-stats", (d) => d.tagName === "DETAILS" && !d.open), true, "collapsed by default");
+  assert.equal(await o.$eval("#of-app", (app) => app.lastElementChild.id), "of-stats", "the last section");
+  assert.match(await text(o, "#of-stats > summary"), /^Site engagement \(\d+ visitors\)$/);
+  await o.click("#of-stats > summary");
   const clubStats = async (v) => (await fetch(`${API}/rest/v1/rpc/club_stats`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ p_code: CODE, p_visitor: v || null }) })).json();
   const shown = +(await o.textContent("#of-stat-headline strong"));
   assert.ok(shown >= 2, "the phones that opened the site were counted");
@@ -235,10 +240,10 @@ try {
   assert.match(await o.textContent("#of-stat-pages"), /Home page/); // inside a closed details
   const oId = await o.evaluate(() => localStorage.getItem("club-visitor"));
   assert.match(oId, /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
-  await fetch(`${API}/rest/v1/rpc/club_visit`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ p_visitor: oId, p_page: "home" }) });
-  assert.equal((await clubStats()).visitors, shown, "the officer's browser stays out of the count");
-  assert.ok(visits.includes("home") && visits.includes("signup"), "public pages count a visit");
-  assert.equal(visits.some((p) => /^(officers|qr)/.test(p)), false, "Officer tools and the QR poster don't");
+  assert.ok(visits.includes("home") && visits.includes("signup") && visits.includes("officers"), "every club page counts a visit, Officer tools too");
+  assert.ok((await clubStats()).pages.some((p) => p.page === "officers"), "Officer tools is listed as a page");
+  assert.equal(visits.some((p) => /^qr/.test(p)), false, "the QR poster doesn't count");
+  assert.equal(await o.isVisible("#of-stats .club-hint:has-text('Counted once')"), false, "no explanation on the card");
   // flyer library: oldest first (the website flyer first), View or print and Download; nothing archived yet
   await o.waitForSelector("#of-flyers .club-flyer-item");
   assert.deepEqual(await o.$$eval("#of-flyers h3", (h) => h.map((x) => x.textContent)), ["The club has a website", "Thanksgiving Dinner"]);
