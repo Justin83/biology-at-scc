@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>BIO 151 Mitosis Lab · Enter Counts</title>
-<meta name="description" content="Student form for the BIO 151 mitosis lab at Somerset Community College: count cells in each stage of the cell cycle in two regions.">
+<meta name="description" content="Student form for the BIO 151 mitosis lab at Somerset Community College: count whitefish blastula cells in each stage of the cell cycle in two samples.">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="../bio151-spectro/lab.css">
 <link rel="stylesheet" href="mitosis.css">
@@ -36,6 +36,30 @@
       </div>
     </div>
     <p class="muted small" style="margin:.4rem 0 0">Only your instructor sees your name.</p>
+
+    <section class="lab-guide" aria-labelledby="guide-h">
+      <h2 id="guide-h">How to count</h2>
+      <ol class="steps">
+        <li>Find a well-preserved blastula preparation under low power.</li>
+        <li>Increase magnification until you can identify chromosomes clearly.</li>
+        <li>Choose Sample A and count 25 identifiable cells systematically.</li>
+        <li>Record the number of cells in each stage.</li>
+        <li>Move to a different, nonoverlapping area for Sample B and count another 25 cells.</li>
+        <li>Check that both totals equal 25, then save.</li>
+      </ol>
+      <p class="small">Count every identifiable cell in the area, not only the dividing ones. If an area has fewer than 25 identifiable cells, continue into an adjacent area that doesn't overlap. Count each cell only once. If you can't classify a cell reliably, skip it and keep going until you reach 25.</p>
+      <details class="panel stage-ref" open>
+        <summary>Stage clues</summary>
+        <dl>
+          <dt>Interphase</dt><dd>Nucleus visible; chromatin fairly diffuse; no clearly condensed chromosomes.</dd>
+          <dt>Prophase</dt><dd>Chromosomes condense and become visible as darker structures.</dd>
+          <dt>Metaphase</dt><dd>Condensed chromosomes lined up near the cell's equator.</dd>
+          <dt>Anaphase</dt><dd>Sister chromatids separate into two groups moving toward opposite poles.</dd>
+          <dt>Telophase</dt><dd>Chromosomes reach opposite poles and new nuclei begin forming. Count cells visibly undergoing cytokinesis as telophase.</dd>
+        </dl>
+        <p class="small">Mitotic index = (P + M + A + T) ÷ (I + P + M + A + T) × 100</p>
+      </details>
+    </section>
 
     <div id="tables"></div>
     <p class="small" style="margin-top:1rem"><button type="button" id="new-btn" class="link hidden">Not you? Start a new submission on this device</button></p>

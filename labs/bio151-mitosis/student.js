@@ -65,7 +65,7 @@
     if (!r.ok) { $("title").textContent = "Mitosis Lab"; msg(A.errorText(r), "err"); $("retry").classList.remove("hidden"); return; }
     exp = r.experiment;
     $("title").textContent = exp.title;
-    $("course").textContent = [exp.course, exp.term, `count ${exp.cells_per_region} cells in each region`].filter(Boolean).join(" · ");
+    $("course").textContent = [exp.course, exp.term, `count ${exp.cells_per_region} cells in each sample`].filter(Boolean).join(" · ");
     document.title = `${exp.title} · Enter Counts`;
     tables = A.countTables($("tables"), exp, "c", markDirty);
     if (A.isLocal) msg("Local test database (tools/bio151-mitosis/local-api.mjs).", "ok");
