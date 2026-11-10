@@ -476,8 +476,8 @@ values ('bio151-mitosis-2026fa', 'Mitosis: Counting Cell-Cycle Stages', 'BIO 151
   25, true)
 on conflict (slug) do nothing;
 
--- The instructor key is set separately (never in this file). In production it was copied
--- from the spectrophotometry lab's hash, so the same key works for both:
+-- The instructor key is set separately (never in this file). In production (2026-11-10) it
+-- was copied from the spectrophotometry lab's hash, so the same key works for both:
 --   insert into mitosislab.settings (key, value)
 --   select 'instructor_key_hash', value from livelab.settings where key = 'instructor_key_hash'
 --   on conflict (key) do nothing;
@@ -487,6 +487,6 @@ on conflict (slug) do nothing;
 --
 -- Rollback (removes the whole feature and its data; livelab is untouched):
 --   drop function if exists public.mitosis_get_experiment(text), public.mitosis_dashboard(text),
---     public.mitosis_save(text, text, text, jsonb), public.mitosis_update(text, text, text, text, jsonb),
+--     public.mitosis_save(text, text, text, jsonb, text), public.mitosis_update(text, text, text, text, jsonb),
 --     public.mitosis_get_own(text, text), public.mitosis_instructor(text, text, text, jsonb);
 --   drop schema mitosislab cascade;

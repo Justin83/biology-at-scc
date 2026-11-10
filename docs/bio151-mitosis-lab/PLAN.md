@@ -1,6 +1,7 @@
 # BIO 151 Mitosis Lab — implementation plan
 
-**Status:** built 2026-11-10 (see [README.md](README.md) for how to use and test it).
+**Status:** built and live 2026-11-10 (see [README.md](README.md) for how to use and test
+it, and the [Production record](#production-record) below).
 This plan records Justin's decisions of 2026-11-10 (D1–D11 below), including the change
 from initials to first and last names, and is kept as the design record.
 
@@ -224,23 +225,25 @@ submission is **complete** when every region totals exactly `cells_per_region`.
 
 ## Security and privacy checklist
 
-- [ ] Private schema; RLS on with no policies; the schema isn't exposed; functions are
+All verified in production on 2026-11-10 (see the Production record).
+
+- [x] Private schema; RLS on with no policies; the schema isn't exposed; functions are
   the only way in.
-- [ ] Every function is `SECURITY DEFINER` with `search_path = ''`, revoked from
+- [x] Every function is `SECURITY DEFINER` with `search_path = ''`, revoked from
   `public`, and granted only as listed.
-- [ ] Tokens: 256-bit random (made on the device for a first save, by the database for
+- [x] Tokens: 256-bit random (made on the device for a first save, by the database for
   recovery), sha256 stored, compared by hash, never logged or audited.
-- [ ] The instructor key is a bcrypt hash in `mitosislab.settings`. It is separate from
+- [x] The instructor key is a bcrypt hash in `mitosislab.settings`. It is separate from
   the spectrophotometer key, though the instructor may choose the same phrase.
-- [ ] Public functions never select `first_name` or `last_name`. A contract test checks
+- [x] Public functions never select `first_name` or `last_name`. A contract test checks
   that the public responses contain none of the test names and no submission IDs.
-- [ ] No table grants to `anon`; no update path except through the token or instructor
+- [x] No table grants to `anon`; no update path except through the token or instructor
   functions.
-- [ ] Rate and size limits as above.
-- [ ] Names are student records. They are kept in the database for the semester, and the
+- [x] Rate and size limits as above.
+- [x] Names are student records. They are kept in the database for the semester, and the
   named CSV is kept off the repository. The plan for after grading is an open question
   below.
-- [ ] Run the Supabase security advisors after the migration; only the expected notices
+- [x] Run the Supabase security advisors after the migration; only the expected notices
   (RLS without policies, SECURITY DEFINER functions callable by anon) should remain.
 
 ## Testing plan
@@ -291,3 +294,61 @@ submission is **complete** when every region totals exactly `cells_per_region`.
    the counts) can be added.
 6. **Instructor key:** the spectrophotometry lab's key hash was copied, so the same key
    works. Change it on the instructor page if you prefer a separate one.
+
+## Production record
+
+**2026-11-10, SyllaBased (`efxymeviokaocosmpqwf`).**
+
+- **Migration `mitosis_v1`:** `labs/bio151-mitosis/sql/001_mitosis.sql` exactly as reviewed
+  (PR #38 head 2cd4f2c, squash-merged as aefe49a). Justin ran it in the Supabase SQL
+  Editor, because the connector's confirmation prompt never reached his screen. So
+  `supabase_migrations.schema_migrations` has no row for it.
+- **Checked after applying:**
+  - all five tables have RLS on;
+  - the six `public.mitosis_*` functions are `SECURITY DEFINER` and callable by `anon`;
+  - the nine helpers and the tables are not reachable by `anon`, and `anon` has no
+    usage on the schema;
+  - `submissions_token_idx` exists, and the round-6 and round-2 fixes are present
+    (`key_too_long`, the layout row lock);
+  - `bio151-mitosis-2026fa` is seeded: Fall 2026, open, 25 cells per region.
+- **Instructor key:** the hash was copied from `livelab.settings`, so the spectrophotometry
+  key works for both labs. Change it on the instructor page for a separate one.
+- **Smoke test:** run in production inside a block that ended in an exception, so all of
+  it rolled back, including a temporary instructor key. It checked:
+  - a retried first save keeps one row;
+  - a different name with the same token gets its own row;
+  - a bad token, a blank name and over 25 are refused;
+  - another submission's token is refused;
+  - the mitotic indices are 20.0% and 4.0%;
+  - the dashboard has no names or IDs;
+  - the instructor list, correction, recovery (the old token fails, the new one works)
+    and delete (needs confirmation) all work;
+  - the layout is frozen after saves;
+  - a 73-character key is refused;
+  - no token appears in the audit log.
+
+  Afterwards the database had 0 submissions, 0 counts and 0 audit rows, and the same
+  instructor key hash as the spectro lab.
+- **Anonymous API** (publishable key):
+  - the experiment and the dashboard are readable;
+  - a blank name is refused and nothing is written;
+  - a wrong instructor key gets `unauthorized`;
+  - reading `mitosislab` tables over REST gets `PGRST106` (the schema isn't exposed).
+- **Security advisors:** the Mitosis items are only the expected ones. That's
+  `rls_enabled_no_policy` (INFO) on the five tables, and the six public functions
+  flagged as callable by `anon`/`authenticated` (by design: each checks its own token
+  or key). There are no errors and no mutable search paths.
+- **livelab untouched:** row counts and md5 fingerprints were the same before and after.
+  That's 1 experiment, 4 groups, 25 readings and 1 setting.
+- **Pages:** live at <https://biologyatscc.com/labs/bio151-mitosis/>, with `dashboard/` and
+  `instructor/`, and a Labs page card. A read-only browser check found:
+  - the form loads Fall 2026 with Regions 1 and 2;
+  - Save asks for names;
+  - the dashboard shows 0 students and a QR code to the form;
+  - a wrong instructor key is refused;
+  - no page errors and no write requests.
+- **Still to do:**
+  - rename the two regions on the instructor page before the lab (that's only possible
+    until the first student saves);
+  - after the lab, close data entry and download the named CSV (keep it out of this
+    repository).
