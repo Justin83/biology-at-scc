@@ -10,6 +10,9 @@
 //     separate phones (only the device that signed up can change or remove its entry);
 //   - officer tools in a desktop browser: wrong code refused; set a food theme and a
 //     "how many" in the editor pop-up; remove a sign-up; add, cancel and delete an event;
+//   - site engagement: public pages count a visit (anonymous browser ID), Officer tools and
+//     the QR poster don't, and Officer tools shows the count with the officer's own device
+//     left out;
 //   - the printed-schedule fallback when the database cannot be reached.
 // Environment: CLUB_API_URL (default http://127.0.0.1:8789), CLUB_OFFICER_CODE (default local-officer-code).
 import http from "node:http";
@@ -41,8 +44,13 @@ const text = (page, sel) => page.innerText(sel).then((t) => t.replace(/\s+/g, " 
 let browser;
 try {
   browser = await chromium.launch();
-  const errors = [];
-  const watch = (p) => { p.on("pageerror", (e) => errors.push(String(e))); p.on("dialog", (d) => d.accept()); return p; };
+  const errors = [], visits = [];
+  const watch = (p) => {
+    p.on("pageerror", (e) => errors.push(String(e)));
+    p.on("dialog", (d) => d.accept());
+    p.on("request", (r) => { if (r.url().endsWith("/rpc/club_visit")) visits.push(JSON.parse(r.postData()).p_page); });
+    return p;
+  };
   const phone = async () => watch(await (await browser.newContext({ ...devices["Pixel 7"], timezoneId: "America/New_York" })).newPage());
   const desktop = async () => watch(await (await browser.newContext({ viewport: { width: 1366, height: 900 }, timezoneId: "America/New_York" })).newPage());
   // set the "How many" box of a sign-up category in the officer editor, found by its label
@@ -214,6 +222,23 @@ try {
   await o.fill("#of-code", CODE);
   await o.click("#of-signin-form button[type=submit]");
   await o.waitForSelector("#of-app:not([hidden]) #of-upcoming li");
+  // site engagement: the count of visitors, with this officer's own browser left out
+  await o.waitForFunction(() => /visited the club website/.test(document.getElementById("of-stat-headline").textContent));
+  const clubStats = async (v) => (await fetch(`${API}/rest/v1/rpc/club_stats`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ p_code: CODE, p_visitor: v || null }) })).json();
+  const shown = +(await o.textContent("#of-stat-headline strong"));
+  assert.ok(shown >= 2, "the phones that opened the site were counted");
+  assert.equal(shown, (await clubStats()).visitors, "Officer tools shows the database count");
+  assert.match(await text(o, "#of-stat-headline"), new RegExp(`^${shown} people have visited the club website$`));
+  assert.match(await text(o, "#of-stat-since"), /^Counting since \w+day, \w+ \d+, \d{4}\.$/);
+  assert.equal(await o.$$eval("#of-stat-tiles li", (l) => l.length), 6);
+  assert.equal(await o.$$eval("#of-stat-chart span", (l) => l.length), 30);
+  assert.match(await o.textContent("#of-stat-pages"), /Home page/); // inside a closed details
+  const oId = await o.evaluate(() => localStorage.getItem("club-visitor"));
+  assert.match(oId, /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
+  await fetch(`${API}/rest/v1/rpc/club_visit`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ p_visitor: oId, p_page: "home" }) });
+  assert.equal((await clubStats()).visitors, shown, "the officer's browser stays out of the count");
+  assert.ok(visits.includes("home") && visits.includes("signup"), "public pages count a visit");
+  assert.equal(visits.some((p) => /^(officers|qr)/.test(p)), false, "Officer tools and the QR poster don't");
   // flyer library: oldest first (the website flyer first), View or print and Download; nothing archived yet
   await o.waitForSelector("#of-flyers .club-flyer-item");
   assert.deepEqual(await o.$$eval("#of-flyers h3", (h) => h.map((x) => x.textContent)), ["The club has a website", "Thanksgiving Dinner"]);

@@ -54,6 +54,27 @@
   </section>
 
   <div id="of-app" hidden>
+    <section class="club-panel club-stats" id="of-stats" aria-labelledby="of-stats-title">
+      <h2 id="of-stats-title">Site engagement</h2>
+      <p class="club-stat-big" id="of-stat-headline">Counting visitors…</p>
+      <p class="club-hint" id="of-stat-since"></p>
+      <ul class="club-stat-tiles" id="of-stat-tiles"></ul>
+      <figure class="club-stat-chart" id="of-stat-chart-box" hidden>
+        <figcaption>Visitors each day, last 30 days</figcaption>
+        <div class="club-stat-bars" id="of-stat-chart" role="img"></div>
+        <div class="club-stat-axis"><span id="of-stat-chart-from"></span><span>today</span></div>
+      </figure>
+      <details class="club-stat-more" id="of-stat-pages-box" hidden>
+        <summary>Visitors by page</summary>
+        <table class="club-stat-table">
+          <thead><tr><th scope="col">Page</th><th scope="col">Visitors</th><th scope="col">Views</th></tr></thead>
+          <tbody id="of-stat-pages"></tbody>
+        </table>
+      </details>
+      <p class="club-hint">Counted once per phone or computer, not by name: the same person on two devices counts twice, and private browsing counts again. No cookies, IP addresses or names are stored. Officers' devices are left out once they open Officer tools.</p>
+      <p class="club-msg" id="of-stat-msg" role="status"></p>
+    </section>
+
     <section class="club-panel" aria-labelledby="of-state-title">
       <h2 id="of-state-title">Food sign-up</h2>
       <p id="of-open-text"></p>

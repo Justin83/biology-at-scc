@@ -188,8 +188,45 @@
   function pageUrl(root, e) { return e && /^[a-z0-9]+(-[a-z0-9]+)*$/.test(e.page || "") ? (root || "./") + "events/" + e.page + "/" : null; }
   function plainDate(iso) { var p = parts(iso); return MON[p.m - 1] + " " + p.d + ", " + p.y; }
 
+  // ---------------------------------------------------------------- visit counter
+  // Each browser keeps a random ID (localStorage "club-visitor"); public pages send it once
+  // per page load with the page's name, and the database keeps only its sha256, the day and
+  // a view count (sql/007_club_visits.sql). No cookies, IP addresses or names. Officer
+  // tools send it too, so officers' own devices are left out of the counts.
+  var VISITOR_KEY = "club-visitor";
+  function newId() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    var b = crypto.getRandomValues(new Uint8Array(16)), s = "";
+    for (var i = 0; i < b.length; i++) s += (b[i] < 16 ? "0" : "") + b[i].toString(16);
+    return s;
+  }
+  function visitorId() {
+    try {
+      var v = localStorage.getItem(VISITOR_KEY);
+      if (!v || !/^[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}$/.test(v)) {
+        v = newId();
+        localStorage.setItem(VISITOR_KEY, v);
+      }
+      return v;
+    } catch (e) { return null; } // storage blocked: this browser isn't counted
+  }
+  // "home", "signup" or "events/<page>"; null for Officer tools, the QR poster and anything else
+  function pageKey() {
+    var m = /\/msclub\/(.*)$/.exec(location.pathname);
+    if (!m) return null;
+    var p = m[1].replace(/index\.html$/, "").replace(/\/$/, "");
+    if (p === "") return "home";
+    if (/^(officers|qr)(\/|$)/.test(p)) return null;
+    return /^[a-z0-9]+(-[a-z0-9]+)*(\/[a-z0-9]+(-[a-z0-9]+)*)?$/.test(p) && p.length <= 60 ? p : null;
+  }
+  function countVisit() {
+    var page = pageKey(), id = page && live() ? visitorId() : null;
+    if (id) rpc("club_visit", { p_visitor: id, p_page: page }); // fire and forget: a failure never shows
+  }
+  countVisit();
+
   window.Club = {
-    config: CONFIG, live: live, isLocal: function () { return !!localApi; }, rpc: rpc, errorText: errorText,
+    config: CONFIG, live: live, isLocal: function () { return !!localApi; }, rpc: rpc, errorText: errorText, visitorId: visitorId,
     KINDS: KINDS, SIGNUP: SIGNUP, signupKind: signupKind, signupSpec: signupSpec, peopleCount: peopleCount, signupCount: signupCount, todayISO: todayISO, parts: parts, longDate: longDate, shortDate: shortDate, monthKey: monthKey,
     monthLabel: monthLabel, timeLabel: timeLabel, dateLabel: dateLabel, clock: clock,
     relDays: relDays, isPast: isPast, esc: esc, load: load, upcoming: upcoming, nextGathering: nextGathering, MON: MON, DOW: DOW,

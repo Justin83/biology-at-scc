@@ -50,6 +50,7 @@
       settings = r;
       $("of-signin").hidden = true; $("of-app").hidden = false;
       showOpen();
+      loadStats();
       return load();
     });
   }
@@ -112,12 +113,69 @@
     });
   }
 
+  // ------------------------------------------------------------ site engagement
+  // public.club_stats (sql/007_club_visits.sql): totals only. Sending this browser's ID
+  // marks it as an officer device, so officers' own visits stay out of the counts.
+  var stats = null;
+  function people(n, one, many) { return n === 1 ? "1 " + one : n + " " + many; }
+  function pageName(p) {
+    if (p === "home") return "Home page";
+    if (p === "signup") return "Sign-up page";
+    var m = /^events\/(.+)$/.exec(p);
+    if (m) {
+      var e = data && data.events.filter(function (x) { return x.page === m[1]; })[0];
+      return "Event page: " + (e ? e.title : m[1]);
+    }
+    return p;
+  }
+  function showStats() {
+    var s = stats;
+    if (!s) return;
+    $("of-stat-headline").innerHTML = s.visitors
+      ? "<strong>" + s.visitors + "</strong> " + (s.visitors === 1 ? "person has" : "people have") + " visited the club website"
+      : "Nobody has visited the club website yet";
+    $("of-stat-since").textContent = s.since ? "Counting since " + C.longDate(s.since, true) + "." : "Counting starts with the next visit.";
+    var tiles = [
+      [s.visitors_today, "today"], [s.visitors_7d, "in the last 7 days"], [s.visitors_30d, "in the last 30 days"],
+      [s.returning, "came back on another day"],
+      [s.signup_people, s.signup_people === 1 ? "person signed up for something" : "people signed up for something"],
+      [s.views, s.views === 1 ? "page view" : "page views"]
+    ];
+    $("of-stat-tiles").innerHTML = tiles.map(function (t) {
+      return '<li><span class="club-stat-n">' + esc(t[0]) + '</span> <span class="club-stat-l">' + esc(t[1]) + "</span></li>";
+    }).join("");
+    var days = s.daily || [], max = Math.max.apply(null, days.map(function (x) { return x.visitors; }).concat([1]));
+    var top = days.reduce(function (a, x) { return x.visitors > (a ? a.visitors : -1) ? x : a; }, null);
+    $("of-stat-chart").innerHTML = days.map(function (x) {
+      var h = x.visitors ? Math.max(6, Math.round(100 * x.visitors / max)) : 0;
+      return '<span class="' + (x.visitors ? "" : "is-zero") + '" style="height:' + (h || 3) + '%" title="' + esc(C.shortDate(x.day) + ": " + people(x.visitors, "visitor", "visitors")) + '"></span>';
+    }).join("");
+    $("of-stat-chart").setAttribute("aria-label", "Visitors each day for the last 30 days. " +
+      (top && top.visitors ? "Busiest day: " + C.shortDate(top.day) + " with " + people(top.visitors, "visitor", "visitors") + ". " : "") +
+      "Today: " + people(s.visitors_today, "visitor", "visitors") + ".");
+    $("of-stat-chart-from").textContent = days.length ? C.shortDate(days[0].day) : "";
+    $("of-stat-chart-box").hidden = !days.length;
+    $("of-stat-pages").innerHTML = (s.pages || []).map(function (p) {
+      return "<tr><td>" + esc(pageName(p.page)) + "</td><td>" + esc(p.visitors) + "</td><td>" + esc(p.views) + "</td></tr>";
+    }).join("");
+    $("of-stat-pages-box").hidden = !(s.pages || []).length;
+  }
+  function loadStats() {
+    msg("of-stat-msg", "");
+    return C.rpc("club_stats", { p_code: code, p_visitor: C.visitorId() }).then(function (r) {
+      if (!r.ok) { $("of-stat-headline").textContent = "Site engagement isn't available right now."; msg("of-stat-msg", C.errorText(r), "error"); return; }
+      stats = r;
+      showStats();
+    });
+  }
+
   function load(keepId) {
     msg("of-list-msg", "Loading…");
     return C.load(root).then(function (d) {
       showFlyers(d.today);
       if (!d.live) { msg("of-list-msg", "The club database could not be reached. Reload to try again.", "error"); return; }
       data = d;
+      showStats();
       msg("of-list-msg", "");
       var up = C.upcoming(d), past = d.events.filter(function (e) { return C.isPast(e, d.today); }).reverse();
       $("of-upcoming").innerHTML = up.length ? up.map(row).join("") : "<li>No upcoming events.</li>";
