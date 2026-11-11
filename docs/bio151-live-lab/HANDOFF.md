@@ -1,7 +1,28 @@
 # HANDOFF — BIO 151 Live Lab
 
 **Deadline:** Tuesday, October 27, 2026, 11:00 AM ET lab.
-**Last updated:** 2026-10-27 ~02:45 ET (deploy verified) by the Claude Code build session.
+**Last updated:** 2026-11-10 (instructor key changed — see Blockers 2). Previously 2026-10-27 ~02:45 ET (deploy verified) by the Claude Code build session.
+
+## v2 — 2026-11-10: no group PINs, Eastern times
+
+- **Group PINs removed** (`sql/002_no_pin.sql` + `sql/003_no_pin_keep_leaf_type.sql`,
+  both run by the instructor in the Supabase SQL editor because the MCP
+  migration tool kept declining): students pick a group number and save;
+  `pin_hash`, `pin_ok()` and the dashboard's *Reset PIN* are gone. Student
+  functions no longer return names (instructor key only). See DECISIONS D3.
+- **Lesson:** 002 was written from a local `main` 38 commits behind `origin/main`,
+  so it dropped PR #9's `leaf_type` from `group_json` and left PR #9's 7-arg PIN
+  save behind (broken, since `pin_ok()` was gone). 003 repairs both. Before
+  writing SQL against live functions here, `git fetch` and work from
+  `origin/main`, and compare with `supabase_migrations.schema_migrations`.
+- **Instructor keys:** both labs (`livelab.settings` and `mitosislab.settings`)
+  were set to an instructor-chosen key on 2026-11-10. Not in this public repo.
+- **Times are US Eastern everywhere**: the form, the dashboard, and the CSV,
+  whose `reading_updated_at` (UTC) column became `saved_at_eastern` +
+  `time_zone`. See EXPERIMENT.md → CSV export.
+- Verified: `api-test.mjs` against live, `time-test.mjs`, and a headless-Chrome
+  run of the form + dashboard + CSV on a throw-away experiment — results in the
+  PR for this change.
 
 ## Update 2026-11-10 (Fall 2026 lab finished)
 
@@ -55,7 +76,7 @@ Shipped during the lab as `main@2952178` (PR #9); Pages run `completed success`.
 | Component | State | Evidence |
 |---|---|---|
 | Database schema + 5 RPC functions (`sql/001_livelab.sql`) | **Deployed and verified** on Supabase `efxymeviokaocosmpqwf` as migration `livelab_bio151_v1` | 6/6 API tests pass against the live endpoint (2026-10-27 02:33 ET) |
-| Instructor key hash in `livelab.settings` | **Deployed and verified** | live instructor tests pass; plain key held outside the repo (see below) |
+| Instructor key hash in `livelab.settings` | **Deployed and verified; key changed 2026-11-10** | new key checked with `livelab.instructor_ok` (accepted; wrong keys rejected); plain key held by the instructor, outside the repo (see below) |
 | Seeded experiment `bio151-chlorophyll`, 4 groups, 10 wavelengths | **Deployed and verified; data is empty** | `lab_dashboard` shows 0/10 for all groups, no PINs set |
 | Student form `labs/bio151-spectro/index.html` | **Implemented and tested** in headless Chrome (phone viewport) against the live backend, served from a local static server | 17/17 e2e checks pass |
 | Dashboard `labs/bio151-spectro/dashboard/index.html` | **Implemented and tested** the same way (1920×1080) | chart shows 4 series, gaps not interpolated, names hidden until unlock |
@@ -73,11 +94,12 @@ Shipped during the lab as `main@2952178` (PR #9); Pages run `completed success`.
    request; the Pages run succeeded and all live URLs return 200. Note for
    future sessions: pushes to `main` and `gh workflow run` are treated as
    production deploys and need the instructor's explicit go-ahead.
-2. The **instructor key** is not in the repo (by design). It was generated on
-   the build machine and left in the session scratchpad:
-   `C:\Users\justi\AppData\Local\Temp\claude\C--Projects-biology-at-scc\af31c699-eea4-48b8-94a2-1af45f4575d3\scratchpad\instructor_key.txt`.
-   Copy it somewhere durable **now**; if it is lost, set a new one with the SQL
-   in DEPLOYMENT.md (takes 10 seconds).
+2. ~~Instructor key~~ — **resolved 2026-11-10.** The key generated on
+   2026-10-27 (left in a build-session scratchpad file) was replaced with a key
+   the instructor chose, and **the old key no longer works**. The instructor
+   holds the new one; it is still not in the repo, which is public. One key
+   unlocks every experiment. To change it again, use the SQL in DEPLOYMENT.md
+   (takes 10 seconds).
 
 ## Exact next actions (in order)
 

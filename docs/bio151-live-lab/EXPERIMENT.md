@@ -51,10 +51,24 @@ with slug `bio151-chlorophyll`. Change them without touching code:
 | experiment | `y_label`, `y_decimals` | "Absorbance", 3 (display rounding only) |
 | experiment | `instructions`, `is_open` | shown on the form; `is_open=false` blocks saves |
 | group | `group_number`, `label` | 1–4, "Group 1"… |
-| group | `members` | student names, **instructor-only** |
-| group | `pin_hash` | bcrypt of the group's PIN; `null` until the first join |
+| group | `members` | student names, **instructor-only** (no PIN since v2, 2026-11-10) |
 | group | `dilution`, `notes` | optional free text |
-| reading | `x_value`, `absorbance`, `notes`, `updated_at` | one row per group per wavelength; `absorbance` may be `null` (blank) |
+| reading | `x_value`, `absorbance`, `notes`, `updated_at` | one row per group per wavelength; `absorbance` may be `null` (blank). `updated_at` is set by the server (UTC) each time the group presses Save — the form re-sends every value, so all of a group's rows carry its latest save time, and an edit overwrites with no history |
+
+### CSV export (dashboard → Instructor tools → Download CSV)
+
+One row per reading (a group with no readings gets one blank row). Columns:
+`experiment, x_kind, group_number, group_label, members, x_value, x_unit,
+absorbance, reading_notes, leaf_type, dilution, group_notes, saved_at_eastern, time_zone`.
+
+- `members` — every name entered for the group, joined with `; ` (who typed
+  which value is not recorded).
+- `saved_at_eastern` — the group's last save, converted to US Eastern as
+  `YYYY-MM-DD HH:MM:SS` (spreadsheets read it as a date/time); `time_zone` says
+  `EDT` or `EST` for that date. Changed 2026-11-10; before that the column was
+  `reading_updated_at` in UTC.
+- The file name carries the download time in Eastern too. Times shown on the
+  form and dashboard are Eastern whatever the device's clock is set to.
 
 Validation on save: absorbance must parse as a number in **−1 … 10** (the form
 also asks for confirmation above 3). Comma decimals (`0,52`) are accepted and

@@ -28,17 +28,13 @@
     <div id="group-grid" class="group-grid"></div>
 
     <h2>2. Your names</h2>
-    <p class="muted small" style="margin-top:0">Enter each lab partner's name once. Names are visible only to your instructor, never on the classroom screen.</p>
+    <p class="muted small" style="margin-top:0">Enter each lab partner's name once. Names are visible only to your instructor, never on the classroom screen. Double-check the group number above — anyone in class can pick any group.</p>
     <label for="name1">Student 1</label>
     <input id="name1" type="text" autocomplete="off" autocapitalize="words" placeholder="First and last name">
     <label for="name2">Student 2</label>
     <input id="name2" type="text" autocomplete="off" autocapitalize="words" placeholder="First and last name">
     <label for="name3" class="muted">Student 3 (if any)</label>
     <input id="name3" type="text" autocomplete="off" autocapitalize="words" placeholder="optional">
-
-    <h2>3. Group PIN</h2>
-    <p id="pin-help" class="muted small" style="margin-top:0">Pick a group first.</p>
-    <input id="pin" type="text" inputmode="numeric" autocomplete="off" autocapitalize="off" placeholder="at least 4 characters" maxlength="32">
 
     <div id="join-msg" class="msg err hidden"></div>
     <p style="margin-top:1.2rem"><button id="join-btn" class="primary" style="width:100%">Join group</button></p>
@@ -91,8 +87,8 @@
 
   let exp = null;            // experiment config
   let groups = [];           // public group summaries
-  let session = null;        // { group_number, pin, members }
-  let groupData = null;      // { readings: [...], dilution, notes, members, ... }
+  let session = null;        // { group_number, members } — members are the names typed on THIS phone
+  let groupData = null;      // { readings: [...], dilution, notes, ... } (the server never returns names here)
   let dirty = {};            // x -> raw text typed but not saved
   let metaDirty = false;     // dilution/notes changed
   let saving = false;
@@ -108,7 +104,7 @@
     el.textContent = text;
   }
   function loadSession() {
-    try { const s = JSON.parse(localStorage.getItem(LS_KEY)); return (s && s.group_number && s.pin) ? s : null; } catch (_) { return null; }
+    try { const s = JSON.parse(localStorage.getItem(LS_KEY)); return (s && s.group_number) ? s : null; } catch (_) { return null; }
   }
   function saveSession(s) { try { s ? localStorage.setItem(LS_KEY, JSON.stringify(s)) : localStorage.removeItem(LS_KEY); } catch (_) {} }
   function xLabel(x) { return `${x} ${exp.x_unit || ""}`.trim(); }
@@ -131,7 +127,7 @@
 
     session = loadSession();
     if (session) {
-      const j = await A.joinGroup(slug, session.group_number, session.pin, []);
+      const j = await A.joinGroup(slug, session.group_number, []);
       if (j.ok) { enterMode(j); return; }
       saveSession(null); session = null;
       msg("join-msg", "Your saved group sign-in no longer works (" + A.errorText(j) + "). Please join again.", "warn");
@@ -146,46 +142,40 @@
     groups.forEach(g => {
       const b = document.createElement("button");
       b.type = "button"; b.className = "group-btn" + (selectedGroup === g.group_number ? " selected" : "");
-      const status = g.has_pin
+      const status = g.joined
         ? `joined · ${g.member_count} name${g.member_count === 1 ? "" : "s"} · ${g.readings_count} saved`
         : "open — be the first to join";
       b.innerHTML = `<span><i class="swatch" style="background:${swatchColor(g.group_number)}"></i>${A.esc(g.label)}</span><span class="status">${A.esc(status)}</span>`;
-      b.addEventListener("click", () => { selectedGroup = g.group_number; renderGroups(); updatePinHelp(); });
+      b.addEventListener("click", () => { selectedGroup = g.group_number; renderGroups(); });
       grid.appendChild(b);
     });
-  }
-  function updatePinHelp() {
-    const g = groups.find(x => x.group_number === selectedGroup);
-    if (!g) { $("pin-help").textContent = "Pick a group first."; return; }
-    $("pin-help").textContent = g.has_pin
-      ? `${g.label} already has a PIN. Enter the PIN your group chose.`
-      : `${g.label} has no PIN yet. Make one up (4+ characters) and share it with your lab partner — you will both need it to edit this group's data.`;
   }
   async function join() {
     msg("join-msg", "");
     if (!selectedGroup) { msg("join-msg", "Pick your group first.", "err"); return; }
     const names = ["name1", "name2", "name3"].map(id => $(id).value.trim()).filter(Boolean);
     const g = groups.find(x => x.group_number === selectedGroup);
-    if (names.length === 0 && !(g && g.has_pin)) { msg("join-msg", "Enter at least one name.", "err"); return; }
-    const pin = $("pin").value.trim();
-    if (pin.length < 4) { msg("join-msg", "Enter a PIN of at least 4 characters.", "err"); return; }
+    if (names.length === 0 && !(g && g.joined)) { msg("join-msg", "Enter at least one name.", "err"); return; }
     $("join-btn").disabled = true; $("join-btn").textContent = "Joining…";
-    const r = await A.joinGroup(slug, selectedGroup, pin, names);
+    const r = await A.joinGroup(slug, selectedGroup, names);
     $("join-btn").disabled = false; $("join-btn").textContent = "Join group";
     if (!r.ok) { msg("join-msg", A.errorText(r), "err"); return; }
-    session = { group_number: selectedGroup, pin, members: r.group.members };
+    session = { group_number: selectedGroup, members: names };
     saveSession(session);
-    enterMode(r, r.created_pin ? `You created the PIN for ${r.group.label}. Your partner can join on their own phone with that PIN.` : `Welcome back to ${r.group.label}.`);
+    enterMode(r, g && g.joined ? `Welcome back to ${r.group.label}.` : `You joined ${r.group.label}. Your partner can open this page on their own phone and pick the same group.`);
+  }
+  function showNames() {
+    const m = session && session.members;
+    $("who-names").textContent = (m && m.length) ? "· " + m.join(", ") : "";
   }
 
   // ------------------------------------------------------------ entry
   function enterMode(r, welcome) {
     exp = r.experiment; groupData = r.group;
     session = session || loadSession();
-    if (session) { session.members = groupData.members || session.members; saveSession(session); }
     show("join", false); show("entry", true); show("savebar", true);
     $("who-group").textContent = groupData.label;
-    $("who-names").textContent = (groupData.members && groupData.members.length) ? "· " + groupData.members.join(", ") : "";
+    showNames();
     $("instructions").textContent = exp.instructions || "";
     $("x-head").textContent = exp.x_label || "Wavelength";
     $("y-head").textContent = exp.y_label || "Absorbance";
@@ -275,14 +265,13 @@
     if (high.length && !confirm(`Absorbance above 3 is unusual for this instrument (${high.map(p => xLabel(p.x) + " = " + p.a).join(", ")}). Save anyway?`)) return;
 
     saving = true; setState();
-    const r = await A.saveReadings(slug, session.group_number, session.pin,
+    const r = await A.saveReadings(slug, session.group_number,
       payload, metaDirty ? $("dilution").value : null, metaDirty ? $("notes").value : null,
       metaDirty ? $("leaf-type").value : null);
     saving = false;
     if (!r.ok) {
       setState("Not saved: " + A.errorText(r), "err");
       msg("entry-msg", "Your readings were NOT saved. " + A.errorText(r), "err");
-      if (r.error === "wrong_pin") { saveSession(null); }
       return;
     }
     exp = r.experiment; groupData = r.group; dirty = {}; metaDirty = false;
@@ -297,12 +286,12 @@
   async function sync(manual) {
     if (!session || saving || document.hidden) return;
     if (isDirty() && !manual) return;
-    const r = await A.joinGroup(slug, session.group_number, session.pin, []);
+    const r = await A.joinGroup(slug, session.group_number, []);
     if (!r.ok) { if (manual) msg("entry-msg", A.errorText(r), "err"); return; }
     const before = JSON.stringify(groupData.readings) + JSON.stringify(exp.x_values);
     exp = r.experiment; groupData = r.group;
     if (!metaDirty) { $("leaf-type").value = groupData.leaf_type || ""; $("dilution").value = groupData.dilution || ""; $("notes").value = groupData.notes || ""; }
-    $("who-names").textContent = (groupData.members && groupData.members.length) ? "· " + groupData.members.join(", ") : "";
+    showNames();
     if (before !== JSON.stringify(groupData.readings) + JSON.stringify(exp.x_values) || manual) renderRows();
     setState();
     if (manual) msg("entry-msg", "Reloaded saved data at " + A.fmtTime(new Date().toISOString()) + ".", "ok");
@@ -321,7 +310,7 @@
     saveSession(null); session = null; groupData = null; dirty = {}; metaDirty = false;
     if (syncTimer) clearInterval(syncTimer);
     show("entry", false); show("savebar", false);
-    A.getExperiment(slug).then(r => { if (r.ok) { exp = r.experiment; groups = r.groups; } selectedGroup = null; renderGroups(); updatePinHelp(); show("join", true); });
+    A.getExperiment(slug).then(r => { if (r.ok) { exp = r.experiment; groups = r.groups; } selectedGroup = null; renderGroups(); show("join", true); });
   });
   ["leaf-type", "dilution", "notes"].forEach(id => $(id).addEventListener("input", () => { metaDirty = true; setState(); }));
   window.addEventListener("beforeunload", (e) => { if (isDirty()) { e.preventDefault(); e.returnValue = ""; } });

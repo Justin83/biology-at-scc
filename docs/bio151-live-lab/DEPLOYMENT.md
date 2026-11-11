@@ -5,7 +5,7 @@
 | Piece | Where | How it deploys |
 |---|---|---|
 | Student form + dashboard (static) | GitHub Pages, repo `Justin83/biology-at-scc`, build type *workflow* | `.github/workflows/pages.yml` runs on every push to `main` (also `workflow_dispatch`) and publishes the repo root |
-| Database + API | Supabase project **SyllaBased** `efxymeviokaocosmpqwf` (us-west-2), free tier | SQL migration `livelab_bio151_v1` (file: `labs/bio151-spectro/sql/001_livelab.sql`) — **applied 2026-10-27 ~02:25 ET** |
+| Database + API | Supabase project **SyllaBased** `efxymeviokaocosmpqwf` (us-west-2), free tier | SQL migration `livelab_bio151_v1` (file: `labs/bio151-spectro/sql/001_livelab.sql`) — **applied 2026-10-27 ~02:25 ET**; then `livelab_bio151_add_leaf_type` (PR #9) — **applied 2026-10-27**; then `sql/002_no_pin.sql` (group PINs removed) and its fix-up `sql/003_no_pin_keep_leaf_type.sql` — **run by the instructor in the SQL editor 2026-11-10** (not in the migration ledger) |
 
 ### Live URLs
 
@@ -42,10 +42,12 @@ Test/CI environment variables (`labs/bio151-spectro/tests/api-test.mjs`):
 
 ## Instructor key
 
-- Generated 2026-10-27 in the build session; its bcrypt hash is in
-  `livelab.settings`. The plain key was left for the instructor in the build
-  machine's Claude scratchpad file `instructor_key.txt` (session-specific
-  folder, see HANDOFF.md) — copy it into a password manager.
+- **Changed 2026-11-10** to a key the instructor chose; the instructor holds
+  it. Only its bcrypt hash is stored, in `livelab.settings`, and that one key
+  unlocks every experiment. The plain key stays out of this repo, which is
+  public.
+- The original key, generated 2026-10-27 in the build session and left in a
+  scratchpad file `instructor_key.txt`, **no longer works**.
 - **Rotate / set a new key** (Supabase SQL editor, replace NEW-KEY):
 
 ```sql
@@ -68,7 +70,7 @@ update livelab.settings
    curl -sI https://biologyatscc.com/labs/bio151-spectro/dashboard/ | head -1
    ```
 4. Open the dashboard on the TV browser; open the form on a phone via the QR;
-   join a group with a test PIN, save one reading, press **Refresh now** on the
+   join a group, save one reading, press **Refresh now** on the
    dashboard, confirm the point appears. Then clear that group from *Instructor
    tools* (Clear group data) so the class starts empty.
 
@@ -84,6 +86,9 @@ $env:LAB_API_URL="https://efxymeviokaocosmpqwf.supabase.co"
 $env:LAB_API_KEY="sb_publishable_xoPXCFR7FN5X6as1E1tYAg_bmSpYMHE"
 $env:LAB_INSTRUCTOR_KEY="<instructor key>"
 node --test labs/bio151-spectro/tests/api-test.mjs
+
+# Time display (no network): every time on the pages and in the CSV is US Eastern
+node --test labs/bio151-spectro/tests/time-test.mjs
 ```
 The suite creates and deletes its own `selftest-<timestamp>` experiment and
 never touches `bio151-chlorophyll`.
