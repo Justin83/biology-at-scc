@@ -24,9 +24,10 @@ The site is static HTML on GitHub Pages (no build step). Two new pages under
 endpoint (PostgREST) with the public *publishable* key. The functions live in
 the `public` schema of the existing **SyllaBased** Supabase project and are
 `SECURITY DEFINER`; the tables live in a private `livelab` schema that the API
-never exposes. A group edits only its own row set after presenting the PIN the
-group chose when it first joined; student names are returned only to callers
-holding the instructor key. The dashboard draws the chart with a vendored copy
+never exposes. Students pick their group by number — there is no group PIN
+since v2 (2026-11-10, `sql/002_no_pin.sql`); student names are returned only to
+callers holding the instructor key. All times shown, and the CSV's
+`saved_at_eastern`, are US Eastern. The dashboard draws the chart with a vendored copy
 of Chart.js and polls every 12 s.
 
 ```
@@ -56,7 +57,10 @@ labs/
 │   ├── lab.css               mobile-first styles (shares the site's color tokens)
 │   ├── qr-student-form.svg   QR shown on the dashboard ("Show QR for students")
 │   ├── sql/001_livelab.sql   the database migration (applied as livelab_bio151_v1)
-│   └── tests/api-test.mjs    node --test contract suite (local harness or live)
+│   ├── sql/002_no_pin.sql    v2: group PINs removed (run in the SQL editor 2026-11-10)
+│   ├── sql/003_no_pin_keep_leaf_type.sql  v2 fix-up: leaf_type restored; one no-PIN save function
+│   ├── tests/api-test.mjs    node --test contract suite (local harness or live)
+│   └── tests/time-test.mjs   Eastern-time display and CSV timestamps (no network)
 └── vendor/chart.umd.min.js   Chart.js 4.5.0 (vendored so the TV never depends on a CDN)
 docs/bio151-live-lab/         this folder
 ```

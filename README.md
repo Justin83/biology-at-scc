@@ -37,16 +37,10 @@ work come in. No folder is scoped to a particular semester or course.
 
 ## Live labs
 
- is a phone data-entry form plus a classroom dashboard
-for live spectrophotometry labs. It is static like the rest of the site but
-stores readings in a Supabase database through PIN-checked RPC functions.
-See  for architecture, URLs and operations.
-
-## Live labs
-
 `labs/bio151-spectro/` is a phone data-entry form plus a classroom dashboard
 for live spectrophotometry labs. It is static like the rest of the site but
-stores readings in a Supabase database through PIN-checked RPC functions.
+stores readings in a Supabase database through RPC functions (students pick a
+group number; student names are visible only with the instructor key).
 See `docs/bio151-live-lab/README.md` for architecture, URLs and operations.
 
 ## Freshwater research portal
