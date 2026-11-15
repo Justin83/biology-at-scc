@@ -14,11 +14,12 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+# Upload and deploy run in separate jobs, as in GitHub's Pages starter workflow. In one job
+# deploy-pages can look for the artifact before GitHub's artifact listing has caught up
+# ("No artifacts named github-pages were found"); the deploy job starting only after the
+# build job has finished gives the listing time to catch up.
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,6 +32,14 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: "."
+
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
