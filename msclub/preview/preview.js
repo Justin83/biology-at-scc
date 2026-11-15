@@ -20,7 +20,10 @@
   function key(e) { return e.starts_on + "|" + e.title; }
   function text(e) { return texts[key(e)] || null; }
   function eventUrl(e) { return proot + "event/?id=" + encodeURIComponent(e.id); }
-  function canSignUp(e) { return data.live && e.signup_enabled && e.status === "scheduled" && !C.isPast(e, data.today); }
+  // open for sign-up: the event takes sign-ups and officers haven't closed sign-up site-wide
+  function takesSignUps(e) { return data.live && e.signup_enabled && e.status === "scheduled" && !C.isPast(e, data.today); }
+  function canSignUp(e) { return takesSignUps(e) && data.signups_open; }
+  function closedNote(e) { return takesSignUps(e) && !data.signups_open ? '<span class="club-hint">Sign-up is closed right now.</span>' : ""; }
   function signupButton(e, cls) {
     // the live sign-up form for this event (the preview itself never writes anything)
     return '<a class="club-btn' + (cls ? " " + cls : "") + '" href="' + esc(root + "signup/?event=" + encodeURIComponent(e.id)) + '">' + esc(C.signupSpec(e).button) + "</a>";
@@ -74,7 +77,8 @@
       '<div class="club-card-top">' + dateBlock(e) +
       '<div><h4 class="club-card-title"><a href="' + esc(eventUrl(e)) + '">' + esc(e.title) + '</a></h4><p class="club-card-chips">' + chips(e) + "</p></div></div>" +
       '<p class="club-card-meta">' + esc(meta(e)) + "</p>" + themeLine(e) + summary(e) +
-      (canSignUp(e) ? '<div class="club-card-actions">' + signupButton(e) + '<span class="club-hint">' + esc(C.signupCount(e, true)) + "</span></div>" : "") +
+      (canSignUp(e) ? '<div class="club-card-actions">' + signupButton(e) + '<span class="club-hint">' + esc(C.signupCount(e, true)) + "</span></div>"
+        : closedNote(e) ? '<div class="club-card-actions">' + closedNote(e) + "</div>" : "") +
       "</article>";
   }
   // a list row (the by-date view): date, title, one line from the event's page, button
@@ -84,7 +88,7 @@
       '<p class="club-card-chips">' + chips(e) + "</p>" +
       '<p class="club-card-meta">' + esc(meta(e)) + "</p>" + themeLine(e) + summary(e) + "</div>" +
       '<div class="pv-row-act">' + (canSignUp(e) ? signupButton(e, "club-btn--small") + '<span class="club-hint">' + esc(C.signupCount(e, true)) + "</span>"
-        : '<a class="club-btn club-btn--ghost club-btn--small" href="' + esc(eventUrl(e)) + '">' + (C.isPast(e, data.today) && text(e) && text(e).recap ? "Read the recap" : "Details") + "</a>") +
+        : closedNote(e) + '<a class="club-btn club-btn--ghost club-btn--small" href="' + esc(eventUrl(e)) + '">' + (C.isPast(e, data.today) && text(e) && text(e).recap ? "Read the recap" : "Details") + "</a>") +
       "</div></article>";
   }
 
@@ -101,7 +105,7 @@
         '<p class="club-next-meta">' + esc(C.timeLabel(next)) + " · " + esc(next.title) + (next.location ? " · " + esc(next.location) : "") +
         (C.relDays(data.today, next.starts_on) ? " · " + esc(C.relDays(data.today, next.starts_on)) : "") + "</p>" +
         (C.themeText(next) ? '<p class="club-theme club-theme--big">Food theme: <strong>' + esc(C.themeText(next)) + "</strong></p>" : "") +
-        (canSignUp(next) ? '<p class="club-actions">' + signupButton(next, "club-btn--big") + "</p>" : "") +
+        (canSignUp(next) ? '<p class="club-actions">' + signupButton(next, "club-btn--big") + "</p>" : closedNote(next) ? "<p>" + closedNote(next) + "</p>" : "") +
         '<p class="club-hint">' + (next.signup_enabled ? esc(C.signupCount(next, true)) + " " : "") +
         '<a href="' + esc(eventUrl(next)) + '">' + (bring ? "See " + esc(C.signupSpec(next).list.toLowerCase()) : "Details") + " →</a></p></div>" +
         (f ? flyerBox(f) : "");
@@ -157,13 +161,28 @@
   }
 
   // ------------------------------------------------------------ event page
+  // New York's offset from UTC (minutes) at an instant, e.g. -300 in winter, -240 in summer
+  function nyOffset(ms) {
+    var g = {};
+    new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" })
+      .formatToParts(new Date(ms)).forEach(function (p) { g[p.type] = p.value; });
+    return (Date.UTC(+g.year, +g.month - 1, +g.day, +g.hour % 24, +g.minute, +g.second) - ms) / 60000;
+  }
+  // a Somerset wall-clock date and time ("2026-11-19", "17:00") as an iCalendar UTC time
+  function nyToUtc(date, time) {
+    var p = C.parts(date), hm = time.split(":");
+    var wall = Date.UTC(p.y, p.m - 1, p.d, +hm[0], +hm[1]);
+    var utc = wall - nyOffset(wall) * 60000;
+    utc = wall - nyOffset(utc) * 60000; // settle the offset on the event's own side of a DST change
+    return new Date(utc).toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z");
+  }
   function ics(e) {
-    var d = e.starts_on.replace(/-/g, ""), end = (e.ends_on || e.starts_on).replace(/-/g, "");
+    var d = e.starts_on.replace(/-/g, "");
     var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Math & Science Club//SCC//EN", "BEGIN:VEVENT",
       "UID:" + e.id + "@biologyatscc.com", "DTSTAMP:" + new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z")];
     if (e.start_time) {
-      lines.push("DTSTART:" + d + "T" + e.start_time.replace(":", "") + "00");
-      if (e.end_time) lines.push("DTEND:" + end + "T" + e.end_time.replace(":", "") + "00");
+      lines.push("DTSTART:" + nyToUtc(e.starts_on, e.start_time));
+      if (e.end_time) lines.push("DTEND:" + nyToUtc(e.ends_on || e.starts_on, e.end_time));
     } else {
       var p = C.parts(e.ends_on || e.starts_on), next = new Date(Date.UTC(p.y, p.m - 1, p.d + 1)).toISOString().slice(0, 10).replace(/-/g, "");
       lines.push("DTSTART;VALUE=DATE:" + d, "DTEND;VALUE=DATE:" + next);
@@ -191,6 +210,7 @@
     if (e.status === "postponed") html += '<div class="club-banner club-banner--warn"><p>Postponed. A new date will be announced.</p></div>';
     if (e.status === "cancelled") html += '<div class="club-banner club-banner--warn"><p>Cancelled.</p></div>';
     if (!past && canSignUp(e)) html += '<div class="club-event-cta">' + signupButton(e, "club-btn--big") + '<p class="club-hint">' + esc(C.signupCount(e, true)) + "</p></div>";
+    else if (closedNote(e)) html += '<p class="club-event-cta">' + closedNote(e) + "</p>";
     var paras = past ? (t && t.recap) : (t && t.body);
     if (paras && paras.length) {
       html += (t.sample ? '<p class="pv-sample-note">Sample text: officers would write this part in Officer tools.</p>' : "") +
@@ -214,6 +234,8 @@
       a.download = e.title.replace(/[^\w\- ]+/g, "").trim().replace(/\s+/g, "-") + ".ics";
     }
   }
+
+  window.ClubPreview = { ics: ics }; // for the browser test
 
   // ------------------------------------------------------------ start
   function fail() {
