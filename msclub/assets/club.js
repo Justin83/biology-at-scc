@@ -210,13 +210,14 @@
       return v;
     } catch (e) { return null; } // storage blocked: this browser isn't counted
   }
-  // "home", "signup", "officers" or "events/<page>"; null for the QR poster and anything else
+  // "home", "signup", "officers" or "events/<page>"; null for the QR poster, the layout
+  // preview (preview/) and anything else
   function pageKey() {
     var m = /\/msclub\/(.*)$/.exec(location.pathname);
     if (!m) return null;
     var p = m[1].replace(/index\.html$/, "").replace(/\/$/, "");
     if (p === "") return "home";
-    if (/^qr(\/|$)/.test(p)) return null;
+    if (/^(qr|preview)(\/|$)/.test(p)) return null;
     return /^[a-z0-9]+(-[a-z0-9]+)*(\/[a-z0-9]+(-[a-z0-9]+)*)?$/.test(p) && p.length <= 60 ? p : null;
   }
   function countVisit() {

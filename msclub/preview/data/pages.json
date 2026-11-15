@@ -1,0 +1,42 @@
+{
+  "note": "Text for the layout preview (msclub/preview/). In the real build, officers would write this in Officer tools. Entries marked sample are placeholders; STEAM Day's text comes from its real page (events/steam-day-2027/).",
+  "pages": {
+    "2026-11-19|Math and Science Club Meeting": {
+      "sample": true,
+      "summary": "Thanksgiving potluck meeting: bring a dish to share if you can.",
+      "body": [
+        "Officers write a few lines here: what to bring, what the meeting will cover, and who to ask with questions."
+      ]
+    },
+    "2026-12-03|Math and Science Club Holiday Party": {
+      "sample": true,
+      "summary": "End-of-semester party before finals. Food theme coming soon.",
+      "body": [
+        "Officers write the plan for the party here, the food theme once it's chosen, and anything people should know before they come."
+      ]
+    },
+    "2027-03-05|STEAM Day Somerset 2027": {
+      "sample": false,
+      "summary": "Help eighth graders explore science at SCC. Counts as an MSSE activity.",
+      "body": [
+        "STEAM Day brings eighth graders from area schools to SCC for hands-on activities in science, technology, engineering, arts, and math. Students explore new ideas, meet educators and professionals, and see where their interests might take them.",
+        "MSSE scholars: working STEAM Day counts as one of the 4 activities you need each semester."
+      ],
+      "full_page": "events/steam-day-2027/"
+    },
+    "2026-10-30|Laurel STEAM Day": {
+      "sample": true,
+      "recap_summary": "How Laurel's STEAM Day went.",
+      "recap": [
+        "After an event, an officer writes a few lines here about how it went and what's next, and can add a link to a photo album. The page switches from sign-up to this recap."
+      ]
+    },
+    "2026-10-15|Math and Science Club Meeting": {
+      "sample": true,
+      "recap_summary": "What the October meeting decided.",
+      "recap": [
+        "What the meeting covered, what was decided, and what's coming up next."
+      ]
+    }
+  }
+}
