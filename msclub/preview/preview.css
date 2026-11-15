@@ -1,0 +1,55 @@
+/* Layout preview (msclub/preview/): only what the live club.css doesn't already have. */
+
+/* the "this is a preview" strip under the club bar */
+.pv-banner { background: var(--club-warn-bg); border-bottom: 1px solid var(--club-warn-bd); color: var(--club-warn-fg); }
+.pv-banner .wrap { padding-top: 0.55rem; padding-bottom: 0.55rem; }
+.pv-banner p { margin: 0; font-size: 0.92rem; }
+.pv-banner a { color: inherit; font-weight: 700; }
+
+/* Up next: the one place the next event shows on the home page, with its flyer beside it */
+.pv-next { container-type: inline-size; }
+#pv-next { display: grid; gap: 1rem; }
+@container (min-width: 620px) { #pv-next.has-flyer { grid-template-columns: minmax(0, 1fr) 170px; align-items: start; } }
+#pv-next .club-flyer { margin: 0 auto; }
+.pv-next .club-next-date a { color: inherit; text-decoration: none; }
+.pv-next .club-next-date a:hover { text-decoration: underline; }
+.pv-next .club-hint a { font-weight: 700; }
+.pv-more { margin: 1rem 0 0; font-weight: 700; }
+
+/* the event's own text, one line on cards and rows */
+.pv-summary { margin: 0.35rem 0 0; font-size: 0.95rem; }
+.pv-sample { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); border: 1px dashed var(--border); border-radius: 6px; padding: 0 0.35rem; vertical-align: 0.1em; }
+.pv-sample-note { margin: 1rem 0 0.4rem; font-size: 0.85rem; color: var(--muted); border-left: 3px dashed var(--border); padding-left: 0.6rem; }
+.pv-chip-open { background: #e3f3e8; color: #1d5c34; }
+.pv-chip-recap { background: var(--club-purple-bg); color: var(--club-purple-fg); }
+@media (prefers-color-scheme: dark) { .pv-chip-open { background: #12301f; color: #a6e3bb; } }
+
+/* Schedule: filters and the Cards / List switch */
+.pv-page-title { margin: 1.4rem 0 0.6rem; }
+.pv-controls { display: flex; flex-wrap: wrap; gap: 0.6rem 1.2rem; align-items: center; justify-content: space-between; margin: 0 0 0.4rem; }
+.pv-seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--border); border-radius: 999px; padding: 3px; background: var(--card-bg); }
+.pv-seg button { font: inherit; font-size: 0.9rem; font-weight: 700; min-height: 2.25rem; border: 0; background: transparent; color: var(--accent); padding: 0.25rem 0.85rem; border-radius: 999px; cursor: pointer; }
+.pv-seg button[aria-pressed="true"] { background: var(--accent); color: var(--club-on-accent); }
+
+/* List view: one row per event, by date */
+.pv-rows { display: flex; flex-direction: column; }
+.pv-row { display: grid; grid-template-columns: 3.6rem minmax(0, 1fr); gap: 0.35rem 0.9rem; padding: 0.85rem 0; border-bottom: 1px solid var(--border); }
+.pv-row.is-cancelled .pv-row-title { text-decoration: line-through; }
+.pv-row-main { min-width: 0; }
+.pv-row-title { margin: 0; font-size: 1.05rem; line-height: 1.3; }
+.pv-row-title a { color: var(--fg); text-underline-offset: 3px; text-decoration-color: var(--border); }
+.pv-row-title a:hover { text-decoration-color: currentColor; }
+.pv-row .club-card-chips { margin: 0.2rem 0; }
+.pv-row .club-card-meta { margin: 0; }
+.pv-row-act { grid-column: 2; display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; align-items: center; }
+@media (min-width: 760px) {
+  .pv-row { grid-template-columns: 3.6rem minmax(0, 1fr) 15rem; align-items: center; }
+  .pv-row-act { grid-column: 3; justify-content: flex-end; text-align: right; }
+}
+
+/* Event page */
+.pv-event-page .club-card-chips { margin: 0.2rem 0 0.4rem; }
+.pv-bring { margin: 1.4rem 0 0; }
+.pv-event-page .pv-bring > h2 { margin-top: 0; }
+.pv-event-flyer { margin: 1.4rem 0 0; }
+.pv-event-flyer .club-flyer { margin: 0; }

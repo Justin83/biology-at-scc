@@ -114,6 +114,29 @@ migrations `club_v7` and `club_v8`). These notes are here, not on the card (Just
   locations** are stored.
 - At most 3,000 new visitor-page rows a day are counted, so a script can't fill the table.
 
+## Layout preview (temporary, `msclub/preview/`)
+
+A working preview of Option A from the layout proposal (November 2026), so the layout can be
+judged in a real browser with the real schedule before anything changes on the live pages:
+
+- `preview/`: a short front page. **Up next** shows the next meeting once, with its flyer;
+  then the next three events as cards; then the full-schedule link and recaps.
+- `preview/schedule/`: the whole schedule, with **List** (by date, one line from each
+  event's page) and **Cards** views, a "Sign-up open" filter, and earlier events.
+- `preview/event/?id=<event id>`: a page for any event, with details, the sign-up button,
+  who's signed up, the flyer, "Add to my calendar", and a recap after the date.
+
+It reads the live schedule, sign-ups and flyers through the same public functions as the
+live pages, and **saves nothing**: sign-up buttons open the live sign-up form, and
+`club.js` doesn't count visits under `preview/`. It is `noindex` and linked from nowhere.
+
+Event-page text doesn't exist in the database yet, so it comes from
+`preview/data/pages.json`. Entries marked `sample` are placeholders and are labelled on the
+page; STEAM Day's text comes from its real page.
+
+To remove the preview, delete `msclub/preview/` and `tools/msclub/tests/preview.e2e.mjs`,
+and drop `preview` from the `pageKey` regex in `assets/club.js`.
+
 ## Flyers
 
 The club's flyers are letter-size PDFs in `msclub/flyers/`, each with a preview picture,
@@ -244,6 +267,7 @@ npm install --no-save @electric-sql/pglite@0.5.8      # once
 CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
 node --test tools/msclub/tests/*.test.mjs   # 12 database contract tests
 NODE_PATH=$(npm root -g) node tools/msclub/tests/club-pages.e2e.mjs   # browser test (Playwright)
+NODE_PATH=$(npm root -g) node tools/msclub/tests/preview.e2e.mjs      # the layout preview
 node tools/msclub/check.mjs                 # page checks, schedule data, QR code, flyer library
 node tools/msclub/make-qr.mjs               # regenerate the QR code
 ```
