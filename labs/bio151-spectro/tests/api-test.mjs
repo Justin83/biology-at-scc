@@ -1,5 +1,6 @@
 // API contract test for the BIO 151 Live Lab RPC functions.
-// Runs against any PostgREST-compatible endpoint that has sql/001_livelab.sql applied:
+// Runs against any PostgREST-compatible endpoint that has sql/001_livelab.sql and
+// sql/002_no_pin.sql applied (v2: no group PINs):
 //   LAB_API_URL        base URL (default: http://localhost:8787 — the local PGlite harness)
 //   LAB_API_KEY        apikey header value (default: "local"; use the Supabase publishable key for live)
 //   LAB_INSTRUCTOR_KEY instructor key (required)
@@ -44,7 +45,8 @@ test("experiment config is served with configurable wavelengths and 4 groups", a
   assert.equal(r.ok, true);
   assert.deepEqual(r.experiment.x_values.map(Number), XS);
   assert.equal(r.groups.length, 4);
-  assert.equal(r.groups[0].has_pin, false);
+  assert.equal(r.groups[0].joined, false);
+  assert.ok(!("has_pin" in r.groups[0]), "v2 has no PINs");
   assert.ok(!("members" in r.groups[0]), "public payload must not include names");
 });
 
@@ -54,77 +56,84 @@ test("unknown experiment and bad instructor key are rejected", async () => {
   assert.equal(bad.error, "unauthorized");
 });
 
-test("first join sets the PIN; short PIN rejected; wrong PIN rejected; partner can join with PIN", async () => {
-  const short = await rpc("lab_join_group", { p_slug: slug, p_group_number: 1, p_pin: "12", p_members: ["Test Student A"] });
-  assert.equal(short.error, "pin_too_short");
-  const first = await rpc("lab_join_group", { p_slug: slug, p_group_number: 1, p_pin: "1234", p_members: ["Test Student A"] });
+test("join needs only the group number; names merge; names never come back to students; old PIN signature is gone", async () => {
+  const first = await rpc("lab_join_group", { p_slug: slug, p_group_number: 1, p_members: ["Test Student A"] });
   assert.equal(first.ok, true, JSON.stringify(first));
-  assert.equal(first.created_pin, true);
-  assert.deepEqual(first.group.members, ["Test Student A"]);
-  const wrong = await rpc("lab_join_group", { p_slug: slug, p_group_number: 1, p_pin: "9999", p_members: ["Intruder"] });
-  assert.equal(wrong.error, "wrong_pin");
-  const partner = await rpc("lab_join_group", { p_slug: slug, p_group_number: 1, p_pin: "1234", p_members: ["Test Student B", "Test Student A"] });
+  assert.equal(first.group.joined, true);
+  assert.equal(first.group.member_count, 1);
+  assert.ok(!("members" in first.group), "student join must not return names");
+  const partner = await rpc("lab_join_group", { p_slug: slug, p_group_number: 1, p_members: ["Test Student B", "Test Student A"] });
   assert.equal(partner.ok, true);
-  assert.equal(partner.created_pin, false);
-  assert.deepEqual(partner.group.members, ["Test Student A", "Test Student B"], "names merge without duplicates");
-  const missing = await rpc("lab_join_group", { p_slug: slug, p_group_number: 9, p_pin: "1234", p_members: [] });
+  assert.equal(partner.group.member_count, 2, "names merge without duplicates");
+  const reentry = await rpc("lab_join_group", { p_slug: slug, p_group_number: 1, p_members: [] });
+  assert.equal(reentry.ok, true);
+  assert.equal(reentry.group.member_count, 2, "an empty re-entry changes nothing");
+  const ex = await ins("export", slug);
+  assert.deepEqual(ex.groups.find(g => g.group_number === 1).members, ["Test Student A", "Test Student B"]);
+  const missing = await rpc("lab_join_group", { p_slug: slug, p_group_number: 9, p_members: [] });
   assert.equal(missing.error, "no_such_group");
+  await assert.rejects(rpc("lab_join_group", { p_slug: slug, p_group_number: 1, p_pin: "1234", p_members: [] }),
+    /HTTP 4\d\d/, "the v1 signature with p_pin must no longer exist");
 });
 
 test("readings persist, blanks allowed, edits overwrite, bad input rejected", async () => {
-  const s1 = await rpc("lab_save_readings", { p_slug: slug, p_group_number: 1, p_pin: "1234",
-    p_readings: [{ x: 420, a: 0.81 }, { x: 440, a: 0.9 }, { x: 460, a: null }, { x: 660, a: 0.62 }], p_dilution: "1:10", p_notes: "synthetic" });
+  const s1 = await rpc("lab_save_readings", { p_slug: slug, p_group_number: 1,
+    p_readings: [{ x: 420, a: 0.81 }, { x: 440, a: 0.9 }, { x: 460, a: null }, { x: 660, a: 0.62 }], p_dilution: "1:10", p_notes: "synthetic", p_leaf_type: "spinach" });
   assert.equal(s1.ok, true, JSON.stringify(s1));
   assert.equal(s1.saved, 4);
   const byX = Object.fromEntries(s1.group.readings.map(r => [Number(r.x), r.a == null ? null : Number(r.a)]));
   assert.equal(byX[420], 0.81); assert.equal(byX[460], null); assert.equal(byX[660], 0.62);
   assert.equal(s1.group.dilution, "1:10");
+  assert.ok(!("members" in s1.group), "save must not return names");
 
   // returning students see what they saved
-  const back = await rpc("lab_join_group", { p_slug: slug, p_group_number: 1, p_pin: "1234", p_members: [] });
+  const back = await rpc("lab_join_group", { p_slug: slug, p_group_number: 1, p_members: [] });
   assert.equal(Number(back.group.readings.find(r => Number(r.x) === 440).a), 0.9);
 
   // edit one value; others untouched; updated_at moves
   const before = back.group.readings.find(r => Number(r.x) === 420).updated_at;
   await new Promise(r => setTimeout(r, 20));
-  const s2 = await rpc("lab_save_readings", { p_slug: slug, p_group_number: 1, p_pin: "1234", p_readings: [{ x: 420, a: 0.85 }] });
+  const s2 = await rpc("lab_save_readings", { p_slug: slug, p_group_number: 1, p_readings: [{ x: 420, a: 0.85 }] });
   assert.equal(s2.ok, true);
   const r420 = s2.group.readings.find(r => Number(r.x) === 420);
   assert.equal(Number(r420.a), 0.85);
   assert.ok(r420.updated_at > before, "updated_at should advance on edit");
   assert.equal(Number(s2.group.readings.find(r => Number(r.x) === 440).a), 0.9);
   assert.equal(s2.group.dilution, "1:10", "dilution kept when not resent");
+  assert.equal(s2.group.leaf_type, "spinach", "leaf type (PR #9) saved and kept when not resent");
 
-  // wrong pin cannot write
-  const w = await rpc("lab_save_readings", { p_slug: slug, p_group_number: 1, p_pin: "0000", p_readings: [{ x: 420, a: 0 }] });
-  assert.equal(w.error, "wrong_pin");
-  assert.equal(Number((await rpc("lab_join_group", { p_slug: slug, p_group_number: 1, p_pin: "1234", p_members: [] })).group.readings.find(r => Number(r.x) === 420).a), 0.85);
+  // the v1 signature with p_pin is gone
+  await assert.rejects(rpc("lab_save_readings", { p_slug: slug, p_group_number: 1, p_pin: "1234", p_readings: [{ x: 420, a: 0 }] }), /HTTP 4\d\d/);
 
   // garbage rejected
-  assert.equal((await rpc("lab_save_readings", { p_slug: slug, p_group_number: 1, p_pin: "1234", p_readings: [{ x: 420, a: "abc" }] })).error, "bad_number");
-  assert.equal((await rpc("lab_save_readings", { p_slug: slug, p_group_number: 1, p_pin: "1234", p_readings: [{ x: 420, a: 42 }] })).error, "out_of_range");
-  assert.equal((await rpc("lab_save_readings", { p_slug: slug, p_group_number: 1, p_pin: "1234", p_readings: { x: 1 } })).error, "bad_readings");
+  assert.equal((await rpc("lab_save_readings", { p_slug: slug, p_group_number: 1, p_readings: [{ x: 420, a: "abc" }] })).error, "bad_number");
+  assert.equal((await rpc("lab_save_readings", { p_slug: slug, p_group_number: 1, p_readings: [{ x: 420, a: 42 }] })).error, "out_of_range");
+  assert.equal((await rpc("lab_save_readings", { p_slug: slug, p_group_number: 1, p_readings: { x: 1 } })).error, "bad_readings");
+  assert.equal(Number((await rpc("lab_join_group", { p_slug: slug, p_group_number: 1, p_members: [] })).group.readings.find(r => Number(r.x) === 420).a), 0.85,
+    "rejected saves leave data unchanged");
 });
 
 test("dashboard shows every group, real values only, completion counts, and no names", async () => {
-  await rpc("lab_join_group", { p_slug: slug, p_group_number: 3, p_pin: "abcd", p_members: ["Test Student C"] });
-  await rpc("lab_save_readings", { p_slug: slug, p_group_number: 3, p_pin: "abcd", p_readings: XS.map((x, i) => ({ x, a: 0.1 * i })) });
+  await rpc("lab_join_group", { p_slug: slug, p_group_number: 3, p_members: ["Test Student C"] });
+  await rpc("lab_save_readings", { p_slug: slug, p_group_number: 3, p_readings: XS.map((x, i) => ({ x, a: 0.1 * i })) });
   const d = await rpc("lab_dashboard", { p_slug: slug });
   assert.equal(d.ok, true);
   assert.equal(d.groups.length, 4);
   const g1 = d.groups.find(g => g.group_number === 1), g2 = d.groups.find(g => g.group_number === 2), g3 = d.groups.find(g => g.group_number === 3);
   assert.equal(g1.complete, 3, "420, 440, 660 measured; 460 is blank");
-  assert.equal(g2.complete, 0); assert.equal(g2.has_pin, false); assert.deepEqual(g2.readings, []);
+  assert.equal(g1.joined, true);
+  assert.equal(g2.complete, 0); assert.equal(g2.joined, false); assert.deepEqual(g2.readings, []);
   assert.equal(g3.complete, 10);
   assert.equal(JSON.stringify(d).includes("Test Student"), false, "dashboard payload must never contain student names");
   assert.ok(!("members" in g1) && !("notes" in g1));
 });
 
-test("instructor export includes names; wavelengths configurable; close/open; PIN reset; clear group; time-series experiment", async () => {
+test("instructor export includes names; wavelengths configurable; close/open; no PIN reset; clear group; time-series experiment", async () => {
   const ex = await ins("export", slug);
   assert.equal(ex.ok, true);
   assert.deepEqual(ex.groups.find(g => g.group_number === 1).members, ["Test Student A", "Test Student B"]);
   assert.equal(ex.groups.find(g => g.group_number === 1).notes, "synthetic");
+  assert.equal(ex.groups.find(g => g.group_number === 1).leaf_type, "spinach");
 
   const xv = await ins("set_x_values", slug, { x_values: [400, 450, 500, 450] });
   assert.equal(xv.ok, true);
@@ -137,17 +146,14 @@ test("instructor export includes names; wavelengths configurable; close/open; PI
 
   const closed = await ins("update_experiment", slug, { is_open: false });
   assert.equal(closed.experiment.is_open, false);
-  assert.equal((await rpc("lab_save_readings", { p_slug: slug, p_group_number: 1, p_pin: "1234", p_readings: [{ x: 420, a: 0.1 }] })).error, "closed");
+  assert.equal((await rpc("lab_save_readings", { p_slug: slug, p_group_number: 1, p_readings: [{ x: 420, a: 0.1 }] })).error, "closed");
   await ins("update_experiment", slug, { is_open: true });
 
-  const rp = await ins("reset_pin", slug, { group_number: 1, new_pin: "5678" });
-  assert.equal(rp.ok, true);
-  assert.equal((await rpc("lab_join_group", { p_slug: slug, p_group_number: 1, p_pin: "1234", p_members: [] })).error, "wrong_pin");
-  assert.equal((await rpc("lab_join_group", { p_slug: slug, p_group_number: 1, p_pin: "5678", p_members: [] })).ok, true);
+  assert.equal((await ins("reset_pin", slug, { group_number: 1, new_pin: "5678" })).error, "unknown_action", "PIN reset is gone in v2");
 
-  const cl = await ins("clear_group", slug, { group_number: 3, reset_pin: true });
+  const cl = await ins("clear_group", slug, { group_number: 3 });
   assert.equal(cl.ok, true);
-  assert.deepEqual(cl.group.readings, []); assert.equal(cl.group.has_pin, false); assert.deepEqual(cl.group.members, []);
+  assert.deepEqual(cl.group.readings, []); assert.equal(cl.group.joined, false); assert.deepEqual(cl.group.members, []);
 
   const tm = await ins("create_experiment", slug + "-time", { title: "time series", x_kind: "time", x_label: "Time (min)", x_unit: "min", x_values: [0, 2, 4, 6, 8, 10], group_count: 2 });
   assert.equal(tm.ok, true); assert.equal(tm.experiment.x_kind, "time");

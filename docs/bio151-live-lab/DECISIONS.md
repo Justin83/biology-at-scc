@@ -39,6 +39,16 @@ Dated 2026-10-26/27. Each entry: decision, why, what it costs, what we assumed.
 
 ## D3. Authorization = group PIN (student edits) + instructor key (names, admin)
 
+> **Superseded 2026-11-10 (v2, `sql/002_no_pin.sql`) — group PINs removed** at
+> the instructor's request: they added friction for every group and only
+> stopped classmates from joining another group. Students now pick a group by
+> number and save with no credential; any student can edit any group, which the
+> instructor accepts for a supervised lab. Names stay instructor-only: because
+> anyone can now call `lab_join_group` for any group, the student functions no
+> longer return names at all (in v1 they returned them to PIN holders). The
+> instructor key, the dashboard's *Clear group data*, and closing data entry are
+> the remaining controls. The v1 text below is kept for history.
+
 - **Decision:** The first students to join a group choose a PIN (4–32 chars).
   Every save sends the PIN; the server bcrypt-checks it. Student names are
   stored but returned only by `lab_instructor`, which requires a separate

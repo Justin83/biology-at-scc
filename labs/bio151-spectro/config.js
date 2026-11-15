@@ -1,6 +1,6 @@
 // BIO 151 Live Lab — client configuration.
 // These values are public by design (the Supabase "publishable" key only reaches
-// the PIN-checked lab_* RPC functions; see sql/001_livelab.sql). No secrets here.
+// the lab_* RPC functions; see sql/001_livelab.sql and 002_no_pin.sql). No secrets here.
 window.LAB_CONFIG = {
   SUPABASE_URL: "https://efxymeviokaocosmpqwf.supabase.co",
   SUPABASE_KEY: "sb_publishable_xoPXCFR7FN5X6as1E1tYAg_bmSpYMHE",

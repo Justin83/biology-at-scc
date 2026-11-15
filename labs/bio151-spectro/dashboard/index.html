@@ -64,8 +64,6 @@
       <p class="small muted">Changing the list re-labels the chart and the student form immediately; readings already saved at other wavelengths are kept in the database and still appear in the CSV.</p>
       <div class="row" style="margin-top:.5rem">
         <div><label for="grp">Group number</label><input id="grp" type="text" inputmode="numeric" value="1"></div>
-        <div><label for="newpin">New PIN (blank = let the next student set it)</label><input id="newpin" type="text" autocomplete="off"></div>
-        <button id="resetpin-btn">Reset PIN</button>
         <button id="clear-btn" class="danger">Clear group data</button>
       </div>
       <div id="tool-msg" class="msg ok hidden"></div>
@@ -151,7 +149,7 @@
       const total = xs.length, done = g.complete, pct = total ? Math.round(100 * done / total) : 0;
       const last = g.readings.filter(r => r.a != null).map(r => r.updated_at).sort().pop();
       const who = names && names[g.group_number] ? `<div class="members">${A.esc(names[g.group_number].join(", ") || "no names yet")}</div>` : "";
-      const state = !g.has_pin ? "not started" : done === total ? "complete ✓" : done === 0 ? "joined, no readings yet" : "in progress";
+      const state = !g.joined ? "not started" : done === total ? "complete ✓" : done === 0 ? "joined, no readings yet" : "in progress";
       return `<div class="status-card" style="border-left-color:${color(g.group_number)}">
         <div class="name">${A.esc(g.label)} <span class="muted small">${A.esc(state)}</span></div>
         <div class="count">${done}<span class="muted" style="font-size:1rem">/${total}</span></div>
@@ -210,15 +208,21 @@
     const r = await A.instructor(key(), "export", slug);
     if (!r.ok) { toolMsg(A.errorText(r), "err"); return; }
     const e = r.experiment;
-    const cols = ["experiment", "x_kind", "group_number", "group_label", "members", "x_value", "x_unit", "absorbance", "reading_notes", "leaf_type", "dilution", "group_notes", "reading_updated_at"];
+    // saved_at_eastern is the last time the group pressed Save, in US Eastern
+    // (EDT or EST, named in time_zone), as "YYYY-MM-DD HH:MM:SS" so spreadsheets
+    // read it as a date/time.
+    const cols = ["experiment", "x_kind", "group_number", "group_label", "members", "x_value", "x_unit", "absorbance", "reading_notes", "leaf_type", "dilution", "group_notes", "saved_at_eastern", "time_zone"];
     const lines = [cols.join(",")];
     r.groups.forEach(g => {
       const rows = g.readings.length ? g.readings : [{ x: "", a: "", notes: "", updated_at: "" }];
-      rows.forEach(rd => lines.push([e.slug, e.x_kind, g.group_number, g.label, (g.members || []).join("; "), rd.x, e.x_unit, rd.a, rd.notes, g.leaf_type, g.dilution, g.notes, rd.updated_at].map(csvEscape).join(",")));
+      rows.forEach(rd => {
+        const t = A.eastern(rd.updated_at);
+        lines.push([e.slug, e.x_kind, g.group_number, g.label, (g.members || []).join("; "), rd.x, e.x_unit, rd.a, rd.notes, g.leaf_type, g.dilution, g.notes, t.datetime, t.tz].map(csvEscape).join(","));
+      });
     });
     const blob = new Blob([lines.join("\r\n")], { type: "text/csv" });
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
-    a.download = `${e.slug}-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")}.csv`; a.click();
+    a.download = `${e.slug}-${A.eastern(new Date().toISOString()).datetime.replace(/[: ]/g, "-")}.csv`; a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 5000);
   }
 
@@ -243,15 +247,10 @@
     if (!r.ok) { toolMsg(A.errorText(r), "err"); return; }
     toolMsg(r.experiment.is_open ? "Data entry reopened." : "Data entry closed. Students can view but not save.", "ok"); refresh();
   });
-  $("resetpin-btn").addEventListener("click", async () => {
-    const r = await A.instructor(key(), "reset_pin", slug, { group_number: Number($("grp").value), new_pin: $("newpin").value.trim() || null });
-    if (!r.ok) { toolMsg(A.errorText(r), "err"); return; }
-    toolMsg(`PIN for ${r.group.label} ${r.group.has_pin ? "set" : "cleared — the next student to join will choose a new one"}.`, "ok"); refresh();
-  });
   $("clear-btn").addEventListener("click", async () => {
     const n = Number($("grp").value);
     if (!confirm(`Delete ALL readings, names and notes for group ${n}? This cannot be undone.`)) return;
-    const r = await A.instructor(key(), "clear_group", slug, { group_number: n, reset_pin: true });
+    const r = await A.instructor(key(), "clear_group", slug, { group_number: n });
     if (!r.ok) { toolMsg(A.errorText(r), "err"); return; }
     toolMsg(`${r.group.label} cleared.`, "ok"); refresh();
   });

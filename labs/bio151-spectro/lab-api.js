@@ -8,8 +8,6 @@
   const ERRORS = {
     not_found: "This experiment is not set up yet. Ask your instructor.",
     no_such_group: "That group does not exist.",
-    pin_too_short: "Choose a PIN with at least 4 characters.",
-    wrong_pin: "That PIN does not match this group's PIN. Check with your lab partner, or ask your instructor to reset it.",
     closed: "Data entry for this experiment has been closed by the instructor.",
     out_of_range: "One of the absorbance values is outside the range the instrument can read (-1 to 10).",
     bad_number: "One of the values is not a number. Use digits and a decimal point only.",
@@ -68,10 +66,27 @@
     return { value: v };
   }
 
+  // All times are shown in the college's time zone (US Eastern, EDT or EST as
+  // the date requires), whatever clock the viewing device is set to. The server
+  // stores UTC.
+  const TZ = "America/New_York";
+
   function fmtTime(iso) {
     if (!iso) return "";
-    const d = new Date(iso);
-    return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit", second: "2-digit" });
+    return new Date(iso).toLocaleTimeString([], { timeZone: TZ, hour: "numeric", minute: "2-digit", second: "2-digit" });
+  }
+
+  // { datetime: "2026-10-27 12:50:44", tz: "EDT" } — the datetime is in a form
+  // spreadsheet programs read as a date/time.
+  const ET_PARTS = new Intl.DateTimeFormat("en-US", {
+    timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23", timeZoneName: "short"
+  });
+  function eastern(iso) {
+    if (!iso) return { datetime: "", tz: "" };
+    const p = {};
+    ET_PARTS.formatToParts(new Date(iso)).forEach(x => { p[x.type] = x.value; });
+    return { datetime: `${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}`, tz: p.timeZoneName };
   }
 
   function esc(s) {
@@ -81,10 +96,10 @@
   window.LabAPI = {
     slug: slugFromPage(),
     getExperiment: (slug) => rpc("lab_get_experiment", { p_slug: slug }),
-    joinGroup: (slug, groupNumber, pin, members) => rpc("lab_join_group", { p_slug: slug, p_group_number: groupNumber, p_pin: pin, p_members: members || [] }),
-    saveReadings: (slug, groupNumber, pin, readings, dilution, notes, leafType) => rpc("lab_save_readings", { p_slug: slug, p_group_number: groupNumber, p_pin: pin, p_readings: readings, p_dilution: dilution, p_notes: notes, p_leaf_type: leafType === undefined ? null : leafType }),
+    joinGroup: (slug, groupNumber, members) => rpc("lab_join_group", { p_slug: slug, p_group_number: groupNumber, p_members: members || [] }),
+    saveReadings: (slug, groupNumber, readings, dilution, notes, leafType) => rpc("lab_save_readings", { p_slug: slug, p_group_number: groupNumber, p_readings: readings, p_dilution: dilution, p_notes: notes, p_leaf_type: leafType === undefined ? null : leafType }),
     dashboard: (slug) => rpc("lab_dashboard", { p_slug: slug }),
     instructor: (key, action, slug, payload) => rpc("lab_instructor", { p_key: key, p_action: action, p_slug: slug || null, p_payload: payload || {} }),
-    errorText, parseAbsorbance, fmtTime, esc
+    errorText, parseAbsorbance, fmtTime, eastern, esc
   };
 })();
