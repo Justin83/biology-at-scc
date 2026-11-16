@@ -29,6 +29,10 @@
     $("of-slots-setup").hidden = kind === "food"; // food: name, item and note only
   }
   var code = null, data = null, editing = null, settings = null;
+  // unlocked: the code was accepted (only then does the idle lock watch the clock).
+  // attempt: bumped by every unlock and lock, so a lock made while a check is still on its
+  // way cancels that check instead of leaving the tools open without a code.
+  var unlocked = false, attempt = 0;
 
   function msg(id, text, kind) { var el = $(id); el.textContent = text || ""; el.className = "club-msg" + (kind ? " is-" + kind : ""); }
   function status(text, warn) { $("of-status").innerHTML = text ? '<div class="club-banner' + (warn ? " club-banner--warn" : "") + '"><p>' + esc(text) + "</p></div>" : ""; }
@@ -38,9 +42,12 @@
 
   // ------------------------------------------------------------ unlock / lock
   function unlock(c, quiet) {
+    var mine = ++attempt;
+    unlocked = false;
     code = c;
     if (!quiet) msg("of-signin-msg", "Checking…");
     return admin("check").then(function (r) {
+      if (mine !== attempt) return; // locked (or another unlock started) meanwhile
       if (!r.ok) {
         code = null;
         try { sessionStorage.removeItem(KEY); } catch (e) { /* ignore */ }
@@ -49,6 +56,7 @@
         return;
       }
       try { sessionStorage.setItem(KEY, c); } catch (e) { /* ignore */ }
+      unlocked = true;
       touch(true);
       $("of-code").value = "";
       msg("of-signin-msg", "");
@@ -66,6 +74,8 @@
     unlock(c);
   });
   function lock(note) {
+    attempt++; // a check still on its way is ignored when it comes back
+    unlocked = false;
     code = null;
     try { sessionStorage.removeItem(KEY); sessionStorage.removeItem(ACTIVE_KEY); } catch (e) { /* ignore */ }
     closeEditor();
@@ -82,14 +92,14 @@
   var lastTouch = 0;
   function lastActive() { var t = 0; try { t = +sessionStorage.getItem(ACTIVE_KEY) || 0; } catch (e) { /* ignore */ } return t || lastTouch; }
   function touch(force) {
-    if (!code) return;
+    if (!unlocked) return;
     var now = Date.now();
     if (!force && now - lastTouch < 5000) return;
     lastTouch = now;
     try { sessionStorage.setItem(ACTIVE_KEY, String(now)); } catch (e) { /* ignore */ }
   }
   function idle() { return Date.now() - lastActive() > IDLE_MS; }
-  function checkIdle() { if (code && idle()) lock(IDLE_TEXT); }
+  function checkIdle() { if (unlocked && idle()) lock(IDLE_TEXT); }
   ["pointerdown", "keydown", "touchstart", "scroll", "input"].forEach(function (ev) {
     document.addEventListener(ev, function () { checkIdle(); touch(false); }, { capture: true, passive: true });
   });

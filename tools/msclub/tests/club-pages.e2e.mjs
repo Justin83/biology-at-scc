@@ -478,6 +478,27 @@ try {
   await L.waitForSelector("#of-signin:not([hidden])");
   assert.match(await L.textContent("#of-signin-msg"), /locked after 15 minutes without activity/);
   assert.equal(await L.isVisible("#of-app"), false);
+  // a key pressed (or the tab switched) while the code is still being checked doesn't lock a
+  // sign-in that hasn't finished: the tools open and their actions still carry the code
+  let release, held = new Promise((r) => { release = r; });
+  await L.route(/\/rpc\/club_admin$/, async (route) => {
+    if (JSON.parse(route.request().postData()).p_action === "check") await held;
+    await route.continue();
+  });
+  await L.fill("#of-code", CODE);
+  await L.click("#of-signin-form button[type=submit]");
+  await L.keyboard.press("Shift");
+  await L.evaluate(() => document.dispatchEvent(new Event("visibilitychange")));
+  await L.clock.fastForward("00:30");
+  release();
+  await L.waitForSelector("#of-app:not([hidden]) #of-upcoming li");
+  assert.equal((await L.evaluate(async (api) => (await (await fetch(api + "/rest/v1/rpc/club_admin", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ p_code: sessionStorage.getItem("club-officer-code"), p_action: "check", p_payload: {} }) })).json()).ok, API)), true, "the stored code works");
+  // an officer action goes through (it needs the code): close sign-up, then reopen it
+  await L.click("#of-toggle-open");
+  await L.waitForFunction(() => /^Closed\./.test(document.getElementById("of-open-text").textContent));
+  await L.click("#of-toggle-open");
+  await L.waitForFunction(() => /^Open\./.test(document.getElementById("of-open-text").textContent));
+  await L.unroute(/\/rpc\/club_admin$/);
   await L.close();
 
   // fallback when the database cannot be reached: block every database request
