@@ -124,7 +124,7 @@ judged in a real browser with the real schedule before anything changes on the l
 - `preview/schedule/`: the whole schedule, with **List** (by date, one line from each
   event's page) and **Cards** views, a "Sign-up open" filter, and earlier events.
 - `preview/event/?id=<event id>`: a page for any event, with details, the sign-up button,
-  who's signed up, the flyer, "Add to my calendar", and a recap after the date.
+  who's signed up, the flyer, and a recap after the date.
 
 It reads the live schedule, sign-ups and flyers through the same public functions as the
 live pages, and **saves nothing**: sign-up buttons open the live sign-up form, and
