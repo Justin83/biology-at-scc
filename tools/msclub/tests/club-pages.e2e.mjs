@@ -14,6 +14,7 @@
 //     included, the QR poster not; Officer tools shows the count in a collapsed section at
 //     the bottom;
 //   - STEAM Day: its own info page, with the sign-up pop-up;
+//   - Officer tools lock after 15 minutes without activity; the override code unlocks them;
 //   - the printed-schedule fallback when the database cannot be reached.
 // Environment: CLUB_API_URL (default http://127.0.0.1:8789), CLUB_OFFICER_CODE (default local-officer-code).
 import http from "node:http";
@@ -28,6 +29,7 @@ const { chromium, devices } = require("playwright");
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const API = (process.env.CLUB_API_URL || "http://127.0.0.1:8789").replace(/\/$/, "");
 const CODE = process.env.CLUB_OFFICER_CODE || "local-officer-code";
+const OVERRIDE = process.env.CLUB_OVERRIDE_CODE || "local-override-code";
 const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml", ".pdf": "application/pdf", ".jpg": "image/jpeg" };
 const server = http.createServer((req, res) => {
   let p = decodeURIComponent(new URL(req.url, "http://x").pathname);
@@ -447,6 +449,57 @@ try {
   assert.equal(await r.textContent("#of-flyers-archive-count"), "1");
   await r.click('summary:has-text("Archive")');
   assert.match(await text(r, "#of-flyers-archive"), /Thanksgiving Dinner[\s\S]*Made November 9, 2026\. Event: Sunday, November 1, 2026\./);
+
+  // Officer tools lock after 15 minutes without activity (a fake clock stands in for the
+  // wait); the adviser's override code unlocks them like the officer code
+  const L = await desktop();
+  await L.clock.install();
+  await L.goto(SITE + "officers/" + Q);
+  assert.match(await text(L, "#of-code-hint"), /lock after 15 minutes without activity/);
+  await L.fill("#of-code", OVERRIDE);
+  await L.click("#of-signin-form button[type=submit]");
+  await L.waitForSelector("#of-app:not([hidden]) #of-upcoming li");
+  await L.clock.fastForward("14:00");
+  assert.equal(await L.isVisible("#of-app"), true, "14 minutes idle: still unlocked");
+  await L.keyboard.press("Shift"); // activity
+  await L.clock.fastForward("14:00");
+  assert.equal(await L.isVisible("#of-app"), true, "14 minutes after the last activity: still unlocked");
+  await L.clock.fastForward("02:00");
+  await L.waitForSelector("#of-signin:not([hidden])");
+  assert.equal(await L.isVisible("#of-app"), false);
+  assert.match(await L.textContent("#of-signin-msg"), /locked after 15 minutes without activity/);
+  assert.equal(await L.evaluate(() => sessionStorage.getItem("club-officer-code")), null, "the code is forgotten");
+  // a tab left or reopened after more than 15 minutes away starts locked
+  await L.fill("#of-code", CODE);
+  await L.click("#of-signin-form button[type=submit]");
+  await L.waitForSelector("#of-app:not([hidden]) #of-upcoming li");
+  await L.evaluate(() => sessionStorage.setItem("club-officer-active", String(Date.now() - 16 * 60 * 1000)));
+  await L.reload();
+  await L.waitForSelector("#of-signin:not([hidden])");
+  assert.match(await L.textContent("#of-signin-msg"), /locked after 15 minutes without activity/);
+  assert.equal(await L.isVisible("#of-app"), false);
+  // a key pressed (or the tab switched) while the code is still being checked doesn't lock a
+  // sign-in that hasn't finished: the tools open and their actions still carry the code
+  let release, held = new Promise((r) => { release = r; });
+  await L.route(/\/rpc\/club_admin$/, async (route) => {
+    if (JSON.parse(route.request().postData()).p_action === "check") await held;
+    await route.continue();
+  });
+  await L.fill("#of-code", CODE);
+  await L.click("#of-signin-form button[type=submit]");
+  await L.keyboard.press("Shift");
+  await L.evaluate(() => document.dispatchEvent(new Event("visibilitychange")));
+  await L.clock.fastForward("00:30");
+  release();
+  await L.waitForSelector("#of-app:not([hidden]) #of-upcoming li");
+  assert.equal((await L.evaluate(async (api) => (await (await fetch(api + "/rest/v1/rpc/club_admin", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ p_code: sessionStorage.getItem("club-officer-code"), p_action: "check", p_payload: {} }) })).json()).ok, API)), true, "the stored code works");
+  // an officer action goes through (it needs the code): close sign-up, then reopen it
+  await L.click("#of-toggle-open");
+  await L.waitForFunction(() => /^Closed\./.test(document.getElementById("of-open-text").textContent));
+  await L.click("#of-toggle-open");
+  await L.waitForFunction(() => /^Open\./.test(document.getElementById("of-open-text").textContent));
+  await L.unroute(/\/rpc\/club_admin$/);
+  await L.close();
 
   // fallback when the database cannot be reached: block every database request
   const s = await phone();

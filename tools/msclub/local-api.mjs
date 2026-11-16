@@ -10,6 +10,7 @@
 //   node tools/msclub/local-api.mjs          (listens on http://127.0.0.1:8789)
 //
 // Environment: PORT (default 8789), CLUB_OFFICER_CODE (default "local-officer-code"),
+// CLUB_OVERRIDE_CODE (default "local-override-code"),
 // CLUB_TODAY (optional YYYY-MM-DD: pretend "today" is this date, e.g. 2026-11-05, so the
 // seeded Fall 2026 schedule stays testable later).
 // Point the pages at it by opening any club page with ?api=http://127.0.0.1:8789
@@ -24,6 +25,7 @@ import { pgcrypto } from "@electric-sql/pglite/contrib/pgcrypto";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const PORT = +(process.env.PORT || 8789);
 const CODE = process.env.CLUB_OFFICER_CODE || "local-officer-code";
+const OVERRIDE = process.env.CLUB_OVERRIDE_CODE || "local-override-code";
 
 const db = await PGlite.create({ extensions: { pgcrypto } });
 await db.exec(`
@@ -38,6 +40,9 @@ const SQL = path.join(ROOT, "msclub/sql");
 for (const f of fs.readdirSync(SQL).filter((x) => /^\d+_.*\.sql$/.test(x)).sort()) await db.exec(fs.readFileSync(path.join(SQL, f), "utf8"));
 await db.query(`insert into club.settings values ('officer_code_hash', extensions.crypt($1, extensions.gen_salt('bf', 6)))
                 on conflict (key) do update set value = excluded.value`, [CODE]);
+// the adviser's override code (009): set in SQL only, never from Officer tools
+await db.query(`insert into club.settings values ('override_code_hash', extensions.crypt($1, extensions.gen_salt('bf', 6)))
+                on conflict (key) do update set value = excluded.value`, [OVERRIDE]);
 if (process.env.CLUB_TODAY) {
   if (!/^\d{4}-\d\d-\d\d$/.test(process.env.CLUB_TODAY)) throw new Error("CLUB_TODAY must be YYYY-MM-DD");
   // test-only override of the helper; the migration itself is unchanged

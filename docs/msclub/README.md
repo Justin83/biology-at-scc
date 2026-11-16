@@ -53,7 +53,10 @@ links go in the footer's Club column (or a new column) on all seven pages.
 
 1. Choose **Officer tools** (with the lock) in the menu at the top of any club page, or in
    the footer, or go to `officers/` directly.
-2. Enter the officer code. It is remembered only for that browser tab.
+2. Enter the officer code. It is remembered only for that browser tab, and Officer tools
+   **lock after 15 minutes without activity** (no click, key, touch or scroll), also when
+   the tab was left open or is reopened later; enter the code again to unlock. Unsaved
+   edits in an open editor are lost when it locks.
 3. **Events:** choose **Edit** next to an event. The editor opens in a pop-up (two
    columns on a desktop, full screen on a phone). You can change:
    - its title, **food theme** (for example "Pasta" or "Tacos", shown on the card and in
@@ -94,6 +97,22 @@ links go in the footer's Club column (or a new column) on all seven pages.
 
 The officer code is stored only as a bcrypt hash. It was given to Justin directly and is
 not in this repository.
+
+**Override code (the adviser's).** If a student changes the officer code, Justin can still
+unlock Officer tools with his override code, then use **Change the officer code** to set a
+new one; no database editing needed (migration `club_v9`, `sql/009_club_override_code.sql`).
+The override works wherever the officer code does, but Officer tools can never change it,
+so officers can't lock the adviser out. It is stored only as a bcrypt hash
+(`override_code_hash` in `club.settings`) and is not in this repository. To change it, run
+in the Supabase SQL Editor:
+
+```sql
+insert into club.settings (key, value)
+values ('override_code_hash', extensions.crypt('<new override code>', extensions.gen_salt('bf', 8)))
+on conflict (key) do update set value = excluded.value;
+```
+
+To turn it off: `delete from club.settings where key = 'override_code_hash';`
 
 ## Site engagement (Officer tools)
 
@@ -253,7 +272,7 @@ on white, where it would be too hard to read.
   it only through the SECURITY DEFINER functions in
   `msclub/sql/001_club.sql`:
   - `club_events`, `club_signup`, `club_signup_update`, `club_signup_remove` — public;
-  - `club_admin` — needs the officer code;
+  - `club_admin` — needs the officer code (or the adviser's override code, `009`);
   - `club_visit` (public, counts a page view) and `club_stats` (needs the officer code)
     in `msclub/sql/007_club_visits.sql` (`club_stats` redefined in `008`).
 - **What's stored:** name, item (food only), list or shift (volunteers and trips) and an

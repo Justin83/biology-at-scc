@@ -13,6 +13,7 @@ import { fileURLToPath } from "node:url";
 
 const API = (process.env.CLUB_API_URL || "http://127.0.0.1:8789").replace(/\/$/, "");
 const CODE = process.env.CLUB_OFFICER_CODE || "local-officer-code";
+const OVERRIDE = process.env.CLUB_OVERRIDE_CODE || "local-override-code";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 
 async function rpc(fn, args = {}) {
@@ -194,6 +195,23 @@ test("changing the officer code", async () => {
   assert.equal((await admin("check")).error, "unauthorized");
   assert.equal((await admin("set_code", { new_code: CODE }, "temporary-code-1")).ok, true);
   assert.equal((await admin("check")).ok, true);
+});
+
+test("the adviser's override code works like the officer code and can't be changed from Officer tools", async () => {
+  assert.equal((await admin("check", {}, OVERRIDE)).ok, true, "unlocks Officer tools");
+  assert.equal((await rpc("club_stats", { p_code: OVERRIDE, p_visitor: null })).ok, true, "Site engagement too");
+  // a student changes the officer code: the old one stops working, the override doesn't
+  assert.equal((await admin("set_code", { new_code: "student-changed-it" })).ok, true);
+  assert.equal((await admin("check")).error, "unauthorized");
+  assert.equal((await admin("check", {}, OVERRIDE)).ok, true, "the override still works");
+  // set_code changes only the officer code, even when an officer tries to reuse the override
+  assert.equal((await admin("set_code", { new_code: "another-new-code" }, "student-changed-it")).ok, true);
+  assert.equal((await admin("check", {}, OVERRIDE)).ok, true, "officers can't change the override");
+  // the adviser uses the override to put the officer code back from the page
+  assert.equal((await admin("set_code", { new_code: CODE }, OVERRIDE)).ok, true);
+  assert.equal((await admin("check")).ok, true);
+  assert.equal((await admin("check", {}, "another-new-code")).error, "unauthorized");
+  assert.equal((await admin("check", {}, "")).error, "unauthorized", "an empty code never matches");
 });
 
 test("visit counter: anonymous, once per device, day and page; all traffic, officers included; totals only", async () => {

@@ -1,6 +1,7 @@
 /* Club officer tools. Every change goes through public.club_admin(code, action, payload),
-   which checks the officer code in the database. The code is kept in sessionStorage
-   (this tab only). */
+   which checks the officer code (or the adviser's override code, sql/009) in the database.
+   The code is kept in sessionStorage (this tab only), and the tools lock themselves after
+   15 minutes without activity (IDLE_MS), even if the tab was left open or reopened later. */
 (function () {
   "use strict";
   var C = window.Club;
@@ -9,6 +10,9 @@
   var esc = C.esc;
   var root = document.body.getAttribute("data-club-root") || "../";
   var KEY = "club-officer-code";
+  var ACTIVE_KEY = "club-officer-active"; // when this tab was last used while unlocked (ms)
+  var IDLE_MS = 15 * 60 * 1000;
+  var IDLE_TEXT = "Officer tools locked after 15 minutes without activity. Enter the code to unlock.";
   var shownKind = "food"; // the sign-up kind the editor shows now
   // the usual choices and editor wording for each kind of sign-up
   var KIND_SETUP = {
@@ -25,6 +29,10 @@
     $("of-slots-setup").hidden = kind === "food"; // food: name, item and note only
   }
   var code = null, data = null, editing = null, settings = null;
+  // unlocked: the code was accepted (only then does the idle lock watch the clock).
+  // attempt: bumped by every unlock and lock, so a lock made while a check is still on its
+  // way cancels that check instead of leaving the tools open without a code.
+  var unlocked = false, attempt = 0;
 
   function msg(id, text, kind) { var el = $(id); el.textContent = text || ""; el.className = "club-msg" + (kind ? " is-" + kind : ""); }
   function status(text, warn) { $("of-status").innerHTML = text ? '<div class="club-banner' + (warn ? " club-banner--warn" : "") + '"><p>' + esc(text) + "</p></div>" : ""; }
@@ -34,9 +42,12 @@
 
   // ------------------------------------------------------------ unlock / lock
   function unlock(c, quiet) {
+    var mine = ++attempt;
+    unlocked = false;
     code = c;
     if (!quiet) msg("of-signin-msg", "Checking…");
     return admin("check").then(function (r) {
+      if (mine !== attempt) return; // locked (or another unlock started) meanwhile
       if (!r.ok) {
         code = null;
         try { sessionStorage.removeItem(KEY); } catch (e) { /* ignore */ }
@@ -45,6 +56,8 @@
         return;
       }
       try { sessionStorage.setItem(KEY, c); } catch (e) { /* ignore */ }
+      unlocked = true;
+      touch(true);
       $("of-code").value = "";
       msg("of-signin-msg", "");
       settings = r;
@@ -60,13 +73,39 @@
     if (!c) { msg("of-signin-msg", "Enter the officer code.", "error"); return; }
     unlock(c);
   });
-  $("of-signout").addEventListener("click", function () {
+  function lock(note) {
+    attempt++; // a check still on its way is ignored when it comes back
+    unlocked = false;
     code = null;
-    try { sessionStorage.removeItem(KEY); } catch (e) { /* ignore */ }
+    try { sessionStorage.removeItem(KEY); sessionStorage.removeItem(ACTIVE_KEY); } catch (e) { /* ignore */ }
     closeEditor();
     $("of-app").hidden = true; $("of-signin").hidden = false;
+    msg("of-signin-msg", note || "", note ? "error" : "");
     $("of-code").focus();
+  }
+  $("of-signout").addEventListener("click", function () { lock(""); });
+
+  // ------------------------------------------------------------ auto-lock
+  // Any click, key, touch or scroll while unlocked counts as activity. Every 20 seconds, and
+  // whenever the tab comes back into view, the tools lock if the last activity was more
+  // than 15 minutes ago (timers sleep in background tabs, so the time is checked, not counted).
+  var lastTouch = 0;
+  function lastActive() { var t = 0; try { t = +sessionStorage.getItem(ACTIVE_KEY) || 0; } catch (e) { /* ignore */ } return t || lastTouch; }
+  function touch(force) {
+    if (!unlocked) return;
+    var now = Date.now();
+    if (!force && now - lastTouch < 5000) return;
+    lastTouch = now;
+    try { sessionStorage.setItem(ACTIVE_KEY, String(now)); } catch (e) { /* ignore */ }
+  }
+  function idle() { return Date.now() - lastActive() > IDLE_MS; }
+  function checkIdle() { if (unlocked && idle()) lock(IDLE_TEXT); }
+  ["pointerdown", "keydown", "touchstart", "scroll", "input"].forEach(function (ev) {
+    document.addEventListener(ev, function () { checkIdle(); touch(false); }, { capture: true, passive: true });
   });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) checkIdle(); });
+  window.addEventListener("focus", checkIdle);
+  setInterval(checkIdle, 20000);
 
   // ------------------------------------------------------------ open / closed
   function showOpen() {
@@ -349,6 +388,7 @@
       if (!r.ok) { msg("of-newcode-msg", C.errorText(r), "error"); return; }
       code = c;
       try { sessionStorage.setItem(KEY, c); } catch (err) { /* ignore */ }
+      touch(true);
       $("of-newcode").value = "";
       msg("of-newcode-msg", "Officer code changed. Share the new code with the other officers.", "ok");
     });
@@ -363,5 +403,7 @@
   $("of-signin").hidden = false;
   var saved = null;
   try { saved = sessionStorage.getItem(KEY); } catch (e) { /* ignore */ }
+  // reopened or reloaded after more than 15 minutes away: locked
+  if (saved && idle()) { saved = null; lock(IDLE_TEXT); }
   if (saved) unlock(saved, true);
 })();
