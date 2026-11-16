@@ -63,6 +63,26 @@ The domain `biologyatscc.com` is on Cloudflare DNS and points at GitHub Pages.
 The Math & Science Club is at `biologyatscc.com/msclub`. The DNS records and the
 GitHub setting are in `docs/DOMAIN.md`.
 
+## Search engines
+
+The whole site is **kept out of search engines** for now (Justin's call, 2026-11-16, after
+the club schedule showed up on Bing). It may go public one day.
+
+- Every HTML page has `<meta name="robots" content="noindex, nofollow">` right after its
+  viewport tag. New pages need it too; `node tools/check-noindex.mjs` fails if any page
+  is missing it.
+- `robots.txt` blocks only the files that can't carry that tag (PDFs and pictures). The
+  pages themselves stay crawlable on purpose: a search engine has to read a page to see the
+  tag, and a page blocked by `robots.txt` that is already listed would stay listed.
+- Pages already in Bing or Google drop out as they are recrawled, usually within days to a
+  few weeks. Removal requests in Bing Webmaster Tools and Google Search Console are faster,
+  but need the domain verified there first.
+- This hides the site from searches only. Anyone with a link or the QR code can still open
+  every page.
+
+**To make the site public:** remove the robots meta tag from the pages that should be
+listed, empty `robots.txt` (or delete it), and update `tools/check-noindex.mjs` to match.
+
 ## License
 
 Unless noted otherwise, content in this repository is licensed under the

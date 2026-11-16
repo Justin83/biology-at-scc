@@ -10,6 +10,10 @@ project as migration `club_v1`, with Justin's approval. `enabled` in
 
 ## Pages
 
+The club pages, like the rest of biologyatscc.com, are **kept out of search engines** for now
+(`noindex`; Justin's call, 2026-11-16). It may go public one day; see *Search engines* in the
+repository README. People reach the club through the QR poster and shared links.
+
 | URL (under `msclub/`) | For | What it does |
 |---|---|---|
 | `./` | everyone | **Up next**: the next meeting, once (date, time, food theme, the sign-up button, how many are bringing food and a link to who's bringing what), with its flyer beside it (below it on a phone); then the next three events as cards; **See the full schedule** (how many more are coming up and how many were earlier); recaps of past events once there are any. No QR code on this page. An old link to `#schedule` goes to the schedule page |

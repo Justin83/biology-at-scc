@@ -67,7 +67,7 @@ try {
   assert.match(await p.getAttribute("#site-next a.club-btn", "href"), /^\.\/signup\/\?event=[0-9a-f-]{36}$/);
   assert.match(await p.getAttribute("#site-coming .club-card a.club-btn", "href"), /^\.\/signup\/\?event=[0-9a-f-]{36}$/);
   assert.equal(await p.$(".pv-banner, .site-banner"), null, "no preview banner");
-  assert.equal(await p.$('meta[name="robots"]'), null, "the live pages can be found");
+  assert.equal(await p.getAttribute('meta[name="robots"]', "content"), "noindex, nofollow", "kept out of search engines for now");
   assert.deepEqual(await menu(p), MENU);
   assert.equal(await p.getAttribute('.club-bar nav a[aria-current="page"]', "href"), "./");
   assert.equal(await p.$(".club-bar-officer"), null, "no separate Officer tools button at the right edge");
