@@ -377,5 +377,22 @@ to the real database.
       officer code* with the visitor count on its title, and the explanation came off the
       card.
 
+12. **Update 2026-11-16 (migration `club_v9`, `sql/009_club_override_code.sql`; PR #55):**
+    - the adviser's **override code**: `club.code_ok` also accepts `override_code_hash`;
+      Officer tools lock after 15 minutes without activity (page change, no SQL);
+    - applied through the Supabase connector as `club_v9` (`schema_migrations` version
+      20261116023522); the override's bcrypt hash was then set in a separate statement
+      that is not in this repository;
+    - **existing club data untouched:** the events (18), sign-ups (9) and settings
+      (officer code included) checksums are the same before and after;
+    - **production smoke test**, inside a block that was rolled back: a temporary officer
+      code, the override, a wrong code and an empty code each behave as expected; after a
+      simulated officer-code change the old code fails and the override still works and can
+      set a new officer code;
+    - **live check:** through the public API the override is accepted and wrong or empty
+      codes are refused; in a browser, Officer tools unlocked with the override and locked
+      again after 16 (simulated) idle minutes.
+
 Rollback: the `drop …` statements at the end of the SQL file. Setting `enabled: false`
-returns the pages to the printed schedule.
+returns the pages to the printed schedule. For `club_v9`:
+`delete from club.settings where key = 'override_code_hash';`
