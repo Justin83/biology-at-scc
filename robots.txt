@@ -1,0 +1,13 @@
+# biologyatscc.com is kept out of search engines for now (Justin Howard's call, 2026-11-16).
+# It may go public one day: see "Search engines" in README.md for how to switch it back.
+#
+# Every HTML page carries <meta name="robots" content="noindex, nofollow">. The pages stay
+# crawlable on purpose: a search engine has to read a page to see that tag, and a page
+# blocked here that is already in its index would stay listed. Files that can't carry the
+# tag (PDFs and pictures) are blocked here instead.
+User-agent: *
+Disallow: /*.pdf$
+Disallow: /*.jpg$
+Disallow: /*.jpeg$
+Disallow: /*.png$
+Disallow: /*.webp$

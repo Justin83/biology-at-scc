@@ -630,7 +630,10 @@ const strip = (s) => s.replace(/<script[\s\S]*?<\/script>/g, " ").replace(/<[^>]
 function buildSearchIndex(pages) {
   const items = [];
   for (const { ctx, html } of pages) {
-    if (ctx.relPath === "search/" || /<meta name="robots" content="noindex/.test(html)) continue;
+    // the portal's own search leaves out pages marked fw:search="off" (the faculty review page).
+    // Not the robots tag: since 2026-11-16 every page on the site is noindex for outside search
+    // engines (README "Search engines"), and that must not empty this search.
+    if (ctx.relPath === "search/" || /<meta name="fw:search" content="off"/.test(html)) continue;
     const title = (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || ctx.short;
     const desc = (html.match(/<meta name="description" content="([^"]*)"/) || [])[1] || "";
     const main = (html.match(/<main id="main"[^>]*>([\s\S]*?)<\/main>/) || [])[1] || "";
