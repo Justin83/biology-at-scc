@@ -59,6 +59,10 @@ try {
   assert.deepEqual(await p.$$eval("#pv-news .club-card-title", (x) => x.map((y) => y.textContent)), ["Laurel STEAM Day", "Math and Science Club Meeting"]);
   assert.match(await p.getAttribute("#pv-coming .club-card a.club-btn", "href"), /^\.\.\/signup\/\?event=[0-9a-f-]{36}$/, "sign-up opens the live form");
   assert.ok((await p.textContent(".pv-banner")).includes("Layout preview"));
+  // the header menu: Home, Schedule, then Officer tools; the footer keeps Officer tools too
+  assert.deepEqual(await p.$$eval('.club-bar nav[aria-label="Club"] a', (x) => x.map((a) => a.textContent.trim())), ["Home", "Schedule", "Officer tools"]);
+  assert.equal(await p.$(".club-bar-officer"), null, "no separate Officer tools button at the right edge");
+  assert.equal(await p.$$eval('.club-footer a[href$="officers/"]', (x) => x.length), 1, "Officer tools stays in the footer");
 
   // schedule: List (default), Cards, filter, earlier
   await p.goto(PV + "schedule/");

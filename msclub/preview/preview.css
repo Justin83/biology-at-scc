@@ -6,6 +6,10 @@
 .pv-banner p { margin: 0; font-size: 0.92rem; }
 .pv-banner a { color: inherit; font-weight: 700; }
 
+/* Officer tools: a menu item right after Schedule (the footer keeps its link too) */
+.pv-nav-officer { display: inline-flex; align-items: center; gap: 0.3rem; }
+.pv-nav-officer svg { flex: none; }
+
 /* Up next: the one place the next event shows on the home page, with its flyer beside it */
 .pv-next { container-type: inline-size; }
 #pv-next { display: grid; gap: 1rem; }
