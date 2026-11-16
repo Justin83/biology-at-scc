@@ -9,8 +9,8 @@
 //     an old link to msclub/#schedule lands on the schedule page;
 //   - header menu Home · Schedule · Officer tools on every club page; the footer keeps
 //     Officer tools;
-//   - schedule: List and Cards views (remembered), the "Sign-up open" filter, earlier events,
-//     the printed-schedule note;
+//   - schedule: the printed-schedule note right under the title; List and Cards views
+//     (remembered); the filters hidden for now (still working underneath); earlier events;
 //   - event page: details, sign-up button, no calendar file; who's bringing what with each
 //     note on its own line underneath, and even spacing with or without notes; the sign-up
 //     page has the same list and a link back to the event; a past event has no sign-up;
@@ -84,12 +84,16 @@ try {
   assert.equal(await p.$$eval("#site-upcoming .site-row", (x) => x.length), 5);
   assert.equal(await p.isHidden("#site-past-wrap"), false);
   assert.match(await p.innerText(".club-fine"), /MSSE scholars need to attend at least 4 each semester/);
+  assert.equal(await p.$eval("h1.site-page-title", (h) => h.nextElementSibling.className), "club-fine", "the MSSE note sits right under the title");
+  assert.equal(await p.isHidden("#site-filters"), true, "the filters are hidden for now");
+  assert.equal(await p.isVisible('[data-view="cards"]'), true, "List / Cards stays");
   // STEAM Day has its own page: its title and button go there
   const steamRow = p.locator('.site-row:has-text("STEAM Day Somerset 2027")');
   assert.equal(await steamRow.locator(".site-row-title a").getAttribute("href"), "../events/steam-day-2027/");
   assert.equal(await steamRow.locator("a.club-btn").getAttribute("href"), "../events/steam-day-2027/");
   assert.match(await steamRow.innerText(), /Help eighth graders explore science at SCC/, "its line from data/pages.json");
-  await p.click('[data-filter="signup"]');
+  // the hidden filters still work (site.js), ready to come back
+  await p.$eval('[data-filter="signup"]', (b) => b.click());
   assert.deepEqual(await p.$$eval("#site-upcoming .site-row-title", (x) => x.map((y) => y.textContent)),
     ["Math and Science Club Meeting", "Math and Science Club Holiday Party", "STEAM Day Somerset 2027"]);
   await p.click('[data-view="cards"]');
@@ -174,7 +178,7 @@ try {
     await p.goto(SITE + "schedule/" + Q);
     await p.waitForSelector("#site-upcoming .site-row");
     assert.equal(await p.$$eval(".site-chip-open", (x) => x.length), 0, "nothing is labelled Sign-up open");
-    await p.click('[data-filter="signup"]');
+    await p.$eval('[data-filter="signup"]', (b) => b.click());
     assert.match(await p.innerText("#site-upcoming"), /No upcoming events match/);
     await p.goto(SITE + "signup/" + Q + "&event=" + meetingId);
     await p.waitForSelector("#su-form");

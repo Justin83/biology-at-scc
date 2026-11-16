@@ -390,6 +390,8 @@ main.club-event-page { max-width: 48rem; }
 
 /* Schedule: filters and the Cards / List switch */
 .site-page-title { margin: 1.4rem 0 0.6rem; }
+.site-page-title + .club-fine { margin: 0 0 1.1rem; } /* the schedule's note, right under its title */
+.site-controls > .site-seg:last-child { margin-left: auto; } /* List / Cards stays on the right */
 .site-controls { display: flex; flex-wrap: wrap; gap: 0.6rem 1.2rem; align-items: center; justify-content: space-between; margin: 0 0 0.4rem; }
 .site-seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--border); border-radius: 999px; padding: 3px; background: var(--card-bg); }
 .site-seg button { font: inherit; font-size: 0.9rem; font-weight: 700; min-height: 2.25rem; border: 0; background: transparent; color: var(--accent); padding: 0.25rem 0.85rem; border-radius: 999px; cursor: pointer; }

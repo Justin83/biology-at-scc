@@ -15,6 +15,18 @@ finished ones to "Done" with the date.
 - [ ] **STEAM Day location.** The event says "North Campus"; the drafted text said "SCC
   Somerset Campus". Justin's call; change it in Officer tools if wanted.
 
+## Whole site: search engines
+
+The whole site is kept out of search engines for now (`noindex`, 2026-11-16; see "Search
+engines" in README.md).
+
+- [ ] **Bing removal request: walk Justin through it** (asked 2026-11-16, "later"). Pages
+  drop out of Bing on their own as it rechecks them; a removal request is faster. Steps to go
+  through together: sign in to Bing Webmaster Tools, add and verify `biologyatscc.com` (a
+  DNS record in Cloudflare is the usual way), then Configuration → Block URLs (or Content
+  Removal) for `https://biologyatscc.com/` as a whole directory. Google Search Console has
+  the same (Removals) if wanted.
+
 ## BIO 151 live lab (`labs/bio151-spectro/`)
 
 The Fall 2026 chlorophyll lab is finished. Its experiment (`bio151-chlorophyll`) was
