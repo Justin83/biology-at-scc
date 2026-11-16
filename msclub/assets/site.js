@@ -1,43 +1,49 @@
-/* Layout preview (Option A of the club-site proposal): a short front page, a Schedule page
-   with Cards and List views, a page for every event, and a sign-up page. Read-only: it
-   shows the live schedule, sign-ups and flyers through the same public functions as the
-   live site, and its sign-up form saves nothing. Not counted by the visit counter
-   (club.js skips /msclub/preview/). Page text an officer would write comes from
-   preview/data/pages.json; entries marked sample are placeholders. */
+/* The club site's pages (adopted from the layout preview, November 2026):
+     home      (index.html)         Up next (the next meeting, once, with its flyer), the
+                                    next three events as cards, the full-schedule link,
+                                    and recaps of past events when there are any;
+     schedule  (schedule/)          every event, as a List by date or as Cards (remembered
+                                    per browser), with filters, and earlier events;
+     event     (event/?id=<id>)     one event: details, sign-up button, who's signed up,
+                                    its flyer, and a recap afterwards;
+     signup    (signup/?event=<id>) the sign-up form for one event (signup-form.js); with
+                                    no event named, the events taking sign-ups.
+   Which one is chosen by <body data-page>. An event's own text (a line for the cards, a
+   few paragraphs for its page, a recap afterwards) comes from data/pages.json, keyed
+   "<date>|<title>"; events without an entry just show their details. */
 (function () {
   "use strict";
   var C = window.Club;
   var $ = function (id) { return document.getElementById(id); };
   var esc = C.esc;
   var body = document.body;
-  var page = body.getAttribute("data-preview");          // home | schedule | event | signup
-  var root = body.getAttribute("data-club-root");        // the live club site (msclub/)
-  var proot = body.getAttribute("data-preview-root");    // this preview (msclub/preview/)
+  var page = body.getAttribute("data-page");     // home | schedule | event | signup
+  var root = body.getAttribute("data-club-root") || "./";  // msclub/
   var data = null, texts = {}, flyers = [];
-  var VIEW_KEY = "club-preview-view";
+  var VIEW_KEY = "club-schedule-view";
 
   // ------------------------------------------------------------ helpers
   function key(e) { return e.starts_on + "|" + e.title; }
   function text(e) { return texts[key(e)] || null; }
-  function eventUrl(e) { return proot + "event/?id=" + encodeURIComponent(e.id); }
+  // an event with its own info page (msclub/events/<page>/, e.g. STEAM Day) goes there, title
+  // and sign-up button alike; every other event has a page at event/?id=<id>
+  function eventUrl(e) { return C.pageUrl(root, e) || root + "event/?id=" + encodeURIComponent(e.id); }
   // open for sign-up: the event takes sign-ups and officers haven't closed sign-up site-wide
   function takesSignUps(e) { return data.live && e.signup_enabled && e.status === "scheduled" && !C.isPast(e, data.today); }
   function canSignUp(e) { return takesSignUps(e) && data.signups_open; }
   function closedNote(e) { return takesSignUps(e) && !data.signups_open ? '<span class="club-hint">Sign-up is closed right now.</span>' : ""; }
-  function signupUrl(e) { return proot + "signup/?event=" + encodeURIComponent(e.id); }
-  function liveSignupUrl(e) { return root + "signup/?event=" + encodeURIComponent(e.id); }
+  function signupUrl(e) { return root + "signup/?event=" + encodeURIComponent(e.id); }
   function signupButton(e, cls) {
-    // the preview's own sign-up page for this event (it shows the form but saves nothing)
-    return '<a class="club-btn' + (cls ? " " + cls : "") + '" href="' + esc(signupUrl(e)) + '">' + esc(C.signupSpec(e).button) + "</a>";
+    return '<a class="club-btn' + (cls ? " " + cls : "") + '" href="' + esc(C.pageUrl(root, e) || signupUrl(e)) + '">' + esc(C.signupSpec(e).button) + "</a>";
   }
   function chips(e) {
     var t = text(e);
     return '<span class="club-chip' + (e.kind === "meeting" ? " club-chip--meeting" : "") + '">' + esc(C.KINDS[e.kind] || "Event") + "</span>" +
-      (canSignUp(e) ? ' <span class="club-chip pv-chip-open">Sign-up open</span>' : "") +
+      (canSignUp(e) ? ' <span class="club-chip site-chip-open">Sign-up open</span>' : "") +
       (e.tentative ? ' <span class="club-chip club-chip--tentative">Tentative</span>' : "") +
       (e.status === "postponed" ? ' <span class="club-chip club-chip--postponed">Postponed</span>' : "") +
       (e.status === "cancelled" ? ' <span class="club-chip club-chip--cancelled">Cancelled</span>' : "") +
-      (C.isPast(e, data.today) && t && t.recap ? ' <span class="club-chip pv-chip-recap">Recap</span>' : "");
+      (C.isPast(e, data.today) && t && t.recap ? ' <span class="club-chip site-chip-recap">Recap</span>' : "");
   }
   function dateBlock(e) {
     var p = C.parts(e.starts_on);
@@ -49,12 +55,12 @@
     var t = text(e);
     if (!t) return "";
     var s = C.isPast(e, data.today) ? t.recap_summary : t.summary;
-    return s ? '<p class="pv-summary">' + esc(s) + (t.sample ? ' <span class="pv-sample">sample</span>' : "") + "</p>" : "";
+    return s ? '<p class="site-summary">' + esc(s) + "</p>" : "";
   }
   function themeLine(e) { var th = C.themeText(e); return th ? '<p class="club-theme">Food theme: <strong>' + esc(th) + "</strong></p>" : ""; }
   function flyerFor(e) { return flyers.filter(function (f) { return f.event_date === e.starts_on && !f.archived; })[0] || null; }
   function flyerBox(f) {
-    return '<a class="club-flyer pv-flyer" href="' + esc(root + "flyers/" + f.pdf) + '" target="_blank" rel="noopener">' +
+    return '<a class="club-flyer site-flyer" href="' + esc(root + "flyers/" + f.pdf) + '" target="_blank" rel="noopener">' +
       '<img src="' + esc(root + "flyers/" + f.preview) + '" width="612" height="792" alt="" loading="lazy">' +
       '<span class="club-flyer-name">' + esc(f.title) + "</span>" +
       '<span class="club-flyer-hint">View or print (PDF)<span class="visually-hidden">, opens in a new tab</span></span></a>';
@@ -85,11 +91,11 @@
   }
   // a list row (the by-date view): date, title, one line from the event's page, button
   function row(e) {
-    return '<article class="pv-row' + (e.status === "cancelled" ? " is-cancelled" : "") + '">' + dateBlock(e) +
-      '<div class="pv-row-main"><h4 class="pv-row-title"><a href="' + esc(eventUrl(e)) + '">' + esc(e.title) + "</a></h4>" +
+    return '<article class="site-row' + (e.status === "cancelled" ? " is-cancelled" : "") + '">' + dateBlock(e) +
+      '<div class="site-row-main"><h4 class="site-row-title"><a href="' + esc(eventUrl(e)) + '">' + esc(e.title) + "</a></h4>" +
       '<p class="club-card-chips">' + chips(e) + "</p>" +
       '<p class="club-card-meta">' + esc(meta(e)) + "</p>" + themeLine(e) + summary(e) + "</div>" +
-      '<div class="pv-row-act">' + (canSignUp(e) ? signupButton(e, "club-btn--small") + '<span class="club-hint">' + esc(C.signupCount(e, true)) + "</span>"
+      '<div class="site-row-act">' + (canSignUp(e) ? signupButton(e, "club-btn--small") + '<span class="club-hint">' + esc(C.signupCount(e, true)) + "</span>"
         : closedNote(e) + '<a class="club-btn club-btn--ghost club-btn--small" href="' + esc(eventUrl(e)) + '">' + (C.isPast(e, data.today) && text(e) && text(e).recap ? "Read the recap" : "Details") + "</a>") +
       "</div></article>";
   }
@@ -97,12 +103,12 @@
   // ------------------------------------------------------------ home
   function renderHome() {
     var next = C.nextGathering(data), up = C.upcoming(data);
-    var box = $("pv-next");
+    var box = $("site-next");
     if (next) {
       var f = flyerFor(next), bring = next.signup_enabled && (next.signups || []).length;
-      $("pv-next-label").textContent = next.kind === "meeting" ? "Next meeting" : "Up next";
+      $("site-next-label").textContent = next.kind === "meeting" ? "Next meeting" : "Up next";
       box.classList.toggle("has-flyer", !!f);
-      box.innerHTML = '<div class="pv-next-info">' +
+      box.innerHTML = '<div class="site-next-info">' +
         '<p class="club-next-date"><a href="' + esc(eventUrl(next)) + '">' + esc(C.dateLabel(next, true)) + "</a></p>" +
         '<p class="club-next-meta">' + esc(C.timeLabel(next)) + " · " + esc(next.title) + (next.location ? " · " + esc(next.location) : "") +
         (C.relDays(data.today, next.starts_on) ? " · " + esc(C.relDays(data.today, next.starts_on)) : "") + "</p>" +
@@ -117,13 +123,13 @@
     var rest = up.filter(function (e) { return !next || e.id !== next.id; });
     var shown = rest.slice(0, 3), more = rest.length - shown.length;
     var past = data.events.filter(function (e) { return C.isPast(e, data.today); });
-    $("pv-coming").innerHTML = shown.length ? '<div class="club-cards">' + shown.map(card).join("") + "</div>" : "<p>Nothing else is on the schedule yet.</p>";
-    $("pv-more").innerHTML = '<a href="' + esc(proot + "schedule/") + '">See the full schedule' +
+    $("site-coming").innerHTML = shown.length ? '<div class="club-cards">' + shown.map(card).join("") + "</div>" : "<p>Nothing else is on the schedule yet.</p>";
+    $("site-more").innerHTML = '<a href="' + esc(root + "schedule/") + '">See the full schedule' +
       (more > 0 ? ": " + more + " more coming up" : "") + (past.length ? (more > 0 ? ", " : ": ") + past.length + " earlier this semester" : "") + " →</a>";
     // recaps: the two newest past events that have one
     var recaps = past.filter(function (e) { var t = text(e); return t && t.recap; }).reverse().slice(0, 2);
-    $("pv-news-wrap").hidden = !recaps.length;
-    $("pv-news").innerHTML = recaps.map(function (e) {
+    $("site-news-wrap").hidden = !recaps.length;
+    $("site-news").innerHTML = recaps.map(function (e) {
       return '<article class="club-card"><p class="club-card-meta">Recap · ' + esc(C.dateLabel(e, true)) + "</p>" +
         '<h4 class="club-card-title"><a href="' + esc(eventUrl(e)) + '">' + esc(e.title) + "</a></h4>" + summary(e) + "</article>";
     }).join("");
@@ -142,10 +148,10 @@
     var up = C.upcoming(data).filter(FILTERS[filter]);
     var past = data.events.filter(function (e) { return C.isPast(e, data.today); }).filter(FILTERS[filter]).reverse();
     var cards = view === "cards";
-    $("pv-upcoming").innerHTML = up.length ? byMonth(up, cards ? card : row, cards ? "club-cards" : "pv-rows") : "<p>No upcoming events match.</p>";
-    $("pv-past-count").textContent = past.length;
-    $("pv-past-wrap").hidden = !past.length;
-    $("pv-past").innerHTML = byMonth(past, cards ? card : row, cards ? "club-cards" : "pv-rows");
+    $("site-upcoming").innerHTML = up.length ? byMonth(up, cards ? card : row, cards ? "club-cards" : "site-rows") : "<p>No upcoming events match.</p>";
+    $("site-past-count").textContent = past.length;
+    $("site-past-wrap").hidden = !past.length;
+    $("site-past").innerHTML = byMonth(past, cards ? card : row, cards ? "club-cards" : "site-rows");
     document.querySelectorAll("[data-view]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-view") === view)); });
     document.querySelectorAll("[data-filter]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-filter") === filter)); });
   }
@@ -168,10 +174,10 @@
     var e = data.events.filter(function (x) { return x.id === id; })[0];
     if (!e) {
       $("ev-title").textContent = "Event not found";
-      $("pv-event").innerHTML = '<p>This event isn\'t on the schedule. <a href="' + esc(proot + "schedule/") + '">See the full schedule</a>.</p>';
+      $("site-event").innerHTML = '<p>This event isn\'t on the schedule. <a href="' + esc(root + "schedule/") + '">See the full schedule</a>.</p>';
       return;
     }
-    document.title = e.title + " · Math & Science Club (preview)";
+    document.title = e.title + " · Math & Science Club · Biology at SCC";
     var past = C.isPast(e, data.today), t = text(e), f = flyerFor(e);
     $("ev-kicker").textContent = (C.KINDS[e.kind] || "Event") + (past ? (t && t.recap ? " · Recap" : " · Past event") : canSignUp(e) ? " · Sign-up open" : "");
     $("ev-title").textContent = e.title;
@@ -182,64 +188,69 @@
     if (!past && canSignUp(e)) html += '<div class="club-event-cta">' + signupButton(e) + '<p class="club-hint">' + esc(C.signupCount(e, true)) + "</p></div>";
     else if (closedNote(e)) html += '<p class="club-event-cta">' + closedNote(e) + "</p>";
     var paras = past ? (t && t.recap) : (t && t.body);
-    if (paras && paras.length) {
-      html += (t.sample ? '<p class="pv-sample-note">Sample text: officers would write this part in Officer tools.</p>' : "") +
-        paras.map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
-    } else if (past) {
-      html += '<p class="club-hint">This event has happened. Officers can add a recap here afterwards.</p>';
-    }
+    if (paras && paras.length) html += paras.map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
     if (e.details) html += "<p>" + esc(e.details) + "</p>";
-    if (t && t.full_page) html += '<p><a href="' + esc(root + t.full_page) + '">Read the full STEAM Day page →</a></p>';
+    if (t && t.full_page) html += '<p><a href="' + esc(root + t.full_page) + '">More about ' + esc(e.title) + " →</a></p>";
     if (e.signup_enabled && (e.signups || []).length) {
-      html += '<section class="club-bring-panel pv-bring" aria-labelledby="pv-bring-title"><h2 id="pv-bring-title">' + esc(C.signupSpec(e).list) + "</h2>" +
-        '<div class="club-bring">' + C.bringList(e, "h3", { notesBelow: true }) + "</div></section>";
+      html += '<section class="club-bring-panel site-bring" aria-labelledby="site-bring-title"><h2 id="site-bring-title">' + esc(C.signupSpec(e).list) + "</h2>" +
+        '<div class="club-bring">' + C.bringList(e, "h3") + "</div></section>";
     }
-    if (f) html += '<div class="pv-event-flyer">' + flyerBox(f) + "</div>";
-    html += '<p class="club-actions"><a class="club-btn club-btn--ghost" href="' + esc(proot + "schedule/") + '">← Full schedule</a></p>';
-    $("pv-event").innerHTML = html;
+    if (f) html += '<div class="site-event-flyer">' + flyerBox(f) + "</div>";
+    html += '<p class="club-actions"><a class="club-btn club-btn--ghost" href="' + esc(root + "schedule/") + '">← Full schedule</a></p>';
+    $("site-event").innerHTML = html;
   }
 
   // ------------------------------------------------------------ sign-up page
-  // The same form as the live sign-up page, for one event, with the preview's layout of
-  // "Who's bringing what". It saves nothing: Sign me up, Save change and Remove show a
-  // note with a link to the live form instead.
+  // The form for one event (signup-form.js), with a link back to the event's page. With no
+  // event named (or one that isn't taking sign-ups), the events that are, as list rows.
+  function renderChoose(note) {
+    var open = C.upcoming(data).filter(takesSignUps);
+    $("site-signup-h1").className = "site-page-title";
+    $("site-choose").innerHTML = (note ? '<div class="club-banner"><p>' + note + "</p></div>" : "") +
+      (!open.length ? '<p>No event is taking sign-ups right now. <a href="' + esc(root + "schedule/") + '">See the schedule</a>.</p>'
+        : (data.signups_open ? "" : "<p><strong>Sign-up is closed right now.</strong> Ask a club officer.</p>") +
+          '<div class="site-rows">' + open.map(row).join("") + "</div>");
+    $("site-choose").hidden = false;
+  }
   function renderSignup() {
+    if (!data.live) return; // the banner says why (see start)
     var id = new URLSearchParams(location.search).get("event");
-    var e = data.events.filter(function (x) { return x.id === id; })[0];
+    var e = id && data.events.filter(function (x) { return x.id === id; })[0];
     if (!e || !takesSignUps(e)) {
-      $("pv-signup-back").innerHTML = '<a href="' + esc(proot + "schedule/") + '">← Full schedule</a>';
-      $("pv-signup").innerHTML = "<p>" + (e ? esc(e.title) + " isn't taking sign-ups." : "This event isn't on the schedule.") +
-        ' <a href="' + esc(proot + "schedule/") + '">See the full schedule</a>.</p>';
-      $("pv-signup").hidden = false;
+      renderChoose(id ? (e ? esc(e.title) + " isn't taking sign-ups." : "That event isn't on the schedule.") : "");
       return;
     }
-    document.title = C.signupSpec(e).button + ": " + e.title + " · Math & Science Club (preview)";
-    $("pv-signup-back").innerHTML = '<a href="' + esc(eventUrl(e)) + '">← ' + esc(e.title) + " details</a>";
-    var form = C.signupForm($("pv-signup"), {
-      idPrefix: "su", headingLevel: 2, onEventPage: true, notesBelow: true,
-      dryRun: "<strong>Layout preview: nothing was saved.</strong> To sign up for real, use the " +
-        '<a href="' + esc(liveSignupUrl(e)) + '">live sign-up page</a>.'
-    });
-    $("pv-signup").hidden = false;
+    document.title = C.signupSpec(e).button + ": " + e.title + " · Math & Science Club · Biology at SCC";
+    $("site-signup-back").innerHTML = '<a href="' + esc(eventUrl(e)) + '">← ' + esc(e.title) + " details</a>";
+    var form = C.signupForm($("site-signup"), { idPrefix: "su", headingLevel: 2, onEventPage: true, onChange: function (d) { data = d; } });
+    $("site-signup").hidden = false;
     form.show(data, e);
   }
 
   // ------------------------------------------------------------ start
-  function fail() {
-    var el = $("pv-status");
-    if (el) el.innerHTML = '<div class="club-banner club-banner--warn"><p>The live schedule couldn\'t be loaded, so the preview shows the printed schedule. Reload to try again.</p></div>';
-  }
+  // an old link to the schedule on the home page (msclub/#schedule) goes to the schedule page
+  if (page === "home" && location.hash === "#schedule") { location.replace(root + "schedule/"); return; }
+  function status(html) { var el = $("site-status"); if (el) el.innerHTML = html; }
   Promise.all([
     C.load(root),
-    fetch(proot + "data/pages.json").then(function (r) { return r.ok ? r.json() : { pages: {} }; }, function () { return { pages: {} }; }),
+    fetch(root + "data/pages.json").then(function (r) { return r.ok ? r.json() : { pages: {} }; }, function () { return { pages: {} }; }),
     C.loadFlyers(root)
   ]).then(function (res) {
     data = res[0]; texts = res[1].pages || {}; flyers = res[2] || [];
-    if (!data.live) fail();
-    if (C.isLocal()) $("pv-status").innerHTML = '<div class="club-banner"><p>Local test database (tools/msclub/local-api.mjs).</p></div>';
+    if (!data.live && C.config.enabled) {
+      status('<div class="club-banner club-banner--warn"><p>' + (page === "signup"
+        ? "<strong>Online sign-up isn't working right now.</strong> The club database couldn't be reached. Try again in a minute."
+        : "We couldn't load the live schedule, so this is the printed Fall 2026 schedule. Sign-up needs a connection. Try again in a few minutes.") + "</p></div>");
+    } else if (!data.live && page === "signup") {
+      status('<div class="club-banner club-banner--warn"><p><strong>Online sign-up isn\'t working right now.</strong> It opens soon.</p></div>');
+    } else if (C.isLocal()) {
+      status('<div class="club-banner"><p>Local test database (tools/msclub/local-api.mjs).</p></div>');
+    }
     if (page === "home") renderHome();
     if (page === "schedule") { wireSchedule(); renderSchedule(); }
     if (page === "event") renderEvent();
     if (page === "signup") renderSignup();
+  }, function () {
+    status('<div class="club-banner club-banner--warn"><p>The schedule could not be loaded. Reload the page to try again.</p></div>');
   });
 })();

@@ -1,0 +1,13 @@
+{
+  "note": "Each event's own text on the club site (assets/site.js), keyed \"<date>|<title>\" exactly as on the schedule. summary: one line for the cards and the list; body: paragraphs for the event's page; after the date, recap_summary and recap take their place; full_page: a link to the event's info page under msclub/. Events without an entry just show their details.",
+  "pages": {
+    "2027-03-05|STEAM Day Somerset 2027": {
+      "summary": "Help eighth graders explore science at SCC. Counts as an MSSE activity.",
+      "body": [
+        "STEAM Day brings eighth graders from area schools to SCC for hands-on activities in science, technology, engineering, arts, and math. Students explore new ideas, meet educators and professionals, and see where their interests might take them.",
+        "MSSE scholars: working STEAM Day counts as one of the 4 activities you need each semester."
+      ],
+      "full_page": "events/steam-day-2027/"
+    }
+  }
+}

@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Math &amp; Science Club · Biology at SCC</title>
-<meta name="description" content="Somerset Community College's Math &amp; Science Club: the next meeting, the food sign-up, and the Fall 2026 schedule of meetings, astronomy nights, campus tours and other events.">
+<meta name="description" content="Somerset Community College's Math &amp; Science Club: the next meeting, food sign-up, and the schedule of meetings, astronomy nights, campus tours and other events.">
 <link rel="stylesheet" href="../assets/style.css">
 <link rel="stylesheet" href="assets/club.css">
 </head>
-<body class="club" data-club-root="./">
+<body class="club" data-club-root="./" data-page="home">
 <a class="skip-link" href="#main">Skip to main content</a>
 <header class="club-back-bar">
   <div class="wrap">
@@ -21,11 +21,10 @@
     <nav aria-label="Club">
       <ul>
         <li><a href="./" aria-current="page">Home</a></li>
-        <li><a href="signup/">Event sign-up</a></li>
-        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="schedule/">Schedule</a></li>
+        <li><a class="club-nav-officer" href="officers/"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z"/></svg>Officer tools</a></li>
       </ul>
     </nav>
-    <a class="club-bar-officer" href="officers/"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z"/></svg>Officer tools</a>
   </div>
 </div>
 
@@ -35,50 +34,27 @@
     <div>
       <p class="club-kicker">Somerset Community College</p>
       <h1 id="club-title">Math &amp; Science Club</h1>
-      <p class="lede">Meeting dates and upcoming events.</p>
+      <p class="lede">Meetings, events and ways to get involved.</p>
     </div>
   </section>
+  <div id="site-status" role="status"></div>
 
-  <div class="club-top">
-    <section class="club-next" aria-labelledby="next-title" id="next">
-      <h2 id="next-title">Next meeting</h2>
-      <div id="club-next-body">
-        <p class="club-next-date">Thursday, November 19, 2026</p>
-        <p class="club-next-meta">5:00 PM · Math and Science Club Meeting</p>
-        <p class="club-actions"><a class="club-btn club-btn--big" href="signup/">Sign up to bring food</a></p>
-      </div>
-    </section>
-
-    <section class="club-panel club-flyer-panel" id="club-flyer-panel" aria-labelledby="flyer-title" hidden>
-      <h2 id="flyer-title">Flyer</h2>
-      <div class="club-flyers" id="club-flyers"></div>
-    </section>
-  </div>
-
-  <section aria-labelledby="schedule-title" id="schedule">
-    <h2 id="schedule-title">Coming up</h2>
-    <div id="club-status" role="status"></div>
-    <div id="club-upcoming"><noscript><p>Turn on JavaScript to see the schedule, or view the <a href="data/events.json">schedule data</a>.</p></noscript></div>
-    <details class="club-past" id="club-past-wrap" hidden>
-      <summary>Earlier this semester (<span id="club-past-count">0</span>)</summary>
-      <div id="club-past"></div>
-    </details>
-    <div class="club-fine">
-      <p>Dates come from the printed <em>MSSE Scholars Proposed Activities</em> schedule for Fall 2026. Events marked <span class="club-chip club-chip--tentative">Tentative</span> could change because of weather or other reasons.</p>
-      <p>Attendance at all activities is encouraged. MSSE scholars need to attend at least 4 each semester and meet with their mentor twice. Schedule changes are sent to your KCTCS student email.</p>
-    </div>
+  <section class="club-next site-next" aria-labelledby="site-next-label">
+    <h2 id="site-next-label">Up next</h2>
+    <div id="site-next"><p class="club-hint">Loading the schedule…</p></div>
   </section>
 
+  <section aria-labelledby="site-coming-title">
+    <h2 id="site-coming-title">Coming up</h2>
+    <div id="site-coming"><noscript><p>Turn on JavaScript to see the schedule, or view the <a href="data/events.json">schedule data</a>.</p></noscript></div>
+    <p class="site-more" id="site-more"></p>
+  </section>
+
+  <section aria-labelledby="site-news-title" id="site-news-wrap" hidden>
+    <h2 id="site-news-title">Latest from the club</h2>
+    <div class="club-cards" id="site-news"></div>
+  </section>
 </main>
-
-<dialog class="club-modal" id="club-signup-dialog" aria-labelledby="club-modal-title">
-  <div class="club-modal-head">
-    <h2 id="club-modal-title">Sign up to bring food</h2>
-    <button type="button" class="club-btn club-btn--ghost club-btn--small" data-close>Close</button>
-  </div>
-  <div id="club-signup-body"></div>
-</dialog>
-
 <footer class="club-footer">
   <div class="wrap club-footer-grid">
     <div class="club-footer-about">
@@ -90,8 +66,7 @@
       <h2 class="club-footer-title">Club</h2>
       <ul>
         <li><a href="./">Home</a></li>
-        <li><a href="signup/">Event sign-up</a></li>
-        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="schedule/">Schedule</a></li>
         <li><a href="qr/">Display Website Invite Poster</a></li>
         <li><a href="officers/">Officer tools</a></li>
       </ul>
@@ -108,6 +83,6 @@
 </footer>
 <script src="assets/club.js" defer></script>
 <script src="assets/signup-form.js" defer></script>
-<script src="assets/home.js" defer></script>
+<script src="assets/site.js" defer></script>
 </body>
 </html>

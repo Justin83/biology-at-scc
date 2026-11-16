@@ -130,16 +130,20 @@
 .club-bring-panel { background: var(--club-soft); border: 1px solid var(--border); border-radius: 12px; padding: 0.85rem 0.95rem 0.95rem; }
 .club-bring-panel > h2, .club-bring-panel > h3 { margin: 0 0 0.6rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); }
 .club-bring { display: grid; gap: 0.5rem; }
-.club-bring-cat { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 0.5rem 0.75rem 0.55rem; }
+.club-bring-cat { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 0.2rem 0.75rem; }
 .club-bring-cat.is-empty { background: transparent; border-style: dashed; }
-.club-bring-panel .club-bring-cat > h3, .club-bring-panel .club-bring-cat > h4 { margin: 0; font-size: 1rem; line-height: 1.3; display: flex; justify-content: space-between; align-items: baseline; gap: 0.25rem 0.75rem; flex-wrap: wrap; }
+.club-bring-panel .club-bring-cat > h3, .club-bring-panel .club-bring-cat > h4 { margin: 0; padding-top: 0.45rem; font-size: 1rem; line-height: 1.3; display: flex; justify-content: space-between; align-items: baseline; gap: 0.25rem 0.75rem; flex-wrap: wrap; }
 .club-bring-cat > h3 span, .club-bring-cat > h4 span { font-weight: 600; color: var(--muted); font-size: 0.88rem; }
-.club-bring ul { list-style: none; margin: 0.35rem 0 0; padding: 0; display: grid; gap: 0.25rem; }
-.club-bring-cat > ul:first-child { margin-top: 0; }
-.club-bring li { line-height: 1.35; overflow-wrap: anywhere; }
+/* one evenly spaced row per entry, with a line between rows; a long entry wraps under
+   itself (hanging indent), and a note sits underneath, smaller and indented */
+.club-bring ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.club-bring li { padding: 0.55rem 0; line-height: 1.35; overflow-wrap: anywhere; }
+.club-bring li + li { border-top: 1px solid var(--border); }
+.club-bring-line { display: block; padding-left: 1rem; text-indent: -1rem; }
+.club-bring-line .who { display: inline-block; text-indent: 0; }
 .club-bring li.is-mine .who { font-weight: 700; }
-.club-bring .note { color: var(--muted); font-size: 0.9rem; }
-.club-bring-none { margin: 0; color: var(--muted); }
+.club-bring .note { display: block; margin: 0.2rem 0 0 1rem; color: var(--muted); font-size: 0.85rem; line-height: 1.35; }
+.club-bring-none { margin: 0; padding: 0.35rem 0; color: var(--muted); }
 .club-bring .you { color: var(--accent); font-weight: 700; font-size: 0.9rem; }
 .club-mine { list-style: none; padding: 0; margin: 0.5rem 0 0; display: grid; gap: 0.5rem; }
 .club-mine li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.4rem 1rem; padding: 0.6rem 0.8rem; border: 1px solid var(--border); border-radius: 10px; background: var(--card-bg); }
@@ -349,3 +353,61 @@ main.club-event-page { max-width: 48rem; }
 .club-stat-table { border-collapse: collapse; width: 100%; margin-top: 0.5rem; font-size: 0.95rem; }
 .club-stat-table th, .club-stat-table td { text-align: left; padding: 0.35rem 0.5rem; border-bottom: 1px solid var(--border); }
 .club-stat-table td:not(:first-child), .club-stat-table th:not(:first-child) { text-align: right; width: 6rem; }
+
+/* ------------------------------------------------------------ pages (site.js)
+   Home (Up next, then the next three events), Schedule (List and Cards), one page per
+   event, and the sign-up page. Adopted from the layout preview, November 2026. */
+/* Officer tools: a menu item right after Schedule (the footer keeps its link too) */
+.club-nav-officer { display: inline-flex; align-items: center; gap: 0.3rem; }
+.club-nav-officer svg { flex: none; }
+
+/* Up next: the one place the next event shows on the home page, with its flyer beside it */
+.site-next { container-type: inline-size; }
+#site-next { display: grid; gap: 1rem; }
+@container (min-width: 620px) { #site-next.has-flyer { grid-template-columns: minmax(0, 1fr) 170px; align-items: start; } }
+#site-next .club-flyer { margin: 0 auto; }
+.site-next .club-next-date a { color: inherit; text-decoration: none; }
+.site-next .club-next-date a:hover { text-decoration: underline; }
+.site-next .club-hint a { font-weight: 700; }
+.site-more { margin: 1rem 0 0; font-weight: 700; }
+
+/* the event's own text, one line on cards and rows */
+.site-summary { margin: 0.35rem 0 0; font-size: 0.95rem; }
+.site-chip-open { background: #e3f3e8; color: #1d5c34; }
+.site-chip-recap { background: var(--club-purple-bg); color: var(--club-purple-fg); }
+@media (prefers-color-scheme: dark) { .site-chip-open { background: #12301f; color: #a6e3bb; } }
+
+/* Schedule: filters and the Cards / List switch */
+.site-page-title { margin: 1.4rem 0 0.6rem; }
+.site-controls { display: flex; flex-wrap: wrap; gap: 0.6rem 1.2rem; align-items: center; justify-content: space-between; margin: 0 0 0.4rem; }
+.site-seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--border); border-radius: 999px; padding: 3px; background: var(--card-bg); }
+.site-seg button { font: inherit; font-size: 0.9rem; font-weight: 700; min-height: 2.25rem; border: 0; background: transparent; color: var(--accent); padding: 0.25rem 0.85rem; border-radius: 999px; cursor: pointer; }
+.site-seg button[aria-pressed="true"] { background: var(--accent); color: var(--club-on-accent); }
+
+/* List view: one row per event, by date */
+.site-rows { display: flex; flex-direction: column; }
+.site-row { display: grid; grid-template-columns: 3.6rem minmax(0, 1fr); gap: 0.35rem 0.9rem; padding: 0.85rem 0; border-bottom: 1px solid var(--border); }
+.site-row.is-cancelled .site-row-title { text-decoration: line-through; }
+.site-row-main { min-width: 0; }
+.site-row-title { margin: 0; font-size: 1.05rem; line-height: 1.3; }
+.site-row-title a { color: var(--fg); text-underline-offset: 3px; text-decoration-color: var(--border); }
+.site-row-title a:hover { text-decoration-color: currentColor; }
+.site-row .club-card-chips { margin: 0.2rem 0; }
+.site-row .club-card-meta { margin: 0; }
+.site-row-act { grid-column: 2; display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; align-items: center; }
+@media (min-width: 760px) {
+  .site-row { grid-template-columns: 3.6rem minmax(0, 1fr) 15rem; align-items: center; }
+  .site-row-act { grid-column: 3; justify-content: flex-end; text-align: right; }
+}
+
+/* Event page */
+.site-event-page .club-card-chips { margin: 0.2rem 0 0.4rem; }
+.site-bring { margin: 1.4rem 0 0; }
+.site-event-page .site-bring > h2 { margin-top: 0; }
+.site-event-flyer { margin: 1.4rem 0 0; }
+.site-event-flyer .club-flyer { margin: 0; }
+
+/* Sign-up page: back to the event */
+.site-signup-back { margin: 1.2rem 0 0; font-weight: 700; }
+.site-signup-back:empty { display: none; }
+.site-signup-back + .club-su-page { margin-top: 0.6rem; }
