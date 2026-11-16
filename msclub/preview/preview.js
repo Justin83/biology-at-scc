@@ -1,7 +1,7 @@
 /* Layout preview (Option A of the club-site proposal): a short front page, a Schedule page
-   with Cards and List views, and a page for every event. Read-only: it shows the live
-   schedule, sign-ups and flyers through the same public functions as the live site, and
-   its sign-up buttons open the live sign-up form. Not counted by the visit counter
+   with Cards and List views, a page for every event, and a sign-up page. Read-only: it
+   shows the live schedule, sign-ups and flyers through the same public functions as the
+   live site, and its sign-up form saves nothing. Not counted by the visit counter
    (club.js skips /msclub/preview/). Page text an officer would write comes from
    preview/data/pages.json; entries marked sample are placeholders. */
 (function () {
@@ -10,7 +10,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var esc = C.esc;
   var body = document.body;
-  var page = body.getAttribute("data-preview");          // home | schedule | event
+  var page = body.getAttribute("data-preview");          // home | schedule | event | signup
   var root = body.getAttribute("data-club-root");        // the live club site (msclub/)
   var proot = body.getAttribute("data-preview-root");    // this preview (msclub/preview/)
   var data = null, texts = {}, flyers = [];
@@ -24,9 +24,11 @@
   function takesSignUps(e) { return data.live && e.signup_enabled && e.status === "scheduled" && !C.isPast(e, data.today); }
   function canSignUp(e) { return takesSignUps(e) && data.signups_open; }
   function closedNote(e) { return takesSignUps(e) && !data.signups_open ? '<span class="club-hint">Sign-up is closed right now.</span>' : ""; }
+  function signupUrl(e) { return proot + "signup/?event=" + encodeURIComponent(e.id); }
+  function liveSignupUrl(e) { return root + "signup/?event=" + encodeURIComponent(e.id); }
   function signupButton(e, cls) {
-    // the live sign-up form for this event (the preview itself never writes anything)
-    return '<a class="club-btn' + (cls ? " " + cls : "") + '" href="' + esc(root + "signup/?event=" + encodeURIComponent(e.id)) + '">' + esc(C.signupSpec(e).button) + "</a>";
+    // the preview's own sign-up page for this event (it shows the form but saves nothing)
+    return '<a class="club-btn' + (cls ? " " + cls : "") + '" href="' + esc(signupUrl(e)) + '">' + esc(C.signupSpec(e).button) + "</a>";
   }
   function chips(e) {
     var t = text(e);
@@ -197,6 +199,31 @@
     $("pv-event").innerHTML = html;
   }
 
+  // ------------------------------------------------------------ sign-up page
+  // The same form as the live sign-up page, for one event, with the preview's layout of
+  // "Who's bringing what". It saves nothing: Sign me up, Save change and Remove show a
+  // note with a link to the live form instead.
+  function renderSignup() {
+    var id = new URLSearchParams(location.search).get("event");
+    var e = data.events.filter(function (x) { return x.id === id; })[0];
+    if (!e || !takesSignUps(e)) {
+      $("pv-signup-back").innerHTML = '<a href="' + esc(proot + "schedule/") + '">← Full schedule</a>';
+      $("pv-signup").innerHTML = "<p>" + (e ? esc(e.title) + " isn't taking sign-ups." : "This event isn't on the schedule.") +
+        ' <a href="' + esc(proot + "schedule/") + '">See the full schedule</a>.</p>';
+      $("pv-signup").hidden = false;
+      return;
+    }
+    document.title = C.signupSpec(e).button + ": " + e.title + " · Math & Science Club (preview)";
+    $("pv-signup-back").innerHTML = '<a href="' + esc(eventUrl(e)) + '">← ' + esc(e.title) + " details</a>";
+    var form = C.signupForm($("pv-signup"), {
+      idPrefix: "su", headingLevel: 2, onEventPage: true, notesBelow: true,
+      dryRun: "<strong>Layout preview: nothing was saved.</strong> To sign up for real, use the " +
+        '<a href="' + esc(liveSignupUrl(e)) + '">live sign-up page</a>.'
+    });
+    $("pv-signup").hidden = false;
+    form.show(data, e);
+  }
+
   // ------------------------------------------------------------ start
   function fail() {
     var el = $("pv-status");
@@ -213,5 +240,6 @@
     if (page === "home") renderHome();
     if (page === "schedule") { wireSchedule(); renderSchedule(); }
     if (page === "event") renderEvent();
+    if (page === "signup") renderSignup();
   });
 })();

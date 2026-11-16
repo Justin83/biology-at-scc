@@ -6,8 +6,9 @@
 //   - home: the next meeting appears once (in Up next, not again as a card), the next three
 //     events as cards, the link to the full schedule, and the recaps;
 //   - schedule: List and Cards views, the "Sign-up open" filter, earlier events;
-//   - event page: details, sign-up button to the live form, no calendar file; who's bringing
-//     what with each note on its own line underneath, and even spacing with or without notes;
+//   - event page: details, sign-up button, no calendar file; who's bringing what with each
+//     note on its own line underneath, and even spacing with or without notes;
+//   - sign-up page: the preview's header, the same list, the form; Sign me up saves nothing;
 //     a past event shows its recap;
 //   - sign-up closed site-wide by the officers: no sign-up buttons, and it says so;
 //   - read-only: no visit is counted and nothing is saved from the preview.
@@ -58,7 +59,7 @@ try {
   assert.equal(cards.includes("Math and Science Club Meeting"), false, "the next meeting isn't repeated as a card");
   assert.match(await p.innerText("#pv-more"), /See the full schedule: 1 more coming up, \d+ earlier this semester/);
   assert.deepEqual(await p.$$eval("#pv-news .club-card-title", (x) => x.map((y) => y.textContent)), ["Laurel STEAM Day", "Math and Science Club Meeting"]);
-  assert.match(await p.getAttribute("#pv-coming .club-card a.club-btn", "href"), /^\.\.\/signup\/\?event=[0-9a-f-]{36}$/, "sign-up opens the live form");
+  assert.match(await p.getAttribute("#pv-coming .club-card a.club-btn", "href"), /^\.\/signup\/\?event=[0-9a-f-]{36}$/, "sign-up opens the preview's own sign-up page");
   assert.ok((await p.textContent(".pv-banner")).includes("Layout preview"));
   // the header menu: Home, Schedule, then Officer tools; the footer keeps Officer tools too
   assert.deepEqual(await p.$$eval('.club-bar nav[aria-label="Club"] a', (x) => x.map((a) => a.textContent.trim())), ["Home", "Schedule", "Officer tools"]);
@@ -96,7 +97,7 @@ try {
     await p.waitForFunction(() => document.getElementById("ev-title").textContent === "Math and Science Club Meeting");
     assert.equal(await p.textContent("#ev-kicker"), "Club meeting · Sign-up open");
     assert.match(await p.innerText("#pv-event .club-event-when"), /Thursday, November 19, 2026 · 5:00 PM/);
-    assert.match(await p.getAttribute("#pv-event .club-event-cta a.club-btn", "href"), /^\.\.\/\.\.\/signup\/\?event=/);
+    assert.match(await p.getAttribute("#pv-event .club-event-cta a.club-btn", "href"), /^\.\.\/signup\/\?event=/);
     assert.equal(await p.$("#pv-ics"), null, "no Add to my calendar (dropped, Justin's call)");
     assert.doesNotMatch(await p.innerText("#pv-event"), /Add to my calendar/);
     assert.match(await p.innerText(".pv-sample-note"), /Sample text/);
@@ -110,6 +111,36 @@ try {
     assert.deepEqual(rows.map((r) => [r.line, r.note]), [["Turkey · Test Person A", "fried in peanut oil"], ["Autumn Harvest Pasta Salad · Test Person B", null]]);
     assert.ok(rows[0].noteBlock && rows[0].noteIndented, "the note is on its own line, indented");
     assert.deepEqual(rows[0].pad, rows[1].pad, "rows with and without a note are spaced the same");
+
+    // the preview's sign-up page: same form as the live one, the new list, and nothing saved
+    await p.click("#pv-event .club-event-cta a.club-btn");
+    await p.waitForSelector("#su-form");
+    assert.deepEqual(await p.$$eval('.club-bar nav[aria-label="Club"] a', (x) => x.map((a) => a.textContent.trim())), ["Home", "Schedule", "Officer tools"]);
+    assert.match(await p.innerText("#pv-signup-back"), /Math and Science Club Meeting details/);
+    assert.equal(await p.$("#su-info a[href*='events/']"), null, "no link out to a live page");
+    assert.deepEqual(await p.$$eval("#su-list li .note", (x) => x.map((n) => n.textContent)), ["fried in peanut oil"], "notes under the entry here too");
+    assert.equal(await p.$$eval("#su-list .club-bring-line", (x) => x.length), 2);
+    await p.fill("#su-name", "Preview Person");
+    await p.fill("#su-item", "Rolls");
+    await p.click("#su-submit");
+    await p.waitForSelector("#su-msg.is-dry");
+    assert.match(await p.innerText("#su-msg"), /Layout preview: nothing was saved/);
+    assert.match(await p.getAttribute("#su-msg a", "href"), /^\.\.\/\.\.\/signup\/\?event=/, "points to the live sign-up page");
+    assert.equal(await p.$$eval("#su-list li", (x) => x.length), 2, "the list is unchanged");
+    // someone who signed up on this device: Change and Remove show the same note, save nothing
+    await p.evaluate(([id, token]) => localStorage.setItem("club-signup-tokens", JSON.stringify({ [id]: token })), [added[0].id, added[0].token]);
+    await p.reload();
+    await p.waitForSelector("#su-mine li");
+    await p.click("#su-mine [data-edit]");
+    assert.equal(await p.inputValue("#su-item"), "Turkey");
+    await p.fill("#su-item", "Ham");
+    await p.click("#su-submit");
+    await p.waitForSelector("#su-msg.is-dry");
+    p.once("dialog", (d) => d.accept());
+    await p.click("#su-mine [data-remove]");
+    await p.waitForSelector("#su-msg.is-dry");
+    assert.deepEqual(await p.$$eval("#su-list li strong", (x) => x.map((y) => y.textContent)), ["Turkey", "Autumn Harvest Pasta Salad"], "nothing changed or removed");
+    await p.evaluate(() => localStorage.removeItem("club-signup-tokens"));
   } finally {
     for (const r of added) if (r.ok) await rpc("club_signup_remove", { p_id: r.id, p_token: r.token });
   }
@@ -135,6 +166,10 @@ try {
     assert.equal(await p.$$eval(".pv-chip-open", (x) => x.length), 0, "nothing is labelled Sign-up open");
     await p.click('[data-filter="signup"]');
     assert.match(await p.innerText("#pv-upcoming"), /No upcoming events match/);
+    await p.goto(PV + "signup/?event=" + meetingId);
+    await p.waitForSelector("#su-form");
+    assert.equal(await p.isDisabled("#su-submit"), true, "the preview's form is closed too");
+    assert.match(await p.innerText("#su-msg"), /Sign-up is closed right now/);
   } finally {
     assert.equal((await admin("set_signups_open", { open: true })).ok, true);
   }
