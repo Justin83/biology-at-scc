@@ -12,8 +12,10 @@ project as migration `club_v1`, with Justin's approval. `enabled` in
 
 | URL (under `msclub/`) | For | What it does |
 |---|---|---|
-| `./` | everyone | Next meeting (food theme, **who's bringing what** beside the details on a computer and above the button on a phone, sign-up button), beside it on a computer the flyer for each upcoming event (see [Flyers](#flyers); no QR code on this page), and event cards by month; food events have a **Sign up to bring food** button that opens the sign-up in a pop-up; an event with an info page (below): its whole card goes to that page |
-| `signup/` | everyone | Event sign-up (club-bar tab **Event sign-up**). Clickable cards in two groups: **Club meetings** (meetings and socials, where people bring food) and **Events and trips** (any other event an officer turns sign-up on for; the group is hidden while there are none). Nothing is preselected unless the link names one (the card buttons do). Choosing a card opens who's bringing what and the form below the cards; add, change or remove your own sign-up; no account |
+| `./` | everyone | **Up next**: the next meeting, once (date, time, food theme, the sign-up button, how many are bringing food and a link to who's bringing what), with its flyer beside it (below it on a phone); then the next three events as cards; **See the full schedule** (how many more are coming up and how many were earlier); recaps of past events once there are any. No QR code on this page. An old link to `#schedule` goes to the schedule page |
+| `schedule/` | everyone | Every event, as a **List** by date (default) or as **Cards**, remembered per browser; filters **Everything**, **Sign-up open**, **Meetings**, **Other events**; **Earlier this semester** below; the note about the printed MSSE schedule |
+| `event/?id=<id>` | everyone | One event: date, time, place, food theme, the sign-up button and count, its own text (see [Event text](#event-text)), **who's bringing what** (each note on its own line underneath), its flyer, and a link back to the schedule. An event with an info page (below) links there instead |
+| `signup/?event=<id>` | everyone | The sign-up form for one event, with a link back to its page: who's bringing what beside the form on a computer, above it on a phone; add, change or remove your own sign-up; no account. With no event named: the events taking sign-ups, with their buttons |
 | `officers/` | club officers (`noindex`) | Edit dates, times, titles and food themes in a pop-up editor (two columns on a desktop); add, postpone, cancel or delete events; set up sign-up (bring food, volunteers or who's going); remove sign-ups; open or close sign-up; the **Flyer library**; change the officer code |
 | `events/<page>/` | everyone | An event's info page, for a call to action such as volunteering (see [Event info pages](#event-info-pages)). Now: `events/steam-day-2027/` |
 | `qr/` | print | Poster with the club's QR code, to print or show in class (**Display Website Invite Poster** in every club page's footer) |
@@ -21,9 +23,10 @@ project as migration `club_v1`, with Justin's approval. `enabled` in
 The site home page links to the club. Club pages carry a **Back to Biology at SCC** link at
 the top instead of the main site's menu; the club bar's first link is **Home** (the club
 home). Every club page ends with the same bold SCC-blue footer: the club's name and **Part
-of Biology at SCC**; club links (Home, Event sign-up, Schedule, **Display Website Invite
-Poster**, Officer tools); contact (justin.howard@kctcs.edu); and **Not an official KCTCS
-website.** New links go in its Club column (or a new column) on all five pages.
+of Biology at SCC**; club links (Home, Schedule, **Display Website Invite Poster**, Officer
+tools); contact (justin.howard@kctcs.edu); and **Not an official KCTCS website.** The club
+bar's menu is **Home · Schedule · Officer tools** (with a lock icon) on every club page. New
+links go in the footer's Club column (or a new column) on all seven pages.
 
 ## For members
 
@@ -31,8 +34,8 @@ website.** New links go in its Club column (or a new column) on all five pages.
   Schedule*. Its tentative items (marked ** on the flyer) carry a "Tentative" tag.
 - There is one QR code, on the invite poster (**Display Website Invite Poster** in the
   footer; print it or show it in class). It opens the club website; people choose **Sign
-  up to bring food** from there (on an event card, the next-meeting card, or **Event
-  sign-up** in the club bar). Type your name (first name and last initial is enough) and
+  up to bring food** from there (in **Up next** on the home page, on an event card, a
+  schedule row or an event's page), which opens that event's sign-up form. Type your name (first name and last initial is enough) and
   what you're bringing, and add an allergy note if needed.
   - Names and items are shown on the page so people can avoid duplicates.
   - Only the phone or computer that made a sign-up can change or remove it; it keeps a
@@ -41,8 +44,8 @@ website.** New links go in its Club column (or a new column) on all five pages.
 
 ## For officers
 
-1. Choose **Officer tools** in the green club bar at the top of any club page, or go to
-   `officers/` directly.
+1. Choose **Officer tools** (with the lock) in the menu at the top of any club page, or in
+   the footer, or go to `officers/` directly.
 2. Enter the officer code. It is remembered only for that browser tab.
 3. **Events:** choose **Edit** next to an event. The editor opens in a pop-up (two
    columns on a desktop, full screen on a phone). You can change:
@@ -73,8 +76,6 @@ website.** New links go in its Club column (or a new column) on all five pages.
      (or leave it empty for no limit). People give their name and an optional note.
    - Add a note for people signing up if useful (shown above the sign-up), for example
      "The club is providing pizza" or the S-STEM scholar note on STEAM Day.
-   - Food sign-ups appear under **Club meetings** on the sign-up page; the other two
-     under **Events and trips**.
 5. **Remove a sign-up:** open the event in the editor; its sign-ups are listed with
    Remove buttons.
 6. **Close food sign-up** stops all new sign-ups and changes until it is reopened.
@@ -100,12 +101,12 @@ can see whether it's keeping the MSSE cohort engaged, and track it over the seme
 - how many **people signed up for something** (food, volunteering or trips; names
   compared ignoring case and punctuation) and the total **page views**;
 - a bar chart of visitors each day for the last 30 days, and **visitors by page** (home,
-  sign-up, each event page, Officer tools).
+  schedule, event pages, sign-up, each info page, Officer tools).
 
 **How it's counted** (`msclub/sql/007_club_visits.sql` and `008_club_visits_all_traffic.sql`,
 migrations `club_v7` and `club_v8`). These notes are here, not on the card (Justin's call):
-- **All traffic counts**, officers included: each club page (home, sign-up, event pages,
-  Officer tools) counts one view when it opens. Only the QR poster doesn't count.
+- **All traffic counts**, officers included: each club page (home, schedule, event pages,
+  sign-up, info pages, Officer tools) counts one view when it opens. Only the QR poster doesn't count.
 - A "visitor" is a **phone or computer (browser)**, not a person. The same student on a
   phone and a laptop counts twice, and private browsing or clearing the browser counts
   again. So treat the number as a close estimate, best for comparing over time.
@@ -114,36 +115,28 @@ migrations `club_v7` and `club_v8`). These notes are here, not on the card (Just
   locations** are stored.
 - At most 3,000 new visitor-page rows a day are counted, so a script can't fill the table.
 
-## Layout preview (temporary, `msclub/preview/`)
+## Layout (November 2026) and how to roll it back
 
-A working preview of Option A from the layout proposal (November 2026), so the layout can be
-judged in a real browser with the real schedule before anything changes on the live pages:
+The pages above replaced the earlier layout (one long home page with every event as a
+card, a sign-up pop-up, and a sign-up page that started with a grid of event cards). The
+new layout was tried first as a read-only preview, revised with Justin, and published in
+one change. `assets/site.js` builds the home, schedule, event and sign-up pages; its styles
+are the "pages" section at the end of `assets/club.css`. The database didn't change.
 
-- `preview/`: a short front page. **Up next** shows the next meeting once, with its flyer;
-  then the next three events as cards; then the full-schedule link and recaps.
-- `preview/schedule/`: the whole schedule, with **List** (by date, one line from each
-  event's page) and **Cards** views, a "Sign-up open" filter, and earlier events.
-- `preview/event/?id=<event id>`: a page for any event, with details, the sign-up button,
-  who's signed up, the flyer, and a recap after the date. In its "Who's bringing what"
-  list, each entry is its own evenly spaced row, and a note sits underneath, smaller and
-  indented (`Club.bringList(e, h, { notesBelow: true })`). The live pages still show the
-  note in brackets on the same line until the layout is adopted.
-- `preview/signup/?event=<event id>`: the sign-up page, so every revision can be seen
-  without leaving the preview. It is the live sign-up form (`Club.signupForm`) with the
-  preview's list layout and `dryRun`: **Sign me up**, **Save change** and **Remove** work up
-  to the save, then say nothing was saved and link to the live sign-up page.
+**To roll back to the earlier layout,** revert that one change: on GitHub, open the pull
+request named *Club site: publish the new layout* and press **Revert**, then merge the pull
+request it opens (or ask Claude to). GitHub Pages republishes in about a minute. Nothing in
+the database depends on the layout, so sign-ups, events and visit counts carry on either way.
+To bring the new layout back, revert the revert.
 
-It reads the live schedule, sign-ups and flyers through the same public functions as the
-live pages, and **saves nothing**: its sign-up form stops before saving, and `club.js`
-doesn't count visits under `preview/`. It is `noindex` and linked from nowhere.
+### Event text
 
-Event-page text doesn't exist in the database yet, so it comes from
-`preview/data/pages.json`. Entries marked `sample` are placeholders and are labelled on the
-page; STEAM Day's text comes from its real page.
-
-To remove the preview, delete `msclub/preview/` and `tools/msclub/tests/preview.e2e.mjs`,
-and drop `preview` from the `pageKey` regex in `assets/club.js` (and the `notesBelow` and
-`dryRun` options from `assets/signup-form.js`, unless the live pages adopt them).
+An event's own words come from `msclub/data/pages.json`, keyed `"<date>|<title>"` exactly as
+on the schedule: `summary` (one line on the cards and the list), `body` (paragraphs on its
+page), `recap_summary` and `recap` (shown instead after the date, and listed on the home page
+under **Latest from the club**), and `full_page` (a link to the event's info page). Events
+without an entry just show their details. Officers can't edit this file from Officer tools
+yet; that needs a database change (a later step).
 
 ## Flyers
 
@@ -153,15 +146,15 @@ listed oldest first in `msclub/flyers/flyers.json`. They are made by
 flyer can be remade or used as the starting point for a new one (for example next year's
 Thanksgiving dinner).
 
-- **Club home page (computers only):** a flyer for an event is shown beside the
-  next-meeting card through the day of the event. Its picture and name open the PDF in the
-  browser to view or print. The next day it leaves the home page; with no current flyer
-  the next-meeting card takes the full width. Phones show no flyers.
+- **Club pages:** the flyer for an event (its `event_date` is the event's date) shows in
+  **Up next** on the home page while that event is next (beside the details on a computer,
+  below them on a phone), and on the event's own page. Its picture and name open the PDF in
+  the browser to view or print. With no flyer, the details take the full width.
 - **Flyer library (Officer tools):** every flyer, oldest first, with **View or print** and
   **Download**. A flyer whose event has passed moves to **Archive**, where it can still be
   viewed and downloaded, as a record of what the club did.
 - A flyer that isn't for an event (the website flyer) stays in the library's current list
-  and never shows on the home page.
+  and isn't shown with any event.
 
 | Flyer | Made | Event | File |
 |---|---|---|---|
@@ -182,7 +175,7 @@ NODE_PATH=$(npm root -g) node tools/msclub/flyers/make-flyers.mjs <id>   # write
 node tools/msclub/check.mjs                                              # checks the library matches its source
 ```
 
-To take a flyer off the home page early (or retire the website flyer when a new one
+To take a flyer off the club pages early (or retire the website flyer when a new one
 replaces it), add `archived: true` to its entry and run the script.
 
 ## Event info pages
@@ -191,12 +184,10 @@ An event can have a small info page at `msclub/events/<page>/`, for when the car
 isn't enough, such as a call for volunteers. The event's `page` field (migration `club_v6`)
 names it. When it's set:
 
-- its card goes straight to the info page, with no sign-up form in between: on the home
-  page and schedule the whole card (title, button or anywhere else on it), and on the
-  sign-up page its card is a link (**Details and sign-up →**) instead of a choice that
-  opens the form. A link that names the event (`signup/?event=<id>`, the info page's
-  fallback for browsers without pop-ups) still opens its form there, with a **More about
-  …** link;
+- its title and sign-up button go straight to the info page, everywhere (home, schedule,
+  the sign-up page's list), instead of to `event/?id=<id>`. A link that names the event
+  (`signup/?event=<id>`, the info page's fallback for browsers without pop-ups) still opens
+  its form on the sign-up page, with a link back to the info page;
 - the info page reads its event from the live schedule (date, time, place, how many have
   signed up), and its **Sign up** buttons (one at the top, one after the sign-up line)
   open the same sign-up form in a pop-up;
@@ -274,8 +265,8 @@ on white, where it would be too hard to read.
 npm install --no-save @electric-sql/pglite@0.5.8      # once
 CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
 node --test tools/msclub/tests/*.test.mjs   # 12 database contract tests
-NODE_PATH=$(npm root -g) node tools/msclub/tests/club-pages.e2e.mjs   # browser test (Playwright)
-NODE_PATH=$(npm root -g) node tools/msclub/tests/preview.e2e.mjs      # the layout preview
+NODE_PATH=$(npm root -g) node tools/msclub/tests/club-pages.e2e.mjs   # sign-ups, officers, fallback (Playwright)
+NODE_PATH=$(npm root -g) node tools/msclub/tests/site.e2e.mjs         # page layout
 node tools/msclub/check.mjs                 # page checks, schedule data, QR code, flyer library
 node tools/msclub/make-qr.mjs               # regenerate the QR code
 ```

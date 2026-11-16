@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../../assets/style.css">
 <link rel="stylesheet" href="../assets/club.css">
 </head>
-<body class="club" data-club-root="../">
+<body class="club" data-club-root="../" data-page="signup">
 <a class="skip-link" href="#main">Skip to main content</a>
 <header class="club-back-bar">
   <div class="wrap">
@@ -21,36 +21,22 @@
     <nav aria-label="Club">
       <ul>
         <li><a href="../">Home</a></li>
-        <li><a href="./" aria-current="page">Event sign-up</a></li>
-        <li><a href="../#schedule">Schedule</a></li>
+        <li><a href="../schedule/">Schedule</a></li>
+        <li><a class="club-nav-officer" href="../officers/"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z"/></svg>Officer tools</a></li>
       </ul>
     </nav>
-    <a class="club-bar-officer" href="../officers/"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z"/></svg>Officer tools</a>
   </div>
 </div>
 
 <main id="main">
-  <h1 class="visually-hidden">Event sign-up</h1>
-
-  <div id="su-status" role="status">
-    <noscript><div class="club-banner club-banner--warn"><p>This page needs JavaScript to load the sign-up list.</p></div></noscript>
+  <h1 class="visually-hidden" id="site-signup-h1">Event sign-up</h1>
+  <div id="site-status" role="status">
+    <noscript><div class="club-banner club-banner--warn"><p>This page needs JavaScript to load the sign-up form.</p></div></noscript>
   </div>
-
-  <div id="su-pick" hidden>
-    <fieldset class="club-pick" id="su-meetings" hidden>
-      <legend>Club meetings</legend>
-      <div class="club-pick-options" id="su-pick-options"></div>
-    </fieldset>
-    <fieldset class="club-pick" id="su-events" hidden>
-      <legend>Events and trips</legend>
-      <div class="club-pick-options" id="su-pick-events"></div>
-    </fieldset>
-  </div>
-
-  <section class="club-panel club-su-page" id="su-app" aria-label="Food sign-up" hidden></section>
-
+  <p class="site-signup-back" id="site-signup-back"></p>
+  <section class="club-panel club-su-page" id="site-signup" aria-label="Sign-up" hidden></section>
+  <div id="site-choose" hidden></div>
 </main>
-
 <footer class="club-footer">
   <div class="wrap club-footer-grid">
     <div class="club-footer-about">
@@ -62,8 +48,7 @@
       <h2 class="club-footer-title">Club</h2>
       <ul>
         <li><a href="../">Home</a></li>
-        <li><a href="../signup/">Event sign-up</a></li>
-        <li><a href="../#schedule">Schedule</a></li>
+        <li><a href="../schedule/">Schedule</a></li>
         <li><a href="../qr/">Display Website Invite Poster</a></li>
         <li><a href="../officers/">Officer tools</a></li>
       </ul>
@@ -80,6 +65,6 @@
 </footer>
 <script src="../assets/club.js" defer></script>
 <script src="../assets/signup-form.js" defer></script>
-<script src="../assets/signup.js" defer></script>
+<script src="../assets/site.js" defer></script>
 </body>
 </html>

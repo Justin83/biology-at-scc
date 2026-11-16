@@ -119,6 +119,8 @@
   function people(n, one, many) { return n === 1 ? "1 " + one : n + " " + many; }
   function pageName(p) {
     if (p === "home") return "Home page";
+    if (p === "schedule") return "Schedule";
+    if (p === "event") return "Event pages";
     if (p === "signup") return "Sign-up page";
     if (p === "officers") return "Officer tools";
     var m = /^events\/(.+)$/.exec(p);
