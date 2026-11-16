@@ -31,9 +31,14 @@
 
 <main id="main" class="club-wide">
   <h1 class="site-page-title">Schedule</h1>
+  <div class="club-fine">
+    <p>Dates come from the printed <em>MSSE Scholars Proposed Activities</em> schedule for Fall 2026. Events marked <span class="club-chip club-chip--tentative">Tentative</span> could change because of weather or other reasons.</p>
+    <p>Attendance at all activities is encouraged. MSSE scholars need to attend at least 4 each semester and meet with their mentor twice. Schedule changes are sent to your KCTCS student email.</p>
+  </div>
   <div id="site-status" role="status"></div>
   <div class="site-controls">
-    <div class="site-seg" role="group" aria-label="Show">
+    <!-- the filters are hidden for now (Justin's call, 2026-11-16); site.js still supports them -->
+    <div class="site-seg" role="group" aria-label="Show" id="site-filters" hidden>
       <button type="button" data-filter="all" aria-pressed="true">Everything</button>
       <button type="button" data-filter="signup" aria-pressed="false">Sign-up open</button>
       <button type="button" data-filter="meetings" aria-pressed="false">Meetings</button>
@@ -49,10 +54,6 @@
     <summary>Earlier this semester (<span id="site-past-count">0</span>)</summary>
     <div id="site-past"></div>
   </details>
-  <div class="club-fine">
-    <p>Dates come from the printed <em>MSSE Scholars Proposed Activities</em> schedule for Fall 2026. Events marked <span class="club-chip club-chip--tentative">Tentative</span> could change because of weather or other reasons.</p>
-    <p>Attendance at all activities is encouraged. MSSE scholars need to attend at least 4 each semester and meet with their mentor twice. Schedule changes are sent to your KCTCS student email.</p>
-  </div>
 </main>
 <footer class="club-footer">
   <div class="wrap club-footer-grid">
