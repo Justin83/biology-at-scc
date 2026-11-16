@@ -3,7 +3,9 @@
    so the same device can change or remove it later.
 
    var form = Club.signupForm(container, { idPrefix: "m", headingLevel: 3, onChange: fn });
-   form.show(data, event);   // data from Club.load(); re-renders after every change */
+   form.show(data, event);   // data from Club.load(); re-renders after every change
+   The layout preview also passes notesBelow (see Club.bringList) and dryRun (HTML shown
+   instead of saving); the live pages pass neither. */
 (function () {
   "use strict";
   var C = window.Club;
@@ -85,6 +87,9 @@
       '<ul id="' + P + 'mine" class="club-mine"></ul></div></section></div>';
 
     function msg(text, kind) { var el = $("msg"); el.textContent = text || ""; el.className = "club-msg" + (kind ? " is-" + kind : ""); }
+    // opts.dryRun (the layout preview): the form works as usual up to the save, then shows
+    // this HTML instead of saving, changing or removing anything
+    function dryRun() { var el = $("msg"); el.innerHTML = opts.dryRun; el.className = "club-msg is-dry"; }
 
     function render() {
       var e = ev, signups = e.signups || [], mine = tokens(), theme = C.themeText(e);
@@ -104,7 +109,7 @@
       $("note-label").textContent = spec.note;
       $("note").placeholder = spec.notePh;
       $("name-hint").textContent = "First name and last initial is fine. " + (spec.item ? "Names and items show" : "Names show") + " on this page so people can plan.";
-      $("list").innerHTML = C.bringList(e, "h" + ((opts.headingLevel || 3) + 1));
+      $("list").innerHTML = C.bringList(e, "h" + ((opts.headingLevel || 3) + 1), { notesBelow: !!opts.notesBelow });
       var checked = editing ? editing.slot : (container.querySelector('input[name="' + P + 'slot"]:checked') || {}).value;
       $("slots").innerHTML = food ? "" : slots.map(function (s, i) {
         return '<div class="club-choice"><input type="radio" name="' + P + 'slot" id="' + P + "slot-" + i + '" value="' + esc(s.label) + '"' + (checked === s.label || only ? " checked" : "") +
@@ -147,6 +152,7 @@
       if (!entry.name) { msg("Enter your name.", "error"); $("name").focus(); return; }
       if (!slot) { msg("Choose a " + (spec.item ? "category" : "shift or role") + ".", "error"); container.querySelector('input[name="' + P + 'slot"]').focus(); return; }
       if (spec.item && !entry.item) { msg("Say what you're bringing.", "error"); $("item").focus(); return; }
+      if (opts.dryRun) { dryRun(); return; }
       busy = true; $("submit").disabled = true;
       msg(editing ? "Saving…" : "Signing you up…");
       var call = editing
@@ -182,6 +188,7 @@
       }
       var id = b.getAttribute("data-remove");
       if (!id || !window.confirm("Remove this sign-up?")) return;
+      if (opts.dryRun) { dryRun(); return; }
       C.rpc("club_signup_remove", { p_id: id, p_token: tokens()[id] }).then(function (r) {
         if (!r.ok) { msg(C.errorText(r), "error"); return; }
         var t = tokens(); delete t[id]; save(TOKENS, t);

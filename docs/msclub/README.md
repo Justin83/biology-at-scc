@@ -128,18 +128,22 @@ judged in a real browser with the real schedule before anything changes on the l
   list, each entry is its own evenly spaced row, and a note sits underneath, smaller and
   indented (`Club.bringList(e, h, { notesBelow: true })`). The live pages still show the
   note in brackets on the same line until the layout is adopted.
+- `preview/signup/?event=<event id>`: the sign-up page, so every revision can be seen
+  without leaving the preview. It is the live sign-up form (`Club.signupForm`) with the
+  preview's list layout and `dryRun`: **Sign me up**, **Save change** and **Remove** work up
+  to the save, then say nothing was saved and link to the live sign-up page.
 
 It reads the live schedule, sign-ups and flyers through the same public functions as the
-live pages, and **saves nothing**: sign-up buttons open the live sign-up form, and
-`club.js` doesn't count visits under `preview/`. It is `noindex` and linked from nowhere.
+live pages, and **saves nothing**: its sign-up form stops before saving, and `club.js`
+doesn't count visits under `preview/`. It is `noindex` and linked from nowhere.
 
 Event-page text doesn't exist in the database yet, so it comes from
 `preview/data/pages.json`. Entries marked `sample` are placeholders and are labelled on the
 page; STEAM Day's text comes from its real page.
 
 To remove the preview, delete `msclub/preview/` and `tools/msclub/tests/preview.e2e.mjs`,
-and drop `preview` from the `pageKey` regex in `assets/club.js` (and the `notesBelow`
-option from `Club.bringList` in `assets/signup-form.js`, unless the live pages adopt it).
+and drop `preview` from the `pageKey` regex in `assets/club.js` (and the `notesBelow` and
+`dryRun` options from `assets/signup-form.js`, unless the live pages adopt them).
 
 ## Flyers
 
