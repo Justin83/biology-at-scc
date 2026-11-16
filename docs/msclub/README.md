@@ -25,7 +25,10 @@ the top instead of the main site's menu; the club bar's first link is **Home** (
 home). Every club page ends with the same bold SCC-blue footer: the club's name and **Part
 of Biology at SCC**; club links (Home, Schedule, **Display Website Invite Poster**, Officer
 tools); contact (justin.howard@kctcs.edu); and **Not an official KCTCS website.** The club
-bar's menu is **Home · Schedule · Officer tools** (with a lock icon) on every club page. New
+bar's menu is **Home · Schedule · Officer tools** (with a lock icon) on every club page. The
+footer doesn't jump between pages: every page is at least as tall as the window, so a short
+page keeps its footer at the bottom, and while the schedule loads the page holds the full
+window height (`is-loading` on `<body>`, removed by `assets/site.js`). New
 links go in the footer's Club column (or a new column) on all seven pages.
 
 ## For members

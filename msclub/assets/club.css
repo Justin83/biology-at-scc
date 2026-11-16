@@ -32,6 +32,17 @@
   .club { --accent: #8cc4f2; --bg: #0e1520; --fg: #e8eef6; --muted: #a2b0c2; --border: #263447; --card-bg: #152131; }
 }
 
+/* The footer stays put between pages: the page fills at least the window, so on a short
+   page (or while the schedule is still loading) the footer sits at the bottom of the window
+   instead of jumping up; and room for the scrollbar is always kept, so pages that scroll and
+   pages that don't line up the same. Screens only (print keeps its own layout). */
+@media screen {
+  html { scrollbar-gutter: stable; }
+  body.club { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+  body.club > main { flex: 1 0 auto; width: 100%; }
+  body.club.is-loading > main { min-height: 100vh; } /* until site.js has filled the page */
+}
+
 /* the hidden attribute always wins over component display rules (buttons, rows) */
 .club [hidden] { display: none !important; }
 .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
