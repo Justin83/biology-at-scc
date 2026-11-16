@@ -105,7 +105,7 @@
         '<p class="club-next-meta">' + esc(C.timeLabel(next)) + " · " + esc(next.title) + (next.location ? " · " + esc(next.location) : "") +
         (C.relDays(data.today, next.starts_on) ? " · " + esc(C.relDays(data.today, next.starts_on)) : "") + "</p>" +
         (C.themeText(next) ? '<p class="club-theme club-theme--big">Food theme: <strong>' + esc(C.themeText(next)) + "</strong></p>" : "") +
-        (canSignUp(next) ? '<p class="club-actions">' + signupButton(next, "club-btn--big") + "</p>" : closedNote(next) ? "<p>" + closedNote(next) + "</p>" : "") +
+        (canSignUp(next) ? '<p class="club-actions">' + signupButton(next) + "</p>" : closedNote(next) ? "<p>" + closedNote(next) + "</p>" : "") +
         '<p class="club-hint">' + (next.signup_enabled ? esc(C.signupCount(next, true)) + " " : "") +
         '<a href="' + esc(eventUrl(next)) + '">' + (bring ? "See " + esc(C.signupSpec(next).list.toLowerCase()) : "Details") + " →</a></p></div>" +
         (f ? flyerBox(f) : "");
@@ -209,7 +209,7 @@
       '<p class="club-card-chips">' + chips(e) + "</p>" + themeLine(e);
     if (e.status === "postponed") html += '<div class="club-banner club-banner--warn"><p>Postponed. A new date will be announced.</p></div>';
     if (e.status === "cancelled") html += '<div class="club-banner club-banner--warn"><p>Cancelled.</p></div>';
-    if (!past && canSignUp(e)) html += '<div class="club-event-cta">' + signupButton(e, "club-btn--big") + '<p class="club-hint">' + esc(C.signupCount(e, true)) + "</p></div>";
+    if (!past && canSignUp(e)) html += '<div class="club-event-cta">' + signupButton(e) + '<p class="club-hint">' + esc(C.signupCount(e, true)) + "</p></div>";
     else if (closedNote(e)) html += '<p class="club-event-cta">' + closedNote(e) + "</p>";
     var paras = past ? (t && t.recap) : (t && t.body);
     if (paras && paras.length) {
