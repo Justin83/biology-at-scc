@@ -6,7 +6,8 @@
 //   - home: the next meeting appears once (in Up next, not again as a card), the next three
 //     events as cards, the link to the full schedule, and the recaps;
 //   - schedule: List and Cards views, the "Sign-up open" filter, earlier events;
-//   - event page: details, sign-up button to the live form, who's signed up, no calendar file;
+//   - event page: details, sign-up button to the live form, no calendar file; who's bringing
+//     what with each note on its own line underneath, and even spacing with or without notes;
 //     a past event shows its recap;
 //   - sign-up closed site-wide by the officers: no sign-up buttons, and it says so;
 //   - read-only: no visit is counted and nothing is saved from the preview.
@@ -80,15 +81,38 @@ try {
   assert.equal(await p.getAttribute('[data-view="cards"]', "aria-pressed"), "true", "the chosen view is remembered");
   await p.click('[data-view="list"]');
 
-  // event page: the next meeting
-  await p.click('#pv-upcoming .pv-row-title a:text-is("Math and Science Club Meeting")');
-  await p.waitForFunction(() => document.getElementById("ev-title").textContent === "Math and Science Club Meeting");
-  assert.equal(await p.textContent("#ev-kicker"), "Club meeting · Sign-up open");
-  assert.match(await p.innerText("#pv-event .club-event-when"), /Thursday, November 19, 2026 · 5:00 PM/);
-  assert.match(await p.getAttribute("#pv-event .club-event-cta a.club-btn", "href"), /^\.\.\/\.\.\/signup\/\?event=/);
-  assert.equal(await p.$("#pv-ics"), null, "no Add to my calendar (dropped, Justin's call)");
-  assert.doesNotMatch(await p.innerText("#pv-event"), /Add to my calendar/);
-  assert.match(await p.innerText(".pv-sample-note"), /Sample text/);
+  // event page: the next meeting. Two sign-ups go in through the local API first (one with
+  // a note, one without) and come out again at the end of this block.
+  const meetingHref = await p.getAttribute('#pv-upcoming .pv-row-title a:text-is("Math and Science Club Meeting")', "href");
+  const meetingId = new URLSearchParams(meetingHref.split("?")[1]).get("id");
+  const rpc = async (fn, body) => (await fetch(`${API}/rest/v1/rpc/${fn}`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) })).json();
+  const added = [
+    await rpc("club_signup", { p_event_id: meetingId, p_entry: { name: "Test Person A", slot: "Food or drink", item: "Turkey", note: "fried in peanut oil" } }),
+    await rpc("club_signup", { p_event_id: meetingId, p_entry: { name: "Test Person B", slot: "Food or drink", item: "Autumn Harvest Pasta Salad", note: "" } }),
+  ];
+  assert.ok(added.every((r) => r.ok), "test sign-ups saved locally");
+  try {
+    await p.click('#pv-upcoming .pv-row-title a:text-is("Math and Science Club Meeting")');
+    await p.waitForFunction(() => document.getElementById("ev-title").textContent === "Math and Science Club Meeting");
+    assert.equal(await p.textContent("#ev-kicker"), "Club meeting · Sign-up open");
+    assert.match(await p.innerText("#pv-event .club-event-when"), /Thursday, November 19, 2026 · 5:00 PM/);
+    assert.match(await p.getAttribute("#pv-event .club-event-cta a.club-btn", "href"), /^\.\.\/\.\.\/signup\/\?event=/);
+    assert.equal(await p.$("#pv-ics"), null, "no Add to my calendar (dropped, Justin's call)");
+    assert.doesNotMatch(await p.innerText("#pv-event"), /Add to my calendar/);
+    assert.match(await p.innerText(".pv-sample-note"), /Sample text/);
+    // who's bringing what: the note sits on its own line under the entry, without brackets,
+    // and every row is spaced the same whether or not it has a note
+    const rows = await p.$$eval(".pv-bring li", (x) => x.map((li) => {
+      const line = li.querySelector(".club-bring-line"), note = li.querySelector(".note"), cs = getComputedStyle(li);
+      return { line: line && line.textContent, note: note && note.textContent, noteBlock: !!note && getComputedStyle(note).display === "block",
+        noteIndented: !!note && note.getBoundingClientRect().left > line.getBoundingClientRect().left, pad: [cs.paddingTop, cs.paddingBottom] };
+    }));
+    assert.deepEqual(rows.map((r) => [r.line, r.note]), [["Turkey · Test Person A", "fried in peanut oil"], ["Autumn Harvest Pasta Salad · Test Person B", null]]);
+    assert.ok(rows[0].noteBlock && rows[0].noteIndented, "the note is on its own line, indented");
+    assert.deepEqual(rows[0].pad, rows[1].pad, "rows with and without a note are spaced the same");
+  } finally {
+    for (const r of added) if (r.ok) await rpc("club_signup_remove", { p_id: r.id, p_token: r.token });
+  }
 
   // a past event shows its recap, and no sign-up
   await p.goto(PV + "schedule/");

@@ -55,5 +55,15 @@
 .pv-event-page .club-card-chips { margin: 0.2rem 0 0.4rem; }
 .pv-bring { margin: 1.4rem 0 0; }
 .pv-event-page .pv-bring > h2 { margin-top: 0; }
+/* Who's bringing what: one evenly spaced row per entry, with a line between rows. A long
+   entry wraps under itself (hanging indent), and a note sits underneath, smaller and indented. */
+.pv-bring .club-bring ul, .pv-bring .club-bring-cat > ul:first-child { gap: 0; margin-top: 0; }
+.pv-bring .club-bring li { padding: 0.55rem 0; line-height: 1.35; }
+.pv-bring .club-bring li + li { border-top: 1px solid var(--border); }
+.pv-bring .club-bring-cat { padding-top: 0.2rem; padding-bottom: 0.2rem; }
+.pv-bring .club-bring-cat > h3 { padding-top: 0.45rem; }
+.pv-bring .club-bring-line { display: block; padding-left: 1rem; text-indent: -1rem; }
+.pv-bring .club-bring-line .who { display: inline-block; text-indent: 0; }
+.pv-bring .club-bring li .note { display: block; margin: 0.2rem 0 0 1rem; font-size: 0.85rem; line-height: 1.35; }
 .pv-event-flyer { margin: 1.4rem 0 0; }
 .pv-event-flyer .club-flyer { margin: 0; }

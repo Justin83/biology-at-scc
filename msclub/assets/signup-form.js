@@ -23,14 +23,21 @@
   // "Who's bringing what" ("Who's working", "Who's going") for one event: one plain list
   // for food; grouped by shift, role or trip list otherwise. Used inside the sign-up form
   // and on the club home page's next-meeting card. h = heading tag for the groups.
-  C.bringList = function (e, h) {
+  // o.notesBelow: each note goes on its own line under the entry, without the brackets
+  // (the layout preview uses this; the live pages keep the note in brackets on the line).
+  C.bringList = function (e, h, o) {
     var signups = e.signups || [], mine = tokens(), slots = slotsOf(e), spec = C.signupSpec(e);
     var known = slots.map(function (s) { return s.label; });
     var other = signups.filter(function (x) { return known.indexOf(x.slot) === -1; });
+    var below = !!(o && o.notesBelow);
     var line = function (x) {
-      return "<li" + (mine[x.id] ? ' class="is-mine"' : "") + ">" +
-        (spec.item ? "<strong>" + esc(x.item) + '</strong> <span class="who">· ' + esc(x.name) + "</span>" : '<strong class="who">' + esc(x.name) + "</strong>") +
-        (x.note ? ' <span class="note">(' + esc(x.note) + ")</span>" : "") + (mine[x.id] ? ' <span class="you">(you)</span>' : "") + "</li>";
+      var main = spec.item ? "<strong>" + esc(x.item) + '</strong> <span class="who">· ' + esc(x.name) + "</span>" : '<strong class="who">' + esc(x.name) + "</strong>";
+      var you = mine[x.id] ? ' <span class="you">(you)</span>' : "";
+      if (below) {
+        return "<li" + (mine[x.id] ? ' class="is-mine"' : "") + '><span class="club-bring-line">' + main + you + "</span>" +
+          (x.note ? '<span class="note">' + esc(x.note) + "</span>" : "") + "</li>";
+      }
+      return "<li" + (mine[x.id] ? ' class="is-mine"' : "") + ">" + main + (x.note ? ' <span class="note">(' + esc(x.note) + ")</span>" : "") + you + "</li>";
     };
     if (isFood(e)) {
       return '<div class="club-bring-cat' + (signups.length ? "" : " is-empty") + '">' +
