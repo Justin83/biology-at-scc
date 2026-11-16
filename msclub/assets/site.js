@@ -231,6 +231,9 @@
   // an old link to the schedule on the home page (msclub/#schedule) goes to the schedule page
   if (page === "home" && location.hash === "#schedule") { location.replace(root + "schedule/"); return; }
   function status(html) { var el = $("site-status"); if (el) el.innerHTML = html; }
+  // <body class="is-loading"> keeps the page a full window tall until the schedule is in, so
+  // the footer doesn't flash up the page and drop back down (club.css)
+  function loaded() { body.classList.remove("is-loading"); }
   Promise.all([
     C.load(root),
     fetch(root + "data/pages.json").then(function (r) { return r.ok ? r.json() : { pages: {} }; }, function () { return { pages: {} }; }),
@@ -250,7 +253,9 @@
     if (page === "schedule") { wireSchedule(); renderSchedule(); }
     if (page === "event") renderEvent();
     if (page === "signup") renderSignup();
+    loaded();
   }, function () {
     status('<div class="club-banner club-banner--warn"><p>The schedule could not be loaded. Reload the page to try again.</p></div>');
+    loaded();
   });
 })();

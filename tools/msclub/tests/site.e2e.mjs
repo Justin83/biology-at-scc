@@ -15,7 +15,9 @@
 //     note on its own line underneath, and even spacing with or without notes; the sign-up
 //     page has the same list and a link back to the event; a past event has no sign-up;
 //   - the sign-up page with no event named lists the events taking sign-ups;
-//   - sign-up closed site-wide by the officers: no sign-up buttons, and the pages say so.
+//   - sign-up closed site-wide by the officers: no sign-up buttons, and the pages say so;
+//   - on a computer the footer doesn't jump: at the bottom of the window on a short page,
+//     out of view while the schedule loads, scrollbar room always kept.
 import http from "node:http";
 import fs from "node:fs";
 import path from "node:path";
@@ -187,6 +189,22 @@ try {
     await p.goto(SITE + rel + Q);
     assert.deepEqual(await menu(p), MENU, rel);
     assert.equal(await p.$(".club-bar-officer"), null, rel);
+  }
+
+  // the footer doesn't jump between pages on a computer: a short page fills the window, so
+  // its footer sits at the bottom; while the schedule loads the footer stays out of view;
+  // room for the scrollbar is always kept
+  const d = await (await browser.newContext({ viewport: { width: 1920, height: 1300 }, timezoneId: "America/New_York" })).newPage();
+  d.on("pageerror", (e) => errors.push(String(e)));
+  await d.route(/\/rpc\/club_events$/, async (r) => { await new Promise((z) => setTimeout(z, 800)); await r.continue().catch(() => {}); });
+  for (const rel of ["signup/", "event/?id=" + meetingId]) {
+    await d.goto(SITE + rel + (rel.includes("?") ? "&" : "?") + Q.slice(1), { waitUntil: "domcontentloaded" });
+    assert.equal(await d.evaluate(() => document.body.classList.contains("is-loading")), true, rel);
+    assert.ok(await d.evaluate(() => document.querySelector("footer.club-footer").getBoundingClientRect().top >= innerHeight), rel + ": footer out of view while loading");
+    await d.waitForFunction(() => !document.body.classList.contains("is-loading"));
+    const f = await d.evaluate(() => ({ bottom: document.querySelector("footer.club-footer").getBoundingClientRect().bottom, h: innerHeight, gutter: getComputedStyle(document.documentElement).scrollbarGutter }));
+    assert.ok(Math.abs(f.bottom - f.h) < 2, rel + ": short page, footer at the bottom of the window");
+    assert.equal(f.gutter, "stable", rel);
   }
 
   assert.deepEqual(errors, [], "no page errors");
