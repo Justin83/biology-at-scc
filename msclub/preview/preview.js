@@ -105,7 +105,7 @@
         '<p class="club-next-meta">' + esc(C.timeLabel(next)) + " · " + esc(next.title) + (next.location ? " · " + esc(next.location) : "") +
         (C.relDays(data.today, next.starts_on) ? " · " + esc(C.relDays(data.today, next.starts_on)) : "") + "</p>" +
         (C.themeText(next) ? '<p class="club-theme club-theme--big">Food theme: <strong>' + esc(C.themeText(next)) + "</strong></p>" : "") +
-        (canSignUp(next) ? '<p class="club-actions">' + signupButton(next, "club-btn--big") + "</p>" : closedNote(next) ? "<p>" + closedNote(next) + "</p>" : "") +
+        (canSignUp(next) ? '<p class="club-actions">' + signupButton(next) + "</p>" : closedNote(next) ? "<p>" + closedNote(next) + "</p>" : "") +
         '<p class="club-hint">' + (next.signup_enabled ? esc(C.signupCount(next, true)) + " " : "") +
         '<a href="' + esc(eventUrl(next)) + '">' + (bring ? "See " + esc(C.signupSpec(next).list.toLowerCase()) : "Details") + " →</a></p></div>" +
         (f ? flyerBox(f) : "");
@@ -161,38 +161,6 @@
   }
 
   // ------------------------------------------------------------ event page
-  // New York's offset from UTC (minutes) at an instant, e.g. -300 in winter, -240 in summer
-  function nyOffset(ms) {
-    var g = {};
-    new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" })
-      .formatToParts(new Date(ms)).forEach(function (p) { g[p.type] = p.value; });
-    return (Date.UTC(+g.year, +g.month - 1, +g.day, +g.hour % 24, +g.minute, +g.second) - ms) / 60000;
-  }
-  // a Somerset wall-clock date and time ("2026-11-19", "17:00") as an iCalendar UTC time
-  function nyToUtc(date, time) {
-    var p = C.parts(date), hm = time.split(":");
-    var wall = Date.UTC(p.y, p.m - 1, p.d, +hm[0], +hm[1]);
-    var utc = wall - nyOffset(wall) * 60000;
-    utc = wall - nyOffset(utc) * 60000; // settle the offset on the event's own side of a DST change
-    return new Date(utc).toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z");
-  }
-  function ics(e) {
-    var d = e.starts_on.replace(/-/g, "");
-    var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Math & Science Club//SCC//EN", "BEGIN:VEVENT",
-      "UID:" + e.id + "@biologyatscc.com", "DTSTAMP:" + new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z")];
-    if (e.start_time) {
-      lines.push("DTSTART:" + nyToUtc(e.starts_on, e.start_time));
-      if (e.end_time) lines.push("DTEND:" + nyToUtc(e.ends_on || e.starts_on, e.end_time));
-    } else {
-      var p = C.parts(e.ends_on || e.starts_on), next = new Date(Date.UTC(p.y, p.m - 1, p.d + 1)).toISOString().slice(0, 10).replace(/-/g, "");
-      lines.push("DTSTART;VALUE=DATE:" + d, "DTEND;VALUE=DATE:" + next);
-    }
-    var clean = function (s) { return String(s).replace(/[\\,;]/g, function (c) { return "\\" + c; }).replace(/\n/g, "\\n"); };
-    lines.push("SUMMARY:" + clean(e.title));
-    if (e.location) lines.push("LOCATION:" + clean(e.location));
-    lines.push("URL:https://biologyatscc.com/msclub/", "END:VEVENT", "END:VCALENDAR");
-    return lines.join("\r\n") + "\r\n";
-  }
   function renderEvent() {
     var id = new URLSearchParams(location.search).get("id");
     var e = data.events.filter(function (x) { return x.id === id; })[0];
@@ -209,7 +177,7 @@
       '<p class="club-card-chips">' + chips(e) + "</p>" + themeLine(e);
     if (e.status === "postponed") html += '<div class="club-banner club-banner--warn"><p>Postponed. A new date will be announced.</p></div>';
     if (e.status === "cancelled") html += '<div class="club-banner club-banner--warn"><p>Cancelled.</p></div>';
-    if (!past && canSignUp(e)) html += '<div class="club-event-cta">' + signupButton(e, "club-btn--big") + '<p class="club-hint">' + esc(C.signupCount(e, true)) + "</p></div>";
+    if (!past && canSignUp(e)) html += '<div class="club-event-cta">' + signupButton(e) + '<p class="club-hint">' + esc(C.signupCount(e, true)) + "</p></div>";
     else if (closedNote(e)) html += '<p class="club-event-cta">' + closedNote(e) + "</p>";
     var paras = past ? (t && t.recap) : (t && t.body);
     if (paras && paras.length) {
@@ -225,17 +193,9 @@
         '<div class="club-bring">' + C.bringList(e, "h3") + "</div></section>";
     }
     if (f) html += '<div class="pv-event-flyer">' + flyerBox(f) + "</div>";
-    html += '<p class="club-actions">' + (!past ? '<a class="club-btn club-btn--ghost" id="pv-ics" href="#">Add to my calendar</a>' : "") +
-      '<a class="club-btn club-btn--ghost" href="' + esc(proot + "schedule/") + '">← Full schedule</a></p>';
+    html += '<p class="club-actions"><a class="club-btn club-btn--ghost" href="' + esc(proot + "schedule/") + '">← Full schedule</a></p>';
     $("pv-event").innerHTML = html;
-    var a = $("pv-ics");
-    if (a) {
-      a.href = URL.createObjectURL(new Blob([ics(e)], { type: "text/calendar" }));
-      a.download = e.title.replace(/[^\w\- ]+/g, "").trim().replace(/\s+/g, "-") + ".ics";
-    }
   }
-
-  window.ClubPreview = { ics: ics }; // for the browser test
 
   // ------------------------------------------------------------ start
   function fail() {

@@ -6,10 +6,9 @@
 //   - home: the next meeting appears once (in Up next, not again as a card), the next three
 //     events as cards, the link to the full schedule, and the recaps;
 //   - schedule: List and Cards views, the "Sign-up open" filter, earlier events;
-//   - event page: details, sign-up button to the live form, who's signed up, add to calendar;
+//   - event page: details, sign-up button to the live form, who's signed up, no calendar file;
 //     a past event shows its recap;
 //   - sign-up closed site-wide by the officers: no sign-up buttons, and it says so;
-//   - "Add to my calendar" files carry Somerset times as UTC, whatever the phone's time zone;
 //   - read-only: no visit is counted and nothing is saved from the preview.
 import http from "node:http";
 import fs from "node:fs";
@@ -60,6 +59,10 @@ try {
   assert.deepEqual(await p.$$eval("#pv-news .club-card-title", (x) => x.map((y) => y.textContent)), ["Laurel STEAM Day", "Math and Science Club Meeting"]);
   assert.match(await p.getAttribute("#pv-coming .club-card a.club-btn", "href"), /^\.\.\/signup\/\?event=[0-9a-f-]{36}$/, "sign-up opens the live form");
   assert.ok((await p.textContent(".pv-banner")).includes("Layout preview"));
+  // the header menu: Home, Schedule, then Officer tools; the footer keeps Officer tools too
+  assert.deepEqual(await p.$$eval('.club-bar nav[aria-label="Club"] a', (x) => x.map((a) => a.textContent.trim())), ["Home", "Schedule", "Officer tools"]);
+  assert.equal(await p.$(".club-bar-officer"), null, "no separate Officer tools button at the right edge");
+  assert.equal(await p.$$eval('.club-footer a[href$="officers/"]', (x) => x.length), 1, "Officer tools stays in the footer");
 
   // schedule: List (default), Cards, filter, earlier
   await p.goto(PV + "schedule/");
@@ -83,7 +86,8 @@ try {
   assert.equal(await p.textContent("#ev-kicker"), "Club meeting · Sign-up open");
   assert.match(await p.innerText("#pv-event .club-event-when"), /Thursday, November 19, 2026 · 5:00 PM/);
   assert.match(await p.getAttribute("#pv-event .club-event-cta a.club-btn", "href"), /^\.\.\/\.\.\/signup\/\?event=/);
-  assert.ok(await p.$("#pv-ics"), "add to calendar");
+  assert.equal(await p.$("#pv-ics"), null, "no Add to my calendar (dropped, Justin's call)");
+  assert.doesNotMatch(await p.innerText("#pv-event"), /Add to my calendar/);
   assert.match(await p.innerText(".pv-sample-note"), /Sample text/);
 
   // a past event shows its recap, and no sign-up
@@ -94,21 +98,6 @@ try {
   await p.waitForFunction(() => document.getElementById("ev-title").textContent === "Laurel STEAM Day");
   assert.equal(await p.textContent("#ev-kicker"), "Event · Recap");
   assert.equal(await p.$("#pv-event .club-event-cta"), null);
-
-  // calendar files: Somerset wall-clock times, written as UTC, from a phone in another time zone
-  const west = watch(await (await browser.newContext({ timezoneId: "America/Los_Angeles" })).newPage());
-  await west.goto(PV + "schedule/");
-  await west.waitForSelector("#pv-upcoming .pv-row");
-  const ics = (e) => west.evaluate((x) => window.ClubPreview.ics(x), e);
-  const winter = await ics({ id: "a", title: "Meeting", starts_on: "2026-11-19", start_time: "17:00", end_time: null });
-  assert.match(winter, /\r\nDTSTART:20261119T220000Z\r\n/, "5:00 PM EST = 22:00 UTC");
-  assert.doesNotMatch(winter, /DTEND/);
-  const summer = await ics({ id: "b", title: "Social", starts_on: "2026-08-20", start_time: "17:00", end_time: "19:00" });
-  assert.match(summer, /DTSTART:20260820T210000Z\r\nDTEND:20260820T230000Z/, "EDT is UTC-4");
-  const afterChange = await ics({ id: "c", title: "Early", starts_on: "2027-03-14", start_time: "08:00", end_time: null });
-  assert.match(afterChange, /DTSTART:20270314T120000Z/, "the morning daylight time starts");
-  const allDay = await ics({ id: "d", title: "Tour", starts_on: "2026-09-11", start_time: null, end_time: null });
-  assert.match(allDay, /DTSTART;VALUE=DATE:20260911\r\nDTEND;VALUE=DATE:20260912/);
 
   // officers close sign-up for the whole site: no buttons, and the preview says so
   assert.equal((await admin("set_signups_open", { open: false })).ok, true);
