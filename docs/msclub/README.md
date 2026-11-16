@@ -124,7 +124,10 @@ judged in a real browser with the real schedule before anything changes on the l
 - `preview/schedule/`: the whole schedule, with **List** (by date, one line from each
   event's page) and **Cards** views, a "Sign-up open" filter, and earlier events.
 - `preview/event/?id=<event id>`: a page for any event, with details, the sign-up button,
-  who's signed up, the flyer, and a recap after the date.
+  who's signed up, the flyer, and a recap after the date. In its "Who's bringing what"
+  list, each entry is its own evenly spaced row, and a note sits underneath, smaller and
+  indented (`Club.bringList(e, h, { notesBelow: true })`). The live pages still show the
+  note in brackets on the same line until the layout is adopted.
 
 It reads the live schedule, sign-ups and flyers through the same public functions as the
 live pages, and **saves nothing**: sign-up buttons open the live sign-up form, and
@@ -135,7 +138,8 @@ Event-page text doesn't exist in the database yet, so it comes from
 page; STEAM Day's text comes from its real page.
 
 To remove the preview, delete `msclub/preview/` and `tools/msclub/tests/preview.e2e.mjs`,
-and drop `preview` from the `pageKey` regex in `assets/club.js`.
+and drop `preview` from the `pageKey` regex in `assets/club.js` (and the `notesBelow`
+option from `Club.bringList` in `assets/signup-form.js`, unless the live pages adopt it).
 
 ## Flyers
 

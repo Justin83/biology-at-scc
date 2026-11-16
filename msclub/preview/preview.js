@@ -190,7 +190,7 @@
     if (t && t.full_page) html += '<p><a href="' + esc(root + t.full_page) + '">Read the full STEAM Day page →</a></p>';
     if (e.signup_enabled && (e.signups || []).length) {
       html += '<section class="club-bring-panel pv-bring" aria-labelledby="pv-bring-title"><h2 id="pv-bring-title">' + esc(C.signupSpec(e).list) + "</h2>" +
-        '<div class="club-bring">' + C.bringList(e, "h3") + "</div></section>";
+        '<div class="club-bring">' + C.bringList(e, "h3", { notesBelow: true }) + "</div></section>";
     }
     if (f) html += '<div class="pv-event-flyer">' + flyerBox(f) + "</div>";
     html += '<p class="club-actions"><a class="club-btn club-btn--ghost" href="' + esc(proot + "schedule/") + '">← Full schedule</a></p>';
