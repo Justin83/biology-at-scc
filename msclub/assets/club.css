@@ -153,7 +153,7 @@
 .club-bring-line { display: block; padding-left: 1rem; text-indent: -1rem; }
 .club-bring-line .who { display: inline-block; text-indent: 0; }
 .club-bring li.is-mine .who { font-weight: 700; }
-.club-bring .note { display: block; margin: 0.2rem 0 0 1rem; color: var(--muted); font-size: 0.85rem; line-height: 1.35; }
+.club-bring .note { display: block; margin: 0.2rem 0 0 1rem; color: var(--muted); font-size: 0.85rem; font-style: italic; line-height: 1.35; }
 .club-bring-none { margin: 0; padding: 0.35rem 0; color: var(--muted); }
 .club-bring .you { color: var(--accent); font-weight: 700; font-size: 0.9rem; }
 .club-mine { list-style: none; padding: 0; margin: 0.5rem 0 0; display: grid; gap: 0.5rem; }
