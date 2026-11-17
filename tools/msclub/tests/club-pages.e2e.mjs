@@ -74,10 +74,13 @@ try {
   assert.match(next, /Nobody has signed up yet\./);
   assert.equal(await a.$$eval("#site-coming .club-card", (c) => c.length), 3, "the next three events");
   assert.equal((await a.textContent('.club-bar nav a[aria-current="page"]')).trim(), "Home");
-  // the main site's links are replaced by one way back
-  assert.equal((await a.textContent("header .club-back")).replace(/\s+/g, " ").trim(), "← Back to Biology at SCC");
-  assert.equal(await a.getAttribute("header .club-back", "href"), "../index.html");
+  // no main-site menu and no "Back to Biology at SCC" bar (Justin, 2026-11-17): the club bar is
+  // the top of the page; the footer's "Part of Biology at SCC" is the way to the main site
+  assert.equal(await a.$$eval(".club-back, .club-back-bar", (n) => n.length), 0, "no back bar at the top");
+  assert.doesNotMatch(await text(a, "body"), /Back to Biology/);
   assert.equal(await a.$$eval("header nav", (n) => n.length), 0, "no main-site link row on club pages");
+  assert.equal(await a.$eval("body > *:not(.skip-link)", (e) => e.className + "|" + e.getAttribute("role")), "club-bar|banner", "the club bar is first");
+  assert.equal(await a.getAttribute(".club-footer a[href='../index.html']", "href"), "../index.html");
   // officer tools: in the menu, after Schedule
   assert.equal(await a.getAttribute(".club-bar a.club-nav-officer", "href"), "officers/");
   // the home page has no QR code (the QR poster is linked from the footer); the Thanksgiving
