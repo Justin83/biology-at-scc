@@ -24,9 +24,10 @@ repository README. People reach the club through the QR poster and shared links.
 | `events/<page>/` | everyone | An event's info page, for a call to action such as volunteering (see [Event info pages](#event-info-pages)). Now: `events/steam-day-2027/` |
 | `qr/` | print | Poster with the club's QR code, to print or show in class (**Display Website Invite Poster** in every club page's footer) |
 
-The site home page links to the club. Club pages carry a **Back to Biology at SCC** link at
-the top instead of the main site's menu; the club bar's first link is **Home** (the club
-home). Every club page ends with the same bold SCC-blue footer: the club's name and **Part
+The site home page links to the club. Club pages have no main-site menu and no back link at
+the top (the **Back to Biology at SCC** bar was removed 2026-11-17); the club bar is the top of
+every page and its first link is **Home** (the club home). The way to the main site is **Part
+of Biology at SCC** in the footer. Every club page ends with the same bold SCC-blue footer: the club's name and **Part
 of Biology at SCC**; club links (Home, Schedule, **Display Website Invite Poster**, Officer
 tools); contact (justin.howard@kctcs.edu); and **Not an official KCTCS website.** The club
 bar's menu is **Home · Schedule · Officer tools** (with a lock icon) on every club page. The
