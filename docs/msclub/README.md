@@ -20,7 +20,7 @@ repository README. People reach the club through the QR poster and shared links.
 | `schedule/` | everyone | The note about the printed MSSE schedule (and MSSE attendance) right under the title; every event, as a **List** by date (default) or as **Cards**, remembered per browser; **Earlier this semester** below. The filters (**Everything**, **Sign-up open**, **Meetings**, **Other events**) are hidden for now (Justin's call, 2026-11-16): remove `hidden` from `#site-filters` in `schedule/index.html` to bring them back |
 | `event/?id=<id>` | everyone | One event: date, time, place, food theme, the sign-up button and count, its own text (see [Event text](#event-text)), **who's bringing what** (each note on its own line underneath), its flyer, and a link back to the schedule. An event with an info page (below) links there instead |
 | `signup/?event=<id>` | everyone | The sign-up form for one event, with a link back to its page: who's bringing what beside the form on a computer, above it on a phone; add, change or remove your own sign-up; no account. With no event named: the events taking sign-ups, with their buttons |
-| `officers/` | club officers (`noindex`) | Edit dates, times, titles and food themes in a pop-up editor (two columns on a desktop); add, postpone, cancel or delete events; set up sign-up (bring food, volunteers or who's going); remove sign-ups; open or close sign-up; the **Flyer library**; change the officer code |
+| `officers/` | club officers (`noindex`) | Edit dates, times, titles and food themes in a pop-up editor (two columns on a desktop); add, postpone, cancel or delete events; set up sign-up (bring food, volunteers or who's going); remove sign-ups; open or close sign-up for one event (or all at once); the **Flyer library**; change the officer code |
 | `events/<page>/` | everyone | An event's info page, for a call to action such as volunteering (see [Event info pages](#event-info-pages)). Now: `events/steam-day-2027/` |
 | `qr/` | print | Poster with the club's QR code, to print or show in class (**Display Website Invite Poster** in every club page's footer) |
 
@@ -68,9 +68,15 @@ links go in the footer's Club column (or a new column) on all seven pages.
      announced). **Cancelled** keeps it on the page, crossed out. **Delete** removes it
      and its sign-ups.
    - Types: Club meeting, Social, Astronomy, Campus tour, Conference, Event, Graduation.
-   - **Add an event** creates a new one.
-4. **Sign-up:** tick "Members can sign up for this event", then choose what people sign
-   up for:
+     The type sets the pill on the card; **Club meeting** is the gold one. The December 3
+     Holiday Party is a Club meeting (since `club_v10`).
+   - **Add an event** creates a new one. A new event takes sign-ups, **open**, unless you
+     untick it (Justin's call, 2026-11-19): untick "Members can sign up" for events that
+     don't need one (graduation, for example). Its sign-up type follows the event type
+     until you pick one: Campus tour and Conference get **Who's going**, everything else
+     **Bring food**.
+4. **Sign-up:** tick "Members can sign up for this event" (ticked already on a new event),
+   then choose what people sign up for:
    - **Bring food** (club meetings and socials): no categories. People give their name,
      what they're bringing and an optional allergy note; "Who's bringing what" is one
      plain list (dish · name). The November 19 meeting and the December 3 holiday party
@@ -89,11 +95,20 @@ links go in the footer's Club column (or a new column) on all seven pages.
      "The club is providing pizza" or the S-STEM scholar note on STEAM Day.
 5. **Remove a sign-up:** open the event in the editor; its sign-ups are listed with
    Remove buttons.
-6. **Close food sign-up** stops all new sign-ups and changes until it is reopened.
-7. **Flyer library:** every club flyer, oldest first, with **View or print** (opens the PDF
+6. **Open or close one event's sign-up:** every upcoming event with a sign-up has a
+   **Close sign-up** button next to **Edit** (and a "Sign-up is open" box in the editor).
+   Closing stops new sign-ups and changes for that event only: its list ("Who's bringing
+   what") stays on the page, the pages say "Sign-up is closed." instead of showing the
+   button, and people can still remove their own sign-up. **Open sign-up** starts it
+   again. Other events aren't affected, so closing a meeting or the Holiday Party leaves
+   STEAM Day open. Every event is open until an officer closes it (`club_v10`).
+7. **Close all sign-up** (at the top, "Sign-up for all events") stops new sign-ups and
+   changes for every event at once, STEAM Day included, until it is reopened. Use the
+   per-event button above for anything less.
+8. **Flyer library:** every club flyer, oldest first, with **View or print** (opens the PDF
    in the browser) and **Download**. Flyers for events that have passed are under
    **Archive**. See [Flyers](#flyers).
-8. **Change the officer code** (at least 8 characters) at the bottom of the officer
+9. **Change the officer code** (at least 8 characters) at the bottom of the officer
    tools. The new code works immediately, so share it with the other officers.
 
 The officer code is stored only as a bcrypt hash. It was given to Justin directly and is
@@ -292,7 +307,7 @@ on white, where it would be too hard to read.
 ```bash
 npm install --no-save @electric-sql/pglite@0.5.8      # once
 CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
-node --test tools/msclub/tests/*.test.mjs   # 12 database contract tests
+node --test tools/msclub/tests/*.test.mjs   # 14 database contract tests
 NODE_PATH=$(npm root -g) node tools/msclub/tests/club-pages.e2e.mjs   # sign-ups, officers, fallback (Playwright)
 NODE_PATH=$(npm root -g) node tools/msclub/tests/site.e2e.mjs         # page layout
 node tools/msclub/check.mjs                 # page checks, schedule data, QR code, flyer library
@@ -395,6 +410,28 @@ to the real database.
       codes are refused; in a browser, Officer tools unlocked with the override and locked
       again after 16 (simulated) idle minutes.
 
+13. **Update 2026-11-19 (migration `club_v10`, `sql/010_club_event_signup_open.sql`):**
+    - Justin asked for open and close sign-up per event (meetings, the holiday party,
+      trips; "leave STEAM Day open"; new events default to open) and for the Holiday Party
+      to be clearly marked as a club meeting;
+    - `club.events.signup_open` (default true); `club_signup` and `club_signup_update`
+      refuse a closed event with `signup_closed`; `club_admin` gets
+      `set_event_signup_open`, and `save_event` keeps the value unless the editor sends
+      one; the December 3 Holiday Party's type is now Club meeting;
+    - applied through the Management API as `club_v10` (`schema_migrations` version
+      20261119201453), after checking that the six live functions it replaces matched
+      the repository exactly;
+    - **existing club data untouched:** the events (18), sign-ups (12) and settings
+      (officer code included) checksums are the same before and after, apart from the
+      Holiday Party's type; all 18 events are open, STEAM Day included; anon can still
+      call the public functions;
+    - **production smoke test**, inside a block that was rolled back (temporary officer
+      code): a wrong code is refused; closing the Holiday Party refuses new sign-ups and
+      changes there while STEAM Day still takes a volunteer; the party's list stays
+      public; a person can still remove their own sign-up; a new event starts open.
+
 Rollback: the `drop …` statements at the end of the SQL file. Setting `enabled: false`
 returns the pages to the printed schedule. For `club_v9`:
-`delete from club.settings where key = 'override_code_hash';`
+`delete from club.settings where key = 'override_code_hash';` For `club_v10`: see the
+end of `sql/010_club_event_signup_open.sql` (old pages ignore `signup_open`, so the
+column can stay).

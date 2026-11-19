@@ -28,10 +28,14 @@
   // an event with its own info page (msclub/events/<page>/, e.g. STEAM Day) goes there, title
   // and sign-up button alike; every other event has a page at event/?id=<id>
   function eventUrl(e) { return C.pageUrl(root, e) || root + "event/?id=" + encodeURIComponent(e.id); }
-  // open for sign-up: the event takes sign-ups and officers haven't closed sign-up site-wide
+  // open for sign-up: the event takes sign-ups, and officers haven't closed it (that event's
+  // own switch, sql/010) or closed sign-up site-wide
   function takesSignUps(e) { return data.live && e.signup_enabled && e.status === "scheduled" && !C.isPast(e, data.today); }
-  function canSignUp(e) { return takesSignUps(e) && data.signups_open; }
-  function closedNote(e) { return takesSignUps(e) && !data.signups_open ? '<span class="club-hint">Sign-up is closed right now.</span>' : ""; }
+  function isOpen(e) { return data.signups_open && C.signupOpen(e); }
+  function canSignUp(e) { return takesSignUps(e) && isOpen(e); }
+  function closedNote(e) {
+    return takesSignUps(e) && !isOpen(e) ? '<span class="club-hint">' + (data.signups_open ? "Sign-up is closed." : "Sign-up is closed right now.") + "</span>" : "";
+  }
   function signupUrl(e) { return root + "signup/?event=" + encodeURIComponent(e.id); }
   function signupButton(e, cls) {
     return '<a class="club-btn' + (cls ? " " + cls : "") + '" href="' + esc(C.pageUrl(root, e) || signupUrl(e)) + '">' + esc(C.signupSpec(e).button) + "</a>";

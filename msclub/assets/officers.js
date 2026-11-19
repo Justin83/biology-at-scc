@@ -21,6 +21,9 @@
     going: { slots: ["Going"], title: "Spots", hint: "(put the number of spots in \"How many\", or leave it empty for no limit)", add: "Add an option", usual: "Use one \"Going\" list" }
   };
   function defaultSlots(kind) { return KIND_SETUP[kind].slots.map(function (l) { return { label: l, needed: null }; }); }
+  // the usual sign-up for a new event of this type (trips: who's going; otherwise food)
+  function kindFor(type) { return type === "campus-tour" || type === "conference" ? "going" : "food"; }
+  var kindTouched = false; // the officer picked the sign-up kind in this editor
   function sameLabels(a, b) { return a.length === b.length && a.every(function (s, i) { return s.label === b[i]; }); }
   function showKind(kind) {
     var k = KIND_SETUP[kind];
@@ -108,11 +111,13 @@
   setInterval(checkIdle, 20000);
 
   // ------------------------------------------------------------ open / closed
+  // the site-wide switch (settings.signups_open): closes every event at once, STEAM Day
+  // included. Each event also has its own Open / Close button in the list below (sql/010).
   function showOpen() {
     $("of-open-text").innerHTML = settings.signups_open
-      ? "<strong>Open.</strong> Anyone with the link or QR code can sign up for events that have food sign-up turned on."
-      : "<strong>Closed.</strong> Nobody can add or change sign-ups until it is reopened.";
-    $("of-toggle-open").textContent = settings.signups_open ? "Close food sign-up" : "Reopen food sign-up";
+      ? "<strong>Open.</strong> Anyone with the link or QR code can sign up for any event whose own sign-up is open. To close just one event, use its <strong>Close sign-up</strong> button below."
+      : "<strong>Closed.</strong> Nobody can sign up for any event, or change a sign-up, until it is reopened. This closes every event, STEAM Day included.";
+    $("of-toggle-open").textContent = settings.signups_open ? "Close all sign-up" : "Reopen all sign-up";
   }
   $("of-toggle-open").addEventListener("click", function () {
     admin("set_signups_open", { open: !settings.signups_open }).then(function (r) {
@@ -124,11 +129,20 @@
 
   // ------------------------------------------------------------ event list
   function row(e) {
-    var n = (e.signups || []).length;
-    return '<li class="' + (C.isPast(e, data.today) ? "is-past" : "") + '"><div><p><strong>' + esc(C.shortDate(e.starts_on)) + "</strong> · " + esc(C.timeLabel(e)) + " · " + esc(e.title) +
+    var n = (e.signups || []).length, past = C.isPast(e, data.today), open = C.signupOpen(e);
+    var name = esc(e.title + ", " + C.shortDate(e.starts_on));
+    // Open / Close sign-up for this one event (sql/010), for upcoming events that have a sign-up
+    var toggle = e.signup_enabled && !past
+      ? '<button type="button" class="club-btn club-btn--ghost club-btn--small" data-signup-open="' + (open ? "false" : "true") + '" data-event="' + esc(e.id) + '">' +
+        (open ? "Close sign-up" : "Open sign-up") + '<span class="visually-hidden"> for ' + name + "</span></button>"
+      : "";
+    return '<li class="' + (past ? "is-past" : "") + '"><div><p><strong>' + esc(C.shortDate(e.starts_on)) + "</strong> · " + esc(C.timeLabel(e)) + " · " + esc(e.title) +
+      (e.kind === "meeting" ? ' <span class="club-chip club-chip--meeting">Club meeting</span>' : "") +
       (e.tentative ? ' <span class="club-chip club-chip--tentative">Tentative</span>' : "") + (e.status === "postponed" ? ' <span class="club-chip club-chip--postponed">Postponed</span>' : "") + (e.status === "cancelled" ? ' <span class="club-chip club-chip--cancelled">Cancelled</span>' : "") + "</p>" +
-      (e.signup_enabled || e.theme ? '<p class="club-hint">' + [e.theme ? "Food theme: " + esc(e.theme) : "", e.signup_enabled ? "Sign-up on: " + C.signupSpec(e).short + " · " + n + (n === 1 ? " sign-up" : " sign-ups") : ""].filter(Boolean).join(" · ") + "</p>" : "") +
-      '</div><button type="button" class="club-btn club-btn--ghost club-btn--small" data-edit="' + esc(e.id) + '">Edit<span class="visually-hidden"> ' + esc(e.title + ", " + C.shortDate(e.starts_on)) + "</span></button></li>";
+      (e.signup_enabled || e.theme ? '<p class="club-hint">' + [e.theme ? "Food theme: " + esc(e.theme) : "",
+        e.signup_enabled ? (open ? "Sign-up open: " : "<strong>Sign-up closed:</strong> ") + C.signupSpec(e).short + " · " + n + (n === 1 ? " sign-up" : " sign-ups") : ""].filter(Boolean).join(" · ") + "</p>" : "") +
+      '</div><span class="club-actions club-officer-btns">' + toggle +
+      '<button type="button" class="club-btn club-btn--ghost club-btn--small" data-edit="' + esc(e.id) + '">Edit<span class="visually-hidden"> ' + name + "</span></button></span></li>";
   }
   // ---------------------------------------------------------------- flyer library
   function flyerItem(f, today) {
@@ -227,11 +241,29 @@
   }
   [$("of-upcoming"), $("of-past")].forEach(function (ul) {
     ul.addEventListener("click", function (ev) {
+      var t = ev.target.closest("[data-signup-open]");
+      if (t) { setEventOpen(t.getAttribute("data-event"), t.getAttribute("data-signup-open") === "true"); return; }
       var b = ev.target.closest("[data-edit]");
       if (!b) return;
       openEditor(data.events.filter(function (e) { return e.id === b.getAttribute("data-edit"); })[0], b);
     });
   });
+  // one event's Open / Close sign-up button (club_admin set_event_signup_open, sql/010)
+  function setEventOpen(id, open) {
+    var e = data.events.filter(function (x) { return x.id === id; })[0];
+    if (!e) return;
+    msg("of-list-msg", (open ? "Opening" : "Closing") + " sign-up…");
+    admin("set_event_signup_open", { id: id, open: open }).then(function (r) {
+      if (!r.ok) { msg("of-list-msg", C.errorText(r), "error"); return; }
+      load().then(function () {
+        msg("of-list-msg", "Sign-up " + (open ? "open" : "closed") + ": " + e.title + " (" + C.shortDate(e.starts_on) + ")." +
+          (open && !settings.signups_open ? " Sign-up for all events is still closed above." : ""), "ok");
+        // keep keyboard focus on the same event's button (it now says the opposite)
+        var again = document.querySelector('[data-event="' + id + '"]');
+        if (again) again.focus();
+      });
+    });
+  }
 
   // ------------------------------------------------------------ editor
   var opener = null;
@@ -275,9 +307,13 @@
     $("of-tentative").checked = !!(e && e.tentative);
     $("of-cancelled").checked = !!(e && e.status === "cancelled");
     $("of-postponed").checked = !!(e && e.status === "postponed");
-    $("of-signup").checked = !!(e && e.signup_enabled);
+    // a new event takes sign-ups, and its sign-up is open, unless the officer unticks it
+    // (Justin, 2026-11-19: "the default should be open")
+    $("of-signup").checked = e ? !!e.signup_enabled : true;
+    $("of-signup-open").checked = e ? C.signupOpen(e) : true;
     $("of-signup-note").value = e && e.signup_note || "";
-    $("of-signup-kind").value = C.signupKind(e);
+    kindTouched = false;
+    $("of-signup-kind").value = e ? C.signupKind(e) : kindFor($("of-kind").value);
     showKind($("of-signup-kind").value);
     shownKind = $("of-signup-kind").value;
     setSlots(e && e.slots && e.slots.length ? e.slots : defaultSlots($("of-signup-kind").value));
@@ -308,12 +344,22 @@
   });
   $("of-slot-default").addEventListener("click", function () { setSlots(defaultSlots($("of-signup-kind").value)); });
   // switching the kind swaps in its usual choices, unless the officer already changed them
-  $("of-signup-kind").addEventListener("change", function () {
-    var kind = this.value, current = readSlots();
+  function switchKind(kind) {
+    var current = readSlots();
     var swap = !current.length || sameLabels(current, KIND_SETUP[shownKind].slots);
     shownKind = kind;
     setSlots(swap ? defaultSlots(kind) : current);
     showKind(kind);
+  }
+  $("of-signup-kind").addEventListener("change", function () { kindTouched = true; switchKind(this.value); });
+  // a new event's sign-up follows its type until the officer picks one: trips (campus
+  // tours, conferences) get "Who's going", everything else "Bring food"
+  $("of-kind").addEventListener("change", function () {
+    if (editing || kindTouched) return;
+    var kind = kindFor(this.value);
+    if (kind === $("of-signup-kind").value) return;
+    $("of-signup-kind").value = kind;
+    switchKind(kind);
   });
   $("of-slots").addEventListener("click", function (ev) {
     var b = ev.target.closest("[data-slot-remove]");
@@ -329,7 +375,7 @@
       start_time: $("of-start").value, end_time: $("of-end").value, title: $("of-title").value.trim(), theme: $("of-theme").value.trim(),
       kind: $("of-kind").value, location: $("of-location").value.trim(), details: $("of-details").value.trim(),
       tentative: $("of-tentative").checked, status: $("of-cancelled").checked ? "cancelled" : $("of-postponed").checked ? "postponed" : "scheduled",
-      signup_enabled: $("of-signup").checked, signup_kind: $("of-signup-kind").value,
+      signup_enabled: $("of-signup").checked, signup_open: $("of-signup-open").checked, signup_kind: $("of-signup-kind").value,
       signup_note: $("of-signup-note").value.trim(), slots: $("of-signup-kind").value === "food" ? [] : readSlots()
     };
     if (!p.starts_on) { msg("of-form-msg", "Choose a date.", "error"); $("of-date").focus(); return; }

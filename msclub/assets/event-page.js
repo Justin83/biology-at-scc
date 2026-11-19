@@ -17,7 +17,12 @@
   var data = null, ev = null, form = null, opener = null;
 
   function find(d) { return d.events.filter(function (e) { return e.page === slug; })[0] || null; }
-  function canSignUp(e) { return !!(data && data.live && e && e.signup_enabled && e.status === "scheduled" && !C.isPast(e, data.today)); }
+  // open: the event takes sign-ups and officers haven't closed it (its own switch, sql/010,
+  // or the site-wide one)
+  function canSignUp(e) {
+    return !!(data && data.live && e && e.signup_enabled && e.status === "scheduled" && !C.isPast(e, data.today) &&
+      data.signups_open && C.signupOpen(e));
+  }
   function whenText(e) {
     var t = !e.start_time ? "All day" : C.clock(e.start_time) + (e.end_time ? (approx ? " to about " : " – ") + C.clock(e.end_time) : "");
     return C.dateLabel(e, true) + " · " + t + (e.location ? " · " + e.location : "");
@@ -30,6 +35,7 @@
     if (C.isPast(e, data.today)) return "This event has already happened. Thanks to everyone who helped!";
     if (!data.live) return "Sign-up isn't available right now. Try again in a few minutes.";
     if (!e.signup_enabled) return "Sign-up for this event isn't open yet.";
+    if (!C.signupOpen(e) || !data.signups_open) return "Sign-up is closed right now. Questions? Ask a club officer.";
     return "";
   }
 

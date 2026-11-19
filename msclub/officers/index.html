@@ -49,17 +49,18 @@
 
   <div id="of-app" hidden>
     <section class="club-panel" aria-labelledby="of-state-title">
-      <h2 id="of-state-title">Food sign-up</h2>
+      <h2 id="of-state-title">Sign-up for all events</h2>
       <p id="of-open-text"></p>
       <div class="club-actions">
-        <button type="button" class="club-btn club-btn--ghost" id="of-toggle-open">Close food sign-up</button>
+        <button type="button" class="club-btn club-btn--ghost" id="of-toggle-open">Close all sign-up</button>
         <button type="button" class="club-btn club-btn--ghost" id="of-signout">Lock officer tools</button>
       </div>
     </section>
 
     <section aria-labelledby="of-events-title">
       <h2 id="of-events-title">Events</h2>
-      <p>Choose <strong>Edit</strong> to change a date, time or food theme, cancel an event, or set up its food sign-up.</p>
+      <p>Choose <strong>Edit</strong> to change a date, time or food theme, cancel an event, or set up its sign-up.
+        <strong>Close sign-up</strong> stops sign-ups for that one event (its list stays on the page); <strong>Open sign-up</strong> starts them again. Other events aren't affected.</p>
       <div class="club-actions"><button type="button" class="club-btn" id="of-add">Add an event</button></div>
       <p id="of-list-msg" class="club-msg" role="status" aria-live="polite"></p>
       <h3>Coming up</h3>
@@ -148,6 +149,8 @@
           <legend>Sign-up</legend>
           <div class="club-choice"><input type="checkbox" id="of-signup"><label for="of-signup">Members can sign up for this event</label></div>
           <div id="of-signup-setup">
+            <div class="club-choice"><input type="checkbox" id="of-signup-open" aria-describedby="of-signup-open-hint"><label for="of-signup-open">Sign-up is open</label></div>
+            <p class="club-hint" id="of-signup-open-hint">Untick to close it: the list stays on the page, but nobody can add or change a sign-up until it's opened again.</p>
             <div class="club-field"><label for="of-signup-kind">What do people sign up for?</label>
               <select id="of-signup-kind">
                 <option value="food">Bring food</option>

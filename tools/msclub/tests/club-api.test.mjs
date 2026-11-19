@@ -1,4 +1,4 @@
-// Contract tests for the club API (msclub/sql/001_club.sql, 002, 003, 004, 005, 006, 007, 008).
+// Contract tests for the club API (msclub/sql/001_club.sql, 002, 003, 004, 005, 006, 007, 008, 009, 010).
 // Run against the local stand-in (never production), with "today" fixed so the seeded
 // Fall 2026 schedule has upcoming events:
 //   CLUB_TODAY=2026-11-05 node tools/msclub/local-api.mjs &
@@ -187,6 +187,61 @@ test("officers: add, edit, cancel and delete an event; set up categories; remove
   assert.equal((await rpc("club_signup", { p_event_id: add.id, p_entry: { name: "Test D.", slot: "Drinks", item: "Tea" } })).error, "no_signup");
   assert.equal((await admin("delete_event", { id: add.id })).ok, true);
   assert.equal((await events()).some((e) => e.id === add.id), false);
+});
+
+test("one event's sign-up opens and closes on its own (010); new events start open; the Holiday Party is a club meeting", async (t) => {
+  const PARTY = ["2026-12-03", "Math and Science Club Holiday Party"];
+  let party = await find(...PARTY);
+  const steam = (await events()).find((e) => e.page === "steam-day-2027");
+  // leave the shared test database as it was, even if an assertion fails part-way
+  t.after(async () => { await admin("set_event_signup_open", { id: party.id, open: true }); await admin("set_signups_open", { open: true }); });
+  assert.equal(party.kind, "meeting", "the Holiday Party carries the Club meeting pill");
+  assert.equal(party.signup_open, true, "every event starts open");
+  assert.equal(steam.signup_open, true, "STEAM Day stays open");
+  const r = await rpc("club_signup", { p_event_id: party.id, p_entry: { name: "Test O.", item: "Cocoa" } });
+  assert.equal(r.ok, true);
+
+  assert.equal((await admin("set_event_signup_open", { id: party.id, open: false }, "nope")).error, "unauthorized");
+  assert.equal((await admin("set_event_signup_open", { id: party.id, open: false })).ok, true);
+  party = await find(...PARTY);
+  assert.equal(party.signup_open, false);
+  assert.equal(party.signups.some((x) => x.id === r.id), true, "a closed event's list stays on the page");
+  assert.equal((await rpc("club_signup", { p_event_id: party.id, p_entry: { name: "Test P.", item: "Tea" } })).error, "signup_closed");
+  assert.equal((await rpc("club_signup_update", { p_id: r.id, p_token: r.token, p_entry: { item: "Tea" } })).error, "signup_closed");
+  // the other events are not affected
+  const v = await rpc("club_signup", { p_event_id: steam.id, p_entry: { name: "Test V.", slot: steam.slots[0]?.label } });
+  assert.equal(v.ok, true, "STEAM Day still takes sign-ups");
+  assert.equal((await rpc("club_signup_remove", { p_id: v.id, p_token: v.token })).ok, true);
+  // an officer's edit that doesn't send signup_open keeps it; the editor's box sets it
+  const { signup_open: _ignored, ...rest } = party;
+  assert.equal((await admin("save_event", { ...rest, theme: "Cookies" })).ok, true);
+  assert.equal((await find(...PARTY)).signup_open, false);
+  assert.equal((await admin("save_event", { ...rest, theme: null, signup_open: true })).ok, true);
+  party = await find(...PARTY);
+  assert.deepEqual([party.signup_open, party.theme], [true, null]);
+  assert.equal((await rpc("club_signup_update", { p_id: r.id, p_token: r.token, p_entry: { item: "Hot cocoa" } })).ok, true);
+  // people can remove their own sign-up even while it's closed
+  assert.equal((await admin("set_event_signup_open", { id: party.id, open: false })).ok, true);
+  assert.equal((await rpc("club_signup_remove", { p_id: r.id, p_token: r.token })).ok, true);
+  assert.equal((await admin("set_event_signup_open", { id: party.id, open: true })).ok, true);
+  assert.equal((await admin("set_event_signup_open", { id: party.id })).error, "bad_value");
+  assert.equal((await admin("set_event_signup_open", { id: "00000000-0000-0000-0000-000000000000", open: true })).error, "not_found");
+  assert.equal((await admin("set_event_signup_open", { id: "not-a-uuid", open: true })).error, "bad_value");
+
+  // new events are open unless the editor says otherwise
+  const a1 = await admin("save_event", { starts_on: "2027-01-28", title: "Test Open By Default", kind: "meeting", signup_enabled: true });
+  const a2 = await admin("save_event", { starts_on: "2027-01-29", title: "Test Closed From The Start", kind: "campus-tour", signup_enabled: true,
+    signup_kind: "going", signup_open: false, slots: [{ label: "Going" }] });
+  assert.equal(a1.ok && a2.ok, true);
+  const all = await events();
+  assert.equal(all.find((e) => e.id === a1.id).signup_open, true);
+  assert.equal(all.find((e) => e.id === a2.id).signup_open, false);
+  assert.equal((await rpc("club_signup", { p_event_id: a2.id, p_entry: { name: "Test T." } })).error, "signup_closed");
+  // the site-wide switch still closes everything, an open event included
+  assert.equal((await admin("set_signups_open", { open: false })).ok, true);
+  assert.equal((await rpc("club_signup", { p_event_id: a1.id, p_entry: { name: "Test U.", item: "Chips" } })).error, "signups_closed");
+  assert.equal((await admin("set_signups_open", { open: true })).ok, true);
+  for (const a of [a1, a2]) assert.equal((await admin("delete_event", { id: a.id })).ok, true);
 });
 
 test("changing the officer code", async () => {

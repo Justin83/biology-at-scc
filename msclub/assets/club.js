@@ -67,8 +67,12 @@
   }
   function signupKind(e) { return e && SIGNUP[e.signup_kind] ? e.signup_kind : "food"; }
   function signupSpec(e) { return SIGNUP[signupKind(e)]; }
+  // Has an officer left this event's sign-up open? (events.signup_open, sql/010; open by
+  // default, and open when the database doesn't say). The site-wide switch is separate.
+  function signupOpen(e) { return !!e && e.signup_open !== false; }
   var ERRORS = {
     signups_closed: "Sign-up is closed right now. Ask a club officer.",
+    signup_closed: "Sign-up for this event is closed. Ask a club officer.",
     no_signup: "Sign-up is not set up for this event.",
     event_past: "This event has already happened, so sign-up is closed.",
     no_name: "Enter your name.",
@@ -228,7 +232,7 @@
 
   window.Club = {
     config: CONFIG, live: live, isLocal: function () { return !!localApi; }, rpc: rpc, errorText: errorText,
-    KINDS: KINDS, SIGNUP: SIGNUP, signupKind: signupKind, signupSpec: signupSpec, peopleCount: peopleCount, signupCount: signupCount, todayISO: todayISO, parts: parts, longDate: longDate, shortDate: shortDate, monthKey: monthKey,
+    KINDS: KINDS, SIGNUP: SIGNUP, signupKind: signupKind, signupSpec: signupSpec, signupOpen: signupOpen, peopleCount: peopleCount, signupCount: signupCount, todayISO: todayISO, parts: parts, longDate: longDate, shortDate: shortDate, monthKey: monthKey,
     monthLabel: monthLabel, timeLabel: timeLabel, dateLabel: dateLabel, clock: clock,
     relDays: relDays, isPast: isPast, esc: esc, load: load, upcoming: upcoming, nextGathering: nextGathering, MON: MON, DOW: DOW,
     loadFlyers: loadFlyers, flyerCurrent: flyerCurrent, flyerOnHome: flyerOnHome, plainDate: plainDate, pageUrl: pageUrl
