@@ -33,8 +33,15 @@
   function takesSignUps(e) { return data.live && e.signup_enabled && e.status === "scheduled" && !C.isPast(e, data.today); }
   function isOpen(e) { return data.signups_open && C.signupOpen(e); }
   function canSignUp(e) { return takesSignUps(e) && isOpen(e); }
+  function isClosed(e) { return takesSignUps(e) && !isOpen(e); }
+  // a closed event's note, in small grey text; its food theme goes on the same line, just as
+  // quiet, instead of its own line in the card (Justin, 2026-11-19)
   function closedNote(e) {
-    return takesSignUps(e) && !isOpen(e) ? '<span class="club-hint">' + (data.signups_open ? "Sign-up is closed." : "Sign-up is closed right now.") + "</span>" : "";
+    if (!isClosed(e)) return "";
+    var said = data.signups_open ? "Sign-up is closed" : "Sign-up is closed right now", th = C.themeText(e);
+    // one line on cards; in a schedule row's narrow right-hand column the theme goes under it (club.css)
+    return '<span class="club-hint site-closed"><span class="site-closed-what">' + said + (th ? "" : ".") + "</span>" +
+      (th ? '<span class="site-closed-theme"><span class="site-closed-sep"> · </span>Food theme: ' + esc(th) + "</span>" : "") + "</span>";
   }
   function signupUrl(e) { return root + "signup/?event=" + encodeURIComponent(e.id); }
   function signupButton(e, cls) {
@@ -61,7 +68,8 @@
     var s = C.isPast(e, data.today) ? t.recap_summary : t.summary;
     return s ? '<p class="site-summary">' + esc(s) + "</p>" : "";
   }
-  function themeLine(e) { var th = C.themeText(e); return th ? '<p class="club-theme">Food theme: <strong>' + esc(th) + "</strong></p>" : ""; }
+  // the food theme's own line; a closed event shows it in its closed note instead
+  function themeLine(e) { var th = C.themeText(e); return th && !isClosed(e) ? '<p class="club-theme">Food theme: <strong>' + esc(th) + "</strong></p>" : ""; }
   function flyerFor(e) { return flyers.filter(function (f) { return f.event_date === e.starts_on && !f.archived; })[0] || null; }
   function flyerBox(f) {
     return '<a class="club-flyer site-flyer" href="' + esc(root + "flyers/" + f.pdf) + '" target="_blank" rel="noopener">' +
@@ -116,7 +124,7 @@
         '<p class="club-next-date"><a href="' + esc(eventUrl(next)) + '">' + esc(C.dateLabel(next, true)) + "</a></p>" +
         '<p class="club-next-meta">' + esc(C.timeLabel(next)) + " · " + esc(next.title) + (next.location ? " · " + esc(next.location) : "") +
         (C.relDays(data.today, next.starts_on) ? " · " + esc(C.relDays(data.today, next.starts_on)) : "") + "</p>" +
-        (C.themeText(next) ? '<p class="club-theme club-theme--big">Food theme: <strong>' + esc(C.themeText(next)) + "</strong></p>" : "") +
+        (C.themeText(next) && !isClosed(next) ? '<p class="club-theme club-theme--big">Food theme: <strong>' + esc(C.themeText(next)) + "</strong></p>" : "") +
         (canSignUp(next) ? '<p class="club-actions">' + signupButton(next) + "</p>" : closedNote(next) ? "<p>" + closedNote(next) + "</p>" : "") +
         '<p class="club-hint">' + (next.signup_enabled ? esc(C.signupCount(next, true)) + " " : "") +
         '<a href="' + esc(eventUrl(next)) + '">' + (bring ? "See " + esc(C.signupSpec(next).list.toLowerCase()) : "Details") + " →</a></p></div>" +

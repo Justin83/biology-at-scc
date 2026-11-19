@@ -408,7 +408,11 @@ main.club-event-page { max-width: 48rem; }
 @media (min-width: 760px) {
   .site-row { grid-template-columns: 3.6rem minmax(0, 1fr) 15rem; align-items: center; }
   .site-row-act { grid-column: 3; justify-content: flex-end; text-align: right; }
+  /* a closed event's note: "Sign-up is closed" with the food theme on the line under it */
+  .site-row-act .site-closed-theme { display: block; }
+  .site-row-act .site-closed-sep { display: none; }
 }
+.site-closed-what { white-space: nowrap; }
 
 /* Event page */
 .site-event-page .club-card-chips { margin: 0.2rem 0 0.4rem; }
