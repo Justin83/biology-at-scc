@@ -111,7 +111,11 @@ links go in the footer's Club column (or a new column) on all seven pages.
 8. **Flyer library:** every club flyer, oldest first, with **View or print** (opens the PDF
    in the browser) and **Download**. Flyers for events that have passed are under
    **Archive**. See [Flyers](#flyers).
-9. **Change the officer code** (at least 8 characters) at the bottom of the officer
+9. **AI assistant connector** (collapsed, marked *Coming soon*): a placeholder for a
+   future connector or plug-in that lets anyone on the officer team use the club's
+   information with an AI assistant, such as a GPT in ChatGPT. Added 2026-11-19 as text
+   only; it connects to nothing yet.
+10. **Change the officer code** (at least 8 characters) at the bottom of the officer
    tools. The new code works immediately, so share it with the other officers.
 
 The officer code is stored only as a bcrypt hash. It was given to Justin directly and is
