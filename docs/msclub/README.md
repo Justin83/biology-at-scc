@@ -26,9 +26,10 @@ repository README. People reach the club through the QR poster and shared links.
 
 The site home page links to the club. Club pages have no main-site menu and no back link at
 the top (the **Back to Biology at SCC** bar was removed 2026-11-17); the club bar is the top of
-every page and its first link is **Home** (the club home). The way to the main site is **Part
-of Biology at SCC** in the footer. Every club page ends with the same bold SCC-blue footer: the club's name and **Part
-of Biology at SCC**; club links (Home, Schedule, **Display Website Invite Poster**, Officer
+every page and its first link is **Home** (the club home). The way to the main site is **This
+website lives with biologyatscc** in the footer (the link is "biologyatscc"; it said "Part of
+Biology at SCC" until 2026-11-19). Every club page ends with the same bold SCC-blue footer: the
+club's name and **This website lives with biologyatscc**; club links (Home, Schedule, **Display Website Invite Poster**, Officer
 tools); contact (justin.howard@kctcs.edu); and **Not an official KCTCS website.** The club
 bar's menu is **Home · Schedule · Officer tools** (with a lock icon) on every club page. The
 footer doesn't jump between pages: every page is at least as tall as the window, so a short

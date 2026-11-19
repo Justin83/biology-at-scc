@@ -56,7 +56,7 @@
 .club-bar { background: var(--club-soft); border-bottom: 3px solid var(--club-gold); }
 .club-bar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1.2rem; padding-top: 0.7rem; padding-bottom: 0.7rem; }
 .club-bar-name { font-weight: 700; color: var(--fg); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
-.club-bar-name img { width: 28px; height: 28px; border-radius: 6px; }
+.club-bar-name img { width: 28px; height: 28px; border-radius: 50%; } /* round, like the header and footer seals (logo.svg has a square background) */
 .club-bar ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.2rem 1rem; margin: 0; padding: 0; }
 .club-bar ul a { text-decoration: none; font-size: 0.95rem; }
 .club-bar ul a:hover { text-decoration: underline; }
