@@ -224,11 +224,41 @@ try {
     assert.equal((await admin("set_event_signup_open", { id: meetingId, open: true })).ok, true);
   }
 
-  // the other club pages have the same menu
-  for (const rel of ["officers/", "qr/", "events/steam-day-2027/"]) {
+  // the other club pages have the same menu, with the light / dark switch right after Officer tools
+  for (const rel of ["", "schedule/", "officers/", "qr/", "events/steam-day-2027/"]) {
     await p.goto(SITE + rel + Q);
     assert.deepEqual(await menu(p), MENU, rel);
     assert.equal(await p.$(".club-bar-officer"), null, rel);
+    assert.equal(await p.$eval('.club-bar nav[aria-label="Club"] li:last-child', (li) =>
+      !!li.querySelector("button[data-theme-toggle]:not([hidden])") && !!li.previousElementSibling.querySelector("a.club-nav-officer")), true, rel + ": switch after Officer tools");
+  }
+
+  // light / dark switch (assets/theme.js): follows the device until chosen, then remembered
+  // in this browser across pages and reloads; a light choice wins over a dark device
+  {
+    const ctx = await browser.newContext({ colorScheme: "dark" });
+    const t = await ctx.newPage();
+    t.on("pageerror", (e) => errors.push(String(e)));
+    const bg = () => t.evaluate(() => getComputedStyle(document.body).backgroundColor);
+    const sw = 'button[data-theme-toggle]';
+    await t.goto(SITE + Q);
+    await t.waitForSelector(sw + ":not([hidden])");
+    assert.equal(await t.getAttribute("html", "data-theme"), null, "no choice yet: follows the device");
+    assert.equal(await t.getAttribute(sw, "aria-pressed"), "true", "the device is dark");
+    assert.equal(await bg(), "rgb(14, 21, 32)");
+    assert.equal(await t.getAttribute(sw, "title"), "Switch to light mode");
+    await t.click(sw);
+    assert.equal(await t.getAttribute("html", "data-theme"), "light");
+    assert.equal(await t.getAttribute(sw, "aria-pressed"), "false");
+    assert.equal(await bg(), "rgb(255, 255, 255)", "light wins over the dark device");
+    await t.goto(SITE + "schedule/" + Q);
+    assert.equal(await t.getAttribute("html", "data-theme"), "light", "remembered on the next page");
+    assert.equal(await bg(), "rgb(255, 255, 255)");
+    await t.click(sw);
+    await t.reload();
+    assert.equal(await t.getAttribute("html", "data-theme"), "dark", "remembered after a reload");
+    assert.equal(await bg(), "rgb(14, 21, 32)");
+    await ctx.close();
   }
 
   // the footer doesn't jump between pages on a computer: a short page fills the window, so

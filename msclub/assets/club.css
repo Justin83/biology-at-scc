@@ -1,5 +1,9 @@
 /* Math & Science Club. Loaded after ../assets/style.css (site tokens: --bg, --fg,
-   --muted, --accent, --border, --card-bg; light and dark follow the system setting).
+   --muted, --accent, --border, --card-bg).
+   Light and dark follow the device setting, unless someone picks one with the sun / moon
+   button in the club bar (assets/theme.js sets <html data-theme="light|dark">). So every
+   dark rule here comes twice: under prefers-color-scheme (when no light choice was made)
+   and under [data-theme="dark"]. Keep the two copies the same.
    The club pages use SCC's blue and gold (from somerset.kctcs.edu: blue #00467f,
    dark blue #013057, gold #e7a614) instead of the biology site's green, so the site
    tokens are redefined on body.club below. Gold is for stripes, fills and focus rings,
@@ -15,7 +19,7 @@
   --club-on-accent: #ffffff;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --club-navy: #a9c8f5;
     --club-soft: #13233a;
     --club-warn-bg: #3a2b0c; --club-warn-fg: #ffd58a; --club-warn-bd: #6b5220;
@@ -25,12 +29,26 @@
     --club-on-accent: #10140c;
   }
 }
-
-/* SCC blue in place of the biology green: links, buttons, headings and borders */
-.club { --accent: #00467f; --fg: #14202e; --muted: #4c5a6b; --border: #d7dfe8; --card-bg: #f3f6fa; }
-@media (prefers-color-scheme: dark) {
-  .club { --accent: #8cc4f2; --bg: #0e1520; --fg: #e8eef6; --muted: #a2b0c2; --border: #263447; --card-bg: #152131; }
+:root[data-theme="dark"] {
+  --club-navy: #a9c8f5;
+  --club-soft: #13233a;
+  --club-warn-bg: #3a2b0c; --club-warn-fg: #ffd58a; --club-warn-bd: #6b5220;
+  --club-red-bg: #3b1714;  --club-red-fg: #ffb4ab; --club-red-bd: #6e2a24;
+  --club-blue-bg: #14294a; --club-blue-fg: #a9c8f5;
+  --club-purple-bg: #2d1f3d; --club-purple-fg: #dcc0ff;
+  --club-on-accent: #10140c;
 }
+/* form controls and scrollbars follow the chosen theme too */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+
+/* SCC blue in place of the biology green: links, buttons, headings and borders. --bg is set
+   in light mode too, so a light choice wins over a dark device (style.css's :root). */
+.club { --accent: #00467f; --bg: #ffffff; --fg: #14202e; --muted: #4c5a6b; --border: #d7dfe8; --card-bg: #f3f6fa; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .club { --accent: #8cc4f2; --bg: #0e1520; --fg: #e8eef6; --muted: #a2b0c2; --border: #263447; --card-bg: #152131; }
+}
+:root[data-theme="dark"] .club { --accent: #8cc4f2; --bg: #0e1520; --fg: #e8eef6; --muted: #a2b0c2; --border: #263447; --card-bg: #152131; }
 
 /* The footer stays put between pages: the page fills at least the window, so on a short
    page (or while the schedule is still loading) the footer sits at the bottom of the window
@@ -368,6 +386,13 @@ main.club-event-page { max-width: 48rem; }
 /* Officer tools: a menu item right after Schedule (the footer keeps its link too) */
 .club-nav-officer { display: inline-flex; align-items: center; gap: 0.3rem; }
 .club-nav-officer svg { flex: none; }
+/* light / dark switch, right after Officer tools (assets/theme.js): a moon in light mode,
+   a sun in dark mode */
+.club-theme-toggle { display: inline-grid; place-items: center; width: 1.9rem; height: 1.9rem; padding: 0; margin: -0.25rem 0; border: 1px solid var(--border); border-radius: 50%; background: transparent; color: var(--accent); cursor: pointer; }
+.club-theme-toggle:hover { background: var(--club-blue-bg); }
+.club-theme-toggle svg { display: block; }
+.club-theme-toggle[aria-pressed="true"] .club-icon-moon,
+.club-theme-toggle:not([aria-pressed="true"]) .club-icon-sun { display: none; }
 
 /* Up next: the one place the next event shows on the home page, with its flyer beside it */
 .site-next { container-type: inline-size; }
@@ -383,7 +408,8 @@ main.club-event-page { max-width: 48rem; }
 .site-summary { margin: 0.35rem 0 0; font-size: 0.95rem; }
 .site-chip-open { background: #e3f3e8; color: #1d5c34; }
 .site-chip-recap { background: var(--club-purple-bg); color: var(--club-purple-fg); }
-@media (prefers-color-scheme: dark) { .site-chip-open { background: #12301f; color: #a6e3bb; } }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .site-chip-open { background: #12301f; color: #a6e3bb; } }
+:root[data-theme="dark"] .site-chip-open { background: #12301f; color: #a6e3bb; }
 
 /* Schedule: filters and the Cards / List switch */
 .site-page-title { margin: 1.4rem 0 0.6rem; }

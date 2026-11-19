@@ -291,6 +291,16 @@ and gold is used for the stripe under the club bar, the top of the next-meeting 
 "Club meeting" pill (navy text on gold) and focus outlines. Gold is never used for text
 on white, where it would be too hard to read.
 
+**Light and dark.** The pages follow the device's setting until someone uses the sun / moon
+button in the club bar, right after **Officer tools** (added 2026-11-19). The choice is
+remembered in that browser only (`localStorage` key `club-theme`) and applies on every club
+page. `assets/theme.js`, loaded in each page's `<head>`, sets `<html data-theme="light|dark">`
+before the page draws, so there's no flash. In `assets/club.css` every dark rule appears
+twice, under `prefers-color-scheme: dark` (unless light was chosen) and under
+`[data-theme="dark"]`, so a color change must be made in both copies. A new club page needs
+the `theme.js` script tag and the switch's `<li>` in its club bar (copy them from any club
+page).
+
 ## Data and privacy
 
 - **Database:** the private schema `club` in the SyllaBased project. The browser reaches
