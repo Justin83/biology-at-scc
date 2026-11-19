@@ -64,6 +64,21 @@ const FLYERS = [
       checks: ["Pick a main dish, side, dessert or drinks", "See who's bringing what"],
       scan: "<strong>Want to bring food?</strong> Scan to open the club website."
     }
+  },
+  {
+    id: "2026-12-03-holiday-party",
+    design: holiday,
+    made: "2026-11-19",
+    event_date: "2026-12-03",
+    title: "Holiday Party",
+    about: "Club meeting, Thursday, December 3, 2026, 5:00 PM. Asks members to bring food.",
+    download: "Math-Science-Club-Holiday-Party-flyer.pdf",
+    text: {
+      date: "Thursday, December 3, 2026", time: "5:00 PM",
+      lede: "Celebrate the end of the semester with the club. Want to bring food? Sign up so we know what's coming.",
+      checks: ["Sign up to bring a dish", "See who's bringing what"],
+      scan: "<strong>Want to bring food?</strong> Scan to open the club website."
+    }
   }
 ];
 // To take a flyer off the home page and into the archive before its date, add
@@ -246,6 +261,73 @@ function thanksgiving(f) {
     <p class="kicker">Math &amp; Science Club</p>
     <h1 class="title">${f.title}</h1>
     <p class="subtitle">Somerset Community College</p>
+    ${eventBody(t, c.gold)}
+  </div></div></body></html>`;
+}
+
+// ornaments, snowflakes and holly for the holiday design
+function ornament(x, string, size, fill, shine) {
+  // hangs from the top edge of the frame on a string `string` inches long
+  return `<svg class="deco" style="left:${x - size / 2}in;top:-0.05in;width:${size}in;height:${string + size * 1.25}in" viewBox="0 0 100 ${100 * (string + size * 1.25) / size}" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
+    <line x1="50" y1="0" x2="50" y2="${100 * string / size}" stroke="#b08a3a" stroke-width="2.4"/>
+    <rect x="40" y="${100 * string / size}" width="20" height="13" rx="2" fill="#c9a24a"/>
+    <circle cx="50" cy="${100 * string / size + 62}" r="48" fill="${fill}"/>
+    <path d="M14 ${100 * string / size + 58}Q50 ${100 * string / size + 78} 86 ${100 * string / size + 58}" stroke="rgba(255,255,255,0.45)" stroke-width="5" fill="none"/>
+    <ellipse cx="33" cy="${100 * string / size + 40}" rx="10" ry="15" transform="rotate(30 33 ${100 * string / size + 40})" fill="${shine}" opacity="0.55"/>
+  </svg>`;
+}
+function snowflake(x, y, size, color, opacity = 1, rot = 0) {
+  const arm = `<path d="M50 50V8M50 22L40 12M50 22L60 12M50 34L42 26M50 34L58 26" stroke="${color}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+  const arms = [0, 60, 120, 180, 240, 300].map((a) => `<g transform="rotate(${a} 50 50)">${arm}</g>`).join("");
+  return `<svg class="deco" style="left:${x}in;top:${y}in;width:${size}in;height:${size}in;opacity:${opacity};transform:rotate(${rot}deg)" viewBox="0 0 100 100" aria-hidden="true">${arms}</svg>`;
+}
+const HOLLY_LEAF = "M0 0C8 -6 14 -2 18 -9C22 -3 28 -4 32 -10C35 -3 41 -3 46 -8C48 -2 54 0 60 0C54 0 48 2 46 8C41 3 35 3 32 10C28 4 22 3 18 9C14 2 8 6 0 0Z";
+function holly(x, y, size, rot, green, berry) {
+  return `<svg class="deco" style="left:${x}in;top:${y}in;width:${size}in;height:${size}in;transform:rotate(${rot}deg)" viewBox="0 0 100 100" aria-hidden="true">
+    <g transform="translate(50 52) rotate(-150) scale(0.78)"><path d="${HOLLY_LEAF}" fill="${green}"/><path d="M2 0H56" stroke="rgba(0,0,0,0.25)" stroke-width="1.6"/></g>
+    <g transform="translate(50 52) rotate(-30) scale(0.78)"><path d="${HOLLY_LEAF}" fill="${green}"/><path d="M2 0H56" stroke="rgba(0,0,0,0.25)" stroke-width="1.6"/></g>
+    <g transform="translate(50 52) rotate(90) scale(0.62)"><path d="${HOLLY_LEAF}" fill="${green}" opacity="0.9"/></g>
+    <circle cx="44" cy="50" r="7" fill="${berry}"/><circle cx="56" cy="49" r="7" fill="${berry}"/><circle cx="50" cy="59" r="7" fill="${berry}"/>
+    <circle cx="42" cy="48" r="2" fill="#fff" opacity="0.6"/><circle cx="54" cy="47" r="2" fill="#fff" opacity="0.6"/><circle cx="48" cy="57" r="2" fill="#fff" opacity="0.6"/>
+  </svg>`;
+}
+
+// ---------------------------------------------------------------- design: holiday (snow white, evergreen, red, gold)
+// Same layout as the Thanksgiving design, without the college name under the title.
+function holiday(f) {
+  const t = f.text;
+  const c = { snow: "#f8f6f0", evergreen: "#1f4d3a", red: "#a8202f", gold: "#d2a23a", ink: "#23372e", ice: "#9fb8c8", shine: "#ffffff" };
+  const decos = [
+    // ornaments hanging from the top corners
+    ornament(0.55, 0.55, 0.62, c.red, c.shine), ornament(1.15, 0.2, 0.5, c.gold, c.shine), ornament(1.7, 0.75, 0.44, c.evergreen, c.shine),
+    ornament(6.15, 0.75, 0.44, c.gold, c.shine), ornament(6.7, 0.2, 0.5, c.evergreen, c.shine), ornament(7.25, 0.55, 0.62, c.red, c.shine),
+    // snowflakes
+    snowflake(0.35, 2.6, 0.42, c.ice, 0.9, 10), snowflake(7.05, 2.9, 0.38, c.ice, 0.9, -8),
+    snowflake(0.6, 4.3, 0.26, c.ice, 0.7), snowflake(7.25, 4.6, 0.28, c.ice, 0.7, 20),
+    snowflake(2.3, 0.35, 0.24, c.ice, 0.6), snowflake(5.35, 0.42, 0.26, c.ice, 0.6, 15),
+    // holly in the bottom corners
+    holly(-0.2, 9.3, 1.25, 20, c.evergreen, c.red), holly(6.75, 9.3, 1.25, -20, c.evergreen, c.red)
+  ].join("");
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${f.title} flyer</title><style>${EVENT_BASE_CSS}${EVENT_BODY_CSS}
+  .page { width: 8.5in; height: 11in; padding: 0.32in; }
+  .frame { position: relative; overflow: hidden; height: 100%; background: ${c.snow}; border: 3px solid ${c.gold}; border-radius: 0.3in; color: ${c.ink};
+           display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0.4in 0.5in 0.3in; }
+  .frame::before { content: ""; position: absolute; inset: 0.09in; border: 1.2px solid ${c.gold}; border-radius: 0.24in; opacity: 0.7; pointer-events: none; }
+  .logo { width: 2.05in; height: 2.05in; display: block; position: relative; }
+  .kicker { font-family: "Bebas Neue", sans-serif; color: ${c.evergreen}; font-size: 24pt; letter-spacing: 0.14em; margin-top: 0.14in; }
+  .title { font-family: "Bebas Neue", sans-serif; color: ${c.red}; font-size: 78pt; line-height: 0.92; margin-top: 0.02in; white-space: nowrap; }
+  .when { margin-top: 0.26in; border: 3px solid ${c.evergreen}; background: #fff; }
+  .when-date { color: ${c.evergreen}; } .when-time { color: #fff; background: ${c.evergreen}; }
+  .lede { margin-top: 0.22in; color: ${c.ink}; }
+  .row { margin-top: 0.3in; }
+  .qr-wrap { border: 5px solid ${c.red}; }
+  .qr { width: 3.15in; height: 3.15in; }
+  .list li { color: ${c.ink}; } .dot { background: ${c.evergreen}; }
+  .scan { margin-top: 0.3in; color: ${c.evergreen}; } .url { color: ${c.evergreen}; }
+  </style></head><body><div class="page"><div class="frame">${decos}
+    <img class="logo" src="seal-round-navy.svg" alt="Math &amp; Science Club logo">
+    <p class="kicker">Math &amp; Science Club</p>
+    <h1 class="title">${f.title}</h1>
     ${eventBody(t, c.gold)}
   </div></div></body></html>`;
 }

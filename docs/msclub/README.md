@@ -187,6 +187,7 @@ Thanksgiving dinner).
 |---|---|---|---|
 | The club has a website (for the acrylic display stand) | 2026-11-09 | none | `2026-website.pdf` |
 | Thanksgiving Dinner | 2026-11-09 | 2026-11-19 | `2026-11-19-thanksgiving-dinner.pdf` |
+| Holiday Party | 2026-11-19 | 2026-12-03 | `2026-12-03-holiday-party.pdf` |
 
 The Thanksgiving flyer was approved before food sign-ups dropped their categories; its
 checklist still says "Pick a main dish, side, dessert or drinks". The website itself no
