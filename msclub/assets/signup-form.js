@@ -104,16 +104,19 @@
         return '<div class="club-choice"><input type="radio" name="' + P + 'slot" id="' + P + "slot-" + i + '" value="' + esc(s.label) + '"' + (checked === s.label || only ? " checked" : "") +
           '><label for="' + P + "slot-" + i + '">' + esc(s.label) + "</label></div>";
       }).join("");
+      // closed (this event by an officer, sql/010, or every event): no new sign-ups or
+      // changes, but people can still remove their own
+      var open = data.signups_open && C.signupOpen(e);
       var own = signups.filter(function (x) { return mine[x.id]; });
       $("mine-wrap").hidden = !own.length;
       $("mine").innerHTML = own.map(function (x) {
         var what = spec.item ? x.item : x.slot;
         return "<li><span><strong>" + esc(what) + "</strong> · " + esc(x.name) + '</span><span class="club-actions" style="margin:0">' +
-          '<button type="button" class="club-btn club-btn--ghost club-btn--small" data-edit="' + esc(x.id) + '">Change<span class="visually-hidden"> ' + esc(what) + "</span></button>" +
+          (open ? '<button type="button" class="club-btn club-btn--ghost club-btn--small" data-edit="' + esc(x.id) + '">Change<span class="visually-hidden"> ' + esc(what) + "</span></button>" : "") +
           '<button type="button" class="club-btn club-btn--danger club-btn--small" data-remove="' + esc(x.id) + '">Remove<span class="visually-hidden"> ' + esc(what) + "</span></button></span></li>";
       }).join("");
-      $("submit").disabled = !data.signups_open;
-      if (!data.signups_open) msg("Sign-up is closed right now. Ask a club officer.", "error");
+      $("submit").disabled = !open;
+      if (!open) msg(data.signups_open ? "Sign-up for this event is closed. Ask a club officer." : "Sign-up is closed right now. Ask a club officer.", "error");
     }
     function cancelEdit() {
       editing = null;

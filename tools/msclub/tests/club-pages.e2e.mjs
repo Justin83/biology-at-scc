@@ -236,7 +236,7 @@ try {
   assert.equal(await o.isVisible("#of-stats .club-hint:has-text('Counted once')"), false, "no explanation on the card");
   // flyer library: oldest first (the website flyer first), View or print and Download; nothing archived yet
   await o.waitForSelector("#of-flyers .club-flyer-item");
-  assert.deepEqual(await o.$$eval("#of-flyers h3", (h) => h.map((x) => x.textContent)), ["The club has a website", "Thanksgiving Dinner"]);
+  assert.deepEqual(await o.$$eval("#of-flyers h3", (h) => h.map((x) => x.textContent)), ["The club has a website", "Thanksgiving Dinner", "Holiday Party"]);
   assert.equal(await o.textContent("#of-flyers-archive-count"), "0");
   assert.match(await text(o, '#of-flyers li:has-text("Thanksgiving")'), /Made November 9, 2026\. On the club home page through Thursday, November 19, 2026\. View or print/);
   assert.equal(await o.getAttribute('#of-flyers li:has-text("Thanksgiving") a[download]', "download"), "Math-Science-Club-Thanksgiving-Dinner-flyer.pdf");
@@ -253,6 +253,36 @@ try {
   await o.waitForFunction(() => /Saved/.test(document.getElementById("of-list-msg").textContent));
   assert.equal(await o.isVisible("#of-editor"), false, "editor closes after saving");
   assert.match(await text(o, '#of-upcoming li:has-text("Nov 19")'), /Food theme: Tacos/);
+
+  // one event's Close sign-up / Open sign-up button (sql/010): only that event closes
+  const novRow = '#of-upcoming li:has-text("Nov 19")';
+  assert.match(await text(o, novRow), /Club meeting/);
+  assert.match(await text(o, '#of-upcoming li:has-text("Holiday Party")'), /Club meeting/, "the Holiday Party is marked as a club meeting");
+  assert.match(await text(o, '#of-upcoming li:has-text("STEAM Day")'), /Sign-up open/);
+  await o.click(novRow + " [data-signup-open]");
+  await o.waitForFunction(() => /Sign-up closed: Math and Science Club Meeting/.test(document.getElementById("of-list-msg").textContent));
+  assert.match(await text(o, novRow), /Sign-up closed/);
+  assert.match(await text(o, novRow + " [data-signup-open]"), /^Open sign-up/);
+  assert.match(await text(o, '#of-upcoming li:has-text("STEAM Day")'), /Sign-up open/, "STEAM Day stays open");
+  await a.goto(SITE + "signup/" + Q + "&event=" + novId);
+  await a.waitForSelector("#su-form");
+  assert.equal(await a.isDisabled("#su-submit"), true, "a closed event's form takes no sign-ups");
+  assert.match(await text(a, "#su-msg"), /Sign-up for this event is closed/);
+  await o.click(novRow + " [data-signup-open]");
+  await o.waitForFunction(() => /Sign-up open: Math and Science Club Meeting/.test(document.getElementById("of-list-msg").textContent));
+  assert.match(await text(o, novRow + " [data-signup-open]"), /^Close sign-up/);
+  // a new event takes sign-ups, open, by default; a trip gets "Who's going" until the officer picks
+  await o.click("#of-add");
+  await o.waitForSelector("#of-editor[open]");
+  assert.equal(await o.isChecked("#of-signup"), true, "new events take sign-ups by default");
+  assert.equal(await o.isChecked("#of-signup-open"), true, "and their sign-up is open");
+  assert.equal(await o.inputValue("#of-signup-kind"), "food");
+  await o.selectOption("#of-kind", "campus-tour");
+  assert.equal(await o.inputValue("#of-signup-kind"), "going", "a trip: who's going");
+  await o.selectOption("#of-kind", "meeting");
+  assert.equal(await o.inputValue("#of-signup-kind"), "food");
+  await o.click("#of-close");
+
   // add, cancel, delete an event
   await o.click("#of-add");
   await o.fill("#of-date", "2027-01-21");
@@ -307,7 +337,7 @@ try {
   // this page when the browser can't show the pop-up)
   const steamId = await a.evaluate(async () => (await Club.load("../")).events.find((e) => e.page === "steam-day-2027").id);
   await a.goto(SITE + "signup/" + Q + "&event=" + steamId);
-  await a.waitForFunction(() => /working/i.test(document.getElementById("su-list-title").textContent));
+  await a.waitForFunction(() => /working/i.test((document.getElementById("su-list-title") || {}).textContent || ""));
   assert.equal(await a.getAttribute("#site-signup-back a", "href"), "../events/steam-day-2027/", "back to its own page");
   assert.match(await text(a, "#su-slots-legend"), /Shift or role/);
   assert.equal(await a.isVisible("#su-item"), false);
@@ -448,7 +478,7 @@ try {
   await r.fill("#of-code", CODE);
   await r.click("#of-signin-form button[type=submit]");
   await r.waitForSelector("#of-flyers-archive .club-flyer-item", { state: "attached" }); // inside the closed Archive
-  assert.deepEqual(await r.$$eval("#of-flyers h3", (h) => h.map((x) => x.textContent)), ["The club has a website"]);
+  assert.deepEqual(await r.$$eval("#of-flyers h3", (h) => h.map((x) => x.textContent)), ["The club has a website", "Holiday Party"]);
   assert.equal(await r.textContent("#of-flyers-archive-count"), "1");
   await r.click('summary:has-text("Archive")');
   assert.match(await text(r, "#of-flyers-archive"), /Thanksgiving Dinner[\s\S]*Made November 9, 2026\. Event: Sunday, November 1, 2026\./);

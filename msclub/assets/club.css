@@ -169,6 +169,7 @@
 .club-officer-list li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.3rem 1rem; padding: 0.55rem 0.8rem; border: 1px solid var(--border); border-radius: 10px; background: var(--card-bg); }
 .club-officer-list li.is-past { opacity: 0.8; }
 .club-officer-list p { margin: 0; }
+.club-officer-list .club-officer-btns { margin: 0; gap: 0.4rem; }
 /* flyer library in Officer tools: a picture of each flyer with View or print and Download */
 .club-flyer-list { list-style: none; padding: 0; margin: 0.6rem 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 0.8rem; }
 .club-flyer-list > li { display: flex; gap: 1rem; align-items: flex-start; padding: 0.8rem; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); }

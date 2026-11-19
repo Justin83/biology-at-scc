@@ -188,6 +188,37 @@ try {
     assert.equal((await admin("set_signups_open", { open: true })).ok, true);
   }
 
+  // officers close one event's sign-up (sql/010): that event says so; the others, STEAM Day
+  // included, keep their buttons
+  assert.equal((await admin("set_event_signup_open", { id: meetingId, open: false })).ok, true);
+  try {
+    await p.goto(SITE + Q);
+    await p.waitForSelector("#site-coming .club-card");
+    assert.equal(await p.$$eval("#site-next a.club-btn", (x) => x.length), 0, "no button for the closed meeting");
+    assert.match(await p.innerText("#site-next"), /Sign-up is closed\./);
+    assert.match(await p.innerText('#site-coming .club-card:has-text("Holiday Party")'), /Club meeting[\s\S]*Sign-up open/, "the Holiday Party: Club meeting pill, still open");
+    assert.equal(await p.$$eval('#site-coming .club-card:has-text("Holiday Party") a.club-btn', (x) => x.length), 1);
+    await p.goto(SITE + "schedule/" + Q);
+    await p.waitForSelector("#site-upcoming .site-row");
+    assert.match(await p.innerText('#site-upcoming .site-row:has-text("Math and Science Club Meeting")'), /Sign-up is closed\./);
+    await p.goto(SITE + "events/steam-day-2027/" + Q);
+    await p.waitForFunction(() => document.querySelector("[data-ev-count]") && !document.querySelector("[data-ev-count]").hidden);
+    assert.equal(await p.isVisible("[data-ev-signup] >> nth=0"), true, "STEAM Day still takes volunteers");
+    // and when STEAM Day itself is closed, its page says why instead of showing the button
+    const steamId = (await rpc("club_events")).events.find((e) => e.page === "steam-day-2027").id;
+    assert.equal((await admin("set_event_signup_open", { id: steamId, open: false })).ok, true);
+    try {
+      await p.reload();
+      await p.waitForFunction(() => document.querySelector("[data-ev-closed]") && !document.querySelector("[data-ev-closed]").hidden);
+      assert.match(await p.innerText("[data-ev-closed] >> nth=0"), /Sign-up is closed right now/);
+      assert.equal(await p.isVisible("[data-ev-signup] >> nth=0"), false);
+    } finally {
+      assert.equal((await admin("set_event_signup_open", { id: steamId, open: true })).ok, true);
+    }
+  } finally {
+    assert.equal((await admin("set_event_signup_open", { id: meetingId, open: true })).ok, true);
+  }
+
   // the other club pages have the same menu
   for (const rel of ["officers/", "qr/", "events/steam-day-2027/"]) {
     await p.goto(SITE + rel + Q);
