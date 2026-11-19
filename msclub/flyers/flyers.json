@@ -20,6 +20,16 @@
       "pdf": "2026-11-19-thanksgiving-dinner.pdf",
       "preview": "2026-11-19-thanksgiving-dinner.jpg",
       "download": "Math-Science-Club-Thanksgiving-Dinner-flyer.pdf"
+    },
+    {
+      "id": "2026-12-03-holiday-party",
+      "title": "Holiday Party",
+      "about": "Club meeting, Thursday, December 3, 2026, 5:00 PM. Asks members to bring food.",
+      "made": "2026-11-19",
+      "event_date": "2026-12-03",
+      "pdf": "2026-12-03-holiday-party.pdf",
+      "preview": "2026-12-03-holiday-party.jpg",
+      "download": "Math-Science-Club-Holiday-Party-flyer.pdf"
     }
   ]
 }
