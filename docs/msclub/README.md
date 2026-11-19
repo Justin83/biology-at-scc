@@ -99,8 +99,10 @@ links go in the footer's Club column (or a new column) on all seven pages.
 6. **Open or close one event's sign-up:** every upcoming event with a sign-up has a
    **Close sign-up** button next to **Edit** (and a "Sign-up is open" box in the editor).
    Closing stops new sign-ups and changes for that event only: its list ("Who's bringing
-   what") stays on the page, the pages say "Sign-up is closed." instead of showing the
-   button, and people can still remove their own sign-up. **Open sign-up** starts it
+   what") stays on the page, the pages say "Sign-up is closed" instead of showing the
+   button (with the food theme beside it in the same small grey text, for example "Sign-up
+   is closed · Food theme: to be announced", rather than on a line of its own), and people
+   can still remove their own sign-up. **Open sign-up** starts it
    again. Other events aren't affected, so closing a meeting or the Holiday Party leaves
    STEAM Day open. Every event is open until an officer closes it (`club_v10`).
 7. **Close all sign-up** (at the top, "Sign-up for all events") stops new sign-ups and

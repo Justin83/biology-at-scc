@@ -174,7 +174,7 @@ try {
     await p.goto(SITE + Q);
     await p.waitForSelector("#site-coming .club-card");
     assert.equal(await p.$$eval("#site-next a.club-btn, #site-coming a.club-btn", (x) => x.length), 0, "no sign-up buttons while sign-up is closed");
-    assert.match(await p.innerText("#site-next"), /Sign-up is closed right now\./);
+    assert.match(await p.innerText("#site-next"), /Sign-up is closed right now · Food theme: /);
     await p.goto(SITE + "schedule/" + Q);
     await p.waitForSelector("#site-upcoming .site-row");
     assert.equal(await p.$$eval(".site-chip-open", (x) => x.length), 0, "nothing is labelled Sign-up open");
@@ -195,12 +195,17 @@ try {
     await p.goto(SITE + Q);
     await p.waitForSelector("#site-coming .club-card");
     assert.equal(await p.$$eval("#site-next a.club-btn", (x) => x.length), 0, "no button for the closed meeting");
-    assert.match(await p.innerText("#site-next"), /Sign-up is closed\./);
+    // the closed meeting's food theme is quiet, on the closed note's line, not a line of its own
+    assert.match(await p.innerText("#site-next .club-hint"), /^Sign-up is closed · Food theme: /);
+    assert.equal(await p.$$eval("#site-next .club-theme", (x) => x.length), 0, "no big food-theme line for a closed event");
     assert.match(await p.innerText('#site-coming .club-card:has-text("Holiday Party")'), /Club meeting[\s\S]*Sign-up open/, "the Holiday Party: Club meeting pill, still open");
+    assert.equal(await p.$$eval('#site-coming .club-card:has-text("Holiday Party") .club-theme', (x) => x.length), 1, "an open event keeps its food-theme line");
     assert.equal(await p.$$eval('#site-coming .club-card:has-text("Holiday Party") a.club-btn', (x) => x.length), 1);
     await p.goto(SITE + "schedule/" + Q);
     await p.waitForSelector("#site-upcoming .site-row");
-    assert.match(await p.innerText('#site-upcoming .site-row:has-text("Math and Science Club Meeting")'), /Sign-up is closed\./);
+    const closedRow = '#site-upcoming .site-row:has-text("Math and Science Club Meeting")';
+    assert.match(await p.innerText(closedRow + " .site-row-act"), /Sign-up is closed(\s+| · )Food theme: /, "row: the food theme next to (or under) the closed note");
+    assert.equal(await p.$$eval(closedRow + " .club-theme", (x) => x.length), 0, "the row's food theme moved next to the closed note");
     await p.goto(SITE + "events/steam-day-2027/" + Q);
     await p.waitForFunction(() => document.querySelector("[data-ev-count]") && !document.querySelector("[data-ev-count]").hidden);
     assert.equal(await p.isVisible("[data-ev-signup] >> nth=0"), true, "STEAM Day still takes volunteers");
